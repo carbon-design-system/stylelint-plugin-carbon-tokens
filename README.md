@@ -61,7 +61,7 @@ Passing `ignoreValues` option, you can accpet values which are exact same string
 // .stylelintrc
 "rules": {
   // ...
-  "plugin/carbon-use": [["/color/", "background-color", { ignoreValues: ["transparent", "inherit", "initial", "/[^(]+/"] }]],
+  "plugin/carbon-use": [["/color/", "background-color", { ignoreValues: ["transparent", "inherit", "initial"] }]],
   // ...
 }
 ```
