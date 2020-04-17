@@ -67,7 +67,7 @@ function checkValue(val, exceptions = []) {
   const matchFunction = 3;
   if (matches && matches[matchVariable]) {
     // if function check it's in themeFunctions
-    console.dir(matches);
+    // console.dir(matches);
     const passFunctionCheck =
       !matches[matchFunction] ||
       matches[matchFunction].length === 0 ||
