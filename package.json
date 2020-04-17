@@ -1,0 +1,26 @@
+{
+  "name": "stylelint-carbon-use",
+  "version": "1.7.2",
+  "description": "A stylelint plugin to support the use of carbon component tokens.",
+  "main": "index.js",
+  "scripts": {
+    "test": "tape test"
+  },
+  "keywords": [
+    "stylelint",
+    "stylelint-plugin",
+    "css",
+    "carbon",
+    "scss"
+  ],
+  "author": "Lee Chase <lee.chase@uk.ibm.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "stylelint-test-rule-tape": "^0.2.0",
+    "tape": "^4.11.0"
+  },
+  "dependencies": {
+    "@carbon/themes": "^10.11.0",
+    "stylelint": "11.1.1"
+  }
+}
