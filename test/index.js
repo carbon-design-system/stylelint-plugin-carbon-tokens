@@ -43,11 +43,14 @@ ruleTester(carbonUseVariable.rule, {
 // Test for multiple values in array including regex
 ruleTester(carbonUseVariable.rule, {
   ruleName: carbonUseVariable.ruleName,
-  config: [["/color/", "background-color"]],
+  config: [["/color/", "background-color", "box-shadow", "border"]],
 
   accept: [
     { code: ".foo { color: $ui-01; }" },
     { code: ".foo { background-color: $ui-background; }" },
+    { code: ".foo { box-shadow: 0 0 20px $ui-01; }" },
+    { code: ".foo { box-shadow: 0 0 10px 10px $ui-01; }" },
+    { code: ".foo { border: 5px solid $ui-01; }" },
   ],
 
   reject: [

@@ -49,10 +49,10 @@ function toRegex(string) {
  * @return {bool}
  */
 function checkValue(val, exceptions = []) {
-  // Regex for checking - capture 1 = function, 3 = variable
+  // Regex for checking - capture: 3 = function, 4 = earlier variables, 6 = variable
   // $any-variable;
   // any-function($any-variable
-  const regEx = /^([a-zA-Z0-9-]*)\(*(\$([A-Z0-9a-z-]+))/g;
+  const regEx = /^((([a-zA-Z0-9-]*)\(*)|([a-zA-Z0-9- ]*))(\$([A-Z0-9a-z-]+))/g;
 
   for (const exception of exceptions) {
     if (isStringRegex(exception)) {
@@ -63,12 +63,17 @@ function checkValue(val, exceptions = []) {
   }
 
   const matches = regEx.exec(val);
-  if (matches && matches[3]) {
+  const matchVariable = 6;
+  const matchFunction = 3;
+  if (matches && matches[matchVariable]) {
     // if function check it's in themeFunctions
+    console.dir(matches);
     const passFunctionCheck =
-      matches[1].length === 0 || themeFunctions.includes(matches[1]);
+      !matches[matchFunction] ||
+      matches[matchFunction].length === 0 ||
+      themeFunctions.includes(matches[matchFunction]);
     // check token exists in theme
-    return passFunctionCheck && themesTokens.includes(matches[3]);
+    return passFunctionCheck && themesTokens.includes(matches[matchVariable]);
   }
   return false;
 }
