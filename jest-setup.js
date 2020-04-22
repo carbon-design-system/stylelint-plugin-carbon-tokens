@@ -126,38 +126,43 @@ function getOutputCss(output) {
   return css;
 }
 
-global.testConfig = (input) => {
+global.testConfig = (schema) => {
   let testFn;
 
-  if (input.only) {
+  if (schema.only) {
     testFn = test.only;
-  } else if (input.skip) {
+  } else if (schema.skip) {
     testFn = test.skip;
   } else {
     testFn = test;
   }
 
-  testFn(input.description, () => {
-    const config = {
-      plugins: ["./"],
-      rules: {
-        [input.ruleName]: input.config,
-      },
-    };
+  // describe(`${schema.ruleName}`, () => { // not working for some reason
+  describe("schema.ruleName", () => {
+    describe("schema", () => {
+      testFn(schema.description, () => {
+        const config = {
+          rules: {
+            [schema.ruleName]: schema.config,
+          },
+        };
 
-    return stylelint
-      .lint({
-        code: "",
-        config,
-      })
-      .then((data) => {
-        const invalidOptionWarnings = data.results[0].invalidOptionWarnings;
+        stylelint
+          .lint({
+            code: "",
+            config,
+          })
+          .then((data) => {
+            const invalidOptionWarnings = data.results[0].warnings;
 
-        if (input.valid) {
-          expect(invalidOptionWarnings).toHaveLength(0);
-        } else {
-          expect(invalidOptionWarnings[0].text).toBe(input.message);
-        }
+            if (schema.valid) {
+              expect(invalidOptionWarnings).toHaveLength(0);
+            } else {
+              expect(invalidOptionWarnings[0].text).toBe(schema.message);
+            }
+          });
       });
+    });
   });
+  // });
 };

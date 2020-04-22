@@ -20,6 +20,7 @@ export default function checkValue(val) {
   if (matches && matches[matchVariable]) {
     // if function check it's in themeFunctions
 
+    /* istanbul ignore next */
     const passFunctionCheck =
       !matches[matchFunction] ||
       matches[matchFunction].length === 0 ||

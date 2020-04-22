@@ -4,20 +4,27 @@ import {
   declarationValueIndex,
   checkProp,
   isValidOption,
-  // isVariable,
+  isVariable,
   namespace,
   // parseOptions,
   checkIgnoreValue,
   checkValue,
+  normaliseVariableName,
 } from "../../utils";
 import splitValueList from "../../utils/splitValueList";
 
 export const ruleName = namespace("theme-token-use");
+const isValidIgnoreValues = isValidOption;
+const isValidIncludeProps = isValidOption;
 
 export const messages = utils.ruleMessages(ruleName, {
   rejected: (property, value) =>
     `Expected carbon token for "${property}" found "${value}.`,
+  rejectedVariable: (property, variable, value) =>
+    `Expected carbon token to be set for variable "${variable}" used by "${property}" found "${value}.`,
 });
+
+const variables = {}; // used to contain variable declarations
 
 // const defaultOptions = {
 //   includedProps: ["/color/", "/shadow/", "border"],
@@ -25,31 +32,12 @@ export const messages = utils.ruleMessages(ruleName, {
 // };
 
 export default function rule(expectation, options) {
-  // eslint-disable-next-line no-console
-  console.dir(expectation);
-  // eslint-disable-next-line no-console
-  console.dir(options);
+  // // eslint-disable-next-line no-console
+  // console.dir(expectation);
+  // // eslint-disable-next-line no-console
+  // console.dir(options);
 
   return (root, result) => {
-    // const options = parseOptions(primary, defaultOptions);
-
-    // if (options.errors) {
-    //   for (const error of options.errors) {
-    //     // // eslint-disable-next-line no-console
-    //     // console.error(error);
-
-    //     utils.report({
-    //       result: {
-    //         message: error,
-    //         stylelintType: "invalidOption"
-    //       }
-    //     });
-    //     // utils.report({ ruleName, message: error });
-    //   }
-
-    //   return;
-    // }
-
     const validOptions = utils.validateOptions(
       result,
       ruleName,
@@ -60,14 +48,15 @@ export default function rule(expectation, options) {
       {
         actual: options,
         possible: {
-          includeProps: [isValidOption],
-          ignoreValues: [isValidOption],
+          includeProps: [isValidIncludeProps],
+          ignoreValues: [isValidIgnoreValues],
         },
         optional: true,
       }
     );
 
     if (!validOptions) {
+      /* istanbul ignore next */
       return;
     }
 
@@ -81,8 +70,14 @@ export default function rule(expectation, options) {
     // });
 
     root.walkDecls((decl) => {
-      // check supported prop
-      if (checkProp(decl.prop, options.includedProps)) {
+      if (isVariable(decl.prop)) {
+        // add to variable declarations
+        // expects all variables to appear before use
+        // expects all variables to be simple (not map or list)
+
+        variables[normaliseVariableName(decl.prop)] = decl.value;
+      } else if (checkProp(decl.prop, options.includeProps)) {
+        // is supported prop
         // Some color properties have
         // variable parameter lists where color can be optional
         // variable parameters lists where color is not at a fixed position
@@ -92,13 +87,35 @@ export default function rule(expectation, options) {
         for (const value of values) {
           if (!checkIgnoreValue(value, options.ignoreValues)) {
             if (!checkValue(value)) {
-              utils.report({
-                ruleName,
-                result,
-                message: messages.rejected(decl.prop, decl.value),
-                index: declarationValueIndex(decl),
-                node: decl,
-              });
+              // not a carbon theme token
+              if (isVariable(value)) {
+                // a variable that could be carbon theme token
+                const variableValue = variables[value];
+
+                if (!checkValue(variableValue)) {
+                  // a variable that does not refer to a carbon color token
+                  utils.report({
+                    ruleName,
+                    result,
+                    message: messages.rejectedVariable(
+                      decl.prop,
+                      value,
+                      variableValue
+                    ),
+                    index: declarationValueIndex(decl),
+                    node: decl,
+                  });
+                }
+              } else {
+                // not a variable or a carbon theme token
+                utils.report({
+                  ruleName,
+                  result,
+                  message: messages.rejected(decl.prop, decl.value),
+                  index: declarationValueIndex(decl),
+                  node: decl,
+                });
+              }
             }
           }
         }
