@@ -14,57 +14,23 @@ specifying the property for which you want to check the usage of variable.
 Like so:
 
 ```js
-// .stylelintrc
 {
   "plugins": [
     "stylelint-carbon-use"
   ],
   "rules": {
-    // ...
-    "plugin/carbon-use": "color",
-    // ...
+    "scss/theme-token-use": [
+    "always",
+    {
+      ignoreValues: ["/transparent|inherit/"],
+      includeProps: ["/color/", "/shadow/", "border"],
+    },
+  ]",
   }
 }
 ```
 
-#### Multiple properties
-
-Multiple properties can be watched by passing them inside array. Regex can also be used inside arrays.
-
-```js
-// .stylelintrc
-"rules": {
-  // ...
-  "plugin/carbon-use": [["/color/", "background-color", "box-shadow", "border"]],
-  // ...
-}
-```
-
-#### Regex support
-
-Passing a regex will watch the variable usage for all matching properties. This rule will match all CSS properties while ignoring Sass and Less variables.
-
-```js
-// .stylelintrc
-"rules": {
-  // ...
-  "plugin/carbon-use": "/color/",
-  // ...
-}
-```
-
-#### Options
-
-Passing `ignoreValues` option, you can accpet values which are exact same string or matched by Regex
-
-```js
-// .stylelintrc
-"rules": {
-  // ...
-  "plugin/carbon-use": [["/color/", "background-color", { ignoreValues: ["transparent", "inherit", "initial"] }]],
-  // ...
-}
-```
+NOTE: ignoreValues and includeProps accept an array of strings and/or Regex.
 
 ## Details
 
@@ -78,15 +44,18 @@ $ui-01: #f4f4f4;
 }
 ```
 
-### Supported scss variables
-
-Scss variables using '\$' notation and perhaps carbon functions
+### Supports variables
 
 ```scss
-// Simple variables
+// Simple variables declared before use
 $ui-01: #f4f4f4;
-
+$som-carbon-token = $ui-01;
 color: $some-carbon-token;
+
+// css simple variables declared before use
+$ui-01: #f4f4f4;
+--my-var: $ui-01
+color: var(--my-var);
 
 // Using carbon functions
 background-color: get-light-value($ui-01);
