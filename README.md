@@ -2,8 +2,9 @@
 
 ## Installation
 
-```
-npm install stylelint-carbon-use
+```bash
+# NOT YET DEPLOYED
+# npm install @carbon/stylelint-carbon-use
 ```
 
 ## Usage
