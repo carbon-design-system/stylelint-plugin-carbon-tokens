@@ -1,40 +1,54 @@
-// const parseRegex = (options) => {
-//   const errors = [];
-//   const optsOut = {};
-//   for (const key of Object.keys(options)) {
-//     const props = options[key];
-//     // init output
-//     optsOut[key] = [];
-//     for (const prop of props) {
-//       if (prop.startsWith("/")) {
-//         if (prop.endsWith("/")) {
-//           optsOut[key].push(RegExp(prop.slice(1, -1)));
-//         } else {
-//           optsOut[key].push(prop);
-//           errors.push(
-//             `The configuration option '${prop}' specified for '${key}' is invalid. String or regular expression expected.`
-//           );
-//         }
-//       } else {
-//         optsOut[key].push(prop);
-//       }
-//     }
-//   }
-//   if (errors.length > 0) {
-//     optsOut.errors = errors;
-//   }
-//   return optsOut;
-// };
-// export default function parseOptions(options, defaults) {
-//   const optsOut = parseRegex({
-//     includedProps: options.includedProps || defaults.includedProps,
-//     ignoreValues: options.ignoreValues || defaults.ignoreValues,
-//   });
-//   // standard options
-//   optsOut.actual =
-//     options.includedProps || options.ignoreValues
-//       ? options.stylelintOptions
-//       : options;
-//   return optsOut;
-// }
 "use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true,
+});
+exports["default"] = parseOptions;
+
+var parseAddDefaults = function parseAddDefaults(options, defaults) {
+  var output = options
+    ? options.filter(function (option) {
+        return option.length > 0;
+      })
+    : [];
+  var addDefaults = false;
+
+  if (output.length === 0) {
+    addDefaults = true;
+  } else {
+    var index = output.findIndex(function (item) {
+      return item === "*";
+    });
+
+    if (index >= 0) {
+      addDefaults = true;
+      output.splice(index, 1);
+    }
+  }
+
+  if (addDefaults) {
+    var filteredDefaults = defaults.filter(function (def) {
+      return !output.includes(def);
+    });
+    return output.concat(filteredDefaults);
+  }
+
+  return output;
+};
+
+function parseOptions(options, defaults) {
+  var optsOut = {}; // // eslint-disable-next-line
+  // console.dir(defaults);
+
+  optsOut.includeProps = parseAddDefaults(
+    (options && options.includeProps) || [],
+    defaults.includeProps
+  );
+  optsOut.ignoreValues = parseAddDefaults(
+    (options && options.ignoreValues) || [],
+    defaults.ignoreValues
+  ); // // eslint-disable-next-line
+  // console.dir(optsOut);
+
+  return optsOut;
+}

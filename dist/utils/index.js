@@ -15,6 +15,12 @@ Object.defineProperty(exports, "namespace", {
     return _namespace["default"];
   },
 });
+Object.defineProperty(exports, "parseOptions", {
+  enumerable: true,
+  get: function get() {
+    return _parseOptions["default"];
+  },
+});
 Object.defineProperty(exports, "checkProp", {
   enumerable: true,
   get: function get() {
@@ -57,6 +63,8 @@ var _declarationValueIndex = _interopRequireDefault(
 );
 
 var _namespace = _interopRequireDefault(require("./namespace"));
+
+var _parseOptions = _interopRequireDefault(require("./parseOptions"));
 
 var _checkProp = _interopRequireDefault(require("./checkProp"));
 

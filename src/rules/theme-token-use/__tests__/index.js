@@ -3,7 +3,6 @@ import rule, { messages, ruleName } from "..";
 testRule(rule, {
   ruleName,
   config: [
-    "always",
     {
       ignoreValues: ["/transparent|inherit/"],
       includeProps: ["/color/", "/shadow/", "border"],

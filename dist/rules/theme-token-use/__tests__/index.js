@@ -69,7 +69,6 @@ function _interopRequireWildcard(obj) {
 testRule(_["default"], {
   ruleName: _.ruleName,
   config: [
-    "always",
     {
       ignoreValues: ["/transparent|inherit/"],
       includeProps: ["/color/", "/shadow/", "border"],

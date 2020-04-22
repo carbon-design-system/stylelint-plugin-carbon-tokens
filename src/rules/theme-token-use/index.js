@@ -6,7 +6,7 @@ import {
   isValidOption,
   isVariable,
   namespace,
-  // parseOptions,
+  parseOptions,
   checkIgnoreValue,
   checkValue,
   normaliseVariableName,
@@ -14,8 +14,6 @@ import {
 import splitValueList from "../../utils/splitValueList";
 
 export const ruleName = namespace("theme-token-use");
-const isValidIgnoreValues = isValidOption;
-const isValidIncludeProps = isValidOption;
 
 export const messages = utils.ruleMessages(ruleName, {
   rejected: (property, value) =>
@@ -24,36 +22,27 @@ export const messages = utils.ruleMessages(ruleName, {
     `Expected carbon token to be set for variable "${variable}" used by "${property}" found "${value}.`,
 });
 
+const isValidIgnoreValues = isValidOption;
+const isValidIncludeProps = isValidOption;
 const variables = {}; // used to contain variable declarations
 
-// const defaultOptions = {
-//   includedProps: ["/color/", "/shadow/", "border"],
-//   ignoreValues: ["/transparent|inherit|initial/"]
-// };
+const defaultOptions = {
+  includeProps: ["/color/", "/shadow/", "border"],
+  ignoreValues: ["/transparent|inherit|initial/"],
+};
 
-export default function rule(expectation, options) {
-  // // eslint-disable-next-line no-console
-  // console.dir(expectation);
-  // // eslint-disable-next-line no-console
-  // console.dir(options);
+export default function rule(optionsIn) {
+  const options = parseOptions(optionsIn, defaultOptions);
 
   return (root, result) => {
-    const validOptions = utils.validateOptions(
-      result,
-      ruleName,
-      {
-        actual: expectation,
-        possible: ["always", "never"],
+    const validOptions = utils.validateOptions(result, ruleName, {
+      actual: options,
+      possible: {
+        includeProps: [isValidIncludeProps],
+        ignoreValues: [isValidIgnoreValues],
       },
-      {
-        actual: options,
-        possible: {
-          includeProps: [isValidIncludeProps],
-          ignoreValues: [isValidIgnoreValues],
-        },
-        optional: true,
-      }
-    );
+      optional: true,
+    });
 
     if (!validOptions) {
       /* istanbul ignore next */

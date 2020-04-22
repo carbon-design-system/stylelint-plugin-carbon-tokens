@@ -20,8 +20,7 @@ Like so:
     "stylelint-carbon-use"
   ],
   "rules": {
-    "scss/theme-token-use": [
-    "always",
+    "carbon/theme-token-use": [
     {
       ignoreValues: ["/transparent|inherit/"],
       includeProps: ["/color/", "/shadow/", "border"],
@@ -32,6 +31,12 @@ Like so:
 ```
 
 NOTE: ignoreValues and includeProps accept an array of strings and/or Regex.
+
+Other valid values for use in ignoreValues and includeProps are:
+
+- [] which indicates default values specified internally
+- ["*"] also indicates default values specified internally
+- ["a", "*"] "a" plus default values specified internally
 
 ## Details
 

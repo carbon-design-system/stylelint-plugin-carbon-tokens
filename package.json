@@ -20,6 +20,7 @@
     "url": "https://github.com/kristerkari/stylelint-scss/issues"
   },
   "dependencies": {
+    "@carbon/themes": "^10.11.0",
     "lodash": "^4.17.15",
     "postcss-media-query-parser": "^0.2.3",
     "postcss-resolve-nested-selector": "^0.1.1",
@@ -30,7 +31,6 @@
     "@babel/cli": "^7.8.4",
     "@babel/core": "^7.9.0",
     "@babel/preset-env": "^7.9.5",
-    "@carbon/themes": "^10.11.0",
     "babel-plugin-istanbul": "^6.0.0",
     "babel-preset-jest": "^25.3.0",
     "eslint": "^6.8.0",
@@ -150,7 +150,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "babel src --out-dir dist",
-    "lint": "eslint . --ignore-path .gitignore",
+    "lint": "eslint src --ignore-path .gitignore",
     "prettify": "prettier --write \"src/**/*.js\"",
     "prepublishOnly": "npm run build",
     "pretest": "npm run lint",

@@ -1,47 +1,44 @@
-// const parseRegex = (options) => {
-//   const errors = [];
-//   const optsOut = {};
+const parseAddDefaults = (options, defaults) => {
+  const output = options ? options.filter((option) => option.length > 0) : [];
+  let addDefaults = false;
 
-//   for (const key of Object.keys(options)) {
-//     const props = options[key];
+  if (output.length === 0) {
+    addDefaults = true;
+  } else {
+    const index = output.findIndex((item) => item === "*");
 
-//     // init output
-//     optsOut[key] = [];
+    if (index >= 0) {
+      addDefaults = true;
+      output.splice(index, 1);
+    }
+  }
 
-//     for (const prop of props) {
-//       if (prop.startsWith("/")) {
-//         if (prop.endsWith("/")) {
-//           optsOut[key].push(RegExp(prop.slice(1, -1)));
-//         } else {
-//           optsOut[key].push(prop);
-//           errors.push(
-//             `The configuration option '${prop}' specified for '${key}' is invalid. String or regular expression expected.`
-//           );
-//         }
-//       } else {
-//         optsOut[key].push(prop);
-//       }
-//     }
-//   }
+  if (addDefaults) {
+    const filteredDefaults = defaults.filter((def) => !output.includes(def));
 
-//   if (errors.length > 0) {
-//     optsOut.errors = errors;
-//   }
+    return output.concat(filteredDefaults);
+  }
 
-//   return optsOut;
-// };
+  return output;
+};
 
-// export default function parseOptions(options, defaults) {
-//   const optsOut = parseRegex({
-//     includedProps: options.includedProps || defaults.includedProps,
-//     ignoreValues: options.ignoreValues || defaults.ignoreValues,
-//   });
+export default function parseOptions(options, defaults) {
+  const optsOut = {};
 
-//   // standard options
-//   optsOut.actual =
-//     options.includedProps || options.ignoreValues
-//       ? options.stylelintOptions
-//       : options;
+  // // eslint-disable-next-line
+  // console.dir(defaults);
 
-//   return optsOut;
-// }
+  optsOut.includeProps = parseAddDefaults(
+    (options && options.includeProps) || [],
+    defaults.includeProps
+  );
+  optsOut.ignoreValues = parseAddDefaults(
+    (options && options.ignoreValues) || [],
+    defaults.ignoreValues
+  );
+
+  // // eslint-disable-next-line
+  // console.dir(optsOut);
+
+  return optsOut;
+}

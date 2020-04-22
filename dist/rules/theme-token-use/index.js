@@ -86,8 +86,6 @@ function _arrayLikeToArray(arr, len) {
 
 var ruleName = (0, _utils.namespace)("theme-token-use");
 exports.ruleName = ruleName;
-var isValidIgnoreValues = _utils.isValidOption;
-var isValidIncludeProps = _utils.isValidOption;
 
 var messages = _stylelint.utils.ruleMessages(ruleName, {
   rejected: function rejected(property, value) {
@@ -104,34 +102,26 @@ var messages = _stylelint.utils.ruleMessages(ruleName, {
 });
 
 exports.messages = messages;
+var isValidIgnoreValues = _utils.isValidOption;
+var isValidIncludeProps = _utils.isValidOption;
 var variables = {}; // used to contain variable declarations
-// const defaultOptions = {
-//   includedProps: ["/color/", "/shadow/", "border"],
-//   ignoreValues: ["/transparent|inherit|initial/"]
-// };
 
-function rule(expectation, options) {
-  // // eslint-disable-next-line no-console
-  // console.dir(expectation);
-  // // eslint-disable-next-line no-console
-  // console.dir(options);
+var defaultOptions = {
+  includeProps: ["/color/", "/shadow/", "border"],
+  ignoreValues: ["/transparent|inherit|initial/"],
+};
+
+function rule(optionsIn) {
+  var options = (0, _utils.parseOptions)(optionsIn, defaultOptions);
   return function (root, result) {
-    var validOptions = _stylelint.utils.validateOptions(
-      result,
-      ruleName,
-      {
-        actual: expectation,
-        possible: ["always", "never"],
+    var validOptions = _stylelint.utils.validateOptions(result, ruleName, {
+      actual: options,
+      possible: {
+        includeProps: [isValidIncludeProps],
+        ignoreValues: [isValidIgnoreValues],
       },
-      {
-        actual: options,
-        possible: {
-          includeProps: [isValidIncludeProps],
-          ignoreValues: [isValidIgnoreValues],
-        },
-        optional: true,
-      }
-    );
+      optional: true,
+    });
 
     if (!validOptions) {
       /* istanbul ignore next */
