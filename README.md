@@ -24,19 +24,31 @@ Like so:
     {
       ignoreValues: ["/transparent|inherit/"],
       includeProps: ["/color/", "/shadow/", "border"],
+      acceptCarbonColorTokens: false,
+      acceptIbmColorTokens: false,
     },
   ]",
   }
 }
 ```
 
-NOTE: ignoreValues and includeProps accept an array of strings and/or Regex.
+### ignoreValues and includeProps
+
+Accept an array of strings and/or Regex.
 
 Other valid values for use in ignoreValues and includeProps are:
 
 - [] which indicates default values specified internally
 - ["*"] also indicates default values specified internally
 - ["a", "*"] "a" plus default values specified internally
+
+### acceptCarbonColorTokens
+
+Default is false, permits color tokens from @carbon/color/scss mixin carbon--colors.
+
+### acceptIbmColorTokens
+
+Default is false, permits color tokens from @carbon/color/scss mixin ibm--colors.
 
 ## Details
 
@@ -51,6 +63,8 @@ $ui-01: #f4f4f4;
 ```
 
 ### Supports variables
+
+Variables declared in the current file before use.
 
 ```scss
 // Simple variables declared before use

@@ -37,6 +37,11 @@ export default function parseOptions(options, defaults) {
     defaults.ignoreValues
   );
 
+  optsOut.acceptCarbonColorTokens =
+    (options && options.acceptCarbonColorTokens) || false;
+  optsOut.acceptIbmColorTokens =
+    (options && options.acceptIbmColorTokens) || false;
+
   // // eslint-disable-next-line
   // console.dir(optsOut);
 

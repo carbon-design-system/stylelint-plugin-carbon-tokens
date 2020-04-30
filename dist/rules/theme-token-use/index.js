@@ -111,17 +111,34 @@ var defaultOptions = {
   ignoreValues: ["/transparent|inherit|initial/"],
 };
 
-function rule(optionsIn) {
-  var options = (0, _utils.parseOptions)(optionsIn, defaultOptions);
+function rule(primaryOptions, secondaryOptions) {
+  var options = (0, _utils.parseOptions)(secondaryOptions, defaultOptions);
   return function (root, result) {
-    var validOptions = _stylelint.utils.validateOptions(result, ruleName, {
-      actual: options,
-      possible: {
-        includeProps: [isValidIncludeProps],
-        ignoreValues: [isValidIgnoreValues],
+    // // eslint-disable-next-line
+    // console.log(typeof options.acceptCarbonColorTokens);
+    // // eslint-disable-next-line
+    // console.log(typeof options.acceptIbmColorTokens);
+    var validOptions = _stylelint.utils.validateOptions(
+      result,
+      ruleName,
+      {
+        actual: primaryOptions,
       },
-      optional: true,
-    });
+      {
+        actual: options,
+        possible: {
+          includeProps: [isValidIncludeProps],
+          ignoreValues: [isValidIgnoreValues],
+          acceptCarbonColorTokens: function acceptCarbonColorTokens(val) {
+            return val === undefined || typeof val === "boolean";
+          },
+          acceptIbmColorTokens: function acceptIbmColorTokens(val) {
+            return val === undefined || typeof val === "boolean";
+          },
+        },
+        optional: true,
+      }
+    );
 
     if (!validOptions) {
       /* istanbul ignore next */
@@ -156,13 +173,29 @@ function rule(optionsIn) {
             var value = _step.value;
 
             if (!(0, _utils.checkIgnoreValue)(value, options.ignoreValues)) {
-              if (!(0, _utils.checkValue)(value)) {
+              if (
+                !(0, _utils.checkValue)(
+                  value,
+                  options.acceptCarbonColorTokens,
+                  options.acceptIbmColorTokens
+                )
+              ) {
+                // // eslint-disable-next-line
+                // console.log(value);
+                // // eslint-disable-next-line
+                // console.dir(options);
                 // not a carbon theme token
                 if ((0, _utils.isVariable)(value)) {
                   // a variable that could be carbon theme token
                   var variableValue = variables[value];
 
-                  if (!(0, _utils.checkValue)(variableValue)) {
+                  if (
+                    !(0, _utils.checkValue)(
+                      variableValue,
+                      options.acceptCarbonColorTokens,
+                      options.acceptIbmColorTokens
+                    )
+                  ) {
                     // a variable that does not refer to a carbon color token
                     _stylelint.utils.report({
                       ruleName: ruleName,
@@ -174,7 +207,10 @@ function rule(optionsIn) {
                       ),
                       index: (0, _utils.declarationValueIndex)(decl),
                       node: decl,
-                    });
+                    }); // // eslint-disable-next-line
+                    // console.log(
+                    //   messages.rejectedVariable(decl.prop, value, variableValue)
+                    // );
                   }
                 } else {
                   // not a variable or a carbon theme token

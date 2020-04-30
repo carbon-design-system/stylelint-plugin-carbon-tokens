@@ -76,8 +76,7 @@ function isValidOption(option) {
   // console.dir(option);
 
   /* istanbul ignore next */
-  var arrOpts = Array.isArray(option) ? option : [option]; // // eslint-disable-next-line
-  // console.dir(arrOpts);
+  var arrOpts = Array.isArray(option) ? option : [option];
 
   var _iterator = _createForOfIteratorHelper(arrOpts),
     _step;

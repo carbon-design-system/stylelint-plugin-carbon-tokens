@@ -5,25 +5,20 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = checkValue;
 
-var _themes = require("@carbon/themes");
+var _initCarbonTheme = require("./initCarbonTheme");
 
-// map themes to recognisable tokens
-var themesTokens = _themes.tokens.colors.map(function (token) {
-  return (0, _themes.formatTokenName)(token);
-}); // permitted carbon theme functions
-// TODO: read this from carbon
+var _initCarbonColor = require("./initCarbonColor");
 
-var themeFunctions = ["get-light-value"];
-
-function checkValue(val) {
+function checkValue(val, acceptCarbonColorTokens, acceptIbmColorTokens) {
   // Regex for checking - capture: 3 = function, 4 = earlier variables, 6 = variable
   // $any-variable;
   // any-function($any-variable
   // NOTE: inside function as otherwise regex.lastIndex may be non-zero on second call
-  var regexFuncAndToken = /^((([a-zA-Z0-9-]*)\(*)|([a-zA-Z0-9- ]*))(\$([A-Z0-9a-z-]+))/g;
+  var regexFuncAndToken = /^((([a-zA-Z0-9-_]*)\(*)|([a-zA-Z0-9-_ ]*))((\$[A-Z0-9a-z-_]+))/g;
   var matches = regexFuncAndToken.exec(val);
   var matchVariable = 6;
   var matchFunction = 3;
+  var result = false;
 
   if (matches && matches[matchVariable]) {
     // if function check it's in themeFunctions
@@ -32,10 +27,18 @@ function checkValue(val) {
     var passFunctionCheck =
       !matches[matchFunction] ||
       matches[matchFunction].length === 0 ||
-      themeFunctions.includes(matches[matchFunction]); // check token exists in theme
+      _initCarbonTheme.themeFunctions.includes(matches[matchFunction]); // check token exists in theme
 
-    return passFunctionCheck && themesTokens.includes(matches[matchVariable]);
+    result =
+      passFunctionCheck &&
+      (_initCarbonTheme.themeTokens.includes(matches[matchVariable]) ||
+        (acceptCarbonColorTokens &&
+          _initCarbonColor.carbonColorTokens.includes(
+            matches[matchVariable]
+          )) ||
+        (acceptIbmColorTokens &&
+          _initCarbonColor.ibmColorTokens.includes(matches[matchVariable])));
   }
 
-  return false;
+  return result;
 }

@@ -47,7 +47,11 @@ function parseOptions(options, defaults) {
   optsOut.ignoreValues = parseAddDefaults(
     (options && options.ignoreValues) || [],
     defaults.ignoreValues
-  ); // // eslint-disable-next-line
+  );
+  optsOut.acceptCarbonColorTokens =
+    (options && options.acceptCarbonColorTokens) || false;
+  optsOut.acceptIbmColorTokens =
+    (options && options.acceptIbmColorTokens) || false; // // eslint-disable-next-line
   // console.dir(optsOut);
 
   return optsOut;

@@ -69,6 +69,7 @@ function _interopRequireWildcard(obj) {
 testRule(_["default"], {
   ruleName: _.ruleName,
   config: [
+    true,
     {
       ignoreValues: ["/transparent|inherit/"],
       includeProps: ["/color/", "/shadow/", "border"],
@@ -116,6 +117,66 @@ testRule(_["default"], {
       code: ".foo { color: var(--my-color-reject); }",
       description:
         "Not a --variable declared before use with Carbon theme tokens.",
+    },
+    {
+      code: "@import 'file-with-dollar-var'; .foo { color: $dollar-var; }",
+      description: "Does not parse $dollar-var from other files",
+    },
+  ],
+}); // verify use of carbon color tokens
+
+testRule(_["default"], {
+  ruleName: _.ruleName,
+  config: [
+    true,
+    {
+      ignoreValues: ["/transparent|inherit/"],
+      includeProps: ["/color/", "/shadow/", "border"],
+      acceptCarbonColorTokens: true,
+    },
+  ],
+  syntax: "scss",
+  accept: [
+    {
+      code: ".foo { background-color: $carbon--blue-90; }",
+      description: "Accept using a carbon color token",
+      message: _.messages.expected,
+    },
+  ],
+  reject: [
+    // an ibm color token
+    {
+      code: ".foo { background-color: $ibm-color__blue-90; }",
+      description: "Reject using a ibm color token",
+      message: _.messages.expected,
+    },
+  ],
+}); // verify use of carbon color tokens
+
+testRule(_["default"], {
+  ruleName: _.ruleName,
+  config: [
+    true,
+    {
+      ignoreValues: ["/transparent|inherit/"],
+      includeProps: ["/color/", "/shadow/", "border"],
+      acceptIbmColorTokens: true,
+    },
+  ],
+  syntax: "scss",
+  accept: [
+    {
+      code: ".foo { background-color: $ibm-color__blue-90; }",
+      description: "Accept using a ibm color token",
+      message: _.messages.expected,
+    },
+  ],
+  reject: [
+    // an ibm color token
+    {
+      code: ".foo { background-color: $carbon--blue-90; }",
+      description: "Reject using a carbon color token",
+      message: _.messages.expected,
     },
   ],
 });

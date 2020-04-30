@@ -4,6 +4,8 @@ describe("parseOptions", () => {
   const defaults = {
     includeProps: ["1", "3", "4"],
     ignoreValues: ["1", "5", "6"],
+    acceptCarbonColorTokens: false,
+    acceptIbmColorTokens: false,
   };
 
   const options1 = undefined;
@@ -47,6 +49,8 @@ describe("parseOptions", () => {
   const combinedOpts1 = {
     includeProps: ["banana"].concat(defaults.includeProps),
     ignoreValues: ["fish"].concat(defaults.ignoreValues),
+    acceptCarbonColorTokens: false,
+    acceptIbmColorTokens: false,
   };
 
   it("Adds default options when using *", () => {
@@ -65,6 +69,8 @@ describe("parseOptions", () => {
     ignoreValues: ["eagle", "5", "7"].concat(
       defaults.ignoreValues.filter((item) => item !== "5")
     ),
+    acceptCarbonColorTokens: false,
+    acceptIbmColorTokens: false,
   };
 
   it("Combines default options when using *", () => {

@@ -60,6 +60,66 @@ testRule(rule, {
   ],
 });
 
+// verify use of carbon color tokens
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      ignoreValues: ["/transparent|inherit/"],
+      includeProps: ["/color/", "/shadow/", "border"],
+      acceptCarbonColorTokens: true,
+    },
+  ],
+  syntax: "scss",
+  accept: [
+    {
+      code: ".foo { background-color: $carbon--blue-90; }",
+      description: "Accept using a carbon color token",
+      message: messages.expected,
+    },
+  ],
+
+  reject: [
+    // an ibm color token
+    {
+      code: ".foo { background-color: $ibm-color__blue-90; }",
+      description: "Reject using a ibm color token",
+      message: messages.expected,
+    },
+  ],
+});
+
+// verify use of carbon color tokens
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      ignoreValues: ["/transparent|inherit/"],
+      includeProps: ["/color/", "/shadow/", "border"],
+      acceptIbmColorTokens: true,
+    },
+  ],
+  syntax: "scss",
+  accept: [
+    {
+      code: ".foo { background-color: $ibm-color__blue-90; }",
+      description: "Accept using a ibm color token",
+      message: messages.expected,
+    },
+  ],
+
+  reject: [
+    // an ibm color token
+    {
+      code: ".foo { background-color: $carbon--blue-90; }",
+      description: "Reject using a carbon color token",
+      message: messages.expected,
+    },
+  ],
+});
+
 testConfig({
   ruleName,
   description: "Check for invalid ignore values",

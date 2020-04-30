@@ -35,6 +35,12 @@ export default function rule(primaryOptions, secondaryOptions) {
   const options = parseOptions(secondaryOptions, defaultOptions);
 
   return (root, result) => {
+    // // eslint-disable-next-line
+    // console.log(typeof options.acceptCarbonColorTokens);
+
+    // // eslint-disable-next-line
+    // console.log(typeof options.acceptIbmColorTokens);
+
     const validOptions = utils.validateOptions(
       result,
       ruleName,
@@ -46,6 +52,10 @@ export default function rule(primaryOptions, secondaryOptions) {
         possible: {
           includeProps: [isValidIncludeProps],
           ignoreValues: [isValidIgnoreValues],
+          acceptCarbonColorTokens: (val) =>
+            val === undefined || typeof val === "boolean",
+          acceptIbmColorTokens: (val) =>
+            val === undefined || typeof val === "boolean",
         },
         optional: true,
       }
@@ -82,13 +92,31 @@ export default function rule(primaryOptions, secondaryOptions) {
 
         for (const value of values) {
           if (!checkIgnoreValue(value, options.ignoreValues)) {
-            if (!checkValue(value)) {
+            if (
+              !checkValue(
+                value,
+                options.acceptCarbonColorTokens,
+                options.acceptIbmColorTokens
+              )
+            ) {
+              // // eslint-disable-next-line
+              // console.log(value);
+
+              // // eslint-disable-next-line
+              // console.dir(options);
+
               // not a carbon theme token
               if (isVariable(value)) {
                 // a variable that could be carbon theme token
                 const variableValue = variables[value];
 
-                if (!checkValue(variableValue)) {
+                if (
+                  !checkValue(
+                    variableValue,
+                    options.acceptCarbonColorTokens,
+                    options.acceptIbmColorTokens
+                  )
+                ) {
                   // a variable that does not refer to a carbon color token
                   utils.report({
                     ruleName,
