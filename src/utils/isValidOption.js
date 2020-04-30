@@ -5,9 +5,6 @@ export default function isValidOption(option) {
   /* istanbul ignore next */
   const arrOpts = Array.isArray(option) ? option : [option];
 
-  // // eslint-disable-next-line
-  // console.dir(arrOpts);
-
   for (const opt of arrOpts) {
     if (opt.startsWith("/")) {
       /* istanbul ignore next */

@@ -3,6 +3,7 @@ import rule, { messages, ruleName } from "..";
 testRule(rule, {
   ruleName,
   config: [
+    true,
     {
       ignoreValues: ["/transparent|inherit/"],
       includeProps: ["/color/", "/shadow/", "border"],
@@ -51,6 +52,10 @@ testRule(rule, {
       code: ".foo { color: var(--my-color-reject); }",
       description:
         "Not a --variable declared before use with Carbon theme tokens.",
+    },
+    {
+      code: "@import 'file-with-dollar-var'; .foo { color: $dollar-var; }",
+      description: "Does not parse $dollar-var from other files",
     },
   ],
 });

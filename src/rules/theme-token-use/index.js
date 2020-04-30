@@ -31,18 +31,25 @@ const defaultOptions = {
   ignoreValues: ["/transparent|inherit|initial/"],
 };
 
-export default function rule(optionsIn) {
-  const options = parseOptions(optionsIn, defaultOptions);
+export default function rule(primaryOptions, secondaryOptions) {
+  const options = parseOptions(secondaryOptions, defaultOptions);
 
   return (root, result) => {
-    const validOptions = utils.validateOptions(result, ruleName, {
-      actual: options,
-      possible: {
-        includeProps: [isValidIncludeProps],
-        ignoreValues: [isValidIgnoreValues],
+    const validOptions = utils.validateOptions(
+      result,
+      ruleName,
+      {
+        actual: primaryOptions,
       },
-      optional: true,
-    });
+      {
+        actual: options,
+        possible: {
+          includeProps: [isValidIncludeProps],
+          ignoreValues: [isValidIgnoreValues],
+        },
+        optional: true,
+      }
+    );
 
     if (!validOptions) {
       /* istanbul ignore next */
@@ -94,6 +101,10 @@ export default function rule(optionsIn) {
                     index: declarationValueIndex(decl),
                     node: decl,
                   });
+                  // // eslint-disable-next-line
+                  // console.log(
+                  //   messages.rejectedVariable(decl.prop, value, variableValue)
+                  // );
                 }
               } else {
                 // not a variable or a carbon theme token
