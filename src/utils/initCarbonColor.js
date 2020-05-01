@@ -21,6 +21,7 @@ const scssFromFile = fs.readFileSync(colorFile, "utf8");
 const result = postcss().process(`${scssFromFile}`, {
   from: `${colorFile}`,
   syntax: scss,
+  stringifier: scss.stringify,
 });
 
 result.root.walkAtRules((atRule) => {

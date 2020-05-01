@@ -111,6 +111,8 @@ var defaultOptions = {
   includeProps: ["/color$/", "/shadow$/", "border", "outline"],
   // ignore transparent, common reset values and 0 on its own
   ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
+  acceptCarbonColorTokens: false,
+  acceptIBMColorTokens: false,
 };
 
 function rule(primaryOptions, secondaryOptions) {

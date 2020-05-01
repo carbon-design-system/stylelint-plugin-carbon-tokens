@@ -42,6 +42,7 @@ var scssFromFile = _fs["default"].readFileSync(colorFile, "utf8");
 var result = (0, _postcss["default"])().process("".concat(scssFromFile), {
   from: "".concat(colorFile),
   syntax: _postcssScss["default"],
+  stringifier: _postcssScss["default"].stringify,
 });
 result.root.walkAtRules(function (atRule) {
   if (atRule.name === "mixin") {
