@@ -25,9 +25,16 @@ var ibmColorTokens = []; // deprecated
 
 exports.ibmColorTokens = ibmColorTokens;
 
+var nodeModulesIndex = __dirname.indexOf("/node_modules/");
+
+var nodeModulesPath =
+  nodeModulesIndex > -1
+    ? __dirname.substr(nodeModulesIndex + 14)
+    : _path["default"].join(__dirname, "../../node_modules/");
+
 var colorFile = _path["default"].join(
-  __dirname,
-  "../../node_modules/@carbon/colors/scss/mixins.scss"
+  nodeModulesPath,
+  "@carbon/colors/scss/mixins.scss"
 );
 
 var scssFromFile = _fs["default"].readFileSync(colorFile, "utf8");

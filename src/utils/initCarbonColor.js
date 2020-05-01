@@ -8,10 +8,13 @@ const ibmColorsMixin = "ibm--colors()";
 let carbonColorTokens = [];
 let ibmColorTokens = []; // deprecated
 
-const colorFile = path.join(
-  __dirname,
-  "../../node_modules/@carbon/colors/scss/mixins.scss"
-);
+const nodeModulesIndex = __dirname.indexOf("/node_modules/");
+const nodeModulesPath =
+  nodeModulesIndex > -1
+    ? __dirname.substr(nodeModulesIndex + 14)
+    : path.join(__dirname, "../../node_modules/");
+
+const colorFile = path.join(nodeModulesPath, "@carbon/colors/scss/mixins.scss");
 
 const scssFromFile = fs.readFileSync(colorFile, "utf8");
 
