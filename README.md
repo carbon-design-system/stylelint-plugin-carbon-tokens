@@ -46,6 +46,12 @@ Other valid values for use in ignoreValues and includeProps are:
 - ["*"] also indicates default values specified internally
 - ["a", "*"] "a" plus default values specified internally
 
+You can also check variables which is probably best done if you have a naming convention for color variables.
+
+E.g. This checks dollar variables which contain the word 'color' or 'colour'.
+
+- includeProps: ["*", "/^\\$.*colou?r.*$/"],
+
 ### acceptCarbonColorTokens
 
 Default is false, permits color tokens from @carbon/color/scss mixin carbon--colors.
