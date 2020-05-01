@@ -72,7 +72,7 @@ testRule(_["default"], {
     true,
     {
       ignoreValues: ["/transparent|inherit|initial/, /^0$/"],
-      includeProps: ["/color/", "/shadow/", "border"],
+      includeProps: ["/color$/", "/shadow$/", "border"],
     },
   ],
   syntax: "scss",
@@ -131,7 +131,7 @@ testRule(_["default"], {
     true,
     {
       ignoreValues: ["/transparent|inherit/"],
-      includeProps: ["/color/", "/shadow/", "border"],
+      includeProps: ["/color$/", "/shadow$/", "border"],
       acceptCarbonColorTokens: true,
     },
   ],
@@ -159,7 +159,7 @@ testRule(_["default"], {
     true,
     {
       ignoreValues: ["/transparent|inherit/"],
-      includeProps: ["/color/", "/shadow/", "border"],
+      includeProps: ["/color$/", "/shadow$/", "border"],
       acceptIBMColorTokens: true,
     },
   ],

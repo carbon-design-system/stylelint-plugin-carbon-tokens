@@ -28,7 +28,7 @@ const variables = {}; // used to contain variable declarations
 
 const defaultOptions = {
   // include standard color properites
-  includeProps: ["/color/", "/shadow/", "border"],
+  includeProps: ["/color$/", "/shadow$/", "border", "outline"],
   // ignore transparent, common reset values and 0 on its own
   ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
 };
@@ -84,7 +84,9 @@ export default function rule(primaryOptions, secondaryOptions) {
         // expects all variables to be simple (not map or list)
 
         variables[normaliseVariableName(decl.prop)] = decl.value;
-      } else if (checkProp(decl.prop, options.includeProps)) {
+      }
+
+      if (checkProp(decl.prop, options.includeProps)) {
         // is supported prop
         // Some color properties have
         // variable parameter lists where color can be optional

@@ -22,9 +22,13 @@ Like so:
   "rules": {
     "carbon/theme-token-use": [
     {
-      ignoreValues: ["/transparent|inherit/"],
-      includeProps: ["/color/", "/shadow/", "border"],
+      // include standard color properites
+      includeProps: ["/color$/", "/shadow$/", "border", "outline"],
+      // ignore transparent, common reset values and 0 on its own
+      ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
+      // accept carbon tokens from @carbon/color
       acceptCarbonColorTokens: false,
+      // accept IBM color tokens from @carbon/color
       acceptIBMColorTokens: false,
     },
   ]",
