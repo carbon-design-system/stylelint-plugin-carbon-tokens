@@ -4,7 +4,7 @@ import { ibmColorTokens, carbonColorTokens } from "./initCarbonColor";
 export default function checkValue(
   val,
   acceptCarbonColorTokens,
-  acceptIbmColorTokens
+  acceptIBMColorTokens
 ) {
   // Regex for checking - capture: 3 = function, 4 = earlier variables, 6 = variable
   // $any-variable;
@@ -32,7 +32,7 @@ export default function checkValue(
       (themeTokens.includes(matches[matchVariable]) ||
         (acceptCarbonColorTokens &&
           carbonColorTokens.includes(matches[matchVariable])) ||
-        (acceptIbmColorTokens &&
+        (acceptIBMColorTokens &&
           ibmColorTokens.includes(matches[matchVariable])));
   }
 

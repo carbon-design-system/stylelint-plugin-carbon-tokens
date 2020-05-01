@@ -9,7 +9,7 @@ var _initCarbonTheme = require("./initCarbonTheme");
 
 var _initCarbonColor = require("./initCarbonColor");
 
-function checkValue(val, acceptCarbonColorTokens, acceptIbmColorTokens) {
+function checkValue(val, acceptCarbonColorTokens, acceptIBMColorTokens) {
   // Regex for checking - capture: 3 = function, 4 = earlier variables, 6 = variable
   // $any-variable;
   // any-function($any-variable
@@ -36,7 +36,7 @@ function checkValue(val, acceptCarbonColorTokens, acceptIbmColorTokens) {
           _initCarbonColor.carbonColorTokens.includes(
             matches[matchVariable]
           )) ||
-        (acceptIbmColorTokens &&
+        (acceptIBMColorTokens &&
           _initCarbonColor.ibmColorTokens.includes(matches[matchVariable])));
   }
 

@@ -107,8 +107,10 @@ var isValidIncludeProps = _utils.isValidOption;
 var variables = {}; // used to contain variable declarations
 
 var defaultOptions = {
+  // include standard color properites
   includeProps: ["/color/", "/shadow/", "border"],
-  ignoreValues: ["/transparent|inherit|initial/"],
+  // ignore transparent, common reset values and 0 on its own
+  ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
 };
 
 function rule(primaryOptions, secondaryOptions) {
@@ -117,7 +119,7 @@ function rule(primaryOptions, secondaryOptions) {
     // // eslint-disable-next-line
     // console.log(typeof options.acceptCarbonColorTokens);
     // // eslint-disable-next-line
-    // console.log(typeof options.acceptIbmColorTokens);
+    // console.log(typeof options.acceptIBMColorTokens);
     var validOptions = _stylelint.utils.validateOptions(
       result,
       ruleName,
@@ -132,7 +134,7 @@ function rule(primaryOptions, secondaryOptions) {
           acceptCarbonColorTokens: function acceptCarbonColorTokens(val) {
             return val === undefined || typeof val === "boolean";
           },
-          acceptIbmColorTokens: function acceptIbmColorTokens(val) {
+          acceptIBMColorTokens: function acceptIBMColorTokens(val) {
             return val === undefined || typeof val === "boolean";
           },
         },
@@ -177,7 +179,7 @@ function rule(primaryOptions, secondaryOptions) {
                 !(0, _utils.checkValue)(
                   value,
                   options.acceptCarbonColorTokens,
-                  options.acceptIbmColorTokens
+                  options.acceptIBMColorTokens
                 )
               ) {
                 // // eslint-disable-next-line
@@ -193,7 +195,7 @@ function rule(primaryOptions, secondaryOptions) {
                     !(0, _utils.checkValue)(
                       variableValue,
                       options.acceptCarbonColorTokens,
-                      options.acceptIbmColorTokens
+                      options.acceptIBMColorTokens
                     )
                   ) {
                     // a variable that does not refer to a carbon color token

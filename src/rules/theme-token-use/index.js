@@ -27,8 +27,10 @@ const isValidIncludeProps = isValidOption;
 const variables = {}; // used to contain variable declarations
 
 const defaultOptions = {
+  // include standard color properites
   includeProps: ["/color/", "/shadow/", "border"],
-  ignoreValues: ["/transparent|inherit|initial/"],
+  // ignore transparent, common reset values and 0 on its own
+  ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
@@ -39,7 +41,7 @@ export default function rule(primaryOptions, secondaryOptions) {
     // console.log(typeof options.acceptCarbonColorTokens);
 
     // // eslint-disable-next-line
-    // console.log(typeof options.acceptIbmColorTokens);
+    // console.log(typeof options.acceptIBMColorTokens);
 
     const validOptions = utils.validateOptions(
       result,
@@ -54,7 +56,7 @@ export default function rule(primaryOptions, secondaryOptions) {
           ignoreValues: [isValidIgnoreValues],
           acceptCarbonColorTokens: (val) =>
             val === undefined || typeof val === "boolean",
-          acceptIbmColorTokens: (val) =>
+          acceptIBMColorTokens: (val) =>
             val === undefined || typeof val === "boolean",
         },
         optional: true,
@@ -96,7 +98,7 @@ export default function rule(primaryOptions, secondaryOptions) {
               !checkValue(
                 value,
                 options.acceptCarbonColorTokens,
-                options.acceptIbmColorTokens
+                options.acceptIBMColorTokens
               )
             ) {
               // // eslint-disable-next-line
@@ -114,7 +116,7 @@ export default function rule(primaryOptions, secondaryOptions) {
                   !checkValue(
                     variableValue,
                     options.acceptCarbonColorTokens,
-                    options.acceptIbmColorTokens
+                    options.acceptIBMColorTokens
                   )
                 ) {
                   // a variable that does not refer to a carbon color token

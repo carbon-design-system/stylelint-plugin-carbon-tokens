@@ -50,8 +50,8 @@ function parseOptions(options, defaults) {
   );
   optsOut.acceptCarbonColorTokens =
     (options && options.acceptCarbonColorTokens) || false;
-  optsOut.acceptIbmColorTokens =
-    (options && options.acceptIbmColorTokens) || false; // // eslint-disable-next-line
+  optsOut.acceptIBMColorTokens =
+    (options && options.acceptIBMColorTokens) || false; // // eslint-disable-next-line
   // console.dir(optsOut);
 
   return optsOut;

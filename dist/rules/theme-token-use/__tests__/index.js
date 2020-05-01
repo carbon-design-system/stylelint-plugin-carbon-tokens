@@ -71,7 +71,7 @@ testRule(_["default"], {
   config: [
     true,
     {
-      ignoreValues: ["/transparent|inherit/"],
+      ignoreValues: ["/transparent|inherit|initial/, /^0$/"],
       includeProps: ["/color/", "/shadow/", "border"],
     },
   ],
@@ -160,7 +160,7 @@ testRule(_["default"], {
     {
       ignoreValues: ["/transparent|inherit/"],
       includeProps: ["/color/", "/shadow/", "border"],
-      acceptIbmColorTokens: true,
+      acceptIBMColorTokens: true,
     },
   ],
   syntax: "scss",

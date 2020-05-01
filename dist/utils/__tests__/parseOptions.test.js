@@ -7,7 +7,7 @@ describe("parseOptions", function () {
     includeProps: ["1", "3", "4"],
     ignoreValues: ["1", "5", "6"],
     acceptCarbonColorTokens: false,
-    acceptIbmColorTokens: false,
+    acceptIBMColorTokens: false,
   };
   var options1 = undefined;
   it("Uses default options when options undefined", function () {
@@ -44,7 +44,7 @@ describe("parseOptions", function () {
     includeProps: ["banana"].concat(defaults.includeProps),
     ignoreValues: ["fish"].concat(defaults.ignoreValues),
     acceptCarbonColorTokens: false,
-    acceptIbmColorTokens: false,
+    acceptIBMColorTokens: false,
   };
   it("Adds default options when using *", function () {
     expect((0, _.parseOptions)(options6, defaults)).toEqual(combinedOpts1);
@@ -65,7 +65,7 @@ describe("parseOptions", function () {
       })
     ),
     acceptCarbonColorTokens: false,
-    acceptIbmColorTokens: false,
+    acceptIBMColorTokens: false,
   };
   it("Combines default options when using *", function () {
     expect((0, _.parseOptions)(options7, defaults)).toEqual(combinedOpts2);

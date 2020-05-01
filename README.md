@@ -25,7 +25,7 @@ Like so:
       ignoreValues: ["/transparent|inherit/"],
       includeProps: ["/color/", "/shadow/", "border"],
       acceptCarbonColorTokens: false,
-      acceptIbmColorTokens: false,
+      acceptIBMColorTokens: false,
     },
   ]",
   }
@@ -46,7 +46,7 @@ Other valid values for use in ignoreValues and includeProps are:
 
 Default is false, permits color tokens from @carbon/color/scss mixin carbon--colors.
 
-### acceptIbmColorTokens
+### acceptIBMColorTokens
 
 Default is false, permits color tokens from @carbon/color/scss mixin ibm--colors.
 
