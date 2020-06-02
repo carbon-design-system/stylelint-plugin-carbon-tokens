@@ -1,5 +1,11 @@
 # stylelint-carbon-use
 
+This project is intended to help users identify cases where tokens, functions and mixins defined as part of various projects relating to the Carbon Design System are used. [www.carbondesignsystem.com]
+
+This includes, but may not be limited to, @carbon/themes, @carbon/colors, @carbon/layout, @carbon/type.
+
+Not incluced, as they're not used through SCSS, are Carbon Icons, Grid and any other DOM related checks..
+
 ## Installation
 
 ```bash
@@ -51,6 +57,19 @@ You can also check variables which is probably best done if you have a naming co
 E.g. This checks dollar variables which contain the word 'color' or 'colour'.
 
 - includeProps: ["*", "/^\\$.*colou?r.*$/"],
+
+Defaults, if no options specified:
+
+```js
+const defaultOptions = {
+  // include standard color properites
+  includeProps: ["/color$/", "/shadow$/", "border", "outline"],
+  // ignore transparent, common reset values and 0 on its own
+  ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
+  acceptCarbonColorTokens: false,
+  acceptIBMColorTokens: false,
+};
+```
 
 ### acceptCarbonColorTokens
 
