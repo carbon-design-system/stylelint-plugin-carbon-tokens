@@ -29,7 +29,7 @@ Like so:
     "carbon/theme-token-use": [
     {
       // include standard color properites
-      includeProps: ["/color$/", "/shadow$/", "border", "outline"],
+      includeProps: ["/color$/", "/shadow$/<-1>", "border<-1>", "outline<-1>"],
       // ignore transparent, common reset values and 0 on its own
       ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
       // accept carbon tokens from @carbon/color
@@ -44,7 +44,9 @@ Like so:
 
 ### ignoreValues and includeProps
 
-Accept an array of strings and/or Regex.
+Accept an array of strings and/or Regex followed by a range in angled brackets.
+
+e.g. ["/color$/", "/shadow$/<-1>]
 
 Other valid values for use in ignoreValues and includeProps are:
 
@@ -58,12 +60,21 @@ E.g. This checks dollar variables which contain the word 'color' or 'colour'.
 
 - includeProps: ["*", "/^\\$.*colou?r.*$/"],
 
+Ranges are defined between < > and expect one or two values. If no range is specified all values are considered as one.
+
+Valid ranges:
+
+- <1> Positive integer specifying the nth value specified for a CSS attribute.
+- <-1> Negative integer specifying the nth value from the end (-1 = last value)
+- <1 -2> First value represents the start of a range the second the end
+  e.g. /shadow\$/<1 -2> will target the only the size settings of "box-shadow: 0 0 5px 5px green" and "box-shadow: 0 0 5px green"
+
 Defaults, if no options specified:
 
 ```js
 const defaultOptions = {
   // include standard color properites
-  includeProps: ["/color$/", "/shadow$/", "border", "outline"],
+  includeProps: ["/color$/", "/shadow$/<-1>", "border<-1>", "outline<-1>"],
   // ignore transparent, common reset values and 0 on its own
   ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
   acceptCarbonColorTokens: false,

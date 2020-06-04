@@ -6,7 +6,7 @@ testRule(rule, {
     true,
     {
       ignoreValues: ["/transparent|inherit|initial/, /^0$/"],
-      includeProps: ["/color$/", "/shadow$/", "border"],
+      includeProps: ["/color$/", "/shadow$/<-1>", "border<-1>"],
     },
   ],
   syntax: "scss",
@@ -29,6 +29,20 @@ testRule(rule, {
         "--my-color-accept: $ui-01; .foo { color: var(--my-color-accept); }",
       description:
         "Accept --variable declared before use with Carbon theme tokens.",
+    },
+    {
+      code: ".foo { box-shadow: $layout-01 $layout-01 $ui-01; }",
+      description:
+        "Position one and two can can be non color variables three of three matches",
+    },
+    {
+      code: ".foo { box-shadow: 0 0 $layout-01 $ui-01; }",
+      description:
+        "Position three of four can can be non color variables four of four matches",
+    },
+    {
+      code: ".foo { border: 1px solid get-light-value($ui-01); }",
+      description: "Permitted function get-light-value passes",
     },
   ],
 
@@ -56,6 +70,10 @@ testRule(rule, {
     {
       code: "@import 'file-with-dollar-var'; .foo { color: $dollar-var; }",
       description: "Does not parse $dollar-var from other files",
+    },
+    {
+      code: ".foo { border: 1px solid my-color-fun($ui-01); }",
+      description: "Other functions should fail my-color-fn fails",
     },
   ],
 });
@@ -120,9 +138,9 @@ testRule(rule, {
   ],
 });
 
-testConfig({
-  ruleName,
-  description: "Check for invalid ignore values",
-  message: "Unknown rule carbon/theme-token-use.",
-  config: ["always", { ignoreValues: ["/wibble"], message: messages.expected }],
-});
+// testConfig(rule, {
+//   ruleName,
+//   description: "Check for invalid ignore values",
+//   message: messages.expected,
+//   config: ["always", { ignoreValues: ["/wibble/"] }],
+// });

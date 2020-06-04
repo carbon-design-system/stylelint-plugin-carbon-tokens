@@ -12,7 +12,7 @@ const nodeModulesIndex = __dirname.indexOf("/node_modules/");
 const nodeModulesPath =
   nodeModulesIndex > -1
     ? __dirname.substr(0, nodeModulesIndex + 14)
-    : path.join(__dirname, "../../node_modules/");
+    : path.join(__dirname, "../../../../node_modules/");
 
 const colorFile = path.join(nodeModulesPath, "@carbon/colors/scss/mixins.scss");
 

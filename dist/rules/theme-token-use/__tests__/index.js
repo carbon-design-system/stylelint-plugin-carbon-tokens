@@ -123,8 +123,9 @@ testRule(_["default"], {
       description: "Does not parse $dollar-var from other files",
     },
   ],
-}); // verify use of carbon color tokens
+});
 
+// verify use of carbon color tokens
 testRule(_["default"], {
   ruleName: _.ruleName,
   config: [
@@ -151,8 +152,9 @@ testRule(_["default"], {
       message: _.messages.expected,
     },
   ],
-}); // verify use of carbon color tokens
+});
 
+// verify use of carbon color tokens
 testRule(_["default"], {
   ruleName: _.ruleName,
   config: [
@@ -180,6 +182,7 @@ testRule(_["default"], {
     },
   ],
 });
+
 testConfig({
   ruleName: _.ruleName,
   description: "Check for invalid ignore values",

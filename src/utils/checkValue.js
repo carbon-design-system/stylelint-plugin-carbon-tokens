@@ -1,10 +1,7 @@
-import { themeTokens, themeFunctions } from "./initCarbonTheme";
-import { ibmColorTokens, carbonColorTokens } from "./initCarbonColor";
-
 export default function checkValue(
   val,
-  acceptCarbonColorTokens,
-  acceptIBMColorTokens
+  acceptableFunctionArrays,
+  acceptableTokenArrays
 ) {
   // Regex for checking - capture: 3 = function, 4 = earlier variables, 6 = variable
   // $any-variable;
@@ -21,19 +18,31 @@ export default function checkValue(
     // if function check it's in themeFunctions
 
     /* istanbul ignore next */
-    const passFunctionCheck =
-      !matches[matchFunction] ||
-      matches[matchFunction].length === 0 ||
-      themeFunctions.includes(matches[matchFunction]);
+    let passFunctionCheck =
+      !matches[matchFunction] || matches[matchFunction].length === 0;
+
+    if (!passFunctionCheck) {
+      for (const acceptableFunctions of acceptableFunctionArrays) {
+        passFunctionCheck = acceptableFunctions.includes(
+          matches[matchFunction]
+        );
+
+        if (passFunctionCheck) {
+          break;
+        }
+      }
+    }
 
     // check token exists in theme
-    result =
-      passFunctionCheck &&
-      (themeTokens.includes(matches[matchVariable]) ||
-        (acceptCarbonColorTokens &&
-          carbonColorTokens.includes(matches[matchVariable])) ||
-        (acceptIBMColorTokens &&
-          ibmColorTokens.includes(matches[matchVariable])));
+    if (passFunctionCheck) {
+      for (const tokens of acceptableTokenArrays) {
+        result = tokens.includes(matches[matchVariable]);
+
+        if (result) {
+          break;
+        }
+      }
+    }
   }
 
   return result;

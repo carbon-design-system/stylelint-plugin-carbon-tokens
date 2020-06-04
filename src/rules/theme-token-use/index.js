@@ -8,9 +8,9 @@ import {
   namespace,
   parseOptions,
   checkIgnoreValue,
-  checkValue,
   normaliseVariableName,
 } from "../../utils";
+import { checkThemeValue } from "./utils";
 import splitValueList from "../../utils/splitValueList";
 
 export const ruleName = namespace("theme-token-use");
@@ -28,7 +28,7 @@ const variables = {}; // used to contain variable declarations
 
 const defaultOptions = {
   // include standard color properites
-  includeProps: ["/color$/", "/shadow$/", "border", "outline"],
+  includeProps: ["/color$/", "/shadow$/<-1>", "border<-1>", "outline<-1>"],
   // ignore transparent, common reset values and 0 on its own
   ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
   acceptCarbonColorTokens: false,
@@ -88,18 +88,21 @@ export default function rule(primaryOptions, secondaryOptions) {
         variables[normaliseVariableName(decl.prop)] = decl.value;
       }
 
-      if (checkProp(decl.prop, options.includeProps)) {
+      const propSpec = checkProp(decl.prop, options.includeProps);
+
+      if (propSpec) {
         // is supported prop
         // Some color properties have
         // variable parameter lists where color can be optional
         // variable parameters lists where color is not at a fixed position
+        // split using , and propSpec
 
-        const values = splitValueList(decl.value);
+        const values = splitValueList(decl.value, propSpec);
 
         for (const value of values) {
           if (!checkIgnoreValue(value, options.ignoreValues)) {
             if (
-              !checkValue(
+              !checkThemeValue(
                 value,
                 options.acceptCarbonColorTokens,
                 options.acceptIBMColorTokens
@@ -117,7 +120,7 @@ export default function rule(primaryOptions, secondaryOptions) {
                 const variableValue = variables[value];
 
                 if (
-                  !checkValue(
+                  !checkThemeValue(
                     variableValue,
                     options.acceptCarbonColorTokens,
                     options.acceptIBMColorTokens
