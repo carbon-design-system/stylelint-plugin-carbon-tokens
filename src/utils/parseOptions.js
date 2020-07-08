@@ -26,22 +26,20 @@ export default function parseOptions(options, defaults) {
   const optsOut = {};
 
   // // eslint-disable-next-line
-  // console.dir(defaults);
+  // console.log(options);
 
-  optsOut.includeProps = parseAddDefaults(
-    (options && options.includeProps) || [],
-    defaults.includeProps
-  );
-  optsOut.ignoreValues = parseAddDefaults(
-    (options && options.ignoreValues) || [],
-    defaults.ignoreValues
-  );
+  // NOTE expects type of options to match default options
 
-  optsOut.acceptCarbonColorTokens =
-    (options && options.acceptCarbonColorTokens) ||
-    defaults.acceptCarbonColorTokens;
-  optsOut.acceptIBMColorTokens =
-    (options && options.acceptIBMColorTokens) || defaults.acceptIBMColorTokens;
+  for (const prop of Object.keys(defaults)) {
+    if (Array.isArray(defaults[prop])) {
+      optsOut[prop] = parseAddDefaults(
+        (options && options[prop]) || [],
+        defaults[prop]
+      );
+    } else {
+      optsOut[prop] = (options && options[prop]) || defaults[prop];
+    }
+  }
 
   // // eslint-disable-next-line
   // console.dir(optsOut);

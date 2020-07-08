@@ -45,5 +45,10 @@ export default function checkValue(
     }
   }
 
+  // if (!result && val && val.startsWith("$")) {
+  //   // eslint-disable-next-line
+  //   console.log(result, val);
+  // }
+
   return result;
 }

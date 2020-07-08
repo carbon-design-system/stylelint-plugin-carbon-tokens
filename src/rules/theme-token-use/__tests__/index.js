@@ -5,8 +5,7 @@ testRule(rule, {
   config: [
     true,
     {
-      ignoreValues: ["/transparent|inherit|initial/, /^0$/"],
-      includeProps: ["/color$/", "/shadow$/<-1>", "border<-1>"],
+      ignoreValues: ["/((--)|[$])my-value-accept/", "*"],
     },
   ],
   syntax: "scss",
@@ -20,13 +19,13 @@ testRule(rule, {
       description: "All color tokens in split are Carbon theme tokens.",
     },
     {
-      code: "$my-color-accept: $ui-01; .foo { color: $my-color-accept; }",
+      code: "$my-value-accept: $ui-01; .foo { color: $my-value-accept; }",
       description:
         "Accept $varaible declared before use with Carbon theme tokens.",
     },
     {
       code:
-        "--my-color-accept: $ui-01; .foo { color: var(--my-color-accept); }",
+        "--my-value-accept: $ui-01; .foo { color: var(--my-value-accept); }",
       description:
         "Accept --variable declared before use with Carbon theme tokens.",
     },
@@ -58,12 +57,12 @@ testRule(rule, {
       message: messages.expected,
     },
     {
-      code: ".foo { color: $my-color-reject; }",
+      code: ".foo { color: $my-value-reject; }",
       description:
         "Not a $varaible declared before use with Carbon theme tokens.",
     },
     {
-      code: ".foo { color: var(--my-color-reject); }",
+      code: ".foo { color: var(--my-value-reject); }",
       description:
         "Not a --variable declared before use with Carbon theme tokens.",
     },
@@ -72,8 +71,8 @@ testRule(rule, {
       description: "Does not parse $dollar-var from other files",
     },
     {
-      code: ".foo { border: 1px solid my-color-fun($ui-01); }",
-      description: "Other functions should fail my-color-fn fails",
+      code: ".foo { border: 1px solid my-value-fun($ui-01); }",
+      description: "Other functions should fail my-value-fn fails",
     },
   ],
 });
@@ -84,8 +83,7 @@ testRule(rule, {
   config: [
     true,
     {
-      ignoreValues: ["/transparent|inherit/"],
-      includeProps: ["/color$/", "/shadow$/", "border"],
+      ignoreValues: ["/((--)|[$])my-value-accept/", "*"],
       acceptCarbonColorTokens: true,
     },
   ],
@@ -114,8 +112,7 @@ testRule(rule, {
   config: [
     true,
     {
-      ignoreValues: ["/transparent|inherit/"],
-      includeProps: ["/color$/", "/shadow$/", "border"],
+      ignoreValues: ["/((--)|[$])my-value-accept/", "*"],
       acceptIBMColorTokens: true,
     },
   ],

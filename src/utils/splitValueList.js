@@ -11,9 +11,9 @@ const parseRangeValue = (value, length) => {
   if (_value < 0) {
     // -ve from end
 
-    return length + _value;
+    return length + _value; // zero based
   } else {
-    return _value;
+    return _value - 1; // make it zero based
   }
 };
 
@@ -62,7 +62,7 @@ export default function splitValueList(value, propSpec) {
       end = parseRangeValue(end, spaceSplitValues.length);
 
       if (end) {
-        values = spaceSplitValues.slice(start, end + 1); // +1 to include last element
+        values = spaceSplitValues.slice(start, end + 1); // +1 as slice end is not inclusive
       } else {
         values = [spaceSplitValues[start]];
       }
@@ -71,6 +71,9 @@ export default function splitValueList(value, propSpec) {
     // any part can match
     values = commaSplitValues;
   }
+
+  // // eslint-disable-next-line
+  // console.dir(values);
 
   return values;
 }

@@ -17,9 +17,9 @@ export const ruleName = namespace("theme-token-use");
 
 export const messages = utils.ruleMessages(ruleName, {
   rejected: (property, value) =>
-    `Expected carbon token for "${property}" found "${value}.`,
+    `Expected carbon theme token or function for "${property}" found "${value}.`,
   rejectedVariable: (property, variable, value) =>
-    `Expected carbon token to be set for variable "${variable}" used by "${property}" found "${value}.`,
+    `Expected carbon theme token or function to be set for variable "${variable}" used by "${property}" found "${value}.`,
 });
 
 const isValidIgnoreValues = isValidOption;
@@ -36,6 +36,9 @@ const defaultOptions = {
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
+  // // eslint-disable-next-line
+  // console.log(primaryOptions, secondaryOptions);
+
   const options = parseOptions(secondaryOptions, defaultOptions);
 
   return (root, result) => {
@@ -70,15 +73,6 @@ export default function rule(primaryOptions, secondaryOptions) {
       return;
     }
 
-    // list of variables that may need checking during walk
-    // const declVariables = [];
-    // root.walkDecls(decl => {
-    //   // record variable for check later with $ or --
-    //   if (isVariable(decl.prop)) {
-    //     declVariables.push(decl);
-    //   }
-    // });
-
     root.walkDecls((decl) => {
       if (isVariable(decl.prop)) {
         // add to variable declarations
@@ -108,12 +102,6 @@ export default function rule(primaryOptions, secondaryOptions) {
                 options.acceptIBMColorTokens
               )
             ) {
-              // // eslint-disable-next-line
-              // console.log(value);
-
-              // // eslint-disable-next-line
-              // console.dir(options);
-
               // not a carbon theme token
               if (isVariable(value)) {
                 // a variable that could be carbon theme token
@@ -138,10 +126,6 @@ export default function rule(primaryOptions, secondaryOptions) {
                     index: declarationValueIndex(decl),
                     node: decl,
                   });
-                  // // eslint-disable-next-line
-                  // console.log(
-                  //   messages.rejectedVariable(decl.prop, value, variableValue)
-                  // );
                 }
               } else {
                 // not a variable or a carbon theme token
@@ -157,11 +141,6 @@ export default function rule(primaryOptions, secondaryOptions) {
           }
         }
       }
-
-      // postcss provides valueParse which we could use
-      // valueParser(decl.value).walk(node => {
-      // });
-      // }
     });
   };
 }
