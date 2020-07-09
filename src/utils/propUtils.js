@@ -11,6 +11,12 @@ const getPropSpec = (prop) => {
 
   const matches = checkRegex.exec(prop);
 
+  // eslint-disable-next-line
+  console.log();
+
+  // eslint-disable-next-line
+  console.dir(matches);
+
   if (matches && matches[1]) {
     propSpec = {
       prop: matches[1],

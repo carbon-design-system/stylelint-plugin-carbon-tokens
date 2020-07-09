@@ -18,5 +18,8 @@ export default function checkThemeValue(
     acceptableTokens.push(ibmColorTokens);
   }
 
+  // // eslint-disable-next-line
+  // console.log(val, acceptableFunctions, acceptableTokens);
+
   return checkValue(val, acceptableFunctions, acceptableTokens);
 }

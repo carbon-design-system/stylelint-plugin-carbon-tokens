@@ -3,7 +3,7 @@ import rule, { ruleName } from "..";
 const generatedTests = () => {
   const accept = [];
   const reject = [];
-  const props = ["margin", "padding"];
+  const props = ["margin", "padding", "box-shadow"];
   const good = [
     "$spacing-01",
     "$layout-01",
@@ -35,31 +35,27 @@ const generatedTests = () => {
   ];
 
   for (const prop of props) {
-    for (let i = 1; i < good.length; i++) {
+    const addColor = prop === "box-shadow" ? " red" : "";
+
+    for (let g = 0; g < good.length - 4; g++) {
       // good tokens
-      for (let j = 0; j < bad.length; j++) {
-        // bad tokens
+      for (let n = 1; n < 5; n++) {
+        // number of values
+        accept.push({
+          code: `.foo { ${prop}: ${good.slice(g, n).join(" ")}${addColor}; }`,
+          description: `A ${prop} using ${n} token(s) is accepted`,
+        });
+      }
+    }
 
-        let start;
-        let end;
-
-        if (j === 0) {
-          // no bad tokens
-          start = good.length - i;
-          end = Math.max(start + 4, good.length);
-          accept.push({
-            code: `.foo { ${prop}: ${good.slice(start, end).join(" ")}; }`,
-            description: `A ${prop} using ${i} token(s) is accepted`,
-          });
-        } else {
-          start = bad.length - j;
-          end = Math.max(start + 4, bad.length);
-
-          reject.push({
-            code: `.foo { ${prop}: ${bad.slice(start, end).join(" ")}; }`,
-            description: `A ${prop} using ${j} non-token(s) is rejected`,
-          });
-        }
+    for (let b = 0; b < bad.length - 4; b++) {
+      // bad tokens
+      for (let n = 1; n < 5; n++) {
+        // number of values
+        reject.push({
+          code: `.foo { ${prop}: ${bad.slice(b, n).join(" ")}${addColor}; }`,
+          description: `A ${prop} using ${n} non-token(s) is rejected`,
+        });
       }
     }
   }

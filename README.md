@@ -26,27 +26,45 @@ Like so:
     "stylelint-carbon-use"
   ],
   "rules": {
-    "carbon/theme-token-use": [
-    {
-      // include standard color properites
-      includeProps: ["/color$/", "/shadow$/<-1>", "border<-1>", "outline<-1>"],
-      // ignore transparent, common reset values and 0 on its own
-      ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
-      // accept carbon tokens from @carbon/color
-      acceptCarbonColorTokens: false,
-      // accept IBM color tokens from @carbon/color
-      acceptIBMColorTokens: false,
-    },
-  ]",
-  }
+    "carbon/rule-token-use": [ {
+          // include standard color properites
+        includeProps: ["/prop-a$/", "/prop-b$/<-1>", "prop-c", "prop-d<1 -2>", "*"],
+        // ignore transparent, common reset values and 0 on its own
+        ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
+        // other options
+        acceptOption: true
+     } ]
+  },
 }
 ```
 
-### ignoreValues and includeProps
+See rule README.md files for individual rule options and defaults.
 
-Accept an array of strings and/or Regex followed by a range in angled brackets.
+[Theme token use](./theme-token-use/README.md)
+[Layout token use](./layout-token-use/README.md)
 
-e.g. ["/color$/", "/shadow$/<-1>]
+### includeProps and ignoreValues
+
+Accept arrays of strings and/or Regex followed by a range in angled brackets.
+
+Defaults to options defined in the README files above.
+
+#### Range
+
+The range specification allows values or a range of values to be selected from a multipart value.
+
+- Positive values represent positions at the start of a value list e.g. 1 is the first value.
+- Negative values represent positions at the end of a value list. e.g. -1 = last value
+
+- If no range is specified the whole value list is checked.
+- A single value means only that value in a list is checked
+- Two values represent start and end values of a range in the list.
+
+e.g. ["/prop-a$/<-1>", "/prop-b$/<1 -2>"]
+
+Specifies the last value of `prop-a` and the first to second last of `prop-b`,
+
+#### General
 
 Other valid values for use in ignoreValues and includeProps are:
 
@@ -54,69 +72,6 @@ Other valid values for use in ignoreValues and includeProps are:
 - ["*"] also indicates default values specified internally
 - ["a", "*"] "a" plus default values specified internally
 
-You can also check variables which is probably best done if you have a naming convention for color variables.
+## Variables
 
-E.g. This checks dollar variables which contain the word 'color' or 'colour'.
-
-- includeProps: ["*", "/^\\$.*colou?r.*$/"],
-
-Ranges are defined between < > and expect one or two values. If no range is specified all values are considered as one.
-
-Valid ranges:
-
-- <1> Positive integer specifying the nth value specified for a CSS attribute.
-- <-1> Negative integer specifying the nth value from the end (-1 = last value)
-- <1 -2> First value represents the start of a range the second the end
-  e.g. /shadow\$/<1 -2> will target the only the size settings of "box-shadow: 0 0 5px 5px green" and "box-shadow: 0 0 5px green"
-
-Defaults, if no options specified:
-
-```js
-const defaultOptions = {
-  // include standard color properites
-  includeProps: ["/color$/", "/shadow$/<-1>", "border<-1>", "outline<-1>"],
-  // ignore transparent, common reset values and 0 on its own
-  ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
-  acceptCarbonColorTokens: false,
-  acceptIBMColorTokens: false,
-};
-```
-
-### acceptCarbonColorTokens
-
-Default is false, permits color tokens from @carbon/color/scss mixin carbon--colors.
-
-### acceptIBMColorTokens
-
-Default is false, permits color tokens from @carbon/color/scss mixin ibm--colors.
-
-## Details
-
-Carbon components has tokens for use with color, theming, timing, spacing, typography etc. Use this linter in order to encourage / verify thier use.
-
-```scss
-$ui-01: #f4f4f4;
-
-.foo {
-  color: #f4f4f4; // Ooh, that's not a carbon token 👋
-}
-```
-
-### Supports variables
-
-Variables declared in the current file before use.
-
-```scss
-// Simple variables declared before use
-$ui-01: #f4f4f4;
-$som-carbon-token = $ui-01;
-color: $some-carbon-token;
-
-// css simple variables declared before use
-$ui-01: #f4f4f4;
---my-var: $ui-01
-color: var(--my-var);
-
-// Using carbon functions
-background-color: get-light-value($ui-01);
-```
+SCSS `$variables` and CSS `--variable` declared before are checked

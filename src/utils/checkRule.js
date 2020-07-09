@@ -18,6 +18,14 @@ export default function checkRule(
   messages,
   checkMethod
 ) {
+  // eslint-disable-next-line
+  console.log("------------------Hi");
+
+  const [includeProps, ignoreValues, ...accept] = options;
+
+  // eslint-disable-next-line
+  console.log("------------------", includeProps, ignoreProps, accept);
+
   root.walkDecls((decl) => {
     if (isVariable(decl.prop)) {
       // add to variable declarations
@@ -26,9 +34,16 @@ export default function checkRule(
       variables[normaliseVariableName(decl.prop)] = decl.value;
     }
 
-    const propSpec = checkProp(decl.prop, options.includeProps);
+    // read the prop spec
+    const propSpec = checkProp(decl.prop, includeProps);
+
+    // eslint-disable-next-line
+    console.log("before propspec");
 
     if (propSpec) {
+      // eslint-disable-next-line
+      console.log("after propspec");
+
       // is supported prop
       // Some color properties have
       // variable parameter lists where color can be optional
@@ -37,26 +52,22 @@ export default function checkRule(
       const values = splitValueList(decl.value, propSpec);
 
       for (const value of values) {
-        if (!checkIgnoreValue(value, options.ignoreValues)) {
-          if (
-            !checkMethod(
-              value,
-              options.acceptCarbonColorTokens,
-              options.acceptIBMColorTokens
-            )
-          ) {
+        // Ignore values specified by ignoreValues
+        // eslint-disable-next-line
+        console.log("before", value);
+
+        if (!checkIgnoreValue(value, ignoreValues)) {
+          // eslint-disable-next-line
+          console.log("after", value);
+
+          if (!checkMethod(value, ...accept)) {
             // not a carbon theme token
+
             if (isVariable(value)) {
               // a variable that could be carbon theme token
               const variableValue = variables[value];
 
-              if (
-                !checkMethod(
-                  variableValue,
-                  options.acceptCarbonColorTokens,
-                  options.acceptIBMColorTokens
-                )
-              ) {
+              if (!checkMethod(variableValue, ...accept)) {
                 // a variable that does not refer to a carbon color token
                 utils.report({
                   ruleName,

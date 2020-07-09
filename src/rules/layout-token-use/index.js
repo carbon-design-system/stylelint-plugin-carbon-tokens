@@ -18,8 +18,12 @@ const isValidIncludeProps = isValidOption;
 const defaultOptions = {
   // include standard color properites
   includeProps: [
-    "/^margin/<1 4>",
-    "/^padding/<1 4>",
+    "/^margin$/<1 4>",
+    "/^margin-/",
+    "/^padding$/<1 4>",
+    "/^padding-/",
+    "/^border$/<1 -2>",
+    "/^border-/",
     "height",
     "width",
     "left",
