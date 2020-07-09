@@ -71,6 +71,10 @@ testRule(rule, {
       description: "Does not parse $dollar-var from other files",
     },
     {
+      code: ".foo { border: 1px solid get-light-value(#f0f0f1); }",
+      description: "Permitted function get-light-value passes",
+    },
+    {
       code: ".foo { border: 1px solid my-value-fun($ui-01); }",
       description: "Other functions should fail my-value-fn fails",
     },

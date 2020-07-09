@@ -41,8 +41,8 @@ export default function parseOptions(options, defaults) {
     }
   }
 
-  // // eslint-disable-next-line
-  // console.dir(optsOut);
+  // eslint-disable-next-line
+  console.dir(optsOut);
 
   return optsOut;
 }
