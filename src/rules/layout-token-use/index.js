@@ -1,7 +1,7 @@
 // import valueParser from "postcss-value-parser";
 import { utils } from "stylelint";
 import { isValidOption, namespace, parseOptions, checkRule } from "../../utils";
-import { checkLayoutValue } from "./utils";
+import { getLayoutInfo } from "./utils";
 
 export const ruleName = namespace("layout-token-use");
 
@@ -64,6 +64,6 @@ export default function rule(primaryOptions, secondaryOptions) {
       return;
     }
 
-    checkRule(root, result, ruleName, options, messages, checkLayoutValue);
+    checkRule(root, result, ruleName, options, messages, getLayoutInfo);
   };
 }

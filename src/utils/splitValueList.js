@@ -17,7 +17,7 @@ const parseRangeValue = (value, length) => {
   }
 };
 
-export default function splitValueList(value, propSpec) {
+export default function splitValueList(value, range) {
   // NOTE: inside function as otherwise regex.lastIndex may be non-zero on second call
   const commaSplitRegex = /,(?=(((?!\)).)*\()|[^()]*$)/g;
   const spaceSplitRegex = / (?=(((?!\)).)*\()|[^()]*$)/g;
@@ -36,8 +36,8 @@ export default function splitValueList(value, propSpec) {
     commaSplitValues.push(value.substring(lastPos).trim());
   }
 
-  if (propSpec.range) {
-    // Next split on space and check against propSpec.range
+  if (range) {
+    // Next split on space and check against range
 
     for (const commaSplitValue of commaSplitValues) {
       const spaceSplitValues = [];
@@ -56,7 +56,7 @@ export default function splitValueList(value, propSpec) {
 
       // for the range select only the values to check
       // 1 = first value, -1 = last value
-      let [start, end] = propSpec.range.split(" ");
+      let [start, end] = range.split(" ");
 
       start = parseRangeValue(start, spaceSplitValues.length);
       end = parseRangeValue(end, spaceSplitValues.length);

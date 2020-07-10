@@ -1,1 +1,1 @@
-export { default as checkThemeValue } from "./checkThemeValue";
+export { default as getThemeInfo } from "./getThemeInfo";

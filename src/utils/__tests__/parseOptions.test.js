@@ -1,4 +1,4 @@
-import { parseOptions } from "../";
+import { parseOptions } from "..";
 
 describe("parseOptions", () => {
   const defaults = {

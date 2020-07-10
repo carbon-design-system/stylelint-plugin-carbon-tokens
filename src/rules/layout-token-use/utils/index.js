@@ -1,1 +1,1 @@
-export { default as checkLayoutValue } from "./checkLayoutValue";
+export { default as getLayoutInfo } from "./getLayoutInfo";

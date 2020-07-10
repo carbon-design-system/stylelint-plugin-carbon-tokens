@@ -6,9 +6,8 @@ import {
   checkIgnoreValue,
   normaliseVariableName,
   splitValueList,
+  testValue,
 } from "./";
-
-const variables = {}; // used to contain variable declarations
 
 export default function checkRule(
   root,
@@ -16,8 +15,10 @@ export default function checkRule(
   ruleName,
   options,
   messages,
-  checkMethod
+  getRuleInfo
 ) {
+  const variables = {}; // used to contain variable declarations
+
   root.walkDecls((decl) => {
     if (isVariable(decl.prop)) {
       // add to variable declarations
@@ -35,46 +36,36 @@ export default function checkRule(
       // variable parameter lists where color can be optional
       // variable parameters lists where color is not at a fixed position
       // split using , and propSpec
-      const values = splitValueList(decl.value, propSpec);
+      const values = splitValueList(decl.value, propSpec.range);
+      const ruleInfo = getRuleInfo(options);
 
       for (const value of values) {
         // Ignore values specified by ignoreValues
-
         if (!checkIgnoreValue(value, options.ignoreValues)) {
           // // eslint-disable-next-line
           // console.log("The value is", value);
 
-          if (!checkMethod(value, options)) {
-            // not a carbon theme token
+          const testResult = testValue(value, ruleInfo, options, variables);
+          let message;
 
-            if (isVariable(value)) {
-              // a variable that could be carbon theme token
-              const variableValue = variables[value];
-
-              if (!checkMethod(variableValue, options)) {
-                // a variable that does not refer to a carbon color token
-                utils.report({
-                  ruleName,
-                  result,
-                  message: messages.rejectedVariable(
-                    decl.prop,
-                    value,
-                    variableValue
-                  ),
-                  index: declarationValueIndex(decl),
-                  node: decl,
-                });
-              }
+          if (!testResult.accepted) {
+            if (testResult.isVariable) {
+              message = messages.rejectedVariable(
+                decl.prop,
+                value,
+                testResult.variableValue
+              );
             } else {
-              // not a variable or a carbon theme token
-              utils.report({
-                ruleName,
-                result,
-                message: messages.rejected(decl.prop, decl.value),
-                index: declarationValueIndex(decl),
-                node: decl,
-              });
+              message = messages.rejected(decl.prop, decl.value);
             }
+
+            utils.report({
+              ruleName,
+              result,
+              message,
+              index: declarationValueIndex(decl),
+              node: decl,
+            });
           }
         }
       }

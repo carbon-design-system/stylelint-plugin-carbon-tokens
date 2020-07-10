@@ -1,4 +1,4 @@
-import { isValidOption } from "../";
+import { isValidOption } from "..";
 
 describe("isValidOptions", () => {
   it("Option to be invalid", () => {

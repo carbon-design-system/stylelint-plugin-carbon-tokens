@@ -1,7 +1,7 @@
 // import valueParser from "postcss-value-parser";
 import { utils } from "stylelint";
 import { isValidOption, namespace, parseOptions, checkRule } from "../../utils";
-import { checkThemeValue } from "./utils";
+import { getThemeInfo } from "./utils";
 
 export const ruleName = namespace("theme-token-use");
 
@@ -28,7 +28,6 @@ const defaultOptions = {
 export default function rule(primaryOptions, secondaryOptions) {
   // // eslint-disable-next-line
   // console.log(primaryOptions, secondaryOptions);
-
   const options = parseOptions(secondaryOptions, defaultOptions);
 
   // // eslint-disable-next-line
@@ -68,6 +67,6 @@ export default function rule(primaryOptions, secondaryOptions) {
       return;
     }
 
-    checkRule(root, result, ruleName, options, messages, checkThemeValue);
+    checkRule(root, result, ruleName, options, messages, getThemeInfo);
   };
 }

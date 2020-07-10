@@ -40,7 +40,7 @@ testRule(rule, {
         "Position three of four can can be non color variables four of four matches",
     },
     {
-      code: ".foo { border: 1px solid get-light-value($ui-01); }",
+      code: ".foo { border: 1px solid get-light-value('ui-01'); }",
       description: "Permitted function get-light-value passes",
     },
     {
@@ -56,17 +56,13 @@ testRule(rule, {
   reject: [
     {
       code: ".foo { background-color: #f4f4f4; }",
-      description: "Used #color istead of Carbon theme token expected.",
+      description: "Used #color instead of Carbon theme token expected.",
       message: messages.expected,
     },
     {
       code: ".foo { box-shadow: 0 0 5px $ui-01, 0 0 10px #fefefe; }",
       description: "Used #color in a split property not Carbon theme tokens.",
       message: messages.expected,
-    },
-    {
-      code: ".foo { border: 1px solid get-light-value(#f0f0f1); }",
-      description: "Permitted function get-light-value passes",
     },
     {
       code: ".foo { border: 1px solid my-value-fun($ui-01); }",
