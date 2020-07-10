@@ -6,6 +6,7 @@ describe("parseOptions", () => {
     ignoreValues: ["1", "5", "6"],
     acceptCarbonColorTokens: false,
     acceptIBMColorTokens: false,
+    acceptUndefinedVariables: true,
   };
 
   const options1 = undefined;
@@ -51,6 +52,7 @@ describe("parseOptions", () => {
     ignoreValues: ["fish"].concat(defaults.ignoreValues),
     acceptCarbonColorTokens: false,
     acceptIBMColorTokens: false,
+    acceptUndefinedVariables: true,
   };
 
   it("Adds default options when using *", () => {
@@ -71,6 +73,7 @@ describe("parseOptions", () => {
     ),
     acceptCarbonColorTokens: false,
     acceptIBMColorTokens: false,
+    acceptUndefinedVariables: true,
   };
 
   it("Combines default options when using *", () => {

@@ -1,40 +1,68 @@
 export default function checkValue(
-  val,
+  value,
   acceptableFunctionArrays,
-  acceptableTokenArrays
+  acceptableTokenArrays,
+  rejectableTokenArrayss
 ) {
+  // cope with css variables
+  const _value = value.startsWith("var(")
+    ? value.substring(4, value.length - 2)
+    : value;
+
   // Regex for checking - capture: 3 = function, 4 = earlier variables, 6 = variable
   // $any-variable;
   // any-function($any-variable
   // NOTE: inside function as otherwise regex.lastIndex may be non-zero on second call
-  const regexFuncAndToken = /^((([a-zA-Z0-9-_]*)\(*)|([a-zA-Z0-9-_ ]*))((\$[A-Z0-9a-z-_]+))/g;
+  const regexFuncAndToken = /^((\$[\w-]+)|(([\w-]+)\(((\$*)[\w-]+)\)))/g;
 
-  const matches = regexFuncAndToken.exec(val);
-  const matchVariable = 6;
-  const matchFunction = 3;
+  const matches = regexFuncAndToken.exec(_value);
+  const matchVariable = 2;
+  const matchFunction = 4;
+  const matchFunctionParam = 5;
+  // const matchFunctionParamDollar = 6;
+
   let result = false;
 
-  if (matches && matches[matchVariable]) {
+  if (matches) {
     // if function check it's in themeFunctions
 
-    /* istanbul ignore next */
-    let passFunctionCheck =
-      !matches[matchFunction] || matches[matchFunction].length === 0;
+    if (matches[matchFunction] && matches[matchFunction].length > 0) {
+      // eslint-disable-next-line
+      console.log("It is a function", matches[matchFunction]);
 
-    if (!passFunctionCheck) {
       for (const acceptableFunctions of acceptableFunctionArrays) {
-        passFunctionCheck = acceptableFunctions.includes(
-          matches[matchFunction]
-        );
+        const passFunctionCheck = acceptableFunctions.some((item) => {
+          const parts = item.split(" ");
+
+          // eslint-disable-next-line
+          console.log(
+            parts,
+            matches[matchFunction],
+            matches[matchFunctionParam]
+          );
+
+          if (parts.length === 1) {
+            return item === matches[matchFunction];
+          } else {
+            if (parts[0] === matches[matchFunction]) {
+              for (const tokens of acceptableTokenArrays) {
+                result = tokens.includes(matches[matchFunctionParam]);
+
+                if (result) {
+                  return true;
+                }
+              }
+            } else {
+              return false;
+            }
+          }
+        });
 
         if (passFunctionCheck) {
           break;
         }
       }
-    }
-
-    // check token exists in theme
-    if (passFunctionCheck) {
+    } else if (matches[matchVariable]) {
       for (const tokens of acceptableTokenArrays) {
         result = tokens.includes(matches[matchVariable]);
 
@@ -45,9 +73,21 @@ export default function checkValue(
     }
   }
 
-  // if (!result && val && val.startsWith("$")) {
+  // if (
+  //   !result &&
+  //   value &&
+  //   (value.startsWith("carbon--mini-units") || value.startsWith("get-light-value"))
+  // ) {
   //   // eslint-disable-next-line
-  //   console.log(result, val);
+  //   console.log(
+  //     result,
+  //     value,
+  //     acceptableFunctionArrays,
+  //     matches,
+  //     matches[matchFunction],
+  //     matches[matchFunction].length > 0,
+  //     regexFuncAndToken
+  //   );
   // }
 
   return result;

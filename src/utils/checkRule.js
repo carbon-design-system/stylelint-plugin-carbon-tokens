@@ -18,14 +18,6 @@ export default function checkRule(
   messages,
   checkMethod
 ) {
-  // eslint-disable-next-line
-  console.log("------------------Hi");
-
-  const [includeProps, ignoreValues, ...accept] = options;
-
-  // eslint-disable-next-line
-  console.log("------------------", includeProps, ignoreProps, accept);
-
   root.walkDecls((decl) => {
     if (isVariable(decl.prop)) {
       // add to variable declarations
@@ -35,15 +27,9 @@ export default function checkRule(
     }
 
     // read the prop spec
-    const propSpec = checkProp(decl.prop, includeProps);
-
-    // eslint-disable-next-line
-    console.log("before propspec");
+    const propSpec = checkProp(decl.prop, options.includeProps);
 
     if (propSpec) {
-      // eslint-disable-next-line
-      console.log("after propspec");
-
       // is supported prop
       // Some color properties have
       // variable parameter lists where color can be optional
@@ -53,21 +39,19 @@ export default function checkRule(
 
       for (const value of values) {
         // Ignore values specified by ignoreValues
-        // eslint-disable-next-line
-        console.log("before", value);
 
-        if (!checkIgnoreValue(value, ignoreValues)) {
-          // eslint-disable-next-line
-          console.log("after", value);
+        if (!checkIgnoreValue(value, options.ignoreValues)) {
+          // // eslint-disable-next-line
+          // console.log("The value is", value);
 
-          if (!checkMethod(value, ...accept)) {
+          if (!checkMethod(value, options)) {
             // not a carbon theme token
 
             if (isVariable(value)) {
               // a variable that could be carbon theme token
               const variableValue = variables[value];
 
-              if (!checkMethod(variableValue, ...accept)) {
+              if (!checkMethod(variableValue, options)) {
                 // a variable that does not refer to a carbon color token
                 utils.report({
                   ruleName,

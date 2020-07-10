@@ -24,6 +24,7 @@ const defaultOptions = {
     "/^padding-/",
     "/^border$/<1 -2>",
     "/^border-/",
+    "/^box-shadow$/<1 -2>",
     "height",
     "width",
     "left",
@@ -33,6 +34,7 @@ const defaultOptions = {
   ],
   // ignore transparent, common reset values, 0, proportioanl values,
   ignoreValues: ["/inherit|initial/", "/^0[a-z]*$/", "/^[0-9]*(%|vw|vh)$/"],
+  acceptUndefinedVariables: true,
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
@@ -50,6 +52,8 @@ export default function rule(primaryOptions, secondaryOptions) {
         possible: {
           includeProps: [isValidIncludeProps],
           ignoreValues: [isValidIgnoreValues],
+          acceptUndefinedVariables: (val) =>
+            val === undefined || typeof val === "boolean",
         },
         optional: true,
       }

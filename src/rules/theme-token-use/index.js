@@ -22,7 +22,7 @@ const defaultOptions = {
   ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
   acceptCarbonColorTokens: false,
   acceptIBMColorTokens: false,
-  acceptCarbonFunctions: true,
+  acceptUndefinedVariables: true,
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
@@ -31,8 +31,8 @@ export default function rule(primaryOptions, secondaryOptions) {
 
   const options = parseOptions(secondaryOptions, defaultOptions);
 
-  // eslint-disable-next-line
-  console.log("after options parse");
+  // // eslint-disable-next-line
+  // console.log("after options parse");
 
   return (root, result) => {
     // // eslint-disable-next-line
@@ -56,21 +56,17 @@ export default function rule(primaryOptions, secondaryOptions) {
             val === undefined || typeof val === "boolean",
           acceptIBMColorTokens: (val) =>
             val === undefined || typeof val === "boolean",
+          acceptUndefinedVariables: (val) =>
+            val === undefined || typeof val === "boolean",
         },
         optional: true,
       }
     );
 
-    // eslint-disable-next-line
-    console.log("valid options", validOptions);
-
     if (!validOptions) {
       /* istanbul ignore next */
       return;
     }
-
-    // eslint-disable-next-line
-    console.log("before we check the rule");
 
     checkRule(root, result, ruleName, options, messages, checkThemeValue);
   };

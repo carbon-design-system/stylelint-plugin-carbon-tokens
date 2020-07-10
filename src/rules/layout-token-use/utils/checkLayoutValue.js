@@ -14,9 +14,15 @@ export default function checkLayoutValue(val) {
     layoutTokens,
     spacingTokens,
   ];
+  const rejectableTokens = [];
 
   // // eslint-disable-next-line
   // console.log("checklayoutval", val, acceptableFunctions, acceptableTokens);
 
-  return checkValue(val, acceptableFunctions, acceptableTokens);
+  return checkValue(
+    val,
+    acceptableFunctions,
+    acceptableTokens,
+    rejectableTokens
+  );
 }

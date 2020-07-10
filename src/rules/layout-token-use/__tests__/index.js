@@ -3,7 +3,7 @@ import rule, { ruleName } from "..";
 const generatedTests = () => {
   const accept = [];
   const reject = [];
-  const props = ["margin", "padding", "box-shadow"];
+  const props = ["margin", "box-shadow"];
   const good = [
     "$spacing-01",
     "$layout-01",
@@ -42,7 +42,9 @@ const generatedTests = () => {
       for (let n = 1; n < 5; n++) {
         // number of values
         accept.push({
-          code: `.foo { ${prop}: ${good.slice(g, n).join(" ")}${addColor}; }`,
+          code: `.foo { ${prop}: ${good
+            .slice(g, g + n)
+            .join(" ")}${addColor}; }`,
           description: `A ${prop} using ${n} token(s) is accepted`,
         });
       }
@@ -53,12 +55,17 @@ const generatedTests = () => {
       for (let n = 1; n < 5; n++) {
         // number of values
         reject.push({
-          code: `.foo { ${prop}: ${bad.slice(b, n).join(" ")}${addColor}; }`,
+          code: `.foo { ${prop}: ${bad
+            .slice(b, b + n)
+            .join(" ")}${addColor}; }`,
           description: `A ${prop} using ${n} non-token(s) is rejected`,
         });
       }
     }
   }
+
+  // // eslint-disable-next-line
+  // console.dir(accept);
 
   const moreProps = ["height", "width", "left", "top", "bottom", "right"];
 
@@ -72,6 +79,15 @@ const generatedTests = () => {
       description: `A ${prop} using a non-token is rejected.`,
     });
   }
+
+  accept.push({
+    code: `.foo { width: carbon--mini-units(4); }`,
+    description: `A width using a carbon--mini-units is accepted.`,
+  });
+  reject.push({
+    code: `.foo { width: my-own-function(4); }`,
+    description: `A width using a another function is rejected is rejected.`,
+  });
 
   // // eslint-disable-next-line
   // console.log(accept, reject);
