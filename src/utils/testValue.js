@@ -117,7 +117,7 @@ export default function testValue(value, ruleInfo, options, knownVariables) {
       testValue = knownVariables[testValue];
 
       if (!testValue) {
-        if (options.acceptUnknownVariables) {
+        if (options.acceptUndefinedVariables) {
           result.accepted = true;
         }
 
@@ -130,6 +130,11 @@ export default function testValue(value, ruleInfo, options, knownVariables) {
 
   result.isVariable = isVariable(value); // causes different result message
   result.variableValue = testValue; // last testValue found
+
+  // if (90 < parseInt(value, 10)) {
+  //   // eslint-disable-next-line
+  //   console.log(result, testValue, value);
+  // }
 
   return result;
 }

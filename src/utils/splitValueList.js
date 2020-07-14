@@ -38,6 +38,7 @@ export default function splitValueList(value, range) {
 
   if (range) {
     // Next split on space and check against range
+    values = [];
 
     for (const commaSplitValue of commaSplitValues) {
       const spaceSplitValues = [];
@@ -62,9 +63,9 @@ export default function splitValueList(value, range) {
       end = parseRangeValue(end, spaceSplitValues.length);
 
       if (end) {
-        values = spaceSplitValues.slice(start, end + 1); // +1 as slice end is not inclusive
+        values.push(...spaceSplitValues.slice(start, end + 1)); // +1 as slice end is not inclusive
       } else {
-        values = [spaceSplitValues[start]];
+        values.push(spaceSplitValues[start]);
       }
     }
   } else {
@@ -73,7 +74,15 @@ export default function splitValueList(value, range) {
   }
 
   // // eslint-disable-next-line
-  // console.dir(values);
+  // console.log("range", range);
+
+  // if (range === "1 4") {
+  //   // eslint-disable-next-line
+  //   console.log("--------", star, end, commSplitValues, values);
+  // }
+
+  // eslint-disable-next-line
+  console.dir(values);
 
   return values;
 }

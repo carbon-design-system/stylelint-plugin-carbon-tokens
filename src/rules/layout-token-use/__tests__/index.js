@@ -26,10 +26,10 @@ const generatedTests = () => {
     "var(--my-value-accept)",
   ];
   const bad = [
-    "1px",
-    "2px",
-    "3px",
-    "4px",
+    "199px",
+    "299px",
+    "399px",
+    "499px",
     "$my-value-reject",
     "var(--my-value-reject)",
   ];
@@ -65,7 +65,7 @@ const generatedTests = () => {
   }
 
   // // eslint-disable-next-line
-  // console.dir(accept);
+  // console.dir(reject);
 
   const moreProps = ["height", "width", "left", "top", "bottom", "right"];
 
@@ -102,6 +102,12 @@ testRule(rule, {
   config: [
     true,
     {
+      includeProps: [
+        "/^border$/<1 -2>", // Borders and shadows are often 1px and not included in the standard test
+        "/^border-/",
+        "/^box-shadow$/<1 -2>",
+        "*",
+      ],
       ignoreValues: ["/((--)|[$])my-value-accept/", "*"],
     },
   ],

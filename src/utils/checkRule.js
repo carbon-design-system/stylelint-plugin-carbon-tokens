@@ -39,6 +39,9 @@ export default function checkRule(
       const values = splitValueList(decl.value, propSpec.range);
       const ruleInfo = getRuleInfo(options);
 
+      // // eslint-disable-next-line
+      // console.dir({ propSpec, decl, values });
+
       for (const value of values) {
         // Ignore values specified by ignoreValues
         if (!checkIgnoreValue(value, options.ignoreValues)) {
@@ -48,6 +51,11 @@ export default function checkRule(
           const testResult = testValue(value, ruleInfo, options, variables);
           let message;
 
+          // if (90 < parseInt(value, 10)) {
+          //   // eslint-disable-next-line
+          //   console.dir({ testResult, value });
+          // }
+
           if (!testResult.accepted) {
             if (testResult.isVariable) {
               message = messages.rejectedVariable(
@@ -56,6 +64,9 @@ export default function checkRule(
                 testResult.variableValue
               );
             } else {
+              // // eslint-disable-next-line
+              // console.log("Wibble", decl.prop, decl.value);
+
               message = messages.rejected(decl.prop, decl.value);
             }
 

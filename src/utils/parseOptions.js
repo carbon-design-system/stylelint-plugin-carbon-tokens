@@ -37,7 +37,11 @@ export default function parseOptions(options, defaults) {
         defaults[prop]
       );
     } else {
-      optsOut[prop] = (options && options[prop]) || defaults[prop];
+      if (options && options[prop] !== undefined) {
+        optsOut[prop] = options[prop];
+      } else {
+        optsOut[prop] = defaults[prop];
+      }
     }
   }
 

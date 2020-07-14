@@ -21,13 +21,13 @@ testRule(rule, {
     {
       code: "$my-value-accept: $ui-01; .foo { color: $my-value-accept; }",
       description:
-        "Accept $varaible declared before use with Carbon theme tokens by default.",
+        "Accept $varaible declared before use with Carbon theme tokens.",
     },
     {
       code:
         "--my-value-accept: $ui-01; .foo { color: var(--my-value-accept); }",
       description:
-        "Accept --variable declared before use with Carbon theme tokens by default.",
+        "Accept --variable declared before use with Carbon theme tokens.",
     },
     {
       code: ".foo { box-shadow: $layout-01 $layout-01 $ui-01; }",

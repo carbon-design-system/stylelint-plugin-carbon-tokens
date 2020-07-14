@@ -1,15 +1,15 @@
 // import valueParser from "postcss-value-parser";
 import { utils } from "stylelint";
 import { isValidOption, namespace, parseOptions, checkRule } from "../../utils";
-import { getLayoutInfo } from "./utils";
+import { getMotionInfo } from "./utils";
 
-export const ruleName = namespace("layout-token-use");
+export const ruleName = namespace("motion-token-use");
 
 export const messages = utils.ruleMessages(ruleName, {
   rejected: (property, value) =>
-    `Expected carbon layout token or function for "${property}" found "${value}.`,
+    `Expected carbon motion token or function for "${property}" found "${value}.`,
   rejectedVariable: (property, variable, value) =>
-    `Expected carbon layout token or function to be set for variable "${variable}" used by "${property}" found "${value}.`,
+    `Expected carbon motion token or function to be set for variable "${variable}" used by "${property}" found "${value}.`,
 });
 
 const isValidIgnoreValues = isValidOption;
@@ -21,19 +21,13 @@ const defaultOptions = {
   // "/^border-/",
   // "/^box-shadow$/<1 -2>",
   includeProps: [
-    "/^margin$/<1 4>",
-    "/^margin-/",
-    "/^padding$/<1 4>",
-    "/^padding-/",
-    "height",
-    "width",
-    "left",
-    "top",
-    "bottom",
-    "right",
+    "transition<2>", // preferred definition order fails otherwise
+    "transition-duration",
+    "animation<2>", // preferred definition order fails otherwise
+    "animation-duration",
   ],
   // ignore transparent, common reset values, 0, proportioanl values,
-  ignoreValues: ["/inherit|initial/", "/^0[a-z]*$/", "/^[0-9]*(%|vw|vh)$/"],
+  ignoreValues: ["/inherit|initial/"],
   acceptUndefinedVariables: true,
 };
 
@@ -64,6 +58,6 @@ export default function rule(primaryOptions, secondaryOptions) {
       return;
     }
 
-    checkRule(root, result, ruleName, options, messages, getLayoutInfo);
+    checkRule(root, result, ruleName, options, messages, getMotionInfo);
   };
 }
