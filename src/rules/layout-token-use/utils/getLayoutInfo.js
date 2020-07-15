@@ -4,22 +4,22 @@ import { iconSizeTokens } from "./initIconSize";
 import { layoutTokens, layoutFunctions } from "./initLayout";
 import { spacingTokens } from "./initSpacing";
 
-export default function getLayoutInfo() {
+export default function getLayoutInfo(options) {
   return {
     tokens: [
       {
         source: "Container",
-        accept: true,
+        accept: options.acceptContainerTokens,
         values: containerTokens,
       },
       {
         source: "Fluid spacing",
-        accept: true,
+        accept: options.acceptFluidSpacingTokens,
         values: fluidSpacingTokens,
       },
       {
         source: "Icon size",
-        accept: true,
+        accept: options.acceptIconSizeTokens,
         values: iconSizeTokens,
       },
       {

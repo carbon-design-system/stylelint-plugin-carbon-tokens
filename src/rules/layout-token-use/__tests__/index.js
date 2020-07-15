@@ -7,14 +7,8 @@ const generatedTests = () => {
   const good = [
     "$spacing-01",
     "$layout-01",
-    "$container-01",
-    "$fluid-spacing-01",
-    "$icon-size-01",
     "$carbon--spacing-01",
     "$carbon--layout-01",
-    "$carbon--container-01",
-    "$carbon--fluid-spacing-01",
-    "$carbon--icon-size-01",
     "100%",
     "50%",
     "100vw",
@@ -26,6 +20,12 @@ const generatedTests = () => {
     "var(--my-value-accept)",
   ];
   const bad = [
+    "$container-01", // only bad for default options
+    "$fluid-spacing-01",
+    "$icon-size-01",
+    "$carbon--container-01",
+    "$carbon--fluid-spacing-01",
+    "$carbon--icon-size-01",
     "199px",
     "299px",
     "399px",
@@ -122,3 +122,76 @@ testRule(rule, {
 //   message: messages.expected,
 //   config: ["always", { ignoreValues: ["/wibble/"] }],
 // });
+
+// "$container-01", // only bad for default options
+// "$fluid-spacing-01",
+// "$icon-size-01",
+// "$carbon--container-01",
+// "$carbon--fluid-spacing-01",
+// "$carbon--icon-size-01",
+
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptContainerTokens: true,
+    },
+  ],
+  syntax: "scss",
+  accept: [
+    {
+      code: `.foo { width: $carbon--container-01; }`,
+      description: `Accept $carbon--container tokens with acceptContainerTokens: true.`,
+    },
+    {
+      code: `.foo { width: $container-01; }`,
+      description: `Accept $container tokens with acceptContainerTokens: true.`,
+    },
+  ],
+  reject: [],
+});
+
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptIconSizeTokens: true,
+    },
+  ],
+  syntax: "scss",
+  accept: [
+    {
+      code: `.foo { width: $carbon--icon-size-01; }`,
+      description: `Accept $carbon--icon-size tokens with acceptIconSizeTokens: true.`,
+    },
+    {
+      code: `.foo { width: $icon-size-01; }`,
+      description: `Accept $icon-size tokens with acceptIconSizeTokens: true.`,
+    },
+  ],
+  reject: [],
+});
+
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptFluidSpacingTokens: true,
+    },
+  ],
+  syntax: "scss",
+  accept: [
+    {
+      code: `.foo { width: $carbon--fluid-spacing-01; }`,
+      description: `Accept $carbon--fluid-spacing tokens with acceptFluidSpacingTokens: true.`,
+    },
+    {
+      code: `.foo { width: $fluid-spacing-01; }`,
+      description: `Accept $fluid-spacing tokens with acceptFluidSpacingTokens: true.`,
+    },
+  ],
+  reject: [],
+});

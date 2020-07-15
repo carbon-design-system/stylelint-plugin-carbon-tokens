@@ -1,4 +1,4 @@
-# theme-token-use
+# type-token-use
 
 bla bla
 npm

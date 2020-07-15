@@ -81,8 +81,8 @@ export default function splitValueList(value, range) {
   //   console.log("--------", star, end, commSplitValues, values);
   // }
 
-  // eslint-disable-next-line
-  console.dir(values);
+  // // eslint-disable-next-line
+  // console.dir(values);
 
   return values;
 }
