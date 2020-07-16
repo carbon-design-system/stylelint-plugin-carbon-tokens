@@ -38,21 +38,29 @@ var parseAddDefaults = function parseAddDefaults(options, defaults) {
 
 function parseOptions(options, defaults) {
   var optsOut = {}; // // eslint-disable-next-line
-  // console.dir(defaults);
+  // console.log(options);
+  // NOTE expects type of options to match default options
 
-  optsOut.includeProps = parseAddDefaults(
-    (options && options.includeProps) || [],
-    defaults.includeProps
-  );
-  optsOut.ignoreValues = parseAddDefaults(
-    (options && options.ignoreValues) || [],
-    defaults.ignoreValues
-  );
-  optsOut.acceptCarbonColorTokens =
-    (options && options.acceptCarbonColorTokens) ||
-    defaults.acceptCarbonColorTokens;
-  optsOut.acceptIBMColorTokens =
-    (options && options.acceptIBMColorTokens) || defaults.acceptIBMColorTokens; // // eslint-disable-next-line
+  for (
+    var _i = 0, _Object$keys = Object.keys(defaults);
+    _i < _Object$keys.length;
+    _i++
+  ) {
+    var prop = _Object$keys[_i];
+
+    if (Array.isArray(defaults[prop])) {
+      optsOut[prop] = parseAddDefaults(
+        (options && options[prop]) || [],
+        defaults[prop]
+      );
+    } else {
+      if (options && options[prop] !== undefined) {
+        optsOut[prop] = options[prop];
+      } else {
+        optsOut[prop] = defaults[prop];
+      }
+    }
+  } // // eslint-disable-next-line
   // console.dir(optsOut);
 
   return optsOut;

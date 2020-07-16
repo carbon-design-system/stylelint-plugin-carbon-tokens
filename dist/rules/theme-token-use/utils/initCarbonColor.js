@@ -30,7 +30,7 @@ var nodeModulesIndex = __dirname.indexOf("/node_modules/");
 var nodeModulesPath =
   nodeModulesIndex > -1
     ? __dirname.substr(0, nodeModulesIndex + 14)
-    : _path["default"].join(__dirname, "../../node_modules/");
+    : _path["default"].join(__dirname, "../../../../node_modules/");
 
 var colorFile = _path["default"].join(
   nodeModulesPath,

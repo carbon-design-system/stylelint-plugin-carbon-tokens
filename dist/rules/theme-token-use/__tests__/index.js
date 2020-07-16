@@ -71,8 +71,7 @@ testRule(_["default"], {
   config: [
     true,
     {
-      ignoreValues: ["/transparent|inherit|initial/, /^0$/"],
-      includeProps: ["/color$/", "/shadow$/", "border"],
+      ignoreValues: ["/((--)|[$])my-value-accept/", "*"],
     },
   ],
   syntax: "scss",
@@ -86,21 +85,43 @@ testRule(_["default"], {
       description: "All color tokens in split are Carbon theme tokens.",
     },
     {
-      code: "$my-color-accept: $ui-01; .foo { color: $my-color-accept; }",
+      code: "$my-value-accept: $ui-01; .foo { color: $my-value-accept; }",
       description:
         "Accept $varaible declared before use with Carbon theme tokens.",
     },
     {
       code:
-        "--my-color-accept: $ui-01; .foo { color: var(--my-color-accept); }",
+        "--my-value-accept: $ui-01; .foo { color: var(--my-value-accept); }",
       description:
         "Accept --variable declared before use with Carbon theme tokens.",
+    },
+    {
+      code: ".foo { box-shadow: $layout-01 $layout-01 $ui-01; }",
+      description:
+        "Position one and two can can be non color variables three of three matches",
+    },
+    {
+      code: ".foo { box-shadow: 0 0 $layout-01 $ui-01; }",
+      description:
+        "Position three of four can can be non color variables four of four matches",
+    },
+    {
+      code: ".foo { border: 1px solid get-light-value('ui-01'); }",
+      description: "Permitted function get-light-value passes",
+    },
+    {
+      code: ".foo { color: $my-value-accept; }",
+      description: "Accept undeclared $variable by defaullt.",
+    },
+    {
+      code: ".foo { color: var(--my-value-accept); }",
+      description: "Accept undeclared --variable by default.",
     },
   ],
   reject: [
     {
       code: ".foo { background-color: #f4f4f4; }",
-      description: "Used #color istead of Carbon theme token expected.",
+      description: "Used #color instead of Carbon theme token expected.",
       message: _.messages.expected,
     },
     {
@@ -109,30 +130,18 @@ testRule(_["default"], {
       message: _.messages.expected,
     },
     {
-      code: ".foo { color: $my-color-reject; }",
-      description:
-        "Not a $varaible declared before use with Carbon theme tokens.",
-    },
-    {
-      code: ".foo { color: var(--my-color-reject); }",
-      description:
-        "Not a --variable declared before use with Carbon theme tokens.",
-    },
-    {
-      code: "@import 'file-with-dollar-var'; .foo { color: $dollar-var; }",
-      description: "Does not parse $dollar-var from other files",
+      code: ".foo { border: 1px solid my-value-fun($ui-01); }",
+      description: "Other functions should fail my-value-fn fails",
     },
   ],
-});
+}); // verify use of carbon color tokens
 
-// verify use of carbon color tokens
 testRule(_["default"], {
   ruleName: _.ruleName,
   config: [
     true,
     {
-      ignoreValues: ["/transparent|inherit/"],
-      includeProps: ["/color$/", "/shadow$/", "border"],
+      ignoreValues: ["/((--)|[$])my-value-accept/", "*"],
       acceptCarbonColorTokens: true,
     },
   ],
@@ -152,16 +161,14 @@ testRule(_["default"], {
       message: _.messages.expected,
     },
   ],
-});
+}); // verify use of carbon color tokens
 
-// verify use of carbon color tokens
 testRule(_["default"], {
   ruleName: _.ruleName,
   config: [
     true,
     {
-      ignoreValues: ["/transparent|inherit/"],
-      includeProps: ["/color$/", "/shadow$/", "border"],
+      ignoreValues: ["/((--)|[$])my-value-accept/", "*"],
       acceptIBMColorTokens: true,
     },
   ],
@@ -181,17 +188,46 @@ testRule(_["default"], {
       message: _.messages.expected,
     },
   ],
-});
+}); // verify rejection of undeclared variables
 
-testConfig({
+testRule(_["default"], {
   ruleName: _.ruleName,
-  description: "Check for invalid ignore values",
-  message: "Unknown rule carbon/theme-token-use.",
   config: [
-    "always",
+    true,
     {
-      ignoreValues: ["/wibble"],
-      message: _.messages.expected,
+      acceptUndefinedVariables: false,
     },
   ],
-});
+  syntax: "scss",
+  accept: [
+    {
+      code: "$my-value-accept: $ui-01; .foo { color: $my-value-accept; }",
+      description:
+        "Accept $varaible declared before use when acceptUndefinedVariables is false.",
+    },
+    {
+      code:
+        "--my-value-accept: $ui-01; .foo { color: var(--my-value-accept); }",
+      description:
+        "Accept --variable declared before use when acceptUndefinedVariables is false.",
+    },
+  ],
+  reject: [
+    // an ibm color token
+    {
+      code: ".foo { color: $my-value-reject; }",
+      description:
+        "Reject undeclared $variable  when acceptUndefinedVariables is false.",
+    },
+    {
+      code: ".foo { color: var(--my-value-reject); }",
+      description:
+        "Reject undeclared --variable  when acceptUndefinedVariables is false.",
+    },
+  ],
+}); // testConfig(rule, {
+//   ruleName,
+//   description: "Check for invalid ignore values",
+//   message: messages.expected,
+//   config: ["always", { ignoreValues: ["/wibble/"] }],
+// });

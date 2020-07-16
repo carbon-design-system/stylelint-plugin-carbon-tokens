@@ -13,17 +13,17 @@ var _utils = require("../../utils");
 var _utils2 = require("./utils");
 
 // import valueParser from "postcss-value-parser";
-var ruleName = (0, _utils.namespace)("theme-token-use");
+var ruleName = (0, _utils.namespace)("motion-token-use");
 exports.ruleName = ruleName;
 
 var messages = _stylelint.utils.ruleMessages(ruleName, {
   rejected: function rejected(property, value) {
-    return 'Expected carbon theme token or function for "'
+    return 'Expected carbon motion token or function for "'
       .concat(property, '" found "')
       .concat(value, ".");
   },
   rejectedVariable: function rejectedVariable(property, variable, value) {
-    return 'Expected carbon theme token or function to be set for variable "'
+    return 'Expected carbon motion token or function to be set for variable "'
       .concat(variable, '" used by "')
       .concat(property, '" found "')
       .concat(value, ".");
@@ -35,25 +35,23 @@ var isValidIgnoreValues = _utils.isValidOption;
 var isValidIncludeProps = _utils.isValidOption;
 var defaultOptions = {
   // include standard color properites
-  includeProps: ["/color$/", "/shadow$/<-1>", "border<-1>", "outline<-1>"],
-  // ignore transparent, common reset values and 0 on its own
-  ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
-  acceptCarbonColorTokens: false,
-  acceptIBMColorTokens: false,
+  // "/^border$/<1 -2>", // Borders and shadows are often 1px
+  // "/^border-/",
+  // "/^box-shadow$/<1 -2>",
+  includeProps: [
+    "transition<2>", // preferred definition order fails otherwise
+    "transition-duration",
+    "animation<2>", // preferred definition order fails otherwise
+    "animation-duration",
+  ],
+  // ignore transparent, common reset values, 0, proportioanl values,
+  ignoreValues: ["/inherit|initial/"],
   acceptUndefinedVariables: true,
 };
 
 function rule(primaryOptions, secondaryOptions) {
-  // // eslint-disable-next-line
-  // console.log(primaryOptions, secondaryOptions);
-  var options = (0, _utils.parseOptions)(secondaryOptions, defaultOptions); // // eslint-disable-next-line
-  // console.log("after options parse");
-
+  var options = (0, _utils.parseOptions)(secondaryOptions, defaultOptions);
   return function (root, result) {
-    // // eslint-disable-next-line
-    // console.log(typeof options.acceptCarbonColorTokens);
-    // // eslint-disable-next-line
-    // console.log(typeof options.acceptIBMColorTokens);
     var validOptions = _stylelint.utils.validateOptions(
       result,
       ruleName,
@@ -65,12 +63,6 @@ function rule(primaryOptions, secondaryOptions) {
         possible: {
           includeProps: [isValidIncludeProps],
           ignoreValues: [isValidIgnoreValues],
-          acceptCarbonColorTokens: function acceptCarbonColorTokens(val) {
-            return val === undefined || typeof val === "boolean";
-          },
-          acceptIBMColorTokens: function acceptIBMColorTokens(val) {
-            return val === undefined || typeof val === "boolean";
-          },
           acceptUndefinedVariables: function acceptUndefinedVariables(val) {
             return val === undefined || typeof val === "boolean";
           },
@@ -90,7 +82,7 @@ function rule(primaryOptions, secondaryOptions) {
       ruleName,
       options,
       messages,
-      _utils2.getThemeInfo
+      _utils2.getMotionInfo
     );
   };
 }

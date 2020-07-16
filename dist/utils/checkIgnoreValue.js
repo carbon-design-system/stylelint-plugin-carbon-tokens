@@ -17,9 +17,14 @@ function _interopRequireDefault(obj) {
 function checkIgnoreValue(value) {
   var ignoredValues =
     arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
-  return ignoredValues.some(function (ignoredValue) {
+  var result = ignoredValues.some(function (ignoredValue) {
     // regex or string
     var testValue = (0, _parseToRegexOrString["default"])(ignoredValue);
     return (testValue.test && testValue.test(value)) || testValue === value;
-  });
+  }); // if (!result && value.startsWith("$")) {
+  //   // eslint-disable-next-line
+  //   console.log(result, value, ignoredValues);
+  // }
+
+  return result;
 }

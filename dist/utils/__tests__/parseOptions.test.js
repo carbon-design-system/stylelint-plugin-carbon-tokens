@@ -1,6 +1,6 @@
 "use strict";
 
-var _ = require("../");
+var _ = require("..");
 
 describe("parseOptions", function () {
   var defaults = {
@@ -8,6 +8,7 @@ describe("parseOptions", function () {
     ignoreValues: ["1", "5", "6"],
     acceptCarbonColorTokens: false,
     acceptIBMColorTokens: false,
+    acceptUndefinedVariables: true,
   };
   var options1 = undefined;
   it("Uses default options when options undefined", function () {
@@ -45,6 +46,7 @@ describe("parseOptions", function () {
     ignoreValues: ["fish"].concat(defaults.ignoreValues),
     acceptCarbonColorTokens: false,
     acceptIBMColorTokens: false,
+    acceptUndefinedVariables: true,
   };
   it("Adds default options when using *", function () {
     expect((0, _.parseOptions)(options6, defaults)).toEqual(combinedOpts1);
@@ -66,6 +68,7 @@ describe("parseOptions", function () {
     ),
     acceptCarbonColorTokens: false,
     acceptIBMColorTokens: false,
+    acceptUndefinedVariables: true,
   };
   it("Combines default options when using *", function () {
     expect((0, _.parseOptions)(options7, defaults)).toEqual(combinedOpts2);

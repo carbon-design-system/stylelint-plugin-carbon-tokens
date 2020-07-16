@@ -2,7 +2,7 @@
 
 This project is intended to help users identify cases where tokens, functions and mixins defined as part of various projects relating to the Carbon Design System are used. [www.carbondesignsystem.com]
 
-This includes, but may not be limited to, @carbon/themes, @carbon/colors, @carbon/layout, @carbon/type.
+This includes, but may not be limited to, @carbon/themes, @carbon/colors, @carbon/layout, @carbon/type and @carbon/motion.
 
 Not incluced, as they're not used through SCSS, are Carbon Icons, Grid and any other DOM related checks..
 

@@ -3,9 +3,15 @@
 Object.defineProperty(exports, "__esModule", {
   value: true,
 });
-exports["default"] = isValidOption;
+exports.checkProp = exports.getPropSpec = void 0;
 
-var _propUtils = require("./propUtils");
+var _parseToRegexOrString = _interopRequireDefault(
+  require("./parseToRegexOrString")
+);
+
+function _interopRequireDefault(obj) {
+  return obj && obj.__esModule ? obj : { default: obj };
+}
 
 function _createForOfIteratorHelper(o) {
   if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
@@ -73,24 +79,49 @@ function _arrayLikeToArray(arr, len) {
   return arr2;
 }
 
-function isValidOption(option) {
-  /* istanbul ignore next */
-  var arrOpts = Array.isArray(option) ? option : [option]; // // eslint-disable-next-line
-  // console.dir(arrOpts);
+var getPropSpec = function getPropSpec(prop) {
+  // starts with / and has another /
+  // or does not start with /
+  // optionally folloed by <anything in angled brackets>
+  var propSpec = false;
+  var checkRegex = /^((\/[^/]*\/)|([^</]+))(<([^>]*)>)*/;
+  var matches = checkRegex.exec(prop); // // eslint-disable-next-line
+  // console.dir(matches);
 
-  var _iterator = _createForOfIteratorHelper(arrOpts),
+  if (matches && matches[1]) {
+    propSpec = {
+      prop: matches[1],
+      test: (0, _parseToRegexOrString["default"])(matches[1]),
+      range: matches[5], // 5 may be undefined
+    };
+  }
+
+  return propSpec;
+};
+
+exports.getPropSpec = getPropSpec;
+
+var checkProp = function checkProp(prop2Check, includedProps) {
+  var propSpec = false;
+  var result = false;
+
+  var _iterator = _createForOfIteratorHelper(includedProps),
     _step;
 
   try {
     for (_iterator.s(); !(_step = _iterator.n()).done; ) {
-      var opt = _step.value;
+      var includedProp = _step.value;
+      propSpec = getPropSpec(includedProp);
 
-      if (!(0, _propUtils.getPropSpec)(opt)) {
-        // eslint-disable-next-line no-console
-        console.warn(
-          "Invalid option supplied, expect regular expression or string."
-        );
-        return false;
+      if (propSpec) {
+        if (
+          (propSpec.test.test && propSpec.test.test(prop2Check)) ||
+          propSpec.test === prop2Check
+        ) {
+          // return first result that matches
+          result = propSpec;
+          break;
+        }
       }
     }
   } catch (err) {
@@ -99,5 +130,7 @@ function isValidOption(option) {
     _iterator.f();
   }
 
-  return true;
-}
+  return result;
+};
+
+exports.checkProp = checkProp;
