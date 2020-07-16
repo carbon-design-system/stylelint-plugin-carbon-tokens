@@ -24,7 +24,7 @@
     "@carbon/motion": "^10.9.0",
     "@carbon/themes": "^10.11.0",
     "carbon-components": "^10.15.0",
-    "lodash": "^4.17.15",
+    "lodash": "^4.17.19",
     "postcss-media-query-parser": "^0.2.3",
     "postcss-resolve-nested-selector": "^0.1.1",
     "postcss-selector-parser": "^6.0.2",
