@@ -15,12 +15,13 @@ function getMotionInfo() {
         accept: true,
         values: _initMotionTokens.motionTokens,
       },
-    ], // functions: [
-    //   {
-    //     source: "Motion",
-    //     accept: true,
-    //     values: motionFunctions,
-    //   },
-    // ],
+    ],
+    functions: [
+      //   {
+      //     source: "Motion",
+      //     accept: true,
+      //     values: motionFunctions,
+      //   },
+    ],
   };
 }

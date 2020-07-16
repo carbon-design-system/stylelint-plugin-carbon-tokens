@@ -11,13 +11,13 @@ function getTypeInfo(options) {
   return {
     // There are no type tokens that are used directly
     // Types are applied via mixins and functions
-    // tokens: [
-    //   {
-    //     source: "Type",
-    //     accept: true,
-    //     values: typeTokens,
-    //   },
-    // ],
+    tokens: [
+      //   {
+      //     source: "Type",
+      //     accept: true,
+      //     values: typeTokens,
+      //   },
+    ],
     functions: [
       {
         source: "Type",
