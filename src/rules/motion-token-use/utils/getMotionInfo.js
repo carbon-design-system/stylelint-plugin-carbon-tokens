@@ -9,12 +9,12 @@ export default function getMotionInfo() {
         values: motionTokens,
       },
     ],
-    // functions: [
-    //   {
-    //     source: "Motion",
-    //     accept: true,
-    //     values: motionFunctions,
-    //   },
-    // ],
+    functions: [
+      //   {
+      //     source: "Motion",
+      //     accept: true,
+      //     values: motionFunctions,
+      //   },
+    ],
   };
 }
