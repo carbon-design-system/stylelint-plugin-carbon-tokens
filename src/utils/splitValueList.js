@@ -84,5 +84,5 @@ export default function splitValueList(value, range) {
   // // eslint-disable-next-line
   // console.dir(values);
 
-  return values.filter((item) => item !== undefined);
+  return values;
 }

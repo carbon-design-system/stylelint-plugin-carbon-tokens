@@ -3,6 +3,13 @@ import { isVariable } from "./";
 const checkValue = function (value, ruleInfo) {
   const result = { accepted: false, done: false };
 
+  if (value === undefined) {
+    // do not accept undefined
+    result.done = true;
+
+    return result;
+  }
+
   // cope with css variables
   const _value = value.startsWith("var(")
     ? value.substring(4, value.length - 2)
@@ -108,7 +115,7 @@ export default function testValue(value, ruleInfo, options, knownVariables) {
 
   let testValue = value;
 
-  while (!result.done) {
+  while (testValue && !result.done) {
     // loop checking testValue;
     result = checkValue(testValue, ruleInfo);
 

@@ -8,6 +8,8 @@ export const ruleName = namespace("motion-token-use");
 export const messages = utils.ruleMessages(ruleName, {
   rejected: (property, value) =>
     `Expected carbon motion token or function for "${property}" found "${value}.`,
+  rejectUndefinedRange: (property, value, range) =>
+    `Expected carbon motion token or function for "${property}" found "${value} in position(s) "${range}".`,
   rejectedVariable: (property, variable, value) =>
     `Expected carbon motion token or function to be set for variable "${variable}" used by "${property}" found "${value}.`,
 });

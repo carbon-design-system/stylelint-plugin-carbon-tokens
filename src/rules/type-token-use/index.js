@@ -8,6 +8,8 @@ export const ruleName = namespace("type-token-use");
 export const messages = utils.ruleMessages(ruleName, {
   rejected: (property, value) =>
     `Expected carbon type token or function for "${property}" found "${value}.`,
+  rejectUndefinedRange: (property, value, range) =>
+    `Expected carbon type token or function for "${property}" found "${value} in position(s) "${range}".`,
   rejectedVariable: (property, variable, value) =>
     `Expected carbon type token or function to be set for variable "${variable}" used by "${property}" found "${value}.`,
 });
