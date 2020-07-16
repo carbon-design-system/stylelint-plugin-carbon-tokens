@@ -239,5 +239,7 @@ function splitValueList(value, range) {
   // // eslint-disable-next-line
   // console.dir(values);
 
-  return values;
+  return values.filter(function (item) {
+    return item !== undefined;
+  });
 }
