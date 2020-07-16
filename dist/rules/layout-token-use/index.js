@@ -18,7 +18,7 @@ exports.ruleName = ruleName;
 
 var messages = _stylelint.utils.ruleMessages(ruleName, {
   rejected: function rejected(property, value) {
-    return 'Expected carbon layout token or function for "'
+    return 'Expected carbon layout token, mixin or function for "'
       .concat(property, '" found "')
       .concat(value, '".');
   },
@@ -27,13 +27,13 @@ var messages = _stylelint.utils.ruleMessages(ruleName, {
     value,
     range
   ) {
-    return 'Expected carbon layout token or function for "'
+    return 'Expected carbon layout token, mixin or function for "'
       .concat(property, '" found "')
       .concat(value, '" in position(s) "')
       .concat(range, '".');
   },
   rejectedVariable: function rejectedVariable(property, variable, value) {
-    return 'Expected carbon layout token or function to be set for variable "'
+    return 'Expected carbon layout token, mixin or function to be set for variable "'
       .concat(variable, '" used by "')
       .concat(property, '" found "')
       .concat(value, '".');
@@ -44,10 +44,7 @@ exports.messages = messages;
 var isValidIgnoreValues = _utils.isValidOption;
 var isValidIncludeProps = _utils.isValidOption;
 var defaultOptions = {
-  // include standard color properites
-  // "/^border$/<1 -2>", // Borders and shadows are often 1px
-  // "/^border-/",
-  // "/^box-shadow$/<1 -2>",
+  // include standard layout properites
   includeProps: [
     "/^margin$/<1 4>",
     "/^margin-/",

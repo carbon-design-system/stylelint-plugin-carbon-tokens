@@ -18,7 +18,7 @@ exports.ruleName = ruleName;
 
 var messages = _stylelint.utils.ruleMessages(ruleName, {
   rejected: function rejected(property, value) {
-    return 'Expected carbon theme token or function for "'
+    return 'Expected carbon theme token, mixin or function for "'
       .concat(property, '" found "')
       .concat(value, '."');
   },
@@ -27,13 +27,13 @@ var messages = _stylelint.utils.ruleMessages(ruleName, {
     value,
     range
   ) {
-    return 'Expected carbon theme token or function for "'
+    return 'Expected carbon theme token, mixin or function for "'
       .concat(property, '" found "')
       .concat(value, ' in position(s) "')
       .concat(range, '"."');
   },
   rejectedVariable: function rejectedVariable(property, variable, value) {
-    return 'Expected carbon theme token or function to be set for variable "'
+    return 'Expected carbon theme token, mixin or function to be set for variable "'
       .concat(variable, '" used by "')
       .concat(property, '" found "')
       .concat(value, '".');

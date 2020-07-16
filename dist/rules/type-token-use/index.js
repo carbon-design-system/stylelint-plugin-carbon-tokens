@@ -18,7 +18,7 @@ exports.ruleName = ruleName;
 
 var messages = _stylelint.utils.ruleMessages(ruleName, {
   rejected: function rejected(property, value) {
-    return 'Expected carbon type token or function for "'
+    return 'Expected carbon type token, mixin or function for "'
       .concat(property, '" found "')
       .concat(value, '".');
   },
@@ -27,13 +27,13 @@ var messages = _stylelint.utils.ruleMessages(ruleName, {
     value,
     range
   ) {
-    return 'Expected carbon type token or function for "'
+    return 'Expected carbon type token, mixin or function for "'
       .concat(property, '" found "')
       .concat(value, '" in position(s) "')
       .concat(range, '".');
   },
   rejectedVariable: function rejectedVariable(property, variable, value) {
-    return 'Expected carbon type token or function to be set for variable "'
+    return 'Expected carbon type token, mixin or function to be set for variable "'
       .concat(variable, '" used by "')
       .concat(property, '" found "')
       .concat(value, '".');
@@ -44,19 +44,10 @@ exports.messages = messages;
 var isValidIgnoreValues = _utils.isValidOption;
 var isValidIncludeProps = _utils.isValidOption;
 var defaultOptions = {
-  // include standard color properites
-  // "/^border$/<1 -2>", // Borders and shadows are often 1px
-  // "/^border-/",
-  // "/^box-shadow$/<1 -2>",
-  // font-style
-  // font-variant
-  // font-weight
-  // font-size/line-height
-  // font-family
+  // include standard type properites
   includeProps: ["font", "/^font-*/", "line-height", "letterSpacing"],
-  // ignore transparent, common reset values, 0, proportioanl values,
   ignoreValues: ["/inherit|initial/"],
-  acceptFontWeightFunction: false,
+  acceptFontWeightFunction: false, // permit use of carbon--font-weight function
 };
 
 function rule(primaryOptions, secondaryOptions) {

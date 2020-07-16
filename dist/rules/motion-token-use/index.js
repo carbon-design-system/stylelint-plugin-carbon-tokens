@@ -18,7 +18,7 @@ exports.ruleName = ruleName;
 
 var messages = _stylelint.utils.ruleMessages(ruleName, {
   rejected: function rejected(property, value) {
-    return 'Expected carbon motion token or function for "'
+    return 'Expected carbon motion token, mixin or function for "'
       .concat(property, '" found "')
       .concat(value, '".');
   },
@@ -27,13 +27,13 @@ var messages = _stylelint.utils.ruleMessages(ruleName, {
     value,
     range
   ) {
-    return 'Expected carbon motion token or function for "'
+    return 'Expected carbon motion token, mixin or function for "'
       .concat(property, '" found "')
       .concat(value, '" in position(s) "')
       .concat(range, '".');
   },
   rejectedVariable: function rejectedVariable(property, variable, value) {
-    return 'Expected carbon motion token or function to be set for variable "'
+    return 'Expected carbon motion token, mixin or function to be set for variable "'
       .concat(variable, '" used by "')
       .concat(property, '" found "')
       .concat(value, '".');
@@ -44,18 +44,15 @@ exports.messages = messages;
 var isValidIgnoreValues = _utils.isValidOption;
 var isValidIncludeProps = _utils.isValidOption;
 var defaultOptions = {
-  // include standard color properites
-  // "/^border$/<1 -2>", // Borders and shadows are often 1px
-  // "/^border-/",
-  // "/^box-shadow$/<1 -2>",
+  // include standard motion properites
   includeProps: [
-    "transition<2>", // preferred definition order fails otherwise
+    "transition<2>", // only permitted definition order fails otherwise
     "transition-duration",
-    "animation<2>", // preferred definition order fails otherwise
+    "animation<1>", // only permitted definition order fails otherwise
     "animation-duration",
   ],
-  // ignore transparent, common reset values, 0, proportioanl values,
-  ignoreValues: ["/inherit|initial/"],
+  //  Ignore reset values
+  ignoreValues: ["0s", "0"],
   acceptUndefinedVariables: true,
 };
 
