@@ -39,7 +39,7 @@ testRule(rule, {
       description: "Accept undeclared --variable by default.",
     },
     {
-      code: ".foo { animation: myAnim $duration--fast-01 linear ease-in; }",
+      code: ".foo { animation: $duration--fast-01 linear ease-in myAnim; }",
       description: "Carbon motion token expected for animation.",
     },
     {
@@ -53,11 +53,11 @@ testRule(rule, {
         "Accept --variable declared before use with Carbon motion tokens.",
     },
     {
-      code: ".foo { animation: myAnim $my-value-accept; }",
+      code: ".foo { animation: $my-value-accept myAnim; }",
       description: "Accept undeclared $variable by defaullt.",
     },
     {
-      code: ".foo { animation: myAnim var(--my-value-accept); }",
+      code: ".foo { animation: var(--my-value-accept) myAnim; }",
       description: "Accept undeclared --variable by default.",
     },
   ],
@@ -123,7 +123,7 @@ testRule(rule, {
         "Reject undeclared $variable for transittion when acceptUndefinedVariables is false.",
     },
     {
-      code: ".foo { animation: myAnim $my-value-reject; }",
+      code: ".foo { animation: $my-value-reject myAnim; }",
       description:
         "Reject undeclared $variable for animation when acceptUndefinedVariables is false.",
     },
