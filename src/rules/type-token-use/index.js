@@ -7,30 +7,21 @@ export const ruleName = namespace("type-token-use");
 
 export const messages = utils.ruleMessages(ruleName, {
   rejected: (property, value) =>
-    `Expected carbon type token or function for "${property}" found "${value}".`,
+    `Expected carbon type token, mixin or function for "${property}" found "${value}".`,
   rejectedUndefinedRange: (property, value, range) =>
-    `Expected carbon type token or function for "${property}" found "${value}" in position(s) "${range}".`,
+    `Expected carbon type token, mixin or function for "${property}" found "${value}" in position(s) "${range}".`,
   rejectedVariable: (property, variable, value) =>
-    `Expected carbon type token or function to be set for variable "${variable}" used by "${property}" found "${value}".`,
+    `Expected carbon type token, mixin or function to be set for variable "${variable}" used by "${property}" found "${value}".`,
 });
 
 const isValidIgnoreValues = isValidOption;
 const isValidIncludeProps = isValidOption;
 
 const defaultOptions = {
-  // include standard color properites
-  // "/^border$/<1 -2>", // Borders and shadows are often 1px
-  // "/^border-/",
-  // "/^box-shadow$/<1 -2>",
-  // font-style
-  // font-variant
-  // font-weight
-  // font-size/line-height
-  // font-family
+  // include standard type properites
   includeProps: ["font", "/^font-*/", "line-height", "letterSpacing"],
-  // ignore transparent, common reset values, 0, proportioanl values,
   ignoreValues: ["/inherit|initial/"],
-  acceptFontWeightFunction: false,
+  acceptFontWeightFunction: false, // permit use of carbon--font-weight function
 };
 
 export default function rule(primaryOptions, secondaryOptions) {

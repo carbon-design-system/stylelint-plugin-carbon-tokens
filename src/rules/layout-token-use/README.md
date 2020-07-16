@@ -1,61 +1,37 @@
-````js
-{
-  "plugins": [
-    "stylelint-carbon-use"
+# Layout Token Use
+
+This rule is intended enfoce use of Carbon theme tokens, functions, mixins and CSS classes as defined.
+
+- [https://www.carbondesignsystem.com/guidelines/layout/overview](https://www.carbondesignsystem.com/guidelines/layout/overview)
+
+By default it accepts undefined SCSS and CSS variables.
+
+NOTE: Transition and animation shorthand must conform to expected order
+
+Optionally accepts container, icon size and fluid spacing tokens.
+
+## Default props
+
+```js
+const defaultOptions = {
+  // include standard layout properites
+  includeProps: [
+    "/^margin$/<1 4>",
+    "/^margin-/",
+    "/^padding$/<1 4>",
+    "/^padding-/",
+    "height",
+    "width",
+    "left",
+    "top",
+    "bottom",
+    "right",
   ],
-  "rules": {
-    "carbon/theme-token-use": [ { options } ]
-       {
-
-        // include standard color properites
-        includeProps: ["/color$/", "/shadow$/<-1>", "border<-1>", "outline<-1>"],
-        // ignore transparent, common reset values and 0 on its own
-        ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
-        // accept carbon tokens from @carbon/color
-        acceptCarbonColorTokens: false,
-        // accept IBM color tokens from @carbon/color
-        acceptIBMColorTokens: false,
-      },
-    ],
-  },
-}
-
-
-### acceptCarbonColorTokens
-
-Default is false, permits color tokens from @carbon/color/scss mixin carbon--colors.
-
-### acceptIBMColorTokens
-
-Default is false, permits color tokens from @carbon/color/scss mixin ibm--colors.
-
-## Details
-
-Carbon components has tokens for use with color, theming, timing, spacing, typography etc. Use this linter in order to encourage / verify thier use.
-
-```scss
-$ui-01: #f4f4f4;
-
-.foo {
-  color: #f4f4f4; // Ooh, that's not a carbon token 👋
-}
-````
-
-### Supports variables
-
-Variables declared in the current file before use.
-
-```scss
-// Simple variables declared before use
-$ui-01: #f4f4f4;
-$som-carbon-token = $ui-01;
-color: $some-carbon-token;
-
-// css simple variables declared before use
-$ui-01: #f4f4f4;
---my-var: $ui-01
-color: var(--my-var);
-
-// Using carbon functions
-background-color: get-light-value($ui-01);
+  // ignore transparent, common reset values, 0, proportioanl values,
+  ignoreValues: ["/inherit|initial/", "/^0[a-z]*$/", "/^[0-9]*(%|vw|vh)$/"],
+  acceptUndefinedVariables: true,
+  acceptContainerTokens: false,
+  acceptIconSizeTokens: false,
+  acceptFluidSpacingTokens: false,
+};
 ```

@@ -7,21 +7,18 @@ export const ruleName = namespace("layout-token-use");
 
 export const messages = utils.ruleMessages(ruleName, {
   rejected: (property, value) =>
-    `Expected carbon layout token or function for "${property}" found "${value}".`,
+    `Expected carbon layout token, mixin or function for "${property}" found "${value}".`,
   rejectedUndefinedRange: (property, value, range) =>
-    `Expected carbon layout token or function for "${property}" found "${value}" in position(s) "${range}".`,
+    `Expected carbon layout token, mixin or function for "${property}" found "${value}" in position(s) "${range}".`,
   rejectedVariable: (property, variable, value) =>
-    `Expected carbon layout token or function to be set for variable "${variable}" used by "${property}" found "${value}".`,
+    `Expected carbon layout token, mixin or function to be set for variable "${variable}" used by "${property}" found "${value}".`,
 });
 
 const isValidIgnoreValues = isValidOption;
 const isValidIncludeProps = isValidOption;
 
 const defaultOptions = {
-  // include standard color properites
-  // "/^border$/<1 -2>", // Borders and shadows are often 1px
-  // "/^border-/",
-  // "/^box-shadow$/<1 -2>",
+  // include standard layout properites
   includeProps: [
     "/^margin$/<1 4>",
     "/^margin-/",
