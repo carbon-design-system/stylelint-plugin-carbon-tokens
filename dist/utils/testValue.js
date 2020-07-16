@@ -77,7 +77,13 @@ var checkValue = function checkValue(value, ruleInfo) {
   var result = {
     accepted: false,
     done: false,
-  }; // cope with css variables
+  };
+
+  if (value === undefined) {
+    // do not accept undefined
+    result.done = true;
+    return result;
+  } // cope with css variables
 
   var _value = value.startsWith("var(")
     ? value.substring(4, value.length - 2)
@@ -196,7 +202,7 @@ function testValue(value, ruleInfo, options, knownVariables) {
   };
   var testValue = value;
 
-  while (!result.done) {
+  while (testValue && !result.done) {
     // loop checking testValue;
     result = checkValue(testValue, ruleInfo);
 

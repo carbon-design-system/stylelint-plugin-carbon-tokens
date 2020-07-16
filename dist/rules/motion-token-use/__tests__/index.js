@@ -129,6 +129,11 @@ testRule(_["default"], {
   ],
   reject: [
     {
+      code: ".foo { transition: $duration--fast-01; }",
+      description: "Carbon motion token used in non-standard order.",
+      message: _.messages.expected,
+    },
+    {
       code: ".foo { transition: all 2s; }",
       description: "Used non-token duration.",
       message: _.messages.expected,

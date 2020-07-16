@@ -22,6 +22,12 @@ var messages = _stylelint.utils.ruleMessages(ruleName, {
       .concat(property, '" found "')
       .concat(value, ".");
   },
+  rejectUndefinedRange: function rejectUndefinedRange(property, value, range) {
+    return 'Expected carbon theme token or function for "'
+      .concat(property, '" found "')
+      .concat(value, ' in position(s) "')
+      .concat(range, '".');
+  },
   rejectedVariable: function rejectedVariable(property, variable, value) {
     return 'Expected carbon theme token or function to be set for variable "'
       .concat(variable, '" used by "')

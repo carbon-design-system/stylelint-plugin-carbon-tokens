@@ -121,7 +121,13 @@ function checkRule(root, result, ruleName, options, messages, getRuleInfo) {
             // }
 
             if (!testResult.accepted) {
-              if (testResult.isVariable) {
+              if (value === undefined) {
+                message = messages.rejected(
+                  decl.prop,
+                  decl.value,
+                  propSpec.range
+                );
+              } else if (testResult.isVariable) {
                 message = messages.rejectedVariable(
                   decl.prop,
                   value,
