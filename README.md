@@ -14,6 +14,9 @@ Before you can use this stylelint plugin you will need to install and configure 
 
 See https://www.npmjs.com/package/stylelint for details
 
+NOTE: Just in case you were wondering, yes you can use comments to enable and disable the linter.
+E.g. // stylelint-disable-next-line
+
 ## Installation
 
 ```bash
