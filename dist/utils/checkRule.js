@@ -122,9 +122,9 @@ function checkRule(root, result, ruleName, options, messages, getRuleInfo) {
 
             if (!testResult.accepted) {
               if (value === undefined) {
-                message = messages.rejected(
+                message = messages.rejectedUndefinedRange(
                   decl.prop,
-                  decl.value,
+                  value,
                   propSpec.range
                 );
               } else if (testResult.isVariable) {

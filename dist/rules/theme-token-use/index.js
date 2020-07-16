@@ -20,19 +20,19 @@ var messages = _stylelint.utils.ruleMessages(ruleName, {
   rejected: function rejected(property, value) {
     return 'Expected carbon theme token or function for "'
       .concat(property, '" found "')
-      .concat(value, ".");
+      .concat(value, '."');
   },
   rejectUndefinedRange: function rejectUndefinedRange(property, value, range) {
     return 'Expected carbon theme token or function for "'
       .concat(property, '" found "')
       .concat(value, ' in position(s) "')
-      .concat(range, '".');
+      .concat(range, '"."');
   },
   rejectedVariable: function rejectedVariable(property, variable, value) {
     return 'Expected carbon theme token or function to be set for variable "'
       .concat(variable, '" used by "')
       .concat(property, '" found "')
-      .concat(value, ".");
+      .concat(value, '".');
   },
 });
 
