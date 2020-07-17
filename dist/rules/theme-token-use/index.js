@@ -47,7 +47,7 @@ var defaultOptions = {
   // include standard color properites
   includeProps: ["/color$/", "/shadow$/<-1>", "border<-1>", "outline<-1>"],
   // ignore transparent, common reset values and 0 on its own
-  ignoreValues: ["/transparent|inherit|initial/", "/^0$/"],
+  ignoreValues: ["/transparent|inherit|initial/", "/^0$/", "^none$/"],
   acceptCarbonColorTokens: false,
   acceptIBMColorTokens: false,
   acceptUndefinedVariables: true,
