@@ -76,11 +76,15 @@ export default function checkRule(
               message = messages.rejected(decl.prop, decl.value);
             }
 
+            // adjust position for multipart value
+            const offsetValue =
+              value !== undefined ? decl.value.indexOf(value) : 0;
+
             utils.report({
               ruleName,
               result,
               message,
-              index: declarationValueIndex(decl),
+              index: declarationValueIndex(decl) + offsetValue,
               node: decl,
             });
           }

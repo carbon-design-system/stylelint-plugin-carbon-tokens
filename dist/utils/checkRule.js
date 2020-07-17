@@ -137,13 +137,16 @@ function checkRule(root, result, ruleName, options, messages, getRuleInfo) {
                 // // eslint-disable-next-line
                 // console.log("Wibble", decl.prop, decl.value);
                 message = messages.rejected(decl.prop, decl.value);
-              }
+              } // adjust position for multipart value
+
+              var offsetValue =
+                value !== undefined ? decl.value.indexOf(value) : 0;
 
               _stylelint.utils.report({
                 ruleName: ruleName,
                 result: result,
                 message: message,
-                index: (0, _.declarationValueIndex)(decl),
+                index: (0, _.declarationValueIndex)(decl) + offsetValue,
                 node: decl,
               });
             }
