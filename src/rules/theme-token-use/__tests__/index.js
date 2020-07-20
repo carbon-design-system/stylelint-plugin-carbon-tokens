@@ -198,8 +198,8 @@ testRule(rule, {
   syntax: "scss",
   accept: [
     {
-      code: ".foo { full: $ui-01; }",
-      description: "Accept carbon theme token for full property by default",
+      code: ".foo { fill: $ui-01; }",
+      description: "Accept carbon theme token for fill property by default",
       message: messages.expected,
     },
     {
@@ -210,8 +210,8 @@ testRule(rule, {
   ],
   reject: [
     {
-      code: ".foo { full: #fefefe; }",
-      description: "Reject non-carbon theme token for full property by default",
+      code: ".foo { fill: #fefefe; }",
+      description: "Reject non-carbon theme token for fill property by default",
       message: messages.expected,
     },
     {

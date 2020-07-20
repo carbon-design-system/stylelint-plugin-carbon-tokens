@@ -24,7 +24,7 @@ const defaultOptions = {
     "/shadow$/<-1>",
     "border<-1>",
     "outline<-1>",
-    "full",
+    "fill",
     "stroke",
   ],
   // ignore transparent, common reset values and 0 on its own
