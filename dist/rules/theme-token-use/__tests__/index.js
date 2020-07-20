@@ -277,4 +277,17 @@ testRule(_["default"], {
       message: _.messages.expected,
     },
   ],
+}); // accept currentColor can be used as a value
+
+testRule(_["default"], {
+  ruleName: _.ruleName,
+  config: true,
+  syntax: "scss",
+  accept: [
+    {
+      code: ".foo { fill: currentColor; }",
+      description: "Accept currentColor on the assumption color is valid",
+      message: _.messages.expected,
+    },
+  ],
 });

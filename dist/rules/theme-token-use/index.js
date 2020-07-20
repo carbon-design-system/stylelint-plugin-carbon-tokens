@@ -54,7 +54,12 @@ var defaultOptions = {
     "stroke",
   ],
   // ignore transparent, common reset values and 0 on its own
-  ignoreValues: ["/transparent|inherit|initial/", "/^0$/", "/^none$/"],
+  ignoreValues: [
+    "/transparent|inherit|initial/",
+    "/^0$/",
+    "/^none$/",
+    "currentColor",
+  ],
   acceptCarbonColorTokens: false,
   acceptIBMColorTokens: false,
   acceptUndefinedVariables: true,
