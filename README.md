@@ -66,10 +66,10 @@ NOTE: Motion is shown above with a standard stylelint secondary option `severity
 
 Each of the rules listed above have secondary options which are documented in the individual rule README.md files along with defaults..
 
-[Layout token use](./layout-token-use/README.md)
-[Motion token use](./motion-token-use/README.md)
-[Theme token use](./theme-token-use/README.md)
-[Type token use](./type-token-use/README.md)
+- [Layout token use](./src/rules/layout-token-use/README.md)
+- [Motion token use](./src/rules/motion-token-use/README.md)
+- [Theme token use](./src/rules/theme-token-use/README.md)
+- [Type token use](./src/rules/type-token-use/README.md)
 
 ### Common secondary options
 
