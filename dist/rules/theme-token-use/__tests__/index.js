@@ -246,4 +246,35 @@ testRule(_["default"], {
       message: _.messages.expected,
     },
   ],
+}); // verify use of full and stroke with carbon theme token
+
+testRule(_["default"], {
+  ruleName: _.ruleName,
+  config: true,
+  syntax: "scss",
+  accept: [
+    {
+      code: ".foo { full: $ui-01; }",
+      description: "Accept carbon theme token for full property by default",
+      message: _.messages.expected,
+    },
+    {
+      code: ".foo { stroke: $ui-01; }",
+      description: "Accept carbon theme token for stroke property by default",
+      message: _.messages.expected,
+    },
+  ],
+  reject: [
+    {
+      code: ".foo { full: #fefefe; }",
+      description: "Reject non-carbon theme token for full property by default",
+      message: _.messages.expected,
+    },
+    {
+      code: ".foo { stroke: red; }",
+      description:
+        "Reject non-carbon theme token for stroke property by default",
+      message: _.messages.expected,
+    },
+  ],
 });
