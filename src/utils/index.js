@@ -8,4 +8,4 @@ export { default as checkIgnoreValue } from "./checkIgnoreValue";
 export { default as normaliseVariableName } from "./normaliseVariableName";
 export { getPropSpec, checkProp } from "./propUtils";
 export { default as checkRule } from "./checkRule";
-export { default as splitValueList } from "./splitValueList";
+export { splitValueList, parseRangeValue } from "./splitValueList";

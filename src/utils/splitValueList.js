@@ -17,7 +17,7 @@ const parseRangeValue = (value, length) => {
   }
 };
 
-export default function splitValueList(value, range) {
+const splitValueList = function (value, range) {
   // NOTE: inside function as otherwise regex.lastIndex may be non-zero on second call
   const commaSplitRegex = /,(?=(((?!\)).)*\()|[^()]*$)/g;
   const spaceSplitRegex = / (?=(((?!\)).)*\()|[^()]*$)/g;
@@ -85,4 +85,6 @@ export default function splitValueList(value, range) {
   // console.dir(values);
 
   return values;
-}
+};
+
+export { splitValueList, parseRangeValue };

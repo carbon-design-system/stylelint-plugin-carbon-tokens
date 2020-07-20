@@ -1,4 +1,21 @@
-import { isVariable } from "./";
+import { isVariable, parseRangeValue } from "./";
+
+const checkVariable = function (variable, ruleInfo) {
+  const result = { accepted: false, done: false };
+
+  for (const tokenSet of ruleInfo.tokens) {
+    const tokenSpecs = tokenSet.values;
+
+    if (tokenSpecs.includes(variable)) {
+      result.source = tokenSet.source;
+      result.accepted = tokenSet.accept;
+      result.done = true; // all tests completed
+      break;
+    }
+  }
+
+  return result;
+};
 
 const checkValue = function (value, ruleInfo) {
   const result = { accepted: false, done: false };
@@ -19,12 +36,12 @@ const checkValue = function (value, ruleInfo) {
   // $any-variable;
   // any-function($any-variable
   // NOTE: inside function as otherwise regex.lastIndex may be non-zero on second call
-  const regexFuncAndToken = /^((\$[\w-]+)|(([\w-]+)\((['"$\w-]+)\)))/g;
+  const regexFuncAndToken = /^((\$[\w-]+)|(([\w-]+)\((['"$\w-, .]+)\)))/g;
 
   const matches = regexFuncAndToken.exec(_value);
   const matchVariable = 2;
   const matchFunction = 4;
-  // const matchFunctionParam = 5;
+  const matchFunctionParams = 5;
 
   if (matches) {
     // if function check it's in themeFunctions
@@ -44,24 +61,34 @@ const checkValue = function (value, ruleInfo) {
         // console.dir(funcSpecs);
 
         const matchesFuncSpec = funcSpecs.some((funcSpec) => {
-          const parts = funcSpec.split(" ");
+          const parts = funcSpec.split("<");
 
           if (parts.length === 1) {
-            // has no second clause
+            // has no range
             return parts[0] === matches[matchFunction];
           } else {
             if (parts[0] === matches[matchFunction]) {
-              // TODO: does not support parameter checking
-              // for (const tokenSet of ruleInfo.tokens) {
-              //   for (const tokenSpecs of tokenSet.values) {
-              //     if (tokenSpecs.includes(matches[matchFunctionParam])) {
-              //       return true;
+              const paramParts = matches[matchFunctionParams].split(",");
 
-              //       // CAN INCLUDE VARIABLES AAAAAGGGGHHHHH
-              //       // RETURN THEM FOR PROCESSING BY CHECKRULE?
-              //     }
-              //   }
-              // }
+              let [start, end] = parts[1]
+                .substring(0, parts[1].length - 1)
+                .split(" ");
+
+              start = parseRangeValue(start, paramParts.length);
+              end = parseRangeValue(end, paramParts.length) || start; // start if end empty
+
+              for (let pos = start; pos <= end; pos++) {
+                const variableResult = checkVariable(
+                  paramParts[pos].trim(),
+                  ruleInfo
+                );
+
+                if (!variableResult.accepted) {
+                  return false;
+                }
+              }
+
+              // all variables in function passed so return true
               return true;
             } else {
               return false;
@@ -77,16 +104,11 @@ const checkValue = function (value, ruleInfo) {
         }
       }
     } else if (matches[matchVariable]) {
-      for (const tokenSet of ruleInfo.tokens) {
-        const tokenSpecs = tokenSet.values;
+      const variableResult = checkVariable(matches[matchVariable], ruleInfo);
 
-        if (tokenSpecs.includes(matches[matchVariable])) {
-          result.source = tokenSet.source;
-          result.accepted = tokenSet.accept;
-          result.done = true; // all tests completed
-          break;
-        }
-      }
+      result.soruce = variableResult.source;
+      result.accepted = variableResult.accepted;
+      result.done = variableResult.done;
     }
   }
 
