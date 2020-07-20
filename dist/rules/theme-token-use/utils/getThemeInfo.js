@@ -9,6 +9,8 @@ var _initCarbonTheme = require("./initCarbonTheme");
 
 var _initCarbonColor = require("./initCarbonColor");
 
+var _initSassFunctions = require("./initSassFunctions");
+
 function getThemeInfo(options) {
   return {
     tokens: [
@@ -33,6 +35,11 @@ function getThemeInfo(options) {
         source: "Theme",
         accept: true,
         values: _initCarbonTheme.themeFunctions,
+      },
+      {
+        source: "SASS",
+        accept: true,
+        values: _initSassFunctions.sassColorFunctions,
       },
     ],
   };

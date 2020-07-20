@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true,
 });
-exports["default"] = splitValueList;
+exports.parseRangeValue = exports.splitValueList = void 0;
 
 function _toConsumableArray(arr) {
   return (
@@ -160,7 +160,9 @@ var parseRangeValue = function parseRangeValue(value, length) {
   }
 };
 
-function splitValueList(value, range) {
+exports.parseRangeValue = parseRangeValue;
+
+var splitValueList = function splitValueList(value, range) {
   // NOTE: inside function as otherwise regex.lastIndex may be non-zero on second call
   var commaSplitRegex = /,(?=(((?!\)).)*\()|[^()]*$)/g;
   var spaceSplitRegex = / (?=(((?!\)).)*\()|[^()]*$)/g;
@@ -240,4 +242,6 @@ function splitValueList(value, range) {
   // console.dir(values);
 
   return values;
-}
+};
+
+exports.splitValueList = splitValueList;

@@ -7,6 +7,54 @@ exports["default"] = testValue;
 
 var _ = require("./");
 
+function _slicedToArray(arr, i) {
+  return (
+    _arrayWithHoles(arr) ||
+    _iterableToArrayLimit(arr, i) ||
+    _unsupportedIterableToArray(arr, i) ||
+    _nonIterableRest()
+  );
+}
+
+function _nonIterableRest() {
+  throw new TypeError(
+    "Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
+  );
+}
+
+function _iterableToArrayLimit(arr, i) {
+  if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr)))
+    return;
+  var _arr = [];
+  var _n = true;
+  var _d = false;
+  var _e = undefined;
+  try {
+    for (
+      var _i = arr[Symbol.iterator](), _s;
+      !(_n = (_s = _i.next()).done);
+      _n = true
+    ) {
+      _arr.push(_s.value);
+      if (i && _arr.length === i) break;
+    }
+  } catch (err) {
+    _d = true;
+    _e = err;
+  } finally {
+    try {
+      if (!_n && _i["return"] != null) _i["return"]();
+    } finally {
+      if (_d) throw _e;
+    }
+  }
+  return _arr;
+}
+
+function _arrayWithHoles(arr) {
+  if (Array.isArray(arr)) return arr;
+}
+
 function _createForOfIteratorHelper(o) {
   if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
     if (Array.isArray(o) || (o = _unsupportedIterableToArray(o))) {
@@ -18,8 +66,8 @@ function _createForOfIteratorHelper(o) {
           if (i >= o.length) return { done: true };
           return { done: false, value: o[i++] };
         },
-        e: function e(_e) {
-          throw _e;
+        e: function e(_e2) {
+          throw _e2;
         },
         f: F,
       };
@@ -41,9 +89,9 @@ function _createForOfIteratorHelper(o) {
       normalCompletion = step.done;
       return step;
     },
-    e: function e(_e2) {
+    e: function e(_e3) {
       didErr = true;
-      err = _e2;
+      err = _e3;
     },
     f: function f() {
       try {
@@ -73,6 +121,37 @@ function _arrayLikeToArray(arr, len) {
   return arr2;
 }
 
+var checkVariable = function checkVariable(variable, ruleInfo) {
+  var result = {
+    accepted: false,
+    done: false,
+  };
+
+  var _iterator = _createForOfIteratorHelper(ruleInfo.tokens),
+    _step;
+
+  try {
+    for (_iterator.s(); !(_step = _iterator.n()).done; ) {
+      var tokenSet = _step.value;
+      var tokenSpecs = tokenSet.values;
+
+      if (tokenSpecs.includes(variable)) {
+        result.source = tokenSet.source;
+        result.accepted = tokenSet.accept;
+        result.done = true; // all tests completed
+
+        break;
+      }
+    }
+  } catch (err) {
+    _iterator.e(err);
+  } finally {
+    _iterator.f();
+  }
+
+  return result;
+};
+
 var checkValue = function checkValue(value, ruleInfo) {
   var result = {
     accepted: false,
@@ -92,10 +171,11 @@ var checkValue = function checkValue(value, ruleInfo) {
   // any-function($any-variable
   // NOTE: inside function as otherwise regex.lastIndex may be non-zero on second call
 
-  var regexFuncAndToken = /^((\$[\w-]+)|(([\w-]+)\((['"$\w-]+)\)))/g;
+  var regexFuncAndToken = /^((\$[\w-]+)|(([\w-]+)\((['"$\w-, .]+)\)))/g;
   var matches = regexFuncAndToken.exec(_value);
   var matchVariable = 2;
-  var matchFunction = 4; // const matchFunctionParam = 5;
+  var matchFunction = 4;
+  var matchFunctionParams = 5;
 
   if (matches) {
     // if function check it's in themeFunctions
@@ -104,35 +184,51 @@ var checkValue = function checkValue(value, ruleInfo) {
       // console.log("It is a function", matches[matchFunction]);
       // // eslint-disable-next-line
       // console.dir(matches);
-      var _iterator = _createForOfIteratorHelper(ruleInfo.functions),
-        _step;
+      var _iterator2 = _createForOfIteratorHelper(ruleInfo.functions),
+        _step2;
 
       try {
-        for (_iterator.s(); !(_step = _iterator.n()).done; ) {
-          var funcSet = _step.value;
+        for (_iterator2.s(); !(_step2 = _iterator2.n()).done; ) {
+          var funcSet = _step2.value;
           // // eslint-disable-next-line
           // console.dir(funcSet);
           var funcSpecs = funcSet.values; // // eslint-disable-next-line
           // console.dir(funcSpecs);
 
           var matchesFuncSpec = funcSpecs.some(function (funcSpec) {
-            var parts = funcSpec.split(" ");
+            var parts = funcSpec.split("<");
 
             if (parts.length === 1) {
-              // has no second clause
+              // has no range
               return parts[0] === matches[matchFunction];
             } else {
               if (parts[0] === matches[matchFunction]) {
-                // TODO: does not support parameter checking
-                // for (const tokenSet of ruleInfo.tokens) {
-                //   for (const tokenSpecs of tokenSet.values) {
-                //     if (tokenSpecs.includes(matches[matchFunctionParam])) {
-                //       return true;
-                //       // CAN INCLUDE VARIABLES AAAAAGGGGHHHHH
-                //       // RETURN THEM FOR PROCESSING BY CHECKRULE?
-                //     }
-                //   }
-                // }
+                var paramParts = matches[matchFunctionParams].split(",");
+
+                var _parts$1$substring$sp = parts[1]
+                    .substring(0, parts[1].length - 1)
+                    .split(" "),
+                  _parts$1$substring$sp2 = _slicedToArray(
+                    _parts$1$substring$sp,
+                    2
+                  ),
+                  start = _parts$1$substring$sp2[0],
+                  end = _parts$1$substring$sp2[1];
+
+                start = (0, _.parseRangeValue)(start, paramParts.length);
+                end = (0, _.parseRangeValue)(end, paramParts.length) || start; // start if end empty
+
+                for (var pos = start; pos <= end; pos++) {
+                  var variableResult = checkVariable(
+                    paramParts[pos].trim(),
+                    ruleInfo
+                  );
+
+                  if (!variableResult.accepted) {
+                    return false;
+                  }
+                } // all variables in function passed so return true
+
                 return true;
               } else {
                 return false;
@@ -149,32 +245,15 @@ var checkValue = function checkValue(value, ruleInfo) {
           }
         }
       } catch (err) {
-        _iterator.e(err);
-      } finally {
-        _iterator.f();
-      }
-    } else if (matches[matchVariable]) {
-      var _iterator2 = _createForOfIteratorHelper(ruleInfo.tokens),
-        _step2;
-
-      try {
-        for (_iterator2.s(); !(_step2 = _iterator2.n()).done; ) {
-          var tokenSet = _step2.value;
-          var tokenSpecs = tokenSet.values;
-
-          if (tokenSpecs.includes(matches[matchVariable])) {
-            result.source = tokenSet.source;
-            result.accepted = tokenSet.accept;
-            result.done = true; // all tests completed
-
-            break;
-          }
-        }
-      } catch (err) {
         _iterator2.e(err);
       } finally {
         _iterator2.f();
       }
+    } else if (matches[matchVariable]) {
+      var variableResult = checkVariable(matches[matchVariable], ruleInfo);
+      result.soruce = variableResult.source;
+      result.accepted = variableResult.accepted;
+      result.done = variableResult.done;
     }
   } // if (
   //   !result.accepted &&

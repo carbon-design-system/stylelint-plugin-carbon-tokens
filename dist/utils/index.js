@@ -72,7 +72,13 @@ Object.defineProperty(exports, "checkRule", {
 Object.defineProperty(exports, "splitValueList", {
   enumerable: true,
   get: function get() {
-    return _splitValueList["default"];
+    return _splitValueList.splitValueList;
+  },
+});
+Object.defineProperty(exports, "parseRangeValue", {
+  enumerable: true,
+  get: function get() {
+    return _splitValueList.parseRangeValue;
   },
 });
 
@@ -100,7 +106,7 @@ var _propUtils = require("./propUtils");
 
 var _checkRule = _interopRequireDefault(require("./checkRule"));
 
-var _splitValueList = _interopRequireDefault(require("./splitValueList"));
+var _splitValueList = require("./splitValueList");
 
 function _interopRequireDefault(obj) {
   return obj && obj.__esModule ? obj : { default: obj };

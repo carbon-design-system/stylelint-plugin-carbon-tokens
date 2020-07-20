@@ -225,9 +225,25 @@ testRule(_["default"], {
         "Reject undeclared --variable  when acceptUndefinedVariables is false.",
     },
   ],
-}); // testConfig(rule, {
-//   ruleName,
-//   description: "Check for invalid ignore values",
-//   message: messages.expected,
-//   config: ["always", { ignoreValues: ["/wibble/"] }],
-// });
+}); // verify use of rgba with carbon theme token
+
+testRule(_["default"], {
+  ruleName: _.ruleName,
+  config: true,
+  syntax: "scss",
+  accept: [
+    {
+      code: ".foo { background-color: rgba($ui-01, 0.5); }",
+      description: "Accept using a carbon theme token with rgba()",
+      message: _.messages.expected,
+    },
+  ],
+  reject: [
+    // an ibm color token
+    {
+      code: ".foo { background-color: rgba(100, 100, 255, 0.5); }",
+      description: "Reject using a non-carbon theme token with rgba()",
+      message: _.messages.expected,
+    },
+  ],
+});
