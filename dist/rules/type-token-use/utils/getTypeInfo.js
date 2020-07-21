@@ -18,12 +18,13 @@ function getTypeInfo(options) {
       //     values: typeTokens,
       //   },
     ],
-    functions: [
-      {
+    functions: _initTypeTokens.typeFunctions.map(function (item) {
+      var result = {
         source: "Type",
-        accept: options.acceptCarbonTypeFunctions,
-        values: _initTypeTokens.typeFunctions,
-      },
-    ],
+        accept: options[item.accept],
+        values: [item.name],
+      };
+      return result;
+    }),
   };
 }

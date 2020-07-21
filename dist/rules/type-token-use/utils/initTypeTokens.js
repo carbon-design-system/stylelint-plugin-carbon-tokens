@@ -9,5 +9,14 @@ exports.typeFunctions = void 0;
 // const typeTokens = [];
 // permitted carbon type functions
 // TODO: read this from carbon
-var typeFunctions = ["carbon--font-weight", "carbon--type-scale"];
+var typeFunctions = [
+  {
+    name: "carbon--font-weight",
+    accept: "acceptCarbonFontWeightFunction",
+  },
+  {
+    name: "carbon--type-scale",
+    accept: "acceptCarbonTypeScaleFunction",
+  },
+];
 exports.typeFunctions = typeFunctions;

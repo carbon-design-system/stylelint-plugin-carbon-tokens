@@ -47,7 +47,9 @@ var defaultOptions = {
   // include standard type properites
   includeProps: ["font", "/^font-*/", "line-height", "letterSpacing"],
   ignoreValues: ["/inherit|initial/"],
-  acceptCarbonTypeFunctions: false, // permit use of carbon type functions
+  acceptCarbonFontWeightFunction: false,
+  // permit use of carbon font weight function
+  acceptCarbonTypeScaleFunction: false, // permit use of carbon type scale function
 };
 
 function rule(primaryOptions, secondaryOptions) {
@@ -64,7 +66,14 @@ function rule(primaryOptions, secondaryOptions) {
         possible: {
           includeProps: [isValidIncludeProps],
           ignoreValues: [isValidIgnoreValues],
-          acceptCarbonTypeFunctions: function acceptCarbonTypeFunctions(val) {
+          acceptCarbonFontWeightFunction: function acceptCarbonFontWeightFunction(
+            val
+          ) {
+            return val === undefined || typeof val === "boolean";
+          },
+          acceptCarbonTypeScaleFunction: function acceptCarbonTypeScaleFunction(
+            val
+          ) {
             return val === undefined || typeof val === "boolean";
           },
         },

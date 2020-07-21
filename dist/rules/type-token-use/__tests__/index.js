@@ -116,13 +116,42 @@ testRule(_["default"], {
   config: [
     true,
     {
-      acceptCarbonTypeFunctions: true,
+      acceptCarbonFontWeightFunction: true,
     },
   ],
   syntax: "scss",
-  reject: [],
-  // there are not type tokens used directly
   accept: [
+    {
+      code: ".foo { font-weight: carbon--font-weight('light'); }",
+      description: "Used non-token duration.",
+      message: _.messages.expected,
+    },
+  ],
+  reject: [
+    {
+      code: ".foo { font-weight: carbon--type-scale(1); }",
+      description: "Used non-token duration.",
+      message: _.messages.expected,
+    },
+  ],
+});
+testRule(_["default"], {
+  ruleName: _.ruleName,
+  config: [
+    true,
+    {
+      acceptCarbonTypeScaleFunction: true,
+    },
+  ],
+  syntax: "scss",
+  accept: [
+    {
+      code: ".foo { font-weight: carbon--type-scale(1); }",
+      description: "Used non-token duration.",
+      message: _.messages.expected,
+    },
+  ],
+  reject: [
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
       description: "Used non-token duration.",
