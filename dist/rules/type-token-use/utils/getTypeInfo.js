@@ -21,7 +21,7 @@ function getTypeInfo(options) {
     functions: [
       {
         source: "Type",
-        accept: options.acceptFontWeightFunction,
+        accept: options.acceptCarbonTypeFunctions,
         values: _initTypeTokens.typeFunctions,
       },
     ],

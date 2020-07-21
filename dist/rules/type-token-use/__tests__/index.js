@@ -116,7 +116,7 @@ testRule(_["default"], {
   config: [
     true,
     {
-      acceptFontWeightFunction: true,
+      acceptCarbonTypeFunctions: true,
     },
   ],
   syntax: "scss",
