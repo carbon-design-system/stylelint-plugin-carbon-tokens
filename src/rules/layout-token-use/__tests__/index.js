@@ -3,7 +3,7 @@ import rule, { ruleName } from "..";
 const generatedTests = () => {
   const accept = [];
   const reject = [];
-  const props = ["margin", "box-shadow"];
+  const props = ["margin"];
   const good = [
     "$spacing-01",
     "$layout-01",
@@ -35,16 +35,12 @@ const generatedTests = () => {
   ];
 
   for (const prop of props) {
-    const addColor = prop === "box-shadow" ? " red" : "";
-
     for (let g = 0; g < good.length - 4; g++) {
       // good tokens
       for (let n = 1; n < 5; n++) {
         // number of values
         accept.push({
-          code: `.foo { ${prop}: ${good
-            .slice(g, g + n)
-            .join(" ")}${addColor}; }`,
+          code: `.foo { ${prop}: ${good.slice(g, g + n)}; }`,
           description: `A ${prop} using ${n} token(s) is accepted`,
         });
       }
@@ -55,9 +51,7 @@ const generatedTests = () => {
       for (let n = 1; n < 5; n++) {
         // number of values
         reject.push({
-          code: `.foo { ${prop}: ${bad
-            .slice(b, b + n)
-            .join(" ")}${addColor}; }`,
+          code: `.foo { ${prop}: ${bad.slice(b, b + n)}; }`,
           description: `A ${prop} using ${n} non-token(s) is rejected`,
         });
       }
@@ -67,7 +61,7 @@ const generatedTests = () => {
   // // eslint-disable-next-line
   // console.dir(reject);
 
-  const moreProps = ["height", "width", "left", "top", "bottom", "right"];
+  const moreProps = ["left", "top", "bottom", "right"];
 
   for (const prop of moreProps) {
     accept.push({
@@ -81,12 +75,12 @@ const generatedTests = () => {
   }
 
   accept.push({
-    code: `.foo { width: carbon--mini-units(4); }`,
-    description: `A width using a carbon--mini-units is accepted.`,
+    code: `.foo { left: carbon--mini-units(4); }`,
+    description: `A left using a carbon--mini-units is accepted.`,
   });
   reject.push({
-    code: `.foo { width: my-own-function(4); }`,
-    description: `A width using a another function is rejected is rejected.`,
+    code: `.foo { left: my-own-function(4); }`,
+    description: `A left using a another function is rejected is rejected.`,
   });
 
   // // eslint-disable-next-line
@@ -102,12 +96,6 @@ testRule(rule, {
   config: [
     true,
     {
-      includeProps: [
-        "/^border$/<1 -2>", // Borders and shadows are often 1px and not included in the standard test
-        "/^border-/",
-        "/^box-shadow$/<1 -2>",
-        "*",
-      ],
       ignoreValues: ["/((--)|[$])my-value-accept/", "*"],
     },
   ],
@@ -141,11 +129,11 @@ testRule(rule, {
   syntax: "scss",
   accept: [
     {
-      code: `.foo { width: $carbon--container-01; }`,
+      code: `.foo { left: $carbon--container-01; }`,
       description: `Accept $carbon--container tokens with acceptContainerTokens: true.`,
     },
     {
-      code: `.foo { width: $container-01; }`,
+      code: `.foo { left: $container-01; }`,
       description: `Accept $container tokens with acceptContainerTokens: true.`,
     },
   ],
@@ -163,11 +151,11 @@ testRule(rule, {
   syntax: "scss",
   accept: [
     {
-      code: `.foo { width: $carbon--icon-size-01; }`,
+      code: `.foo { left: $carbon--icon-size-01; }`,
       description: `Accept $carbon--icon-size tokens with acceptIconSizeTokens: true.`,
     },
     {
-      code: `.foo { width: $icon-size-01; }`,
+      code: `.foo { left: $icon-size-01; }`,
       description: `Accept $icon-size tokens with acceptIconSizeTokens: true.`,
     },
   ],
@@ -185,11 +173,11 @@ testRule(rule, {
   syntax: "scss",
   accept: [
     {
-      code: `.foo { width: $carbon--fluid-spacing-01; }`,
+      code: `.foo { left: $carbon--fluid-spacing-01; }`,
       description: `Accept $carbon--fluid-spacing tokens with acceptFluidSpacingTokens: true.`,
     },
     {
-      code: `.foo { width: $fluid-spacing-01; }`,
+      code: `.foo { left: $fluid-spacing-01; }`,
       description: `Accept $fluid-spacing tokens with acceptFluidSpacingTokens: true.`,
     },
   ],
