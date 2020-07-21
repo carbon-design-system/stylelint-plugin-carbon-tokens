@@ -69,7 +69,7 @@ function _interopRequireWildcard(obj) {
 var generatedTests = function generatedTests() {
   var accept = [];
   var reject = [];
-  var props = ["margin", "box-shadow"];
+  var props = ["margin"];
   var good = [
     "$spacing-01",
     "$layout-01",
@@ -102,7 +102,6 @@ var generatedTests = function generatedTests() {
 
   for (var _i = 0, _props = props; _i < _props.length; _i++) {
     var prop = _props[_i];
-    var addColor = prop === "box-shadow" ? " red" : "";
 
     for (var g = 0; g < good.length - 4; g++) {
       // good tokens
@@ -111,8 +110,7 @@ var generatedTests = function generatedTests() {
         accept.push({
           code: ".foo { "
             .concat(prop, ": ")
-            .concat(good.slice(g, g + n).join(" "))
-            .concat(addColor, "; }"),
+            .concat(good.slice(g, g + n), "; }"),
           description: "A "
             .concat(prop, " using ")
             .concat(n, " token(s) is accepted"),
@@ -127,8 +125,7 @@ var generatedTests = function generatedTests() {
         reject.push({
           code: ".foo { "
             .concat(prop, ": ")
-            .concat(bad.slice(b, b + _n).join(" "))
-            .concat(addColor, "; }"),
+            .concat(bad.slice(b, b + _n), "; }"),
           description: "A "
             .concat(prop, " using ")
             .concat(_n, " non-token(s) is rejected"),
@@ -138,7 +135,7 @@ var generatedTests = function generatedTests() {
   } // // eslint-disable-next-line
   // console.dir(reject);
 
-  var moreProps = ["height", "width", "left", "top", "bottom", "right"];
+  var moreProps = ["left", "top", "bottom", "right"];
 
   for (var _i2 = 0, _moreProps = moreProps; _i2 < _moreProps.length; _i2++) {
     var _prop = _moreProps[_i2];
@@ -153,12 +150,12 @@ var generatedTests = function generatedTests() {
   }
 
   accept.push({
-    code: ".foo { width: carbon--mini-units(4); }",
-    description: "A width using a carbon--mini-units is accepted.",
+    code: ".foo { left: carbon--mini-units(4); }",
+    description: "A left using a carbon--mini-units is accepted.",
   });
   reject.push({
-    code: ".foo { width: my-own-function(4); }",
-    description: "A width using a another function is rejected is rejected.",
+    code: ".foo { left: my-own-function(4); }",
+    description: "A left using a another function is rejected is rejected.",
   }); // // eslint-disable-next-line
   // console.log(accept, reject);
 
@@ -174,12 +171,6 @@ testRule(_["default"], {
   config: [
     true,
     {
-      includeProps: [
-        "/^border$/<1 -2>", // Borders and shadows are often 1px and not included in the standard test
-        "/^border-/",
-        "/^box-shadow$/<1 -2>",
-        "*",
-      ],
       ignoreValues: ["/((--)|[$])my-value-accept/", "*"],
     },
   ],
@@ -210,12 +201,12 @@ testRule(_["default"], {
   syntax: "scss",
   accept: [
     {
-      code: ".foo { width: $carbon--container-01; }",
+      code: ".foo { left: $carbon--container-01; }",
       description:
         "Accept $carbon--container tokens with acceptContainerTokens: true.",
     },
     {
-      code: ".foo { width: $container-01; }",
+      code: ".foo { left: $container-01; }",
       description: "Accept $container tokens with acceptContainerTokens: true.",
     },
   ],
@@ -232,12 +223,12 @@ testRule(_["default"], {
   syntax: "scss",
   accept: [
     {
-      code: ".foo { width: $carbon--icon-size-01; }",
+      code: ".foo { left: $carbon--icon-size-01; }",
       description:
         "Accept $carbon--icon-size tokens with acceptIconSizeTokens: true.",
     },
     {
-      code: ".foo { width: $icon-size-01; }",
+      code: ".foo { left: $icon-size-01; }",
       description: "Accept $icon-size tokens with acceptIconSizeTokens: true.",
     },
   ],
@@ -254,12 +245,12 @@ testRule(_["default"], {
   syntax: "scss",
   accept: [
     {
-      code: ".foo { width: $carbon--fluid-spacing-01; }",
+      code: ".foo { left: $carbon--fluid-spacing-01; }",
       description:
         "Accept $carbon--fluid-spacing tokens with acceptFluidSpacingTokens: true.",
     },
     {
-      code: ".foo { width: $fluid-spacing-01; }",
+      code: ".foo { left: $fluid-spacing-01; }",
       description:
         "Accept $fluid-spacing tokens with acceptFluidSpacingTokens: true.",
     },
