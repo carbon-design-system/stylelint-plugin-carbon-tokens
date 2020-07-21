@@ -21,7 +21,7 @@ const defaultOptions = {
   // include standard type properites
   includeProps: ["font", "/^font-*/", "line-height", "letterSpacing"],
   ignoreValues: ["/inherit|initial/"],
-  acceptFontWeightFunction: false, // permit use of carbon--font-weight function
+  acceptCarbonTypeFunctions: false, // permit use of carbon type functions
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
@@ -39,7 +39,7 @@ export default function rule(primaryOptions, secondaryOptions) {
         possible: {
           includeProps: [isValidIncludeProps],
           ignoreValues: [isValidIgnoreValues],
-          acceptFontWeightFunction: (val) =>
+          acceptCarbonTypeFunctions: (val) =>
             val === undefined || typeof val === "boolean",
         },
         optional: true,

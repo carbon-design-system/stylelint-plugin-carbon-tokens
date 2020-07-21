@@ -50,7 +50,7 @@ testRule(rule, {
   config: [
     true,
     {
-      acceptFontWeightFunction: true,
+      acceptCarbonTypeFunctions: true,
     },
   ],
   syntax: "scss",

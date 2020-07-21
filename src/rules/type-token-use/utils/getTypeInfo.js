@@ -14,7 +14,7 @@ export default function getTypeInfo(options) {
     functions: [
       {
         source: "Type",
-        accept: options.acceptFontWeightFunction,
+        accept: options.acceptCarbonTypeFunctions,
         values: typeFunctions,
       },
     ],
