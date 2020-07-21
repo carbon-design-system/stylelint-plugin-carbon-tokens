@@ -11,12 +11,14 @@ export default function getTypeInfo(options) {
       //     values: typeTokens,
       //   },
     ],
-    functions: [
-      {
+    functions: typeFunctions.map((item) => {
+      const result = {
         source: "Type",
-        accept: options.acceptCarbonTypeFunctions,
-        values: typeFunctions,
-      },
-    ],
+        accept: options[item.accept],
+        values: [item.name],
+      };
+
+      return result;
+    }),
   };
 }

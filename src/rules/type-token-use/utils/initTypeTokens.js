@@ -4,6 +4,15 @@
 
 // permitted carbon type functions
 // TODO: read this from carbon
-const typeFunctions = ["carbon--font-weight", "carbon--type-scale"];
+const typeFunctions = [
+  {
+    name: "carbon--font-weight",
+    accept: "acceptCarbonFontWeightFunction",
+  },
+  {
+    name: "carbon--type-scale",
+    accept: "acceptCarbonTypeScaleFunction",
+  },
+];
 
 export { typeFunctions };
