@@ -48,5 +48,5 @@ result.root.walkDecls(function (decl) {
 }); // permitted carbon layout functions
 // TODO: read this from carbon
 
-var layoutFunctions = ["carbon--mini-units"];
+var layoutFunctions = ["carbon--mini-units", "mini-units"];
 exports.layoutFunctions = layoutFunctions;

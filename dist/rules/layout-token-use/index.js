@@ -66,6 +66,7 @@ var defaultOptions = {
   acceptContainerTokens: false,
   acceptIconSizeTokens: false,
   acceptFluidSpacingTokens: false,
+  acceptCarbonMiniUnitsFunction: false,
 };
 
 function rule(primaryOptions, secondaryOptions) {
@@ -92,6 +93,11 @@ function rule(primaryOptions, secondaryOptions) {
             return val === undefined || typeof val === "boolean";
           },
           acceptFluidSpacingTokens: function acceptFluidSpacingTokens(val) {
+            return val === undefined || typeof val === "boolean";
+          },
+          acceptCarbonMiniUnitsFunction: function acceptCarbonMiniUnitsFunction(
+            val
+          ) {
             return val === undefined || typeof val === "boolean";
           },
         },
