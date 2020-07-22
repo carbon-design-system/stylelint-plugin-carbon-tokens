@@ -17,7 +17,7 @@ const parseRangeValue = (value, length) => {
   }
 };
 
-const splitValueList = function (value, range) {
+const splitValueList = function (value, range, valueCheck) {
   // NOTE: inside function as otherwise regex.lastIndex may be non-zero on second call
   const commaSplitRegex = /,(?=(((?!\)).)*\()|[^()]*$)/g;
   const spaceSplitRegex = / (?=(((?!\)).)*\()|[^()]*$)/g;
@@ -84,7 +84,18 @@ const splitValueList = function (value, range) {
   // // eslint-disable-next-line
   // console.dir(values);
 
-  return values;
+  if (valueCheck) {
+    // remove value parts that do not match valueCheck
+    return values.filter((value) => {
+      if (typeof valueCheck === "object") {
+        return valueCheck.test(value);
+      } else {
+        return valueCheck === value;
+      }
+    });
+  } else {
+    return values;
+  }
 };
 
 export { splitValueList, parseRangeValue };

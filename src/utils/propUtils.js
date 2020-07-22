@@ -7,7 +7,7 @@ const getPropSpec = (prop) => {
 
   let propSpec = false;
 
-  const checkRegex = /^((\/[^/]*\/)|([^</]+))(<([^>]*)>)*/;
+  const checkRegex = /^((\/[^/]*\/)|([^</[]+))(<([^>]*)>)*(\[([^]+)\])*/;
 
   const matches = checkRegex.exec(prop);
 
@@ -19,6 +19,7 @@ const getPropSpec = (prop) => {
       prop: matches[1],
       test: parseToRegexOrString(matches[1]),
       range: matches[5], // 5 may be undefined
+      valueCheck: parseToRegexOrString(matches[7]), // may be undefined
     };
   }
 

@@ -36,7 +36,11 @@ export default function checkRule(
       // variable parameter lists where color can be optional
       // variable parameters lists where color is not at a fixed position
       // split using , and propSpec
-      const values = splitValueList(decl.value, propSpec.range);
+      const values = splitValueList(
+        decl.value,
+        propSpec.range,
+        propSpec.valueCheck
+      );
       const ruleInfo = getRuleInfo(options);
 
       // // eslint-disable-next-line

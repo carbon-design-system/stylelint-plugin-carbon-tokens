@@ -28,7 +28,7 @@ const defaultOptions = {
     "top",
     "bottom",
     "right",
-    "transform",
+    "transform[/^translate/]",
     // the following are not really layout or spacing
     // "height",
     // "width",
