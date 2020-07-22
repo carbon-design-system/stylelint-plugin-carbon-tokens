@@ -292,15 +292,15 @@ testRule(_["default"], {
   syntax: "scss",
   accept: [
     {
-      code: ".foo { left: translate($layout-01); }",
+      code: ".foo { transform: translate($layout-01); }",
       description: 'Accept translate using layout tokens".',
     },
     {
-      code: ".foo { left: translateX($layout-01); }",
+      code: ".foo { transform: translateX($layout-01); }",
       description: 'Accept translateX using layout tokens".',
     },
     {
-      code: ".foo { left: translateY($layout-01); }",
+      code: ".foo { transform: translateY($layout-01); }",
       description: 'Accept translateY using layout tokens".',
     },
   ],
@@ -311,15 +311,24 @@ testRule(_["default"], {
   syntax: "scss",
   reject: [
     {
-      code: ".foo { left: translate(-20%, -10%); }",
+      code: ".foo { transform: translate(-20%, -10%); }",
       description: 'Reject translate not using layout tokens".',
     },
     {
-      code: ".foo { left: translateX(-20%); }",
+      code: ".foo { transform: translate(-20%, $layout-06); }",
+      description: 'Reject translate not using layout tokens for first param".',
+    },
+    {
+      code: ".foo { transform: translate($layout-06, -20%); }",
+      description:
+        'Reject translate not using layout tokens for second param".',
+    },
+    {
+      code: ".foo { transform: translateX(-20%); }",
       description: 'Reject translateX not using layout tokens".',
     },
     {
-      code: ".foo { left: translateY(-20%); }",
+      code: ".foo { transform: translateY(-20%); }",
       description: 'Reject translateY not using layout tokens".',
     },
   ],
