@@ -26,7 +26,7 @@ const defaultOptions = {
     "animation-duration",
   ],
   //  Ignore reset values
-  ignoreValues: ["0s", "0"],
+  ignoreValues: ["/$0s?/", "/inherit|initial|none|unset/"],
   acceptUndefinedVariables: true,
 };
 

@@ -29,9 +29,8 @@ const defaultOptions = {
   ],
   // ignore transparent, common reset values and 0 on its own
   ignoreValues: [
-    "/transparent|inherit|initial/",
+    "/transparent|inherit|initial|none|unset/",
     "/^0$/",
-    "/^none$/",
     "currentColor",
   ],
   acceptCarbonColorTokens: false,
