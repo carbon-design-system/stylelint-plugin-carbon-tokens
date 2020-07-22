@@ -286,3 +286,41 @@ testRule(_["default"], {
     },
   ],
 });
+testRule(_["default"], {
+  ruleName: _.ruleName,
+  config: true,
+  syntax: "scss",
+  accept: [
+    {
+      code: ".foo { left: translate($layout-01); }",
+      description: 'Accept translate using layout tokens".',
+    },
+    {
+      code: ".foo { left: translateX($layout-01); }",
+      description: 'Accept translateX using layout tokens".',
+    },
+    {
+      code: ".foo { left: translateY($layout-01); }",
+      description: 'Accept translateY using layout tokens".',
+    },
+  ],
+});
+testRule(_["default"], {
+  ruleName: _.ruleName,
+  config: true,
+  syntax: "scss",
+  reject: [
+    {
+      code: ".foo { left: translate(-20%, -10%); }",
+      description: 'Reject translate not using layout tokens".',
+    },
+    {
+      code: ".foo { left: translateX(-20%); }",
+      description: 'Reject translateX not using layout tokens".',
+    },
+    {
+      code: ".foo { left: translateY(-20%); }",
+      description: 'Reject translateY not using layout tokens".',
+    },
+  ],
+});

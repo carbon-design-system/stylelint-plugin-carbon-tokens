@@ -219,6 +219,10 @@ var checkValue = function checkValue(value, ruleInfo) {
                 end = (0, _.parseRangeValue)(end, paramParts.length) || start; // start if end empty
 
                 for (var pos = start; pos <= end; pos++) {
+                  if (!paramParts[pos]) {
+                    break; // ignore parts after undefined
+                  }
+
                   var variableResult = checkVariable(
                     paramParts[pos].trim(),
                     ruleInfo
