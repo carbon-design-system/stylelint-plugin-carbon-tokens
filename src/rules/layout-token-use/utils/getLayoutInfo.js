@@ -39,6 +39,11 @@ export default function getLayoutInfo(options) {
         accept: options.acceptCarbonMiniUnitsFunction,
         values: layoutFunctions,
       },
+      {
+        source: "CSS",
+        accept: true,
+        values: ["translate<1 2>", "translateX", "translateY"],
+      },
     ],
   };
 }

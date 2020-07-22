@@ -78,6 +78,10 @@ const checkValue = function (value, ruleInfo) {
               end = parseRangeValue(end, paramParts.length) || start; // start if end empty
 
               for (let pos = start; pos <= end; pos++) {
+                if (!paramParts[pos]) {
+                  break; // ignore parts after undefined
+                }
+
                 const variableResult = checkVariable(
                   paramParts[pos].trim(),
                   ruleInfo
