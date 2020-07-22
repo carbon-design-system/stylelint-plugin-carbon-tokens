@@ -36,7 +36,7 @@ const checkValue = function (value, ruleInfo) {
   // $any-variable;
   // any-function($any-variable
   // NOTE: inside function as otherwise regex.lastIndex may be non-zero on second call
-  const regexFuncAndToken = /^((\$[\w-]+)|(([\w-]+)\((['"$\w-, .]+)\)))/g;
+  const regexFuncAndToken = /^((-?\$[\w-]+)|(([\w-]+)\((['"$\w-, .]+)\)))/g;
 
   const matches = regexFuncAndToken.exec(_value);
   const matchVariable = 2;

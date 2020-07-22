@@ -28,6 +28,7 @@ result.root.walkDecls((decl) => {
   // matches form $carbon--spacing, $carbon--spacing-NN or $spacing-NN
   if (/^\$(carbon--){0,1}spacing(-[0-9]{2})*/.test(decl.prop)) {
     spacingTokens.push(decl.prop);
+    spacingTokens.push(`-${decl.prop}`); // allow negative tokens
   }
 });
 

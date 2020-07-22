@@ -28,6 +28,7 @@ result.root.walkDecls((decl) => {
   // matches form $carbon--layout, $carbon--layout-NN or $layout-NN
   if (/^\$(carbon--){0,1}layout(-[0-9]{2})*/.test(decl.prop)) {
     layoutTokens.push(decl.prop);
+    layoutTokens.push(`-${decl.prop}`); // allow negative tokens
   }
 });
 
