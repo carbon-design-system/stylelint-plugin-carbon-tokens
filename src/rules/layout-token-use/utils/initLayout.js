@@ -34,6 +34,6 @@ result.root.walkDecls((decl) => {
 
 // permitted carbon layout functions
 // TODO: read this from carbon
-const layoutFunctions = ["carbon--mini-units"];
+const layoutFunctions = ["carbon--mini-units", "mini-units"];
 
 export { layoutTokens, layoutFunctions };

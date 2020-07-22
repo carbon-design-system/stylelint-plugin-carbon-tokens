@@ -41,6 +41,7 @@ const defaultOptions = {
   acceptContainerTokens: false,
   acceptIconSizeTokens: false,
   acceptFluidSpacingTokens: false,
+  acceptCarbonMiniUnitsFunction: false,
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
@@ -65,6 +66,8 @@ export default function rule(primaryOptions, secondaryOptions) {
           acceptIconSizeTokens: (val) =>
             val === undefined || typeof val === "boolean",
           acceptFluidSpacingTokens: (val) =>
+            val === undefined || typeof val === "boolean",
+          acceptCarbonMiniUnitsFunction: (val) =>
             val === undefined || typeof val === "boolean",
         },
         optional: true,

@@ -36,7 +36,7 @@ export default function getLayoutInfo(options) {
     functions: [
       {
         source: "Layout",
-        accept: true,
+        accept: options.acceptCarbonMiniUnitsFunction,
         values: layoutFunctions,
       },
     ],

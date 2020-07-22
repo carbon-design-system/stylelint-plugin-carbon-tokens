@@ -76,18 +76,6 @@ const generatedTests = () => {
     });
   }
 
-  accept.push({
-    code: `.foo { left: carbon--mini-units(4); }`,
-    description: `A left using a carbon--mini-units is accepted.`,
-  });
-  reject.push({
-    code: `.foo { left: my-own-function(4); }`,
-    description: `A left using a another function is rejected is rejected.`,
-  });
-
-  // // eslint-disable-next-line
-  // console.log(accept, reject);
-
   return { accept, reject };
 };
 
@@ -184,4 +172,36 @@ testRule(rule, {
     },
   ],
   reject: [],
+});
+
+testRule(rule, {
+  ruleName,
+  config: [true, { acceptCarbonMiniUnitsFunction: true }],
+  syntax: "scss",
+  accept: [
+    {
+      code: `.foo { left: carbon--mini-units(4); }`,
+      description: `A left using a carbon--mini-units is accepted with option.`,
+    },
+    {
+      code: `.foo { left: mini-units(4); }`,
+      description: `A left using a mini-units is accepted with option.`,
+    },
+  ],
+});
+
+testRule(rule, {
+  ruleName,
+  config: true,
+  syntax: "scss",
+  reject: [
+    {
+      code: `.foo { left: carbon--mini-units(4); }`,
+      description: `A left using a carbon--mini-units is rejected without option "acceptCaronMiniUnitsFunction".`,
+    },
+    {
+      code: `.foo { left: mini-units(4); }`,
+      description: `A left using a mini-units is rejected without option "acceptCaronMiniUnitsFunction".`,
+    },
+  ],
 });
