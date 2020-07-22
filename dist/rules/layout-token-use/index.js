@@ -62,7 +62,11 @@ var defaultOptions = {
     // "/^box-shadow$/<1 -2>",
   ],
   // ignore transparent, common reset values, 0, proportioanl values,
-  ignoreValues: ["/inherit|initial/", "/^0[a-z]*$/", "/^[0-9]*(%|vw|vh)$/"],
+  ignoreValues: [
+    "/inherit|initial|auto|none|unset/",
+    "/^0[a-z]*$/",
+    "/^[0-9]*(%|vw|vh)$/",
+  ],
   acceptUndefinedVariables: true,
   acceptContainerTokens: false,
   acceptIconSizeTokens: false,

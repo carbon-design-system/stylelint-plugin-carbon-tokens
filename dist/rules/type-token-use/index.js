@@ -46,7 +46,7 @@ var isValidIncludeProps = _utils.isValidOption;
 var defaultOptions = {
   // include standard type properites
   includeProps: ["font", "/^font-*/", "line-height", "letterSpacing"],
-  ignoreValues: ["/inherit|initial/"],
+  ignoreValues: ["/inherit|initial|none|unset/"],
   acceptCarbonFontWeightFunction: false,
   // permit use of carbon font weight function
   acceptCarbonTypeScaleFunction: false, // permit use of carbon type scale function
