@@ -73,6 +73,8 @@ var generatedTests = function generatedTests() {
   var good = [
     "$spacing-01",
     "$layout-01",
+    "-$spacing-01",
+    "-$layout-01",
     "$carbon--spacing-01",
     "$carbon--layout-01",
     "100%",

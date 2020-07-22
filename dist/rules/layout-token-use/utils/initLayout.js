@@ -43,6 +43,7 @@ result.root.walkDecls(function (decl) {
   // matches form $carbon--layout, $carbon--layout-NN or $layout-NN
   if (/^\$(carbon--){0,1}layout(-[0-9]{2})*/.test(decl.prop)) {
     layoutTokens.push(decl.prop);
+    layoutTokens.push("-".concat(decl.prop)); // allow negative tokens
   }
 }); // permitted carbon layout functions
 // TODO: read this from carbon

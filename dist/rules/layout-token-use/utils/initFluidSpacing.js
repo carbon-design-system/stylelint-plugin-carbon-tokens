@@ -43,5 +43,6 @@ result.root.walkDecls(function (decl) {
   // matches form $carbon--fluid-spacing, $carbon--fluid-spacing-NN or $fluid-spacing-NN
   if (/^\$(carbon--){0,1}fluid-spacing(-[0-9]{2})*/.test(decl.prop)) {
     fluidSpacingTokens.push(decl.prop);
+    fluidSpacingTokens.push("-".concat(decl.prop)); // allow negative tokens
   }
 });

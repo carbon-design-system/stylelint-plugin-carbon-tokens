@@ -171,7 +171,7 @@ var checkValue = function checkValue(value, ruleInfo) {
   // any-function($any-variable
   // NOTE: inside function as otherwise regex.lastIndex may be non-zero on second call
 
-  var regexFuncAndToken = /^((\$[\w-]+)|(([\w-]+)\((['"$\w-, .]+)\)))/g;
+  var regexFuncAndToken = /^((-?\$[\w-]+)|(([\w-]+)\((['"$\w-, .]+)\)))/g;
   var matches = regexFuncAndToken.exec(_value);
   var matchVariable = 2;
   var matchFunction = 4;
