@@ -26,6 +26,7 @@ const defaultOptions = {
     "top",
     "bottom",
     "right",
+    "transform",
   ],
   // ignore transparent, common reset values, 0, proportioanl values,
   ignoreValues: ["/inherit|initial/", "/^0[a-z]*$/", "/^[0-9]*(%|vw|vh)$/"],
