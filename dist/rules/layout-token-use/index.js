@@ -54,7 +54,7 @@ var defaultOptions = {
     "top",
     "bottom",
     "right",
-    "transform", // the following are not really layout or spacing
+    "transform[/^translate/]", // the following are not really layout or spacing
     // "height",
     // "width",
     // "/^border$/<1 -2>",

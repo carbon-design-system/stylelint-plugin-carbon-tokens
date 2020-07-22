@@ -94,7 +94,11 @@ function checkRule(root, result, ruleName, options, messages, getRuleInfo) {
       // variable parameter lists where color can be optional
       // variable parameters lists where color is not at a fixed position
       // split using , and propSpec
-      var values = (0, _.splitValueList)(decl.value, propSpec.range);
+      var values = (0, _.splitValueList)(
+        decl.value,
+        propSpec.range,
+        propSpec.valueCheck
+      );
       var ruleInfo = getRuleInfo(options); // // eslint-disable-next-line
       // console.dir({ propSpec, decl, values });
 

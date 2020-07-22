@@ -303,6 +303,32 @@ testRule(_["default"], {
       code: ".foo { transform: translateY($layout-01); }",
       description: 'Accept translateY using layout tokens".',
     },
+    {
+      code: ".foo { transform: translateY($layout-01 $layout-01); }",
+      description: 'Accept translateY using layout tokens".',
+    },
+    {
+      code: ".foo { transform: skew(20deg) translate($layout-01); }",
+      description:
+        'Accept translate using layout tokens when not first transform".',
+    },
+    {
+      code: ".foo { transform: translate($layout-01) skew(20deg); }",
+      description:
+        'Accept translate using layout tokens when not only transform".',
+    },
+    {
+      code:
+        ".foo { transform: skew(20deg) translate($layout-01, $layout-01); }",
+      description:
+        'Accept translate using layout tokens when not first transform".',
+    },
+    {
+      code:
+        ".foo { transform: translate($layout-01, $layout-01) skew(20deg); }",
+      description:
+        'Accept translate using layout tokens when not only transform".',
+    },
   ],
 });
 testRule(_["default"], {

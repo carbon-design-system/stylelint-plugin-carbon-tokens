@@ -84,7 +84,7 @@ var getPropSpec = function getPropSpec(prop) {
   // or does not start with /
   // optionally folloed by <anything in angled brackets>
   var propSpec = false;
-  var checkRegex = /^((\/[^/]*\/)|([^</]+))(<([^>]*)>)*/;
+  var checkRegex = /^((\/[^/]*\/)|([^</[]+))(<([^>]*)>)*(\[([^]+)\])*/;
   var matches = checkRegex.exec(prop); // // eslint-disable-next-line
   // console.dir(matches);
 
@@ -92,7 +92,9 @@ var getPropSpec = function getPropSpec(prop) {
     propSpec = {
       prop: matches[1],
       test: (0, _parseToRegexOrString["default"])(matches[1]),
-      range: matches[5], // 5 may be undefined
+      range: matches[5],
+      // 5 may be undefined
+      valueCheck: (0, _parseToRegexOrString["default"])(matches[7]), // may be undefined
     };
   }
 

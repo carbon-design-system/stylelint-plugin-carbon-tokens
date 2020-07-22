@@ -5,6 +5,25 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.parseRangeValue = exports.splitValueList = void 0;
 
+function _typeof(obj) {
+  "@babel/helpers - typeof";
+  if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") {
+    _typeof = function _typeof(obj) {
+      return typeof obj;
+    };
+  } else {
+    _typeof = function _typeof(obj) {
+      return obj &&
+        typeof Symbol === "function" &&
+        obj.constructor === Symbol &&
+        obj !== Symbol.prototype
+        ? "symbol"
+        : typeof obj;
+    };
+  }
+  return _typeof(obj);
+}
+
 function _toConsumableArray(arr) {
   return (
     _arrayWithoutHoles(arr) ||
@@ -162,7 +181,7 @@ var parseRangeValue = function parseRangeValue(value, length) {
 
 exports.parseRangeValue = parseRangeValue;
 
-var splitValueList = function splitValueList(value, range) {
+var splitValueList = function splitValueList(value, range, valueCheck) {
   // NOTE: inside function as otherwise regex.lastIndex may be non-zero on second call
   var commaSplitRegex = /,(?=(((?!\)).)*\()|[^()]*$)/g;
   var spaceSplitRegex = / (?=(((?!\)).)*\()|[^()]*$)/g;
@@ -241,7 +260,18 @@ var splitValueList = function splitValueList(value, range) {
   // // eslint-disable-next-line
   // console.dir(values);
 
-  return values;
+  if (valueCheck) {
+    // remove value parts that do not match valueCheck
+    return values.filter(function (value) {
+      if (_typeof(valueCheck) === "object") {
+        return valueCheck.test(value);
+      } else {
+        return valueCheck === value;
+      }
+    });
+  } else {
+    return values;
+  }
 };
 
 exports.splitValueList = splitValueList;
