@@ -3,11 +3,31 @@ import {
   declarationValueIndex,
   checkProp,
   isVariable,
-  checkIgnoreValue,
   normaliseVariableName,
-  splitValueList,
-  testValue,
+  parseToRegexOrString,
+  testItem,
+  tokenizeValue,
+  TOKEN_TYPES,
+  parseRangeValue,
 } from "./";
+
+const checkIgnoreToken = (item, ignoredValues = []) => {
+  // Simply check raw values, improve later
+  let result = false;
+
+  if (item) {
+    result = ignoredValues.some((ignoredValue) => {
+      // regex or string
+      const testValue = parseToRegexOrString(ignoredValue);
+
+      return (
+        (testValue.test && testValue.test(item.raw)) || testValue === item.raw
+      );
+    });
+  }
+
+  return result;
+};
 
 export default function checkRule(
   root,
@@ -17,14 +37,102 @@ export default function checkRule(
   messages,
   getRuleInfo
 ) {
-  const variables = {}; // used to contain variable declarations
+  const checkItem = (decl, item, propSpec, ruleInfo, knownVariables) => {
+    // Expects to be passed an item containing either a token { raw, type, value} or
+    // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
+
+    // Make checkIgnoreToken look at raw or value and deal with item being undefined (not found in range).
+    if (!checkIgnoreToken(item, options.ignoreValues)) {
+      const testResult = testItem(item, ruleInfo, options, knownVariables);
+      let message;
+
+      if (!testResult.accepted) {
+        if (item === undefined) {
+          message = messages.rejectedUndefinedRange(
+            decl.prop,
+            item,
+            propSpec.range
+          );
+        } else if (testResult.isCalc) {
+          message = messages.rejectedMaths(decl.prop, item.raw);
+        } else if (testResult.isVariable) {
+          message = messages.rejectedVariable(
+            decl.prop,
+            item.raw,
+            testResult.variableValue
+          );
+        } else {
+          message = messages.rejected(decl.prop, decl.value);
+        }
+
+        // adjust position for multipart value
+        const offsetValue =
+          item !== undefined ? decl.value.indexOf(item.raw) : 0;
+
+        utils.report({
+          ruleName,
+          result,
+          message,
+          index: declarationValueIndex(decl) + offsetValue,
+          node: decl,
+        });
+      }
+    }
+
+    return false;
+  };
+
+  const checkItems = (items, decl, propSpec, ruleInfo, knownVariables) => {
+    // expects to be passed an items array containing tokens
+    let itemsToCheck;
+
+    if (propSpec.range) {
+      // for the range select only the values to check
+      // 1 = first value, -1 = last value
+      let [start, end] = propSpec.range.split(" ");
+
+      itemsToCheck = [];
+
+      start = parseRangeValue(start, items.length);
+      end = parseRangeValue(end, items.length);
+
+      if (end) {
+        itemsToCheck.push(...items.slice(start, end + 1)); // +1 as slice end is not inclusive
+      } else {
+        itemsToCheck.push(items[start]);
+      }
+    } else {
+      // check all items in list
+      itemsToCheck = items;
+    }
+
+    // look at propSpec.valueCheck
+    if (propSpec.valueCheck) {
+      itemsToCheck = itemsToCheck.filter((item) => {
+        if (typeof propSpec.valueCheck === "object") {
+          return propSpec.valueCheck.test(item.raw);
+        } else {
+          return propSpec.valueCheck === item.raw;
+        }
+      });
+    }
+
+    for (const item of itemsToCheck) {
+      checkItem(decl, item, propSpec, ruleInfo, knownVariables);
+    }
+  };
+
+  const knownVariables = {}; // used to contain variable declarations
 
   root.walkDecls((decl) => {
+    const tokenizedValue = tokenizeValue(decl.value);
+
     if (isVariable(decl.prop)) {
       // add to variable declarations
       // expects all variables to appear before use
       // expects all variables to be simple (not map or list)
-      variables[normaliseVariableName(decl.prop)] = decl.value;
+      knownVariables[normaliseVariableName(decl.prop)] =
+        tokenizedValue.items[0];
     }
 
     // read the prop spec
@@ -33,66 +141,22 @@ export default function checkRule(
     if (propSpec) {
       // is supported prop
       // Some color properties have
-      // variable parameter lists where color can be optional
       // variable parameters lists where color is not at a fixed position
-      // split using , and propSpec
-      const values = splitValueList(
-        decl.value,
-        propSpec.range,
-        propSpec.valueCheck
-      );
+
       const ruleInfo = getRuleInfo(options);
 
-      // // eslint-disable-next-line
-      // console.dir({ propSpec, decl, values });
-
-      for (const value of values) {
-        // Ignore values specified by ignoreValues
-        if (!checkIgnoreValue(value, options.ignoreValues)) {
-          // // eslint-disable-next-line
-          // console.log("The value is", value);
-
-          const testResult = testValue(value, ruleInfo, options, variables);
-          let message;
-
-          // if (90 < parseInt(value, 10)) {
-          //   // eslint-disable-next-line
-          //   console.dir({ testResult, value });
-          // }
-
-          if (!testResult.accepted) {
-            if (value === undefined) {
-              message = messages.rejectedUndefinedRange(
-                decl.prop,
-                value,
-                propSpec.range
-              );
-            } else if (testResult.isVariable) {
-              message = messages.rejectedVariable(
-                decl.prop,
-                value,
-                testResult.variableValue
-              );
-            } else {
-              // // eslint-disable-next-line
-              // console.log("Wibble", decl.prop, decl.value);
-
-              message = messages.rejected(decl.prop, decl.value);
-            }
-
-            // adjust position for multipart value
-            const offsetValue =
-              value !== undefined ? decl.value.indexOf(value) : 0;
-
-            utils.report({
-              ruleName,
-              result,
-              message,
-              index: declarationValueIndex(decl) + offsetValue,
-              node: decl,
-            });
-          }
+      if (tokenizedValue.type === TOKEN_TYPES.LIST) {
+        for (const listItem of tokenizedValue.items) {
+          checkItems(listItem.items, decl, propSpec, ruleInfo, knownVariables);
         }
+      } else {
+        checkItems(
+          tokenizedValue.items,
+          decl,
+          propSpec,
+          ruleInfo,
+          knownVariables
+        );
       }
     }
   });

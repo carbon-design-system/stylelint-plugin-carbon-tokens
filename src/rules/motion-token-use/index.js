@@ -1,18 +1,16 @@
 // import valueParser from "postcss-value-parser";
 import { utils } from "stylelint";
-import { isValidOption, namespace, parseOptions, checkRule } from "../../utils";
+import {
+  isValidOption,
+  namespace,
+  parseOptions,
+  checkRule,
+  getMessages,
+} from "../../utils";
 import { getMotionInfo } from "./utils";
 
 export const ruleName = namespace("motion-token-use");
-
-export const messages = utils.ruleMessages(ruleName, {
-  rejected: (property, value) =>
-    `Expected carbon motion token, mixin or function for "${property}" found "${value}".`,
-  rejectedUndefinedRange: (property, value, range) =>
-    `Expected carbon motion token, mixin or function for "${property}" found "${value}" in position(s) "${range}".`,
-  rejectedVariable: (property, variable, value) =>
-    `Expected carbon motion token, mixin or function to be set for variable "${variable}" used by "${property}" found "${value}".`,
-});
+export const messages = getMessages(ruleName, "motion");
 
 const isValidIgnoreValues = isValidOption;
 const isValidIncludeProps = isValidOption;

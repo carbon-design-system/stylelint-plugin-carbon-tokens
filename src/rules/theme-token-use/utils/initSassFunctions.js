@@ -1,3 +1,3 @@
-const sassColorFunctions = ["rgba<1>"];
+const sassColorFunctions = ["rgba(1)"];
 
 export { sassColorFunctions };
