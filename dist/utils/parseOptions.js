@@ -37,9 +37,7 @@ var parseAddDefaults = function parseAddDefaults(options, defaults) {
 };
 
 function parseOptions(options, defaults) {
-  var optsOut = {}; // // eslint-disable-next-line
-  // console.log(options);
-  // NOTE expects type of options to match default options
+  var optsOut = {}; // NOTE expects type of options to match default options
 
   for (
     var _i = 0, _Object$keys = Object.keys(defaults);
@@ -60,8 +58,7 @@ function parseOptions(options, defaults) {
         optsOut[prop] = defaults[prop];
       }
     }
-  } // // eslint-disable-next-line
-  // console.dir(optsOut);
+  }
 
   return optsOut;
 }

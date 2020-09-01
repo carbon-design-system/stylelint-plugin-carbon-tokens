@@ -101,12 +101,12 @@ testRule(_["default"], {
     },
     {
       code: ".foo { line-height: 32px; }",
-      description: "Reject directly setting font-weight",
+      description: "Reject directly setting line-height",
       message: _.messages.expected,
     },
     {
       code: '.foo { font-family: "Times New Roman", Times, serif; }',
-      description: "Reject directly setting font-weight",
+      description: "Reject directly setting font-family",
       message: _.messages.expected,
     },
   ],

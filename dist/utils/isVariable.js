@@ -5,11 +5,22 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports["default"] = isVariable;
 
-function isVariable(string) {
-  return (
-    string !== undefined &&
-    (string.startsWith("$") ||
-      string.startsWith("--") ||
-      string.startsWith("var(--"))
-  );
+var _tokenizeValue = require("./tokenizeValue");
+
+function isVariable(val) {
+  if (typeof val === "string") {
+    return (
+      val !== undefined &&
+      (val.startsWith("$") || val.startsWith("--") || val.startsWith("var(--"))
+    );
+  } else {
+    // is tokenized
+    if (val.type === _tokenizeValue.TOKEN_TYPES.SCSS_VAR) {
+      return true;
+    } else {
+      return (
+        val.type === _tokenizeValue.TOKEN_TYPES.FUNCTION && val.value === "var"
+      );
+    }
+  }
 }
