@@ -1,18 +1,16 @@
 // import valueParser from "postcss-value-parser";
 import { utils } from "stylelint";
-import { isValidOption, namespace, parseOptions, checkRule } from "../../utils";
+import {
+  isValidOption,
+  namespace,
+  parseOptions,
+  checkRule,
+  getMessages,
+} from "../../utils";
 import { getTypeInfo } from "./utils";
 
 export const ruleName = namespace("type-token-use");
-
-export const messages = utils.ruleMessages(ruleName, {
-  rejected: (property, value) =>
-    `Expected carbon type token, mixin or function for "${property}" found "${value}".`,
-  rejectedUndefinedRange: (property, value, range) =>
-    `Expected carbon type token, mixin or function for "${property}" found "${value}" in position(s) "${range}".`,
-  rejectedVariable: (property, variable, value) =>
-    `Expected carbon type token, mixin or function to be set for variable "${variable}" used by "${property}" found "${value}".`,
-});
+export const messages = getMessages(ruleName, "type");
 
 const isValidIgnoreValues = isValidOption;
 const isValidIncludeProps = isValidOption;

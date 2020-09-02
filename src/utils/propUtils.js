@@ -11,9 +11,6 @@ const getPropSpec = (prop) => {
 
   const matches = checkRegex.exec(prop);
 
-  // // eslint-disable-next-line
-  // console.dir(matches);
-
   if (matches && matches[1]) {
     propSpec = {
       prop: matches[1],
@@ -49,4 +46,20 @@ const checkProp = (prop2Check, includedProps) => {
   return result;
 };
 
-export { getPropSpec, checkProp };
+const parseRangeValue = (value, length) => {
+  if (!value) {
+    return value;
+  }
+
+  const _value = parseInt(value, 10);
+
+  if (_value < 0) {
+    // -ve from end
+
+    return length + _value; // zero based
+  } else {
+    return _value - 1; // make it zero based
+  }
+};
+
+export { getPropSpec, checkProp, parseRangeValue };

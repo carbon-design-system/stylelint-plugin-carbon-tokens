@@ -25,9 +25,6 @@ const parseAddDefaults = (options, defaults) => {
 export default function parseOptions(options, defaults) {
   const optsOut = {};
 
-  // // eslint-disable-next-line
-  // console.log(options);
-
   // NOTE expects type of options to match default options
 
   for (const prop of Object.keys(defaults)) {
@@ -44,9 +41,6 @@ export default function parseOptions(options, defaults) {
       }
     }
   }
-
-  // // eslint-disable-next-line
-  // console.dir(optsOut);
 
   return optsOut;
 }

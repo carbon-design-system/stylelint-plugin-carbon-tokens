@@ -107,9 +107,29 @@ The range value allows values to be selected from a multipart value such as a bo
 - Positive values represent positions at the start of a value list e.g. 1 is the first value.
 - Negative values represent positions at the end of a value list. e.g. -1 = last value
 
-- If no range is specified the whole value list is checked as a single value.
+- If no range is specified the whole value list is checked.
 - A single value means only that value in a list is checked
 - Two values represent start and end values of a range in the list.
+
+#### includeProps specific values
+
+For some props e.g. transform we are only intereste in values that match a certain criteria.
+
+This is specified as part of the includedProp inside [].
+
+e.g. `translate[/^transform/]`
+
+In this case only values starting `transform` are tested so not `skew` for example. As per the prop definition the can be a plain string or regular expression.
+
+#### Function values specific range for function parameters
+
+If not specified then parameters are treated as a single value.
+
+The range for parameters is specified in ()
+
+e.g. `calc(1)` or `translate(1,2)`.
+
+NOTE: this is not currently a user configurable option.
 
 ### Variables
 

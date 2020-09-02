@@ -3,7 +3,7 @@
 Object.defineProperty(exports, "__esModule", {
   value: true,
 });
-exports.checkProp = exports.getPropSpec = void 0;
+exports.parseRangeValue = exports.checkProp = exports.getPropSpec = void 0;
 
 var _parseToRegexOrString = _interopRequireDefault(
   require("./parseToRegexOrString")
@@ -85,8 +85,7 @@ var getPropSpec = function getPropSpec(prop) {
   // optionally folloed by <anything in angled brackets>
   var propSpec = false;
   var checkRegex = /^((\/[^/]*\/)|([^</[]+))(<([^>]*)>)*(\[([^]+)\])*/;
-  var matches = checkRegex.exec(prop); // // eslint-disable-next-line
-  // console.dir(matches);
+  var matches = checkRegex.exec(prop);
 
   if (matches && matches[1]) {
     propSpec = {
@@ -136,3 +135,20 @@ var checkProp = function checkProp(prop2Check, includedProps) {
 };
 
 exports.checkProp = checkProp;
+
+var parseRangeValue = function parseRangeValue(value, length) {
+  if (!value) {
+    return value;
+  }
+
+  var _value = parseInt(value, 10);
+
+  if (_value < 0) {
+    // -ve from end
+    return length + _value; // zero based
+  } else {
+    return _value - 1; // make it zero based
+  }
+};
+
+exports.parseRangeValue = parseRangeValue;

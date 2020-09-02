@@ -15,31 +15,7 @@ var _utils2 = require("./utils");
 // import valueParser from "postcss-value-parser";
 var ruleName = (0, _utils.namespace)("motion-token-use");
 exports.ruleName = ruleName;
-
-var messages = _stylelint.utils.ruleMessages(ruleName, {
-  rejected: function rejected(property, value) {
-    return 'Expected carbon motion token, mixin or function for "'
-      .concat(property, '" found "')
-      .concat(value, '".');
-  },
-  rejectedUndefinedRange: function rejectedUndefinedRange(
-    property,
-    value,
-    range
-  ) {
-    return 'Expected carbon motion token, mixin or function for "'
-      .concat(property, '" found "')
-      .concat(value, '" in position(s) "')
-      .concat(range, '".');
-  },
-  rejectedVariable: function rejectedVariable(property, variable, value) {
-    return 'Expected carbon motion token, mixin or function to be set for variable "'
-      .concat(variable, '" used by "')
-      .concat(property, '" found "')
-      .concat(value, '".');
-  },
-});
-
+var messages = (0, _utils.getMessages)(ruleName, "motion");
 exports.messages = messages;
 var isValidIgnoreValues = _utils.isValidOption;
 var isValidIncludeProps = _utils.isValidOption;

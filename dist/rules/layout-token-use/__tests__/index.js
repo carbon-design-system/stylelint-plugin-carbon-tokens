@@ -134,8 +134,7 @@ var generatedTests = function generatedTests() {
         });
       }
     }
-  } // // eslint-disable-next-line
-  // console.dir(reject);
+  }
 
   var moreProps = ["left", "top", "bottom", "right"];
 
@@ -356,6 +355,47 @@ testRule(_["default"], {
     {
       code: ".foo { transform: translateY(-20%); }",
       description: 'Reject translateY not using layout tokens".',
+    },
+  ],
+});
+testRule(_["default"], {
+  ruleName: _.ruleName,
+  config: true,
+  syntax: "scss",
+  accept: [
+    {
+      code: ".foo { right: calc(100vw - $carbon--spacing-01) }",
+      description: 'Accept calc(vw - $)".',
+    },
+    {
+      code: ".foo { right: calc(100% + $carbon--spacing-01) }",
+      description: 'Accept calc(% + $)".',
+    },
+    {
+      code: ".foo { right: calc(100vh - $carbon--spacing-01) }",
+      description: 'Accept calc(vh - $)".',
+    },
+  ],
+  reject: [
+    {
+      code: ".foo { right: calc(100px - $carbon--spacing-01); }",
+      description: 'Reject calc(px - $)".',
+    },
+    {
+      code: ".foo { right: calc(100px + $carbon--spacing-01); }",
+      description: 'Reject calc(px + $)".',
+    },
+    {
+      code: ".foo { right: calc(100px + 100px); }",
+      description: 'Reject calc(px - px)".',
+    },
+    {
+      code: ".foo { right: calc($carbon--spacing-01 + $carbon--spacing-01); }",
+      description: 'Reject calc($ - $)".',
+    },
+    {
+      code: ".foo { right: calc($carbon--spacing-01 * 1.5); }",
+      description: 'Reject calc($ * number)".',
     },
   ],
 });

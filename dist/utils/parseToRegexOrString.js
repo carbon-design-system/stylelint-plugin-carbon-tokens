@@ -10,8 +10,6 @@ function parseToRegexOrString(str) {
   var result =
     str && str.startsWith("/") && str.endsWith("/")
       ? new RegExp(str.slice(1, -1))
-      : str; // // eslint-disable-next-line
-  // console.log(str, result);
-
+      : str;
   return result;
 }
