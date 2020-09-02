@@ -397,5 +397,9 @@ testRule(_["default"], {
       code: ".foo { right: calc($carbon--spacing-01 * 1.5); }",
       description: 'Reject calc($ * number)".',
     },
+    {
+      code: ".foo { right: calc($50% - 8px); }",
+      description: 'Reject calc(% - px)".',
+    },
   ],
 });
