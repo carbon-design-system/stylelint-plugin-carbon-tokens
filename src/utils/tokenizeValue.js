@@ -34,7 +34,7 @@ const getTokenList = (inStr) => {
   // |([^\w$ (),#])
   // or space
   // |( )*
-  const tokenRegex = /('[^']*')|("[^"]*")|((-{0,1}[0-9.]+)([\w%]*))|(-{0,1}\$[\w-]+)|(([\w-#]{2,})(\(*))|(\()|(\))|(,)|([^\w$ (),#])|( )/g;
+  const tokenRegex = /('[^']*')|("[^"]*")|((-{0,1}[0-9.]+)([\w%]*))|(-{0,1}\$[\w-]+)|(([\w-#]{2,})(\(*))|(\()|(\))|(,)|([^\w\n (),#])|( )/g;
 
   // TODO: While the above regex is technically entertaining swap out for a simple character walk and state engine.
 
