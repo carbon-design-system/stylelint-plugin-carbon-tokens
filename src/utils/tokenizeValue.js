@@ -9,6 +9,7 @@ const TOKEN_TYPES = {
   BRACKETED_CONTENT: "Content of brackets",
   QUOTED_LITERAL: "Quoted literal",
   TEXT_LITERAL: "Text Literal",
+  COLOR_LITERAL: "Color Literal",
   MATH: "Math",
   LIST: "Comma sepaarted list",
   LIST_ITEM: "Item in list",
@@ -26,15 +27,15 @@ const getTokenList = (inStr) => {
   // ((-{0,1}[0-9.]+)([\w%]*))
   // or scss var with optional - prefix
   // |(-{0,1}\$[\w-]+)
-  // or css var or literal at least 2 to prevent match with operator could be function with opening (
-  // |(([\w-#]{2,})(\(*))
+  // or css var or literal at least 2 if with - to prevent match with operator could be function with opening (
+  // |(([\w-#]{2,}|\w*)
   // or ( or ) or ,
   // |(\()|(\))|(,)
   // or operator
   // |([^\w$ (),#])
   // or space
   // |( )*
-  const tokenRegex = /('[^']*')|("[^"]*")|((-{0,1}[0-9.]+)([\w%]*))|(-{0,1}\$[\w-]+)|(([\w-#]{2,})(\(*))|(\()|(\))|(,)|([^\w\n (),#])|( )/g;
+  const tokenRegex = /('[^']*')|("[^"]*")|((-{0,1}[0-9.]+)([\w%]*))|(-{0,1}\$[\w-]+)|(([\w-#]{2,}|\w+)(\(*))|(\()|(\))|(,)|([^\w\n (),#])|( )/g;
 
   // TODO: While the above regex is technically entertaining swap out for a simple character walk and state engine.
 
