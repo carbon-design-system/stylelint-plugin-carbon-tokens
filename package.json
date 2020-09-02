@@ -26,9 +26,9 @@
     "carbon-components": "^10.15.0",
     "lodash": "^4.17.19",
     "postcss": "^7.0.27",
-    "postcss-scss": "^2.0.0",
     "postcss-media-query-parser": "^0.2.3",
     "postcss-resolve-nested-selector": "^0.1.1",
+    "postcss-scss": "^2.0.0",
     "postcss-selector-parser": "^6.0.2",
     "postcss-value-parser": "^4.0.3"
   },
@@ -52,9 +52,7 @@
     "rimraf": "^3.0.2",
     "stylelint": "^13.3.2"
   },
-  "peerDependencies": {
-    "stylelint": "^8.0.0 || ^9.0.0 || ^10.0.0 || ^11.0.0 || ^12.0.0 || ^13.0.0"
-  },
+  "peerDependencies": {},
   "engines": {
     "node": ">=10"
   },

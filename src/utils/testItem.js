@@ -185,10 +185,10 @@ export default function testItem(item, ruleInfo, options, knownVariables) {
   result.isVariable = isVariable(item); // causes different result message
   result.variableItem = testItem; // last testItem found
 
-  if (result.isCalc) {
-    // eslint-disable-next-line
-    console.log("We have calc", item.raw);
-  }
+  // if (result.isCalc) {
+  //   // eslint-disable-next-line
+  //   console.log("We have calc", item.raw);
+  // }
 
   return result;
 }
