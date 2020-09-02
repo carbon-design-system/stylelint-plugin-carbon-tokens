@@ -1,16 +1,14 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 exports["default"] = parseOptions;
 
 var parseAddDefaults = function parseAddDefaults(options, defaults) {
-  var output = options
-    ? options.filter(function (option) {
-        return option.length > 0;
-      })
-    : [];
+  var output = options ? options.filter(function (option) {
+    return option.length > 0;
+  }) : [];
   var addDefaults = false;
 
   if (output.length === 0) {
@@ -39,18 +37,11 @@ var parseAddDefaults = function parseAddDefaults(options, defaults) {
 function parseOptions(options, defaults) {
   var optsOut = {}; // NOTE expects type of options to match default options
 
-  for (
-    var _i = 0, _Object$keys = Object.keys(defaults);
-    _i < _Object$keys.length;
-    _i++
-  ) {
+  for (var _i = 0, _Object$keys = Object.keys(defaults); _i < _Object$keys.length; _i++) {
     var prop = _Object$keys[_i];
 
     if (Array.isArray(defaults[prop])) {
-      optsOut[prop] = parseAddDefaults(
-        (options && options[prop]) || [],
-        defaults[prop]
-      );
+      optsOut[prop] = parseAddDefaults(options && options[prop] || [], defaults[prop]);
     } else {
       if (options && options[prop] !== undefined) {
         optsOut[prop] = options[prop];

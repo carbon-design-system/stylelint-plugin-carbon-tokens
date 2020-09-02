@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 exports["default"] = rule;
 exports.messages = exports.ruleName = void 0;
@@ -25,50 +25,35 @@ var defaultOptions = {
   ignoreValues: ["/inherit|initial|none|unset/"],
   acceptCarbonFontWeightFunction: false,
   // permit use of carbon font weight function
-  acceptCarbonTypeScaleFunction: false, // permit use of carbon type scale function
+  acceptCarbonTypeScaleFunction: false // permit use of carbon type scale function
+
 };
 
 function rule(primaryOptions, secondaryOptions) {
   var options = (0, _utils.parseOptions)(secondaryOptions, defaultOptions);
   return function (root, result) {
-    var validOptions = _stylelint.utils.validateOptions(
-      result,
-      ruleName,
-      {
-        actual: primaryOptions,
-      },
-      {
-        actual: options,
-        possible: {
-          includeProps: [isValidIncludeProps],
-          ignoreValues: [isValidIgnoreValues],
-          acceptCarbonFontWeightFunction: function acceptCarbonFontWeightFunction(
-            val
-          ) {
-            return val === undefined || typeof val === "boolean";
-          },
-          acceptCarbonTypeScaleFunction: function acceptCarbonTypeScaleFunction(
-            val
-          ) {
-            return val === undefined || typeof val === "boolean";
-          },
+    var validOptions = _stylelint.utils.validateOptions(result, ruleName, {
+      actual: primaryOptions
+    }, {
+      actual: options,
+      possible: {
+        includeProps: [isValidIncludeProps],
+        ignoreValues: [isValidIgnoreValues],
+        acceptCarbonFontWeightFunction: function acceptCarbonFontWeightFunction(val) {
+          return val === undefined || typeof val === "boolean";
         },
-        optional: true,
-      }
-    );
+        acceptCarbonTypeScaleFunction: function acceptCarbonTypeScaleFunction(val) {
+          return val === undefined || typeof val === "boolean";
+        }
+      },
+      optional: true
+    });
 
     if (!validOptions) {
       /* istanbul ignore next */
       return;
     }
 
-    (0, _utils.checkRule)(
-      root,
-      result,
-      ruleName,
-      options,
-      messages,
-      _utils2.getTypeInfo
-    );
+    (0, _utils.checkRule)(root, result, ruleName, options, messages, _utils2.getTypeInfo);
   };
 }

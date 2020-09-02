@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 exports.containerTokens = void 0;
 
@@ -13,31 +13,23 @@ var _fs = _interopRequireDefault(require("fs"));
 
 var _path = _interopRequireDefault(require("path"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var containerTokens = [];
 exports.containerTokens = containerTokens;
 
 var nodeModulesIndex = __dirname.indexOf("/node_modules/");
 
-var nodeModulesPath =
-  nodeModulesIndex > -1
-    ? __dirname.substr(0, nodeModulesIndex + 14)
-    : _path["default"].join(__dirname, "../../../../node_modules/");
+var nodeModulesPath = nodeModulesIndex > -1 ? __dirname.substr(0, nodeModulesIndex + 14) : _path["default"].join(__dirname, "../../../../node_modules/");
 
-var containerFile = _path["default"].join(
-  nodeModulesPath,
-  "@carbon/layout/scss/generated/_container.scss"
-);
+var containerFile = _path["default"].join(nodeModulesPath, "@carbon/layout/scss/generated/_container.scss");
 
 var scssFromFile = _fs["default"].readFileSync(containerFile, "utf8");
 
 var result = (0, _postcss["default"])().process("".concat(scssFromFile), {
   from: "".concat(containerFile),
   syntax: _postcssScss["default"],
-  stringifier: _postcssScss["default"].stringify,
+  stringifier: _postcssScss["default"].stringify
 });
 result.root.walkDecls(function (decl) {
   // matches form $carbon--container, $carbon--container-NN or $container-NN

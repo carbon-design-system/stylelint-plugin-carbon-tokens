@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 exports["default"] = rule;
 exports.messages = exports.ruleName = void 0;
@@ -21,51 +21,36 @@ var isValidIgnoreValues = _utils.isValidOption;
 var isValidIncludeProps = _utils.isValidOption;
 var defaultOptions = {
   // include standard motion properites
-  includeProps: [
-    "transition<2>", // only permitted definition order fails otherwise
-    "transition-duration",
-    "animation<1>", // only permitted definition order fails otherwise
-    "animation-duration",
-  ],
+  includeProps: ["transition<2>", // only permitted definition order fails otherwise
+  "transition-duration", "animation<1>", // only permitted definition order fails otherwise
+  "animation-duration"],
   //  Ignore reset values
   ignoreValues: ["/$0s?/", "/inherit|initial|none|unset/"],
-  acceptUndefinedVariables: true,
+  acceptUndefinedVariables: true
 };
 
 function rule(primaryOptions, secondaryOptions) {
   var options = (0, _utils.parseOptions)(secondaryOptions, defaultOptions);
   return function (root, result) {
-    var validOptions = _stylelint.utils.validateOptions(
-      result,
-      ruleName,
-      {
-        actual: primaryOptions,
+    var validOptions = _stylelint.utils.validateOptions(result, ruleName, {
+      actual: primaryOptions
+    }, {
+      actual: options,
+      possible: {
+        includeProps: [isValidIncludeProps],
+        ignoreValues: [isValidIgnoreValues],
+        acceptUndefinedVariables: function acceptUndefinedVariables(val) {
+          return val === undefined || typeof val === "boolean";
+        }
       },
-      {
-        actual: options,
-        possible: {
-          includeProps: [isValidIncludeProps],
-          ignoreValues: [isValidIgnoreValues],
-          acceptUndefinedVariables: function acceptUndefinedVariables(val) {
-            return val === undefined || typeof val === "boolean";
-          },
-        },
-        optional: true,
-      }
-    );
+      optional: true
+    });
 
     if (!validOptions) {
       /* istanbul ignore next */
       return;
     }
 
-    (0, _utils.checkRule)(
-      root,
-      result,
-      ruleName,
-      options,
-      messages,
-      _utils2.getMotionInfo
-    );
+    (0, _utils.checkRule)(root, result, ruleName, options, messages, _utils2.getMotionInfo);
   };
 }

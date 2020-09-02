@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 exports["default"] = testItem;
 
@@ -9,136 +9,31 @@ var _ = require(".");
 
 var _tokenizeValue = require("./tokenizeValue");
 
-function _slicedToArray(arr, i) {
-  return (
-    _arrayWithHoles(arr) ||
-    _iterableToArrayLimit(arr, i) ||
-    _unsupportedIterableToArray(arr, i) ||
-    _nonIterableRest()
-  );
-}
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
 
-function _nonIterableRest() {
-  throw new TypeError(
-    "Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
-  );
-}
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
 
-function _iterableToArrayLimit(arr, i) {
-  if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr)))
-    return;
-  var _arr = [];
-  var _n = true;
-  var _d = false;
-  var _e = undefined;
-  try {
-    for (
-      var _i = arr[Symbol.iterator](), _s;
-      !(_n = (_s = _i.next()).done);
-      _n = true
-    ) {
-      _arr.push(_s.value);
-      if (i && _arr.length === i) break;
-    }
-  } catch (err) {
-    _d = true;
-    _e = err;
-  } finally {
-    try {
-      if (!_n && _i["return"] != null) _i["return"]();
-    } finally {
-      if (_d) throw _e;
-    }
-  }
-  return _arr;
-}
+function _iterableToArrayLimit(arr, i) { if (typeof Symbol === "undefined" || !(Symbol.iterator in Object(arr))) return; var _arr = []; var _n = true; var _d = false; var _e = undefined; try { for (var _i = arr[Symbol.iterator](), _s; !(_n = (_s = _i.next()).done); _n = true) { _arr.push(_s.value); if (i && _arr.length === i) break; } } catch (err) { _d = true; _e = err; } finally { try { if (!_n && _i["return"] != null) _i["return"](); } finally { if (_d) throw _e; } } return _arr; }
 
-function _arrayWithHoles(arr) {
-  if (Array.isArray(arr)) return arr;
-}
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
 
-function _createForOfIteratorHelper(o, allowArrayLike) {
-  var it;
-  if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
-    if (
-      Array.isArray(o) ||
-      (it = _unsupportedIterableToArray(o)) ||
-      (allowArrayLike && o && typeof o.length === "number")
-    ) {
-      if (it) o = it;
-      var i = 0;
-      var F = function F() {};
-      return {
-        s: F,
-        n: function n() {
-          if (i >= o.length) return { done: true };
-          return { done: false, value: o[i++] };
-        },
-        e: function e(_e2) {
-          throw _e2;
-        },
-        f: F,
-      };
-    }
-    throw new TypeError(
-      "Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
-    );
-  }
-  var normalCompletion = true,
-    didErr = false,
-    err;
-  return {
-    s: function s() {
-      it = o[Symbol.iterator]();
-    },
-    n: function n() {
-      var step = it.next();
-      normalCompletion = step.done;
-      return step;
-    },
-    e: function e(_e3) {
-      didErr = true;
-      err = _e3;
-    },
-    f: function f() {
-      try {
-        if (!normalCompletion && it["return"] != null) it["return"]();
-      } finally {
-        if (didErr) throw err;
-      }
-    },
-  };
-}
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e2) { throw _e2; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e3) { didErr = true; err = _e3; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray(o, minLen);
-}
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayLikeToArray(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-  return arr2;
-}
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 var checkTokens = function checkTokens(variable, ruleInfo) {
   var result = {
     accepted: false,
-    done: false,
+    done: false
   };
 
   var _iterator = _createForOfIteratorHelper(ruleInfo.tokens),
-    _step;
+      _step;
 
   try {
-    for (_iterator.s(); !(_step = _iterator.n()).done; ) {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
       var tokenSet = _step.value;
       var tokenSpecs = tokenSet.values;
 
@@ -164,7 +59,7 @@ var testItemInner = function testItemInner(item, ruleInfo) {
   // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
   var result = {
     accepted: false,
-    done: false,
+    done: false
   };
 
   if (item === undefined) {
@@ -173,17 +68,15 @@ var testItemInner = function testItemInner(item, ruleInfo) {
     return result;
   } // cope with css variables
 
-  var _item =
-    item.type === _tokenizeValue.TOKEN_TYPES.FUNCTION && item.value === "var"
-      ? item.items[0]
-      : item;
+
+  var _item = item.type === _tokenizeValue.TOKEN_TYPES.FUNCTION && item.value === "var" ? item.items[0] : item;
 
   if (_item.type === _tokenizeValue.TOKEN_TYPES.FUNCTION) {
     var _iterator2 = _createForOfIteratorHelper(ruleInfo.functions),
-      _step2;
+        _step2;
 
     try {
-      for (_iterator2.s(); !(_step2 = _iterator2.n()).done; ) {
+      for (_iterator2.s(); !(_step2 = _iterator2.n()).done;) {
         var funcSet = _step2.value;
         var funcSpecs = funcSet.values;
         var matchesFuncSpec = funcSpecs.some(function (funcSpec) {
@@ -199,23 +92,14 @@ var testItemInner = function testItemInner(item, ruleInfo) {
               // IF TRUE a list then _item.items[0] === list which contains LIST_ITEMS in which case LIST_ITEMS.items is what we are interested in
               // IF FALSE a list contains values which could include math or brackets or function calls
               // NOTE: we do not try to deal with function calls inside function calls
-              var inList = !!(
-                _item.items &&
-                _item.items[0].type === _tokenizeValue.TOKEN_TYPES.LIST
-              );
-              var paramItems = inList
-                ? _item.items[0].items // List[0] contains list items
-                : _item.items; // otherwise contains Tokens
+              var inList = !!(_item.items && _item.items[0].type === _tokenizeValue.TOKEN_TYPES.LIST);
+              var paramItems = inList ? _item.items[0].items // List[0] contains list items
+              : _item.items; // otherwise contains Tokens
 
-              var _parts$1$substring$sp = parts[1]
-                  .substring(0, parts[1].length - 1)
-                  .split(" "),
-                _parts$1$substring$sp2 = _slicedToArray(
-                  _parts$1$substring$sp,
-                  2
-                ),
-                start = _parts$1$substring$sp2[0],
-                end = _parts$1$substring$sp2[1];
+              var _parts$1$substring$sp = parts[1].substring(0, parts[1].length - 1).split(" "),
+                  _parts$1$substring$sp2 = _slicedToArray(_parts$1$substring$sp, 2),
+                  start = _parts$1$substring$sp2[0],
+                  end = _parts$1$substring$sp2[1];
 
               start = (0, _.parseRangeValue)(start, paramItems.length);
               end = (0, _.parseRangeValue)(end, paramItems.length) || start; // start if end empty
@@ -225,20 +109,14 @@ var testItemInner = function testItemInner(item, ruleInfo) {
                   break; // ignore parts after undefined
                 } // raw value of list and non-list item does allow for math
 
+
                 var tokenResult = {};
 
-                if (
-                  _item.isCalc &&
-                  paramItems[pos].type === _tokenizeValue.TOKEN_TYPES.MATH
-                ) {
+                if (_item.isCalc && paramItems[pos].type === _tokenizeValue.TOKEN_TYPES.MATH) {
                   // allow proportional + or - checkTokens
                   var mathItems = paramItems[pos].items;
 
-                  if (
-                    mathItems[0].type ===
-                      _tokenizeValue.TOKEN_TYPES.NUMERIC_LITERAL &&
-                    ["vw", "vh", "%"].indexOf(mathItems[0].units) > -1
-                  ) {
+                  if (mathItems[0].type === _tokenizeValue.TOKEN_TYPES.NUMERIC_LITERAL && ["vw", "vh", "%"].indexOf(mathItems[0].units) > -1) {
                     // does start with a proportional value
                     if (["+", "-"].indexOf(mathItems[1].value) > -1) {
                       // is plus or minus
@@ -253,6 +131,7 @@ var testItemInner = function testItemInner(item, ruleInfo) {
                   return false;
                 }
               } // all variables in function passed so return true
+
 
               return true;
             } else {
@@ -295,6 +174,7 @@ var testItemInner = function testItemInner(item, ruleInfo) {
   //     regexFuncAndItem
   //   );
   // }
+
 
   result.isCalc = _item.isCalc;
   return result;

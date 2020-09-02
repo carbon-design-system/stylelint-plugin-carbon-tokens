@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 exports.sassColorFunctions = void 0;
 var sassColorFunctions = ["rgba(1)"];

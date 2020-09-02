@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 exports["default"] = void 0;
 
@@ -13,14 +13,12 @@ var _motionTokenUse = _interopRequireDefault(require("./motion-token-use"));
 
 var _typeTokenUse = _interopRequireDefault(require("./type-token-use"));
 
-function _interopRequireDefault(obj) {
-  return obj && obj.__esModule ? obj : { default: obj };
-}
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { "default": obj }; }
 
 var _default = {
   "theme-token-use": _themeTokenUse["default"],
   "layout-token-use": _layoutTokenUse["default"],
   "motion-token-use": _motionTokenUse["default"],
-  "type-token-use": _typeTokenUse["default"],
+  "type-token-use": _typeTokenUse["default"]
 };
 exports["default"] = _default;

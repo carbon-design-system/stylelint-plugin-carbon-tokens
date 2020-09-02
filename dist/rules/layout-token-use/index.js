@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 exports["default"] = rule;
 exports.messages = exports.ruleName = void 0;
@@ -21,83 +21,56 @@ var isValidIgnoreValues = _utils.isValidOption;
 var isValidIncludeProps = _utils.isValidOption;
 var defaultOptions = {
   // include standard layout properites
-  includeProps: [
-    "/^margin$/<1 4>",
-    "/^margin-/",
-    "/^padding$/<1 4>",
-    "/^padding-/",
-    "left",
-    "top",
-    "bottom",
-    "right",
-    "transform[/^translate/]", // the following are not really layout or spacing
-    // "height",
-    // "width",
-    // "/^border$/<1 -2>",
-    // "/^border-/",
-    // "/^box-shadow$/<1 -2>",
+  includeProps: ["/^margin$/<1 4>", "/^margin-/", "/^padding$/<1 4>", "/^padding-/", "left", "top", "bottom", "right", "transform[/^translate/]" // the following are not really layout or spacing
+  // "height",
+  // "width",
+  // "/^border$/<1 -2>",
+  // "/^border-/",
+  // "/^box-shadow$/<1 -2>",
   ],
   // ignore transparent, common reset values, 0, proportioanl values,
-  ignoreValues: [
-    "/inherit|initial|auto|none|unset/",
-    "/^0[a-z]*$/",
-    "/^[0-9]*(%|vw|vh)$/",
-  ],
+  ignoreValues: ["/inherit|initial|auto|none|unset/", "/^0[a-z]*$/", "/^[0-9]*(%|vw|vh)$/"],
   acceptUndefinedVariables: true,
   acceptContainerTokens: false,
   acceptIconSizeTokens: false,
   acceptFluidSpacingTokens: false,
-  acceptCarbonMiniUnitsFunction: false,
+  acceptCarbonMiniUnitsFunction: false
 };
 
 function rule(primaryOptions, secondaryOptions) {
   var options = (0, _utils.parseOptions)(secondaryOptions, defaultOptions);
   return function (root, result) {
-    var validOptions = _stylelint.utils.validateOptions(
-      result,
-      ruleName,
-      {
-        actual: primaryOptions,
-      },
-      {
-        actual: options,
-        possible: {
-          includeProps: [isValidIncludeProps],
-          ignoreValues: [isValidIgnoreValues],
-          acceptUndefinedVariables: function acceptUndefinedVariables(val) {
-            return val === undefined || typeof val === "boolean";
-          },
-          acceptContainerTokens: function acceptContainerTokens(val) {
-            return val === undefined || typeof val === "boolean";
-          },
-          acceptIconSizeTokens: function acceptIconSizeTokens(val) {
-            return val === undefined || typeof val === "boolean";
-          },
-          acceptFluidSpacingTokens: function acceptFluidSpacingTokens(val) {
-            return val === undefined || typeof val === "boolean";
-          },
-          acceptCarbonMiniUnitsFunction: function acceptCarbonMiniUnitsFunction(
-            val
-          ) {
-            return val === undefined || typeof val === "boolean";
-          },
+    var validOptions = _stylelint.utils.validateOptions(result, ruleName, {
+      actual: primaryOptions
+    }, {
+      actual: options,
+      possible: {
+        includeProps: [isValidIncludeProps],
+        ignoreValues: [isValidIgnoreValues],
+        acceptUndefinedVariables: function acceptUndefinedVariables(val) {
+          return val === undefined || typeof val === "boolean";
         },
-        optional: true,
-      }
-    );
+        acceptContainerTokens: function acceptContainerTokens(val) {
+          return val === undefined || typeof val === "boolean";
+        },
+        acceptIconSizeTokens: function acceptIconSizeTokens(val) {
+          return val === undefined || typeof val === "boolean";
+        },
+        acceptFluidSpacingTokens: function acceptFluidSpacingTokens(val) {
+          return val === undefined || typeof val === "boolean";
+        },
+        acceptCarbonMiniUnitsFunction: function acceptCarbonMiniUnitsFunction(val) {
+          return val === undefined || typeof val === "boolean";
+        }
+      },
+      optional: true
+    });
 
     if (!validOptions) {
       /* istanbul ignore next */
       return;
     }
 
-    (0, _utils.checkRule)(
-      root,
-      result,
-      ruleName,
-      options,
-      messages,
-      _utils2.getLayoutInfo
-    );
+    (0, _utils.checkRule)(root, result, ruleName, options, messages, _utils2.getLayoutInfo);
   };
 }

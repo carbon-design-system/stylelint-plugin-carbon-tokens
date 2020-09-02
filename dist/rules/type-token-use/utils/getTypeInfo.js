@@ -1,7 +1,7 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 exports["default"] = getTypeInfo;
 
@@ -11,8 +11,7 @@ function getTypeInfo(options) {
   return {
     // There are no type tokens that are used directly
     // Types are applied via mixins and functions
-    tokens: [
-      //   {
+    tokens: [//   {
       //     source: "Type",
       //     accept: true,
       //     values: typeTokens,
@@ -22,9 +21,9 @@ function getTypeInfo(options) {
       var result = {
         source: "Type",
         accept: options[item.accept],
-        values: [item.name],
+        values: [item.name]
       };
       return result;
-    }),
+    })
   };
 }
