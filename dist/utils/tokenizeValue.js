@@ -1,80 +1,15 @@
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
-  value: true,
+  value: true
 });
 exports.TOKEN_TYPES = exports.tokenizeValue = void 0;
 
-function _createForOfIteratorHelper(o, allowArrayLike) {
-  var it;
-  if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) {
-    if (
-      Array.isArray(o) ||
-      (it = _unsupportedIterableToArray(o)) ||
-      (allowArrayLike && o && typeof o.length === "number")
-    ) {
-      if (it) o = it;
-      var i = 0;
-      var F = function F() {};
-      return {
-        s: F,
-        n: function n() {
-          if (i >= o.length) return { done: true };
-          return { done: false, value: o[i++] };
-        },
-        e: function e(_e) {
-          throw _e;
-        },
-        f: F,
-      };
-    }
-    throw new TypeError(
-      "Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."
-    );
-  }
-  var normalCompletion = true,
-    didErr = false,
-    err;
-  return {
-    s: function s() {
-      it = o[Symbol.iterator]();
-    },
-    n: function n() {
-      var step = it.next();
-      normalCompletion = step.done;
-      return step;
-    },
-    e: function e(_e2) {
-      didErr = true;
-      err = _e2;
-    },
-    f: function f() {
-      try {
-        if (!normalCompletion && it["return"] != null) it["return"]();
-      } finally {
-        if (didErr) throw err;
-      }
-    },
-  };
-}
+function _createForOfIteratorHelper(o, allowArrayLike) { var it; if (typeof Symbol === "undefined" || o[Symbol.iterator] == null) { if (Array.isArray(o) || (it = _unsupportedIterableToArray(o)) || allowArrayLike && o && typeof o.length === "number") { if (it) o = it; var i = 0; var F = function F() {}; return { s: F, n: function n() { if (i >= o.length) return { done: true }; return { done: false, value: o[i++] }; }, e: function e(_e) { throw _e; }, f: F }; } throw new TypeError("Invalid attempt to iterate non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); } var normalCompletion = true, didErr = false, err; return { s: function s() { it = o[Symbol.iterator](); }, n: function n() { var step = it.next(); normalCompletion = step.done; return step; }, e: function e(_e2) { didErr = true; err = _e2; }, f: function f() { try { if (!normalCompletion && it["return"] != null) it["return"](); } finally { if (didErr) throw err; } } }; }
 
-function _unsupportedIterableToArray(o, minLen) {
-  if (!o) return;
-  if (typeof o === "string") return _arrayLikeToArray(o, minLen);
-  var n = Object.prototype.toString.call(o).slice(8, -1);
-  if (n === "Object" && o.constructor) n = o.constructor.name;
-  if (n === "Map" || n === "Set") return Array.from(o);
-  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n))
-    return _arrayLikeToArray(o, minLen);
-}
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
 
-function _arrayLikeToArray(arr, len) {
-  if (len == null || len > arr.length) len = arr.length;
-  for (var i = 0, arr2 = new Array(len); i < len; i++) {
-    arr2[i] = arr[i];
-  }
-  return arr2;
-}
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
 
 var TOKEN_TYPES = {
   NUMERIC_LITERAL: "Numeric literal",
@@ -91,7 +26,7 @@ var TOKEN_TYPES = {
   MATH: "Math",
   LIST: "Comma sepaarted list",
   LIST_ITEM: "Item in list",
-  UNKNOWN: "Unknown",
+  UNKNOWN: "Unknown"
 };
 exports.TOKEN_TYPES = TOKEN_TYPES;
 
@@ -136,52 +71,52 @@ var getTokenList = function getTokenList(inStr) {
     if (token[RP_SCSS_VAR]) {
       results.push({
         type: TOKEN_TYPES.SCSS_VAR,
-        value: token[RP_SCSS_VAR],
+        value: token[RP_SCSS_VAR]
       });
     } else if (token[RP_FUNCTION]) {
       results.push({
         type: TOKEN_TYPES.FUNCTION,
-        value: token[RP_LITERAL],
+        value: token[RP_LITERAL]
       });
       results.push({
         type: TOKEN_TYPES.LEFT_BR,
-        value: token[RP_FUNCTION],
+        value: token[RP_FUNCTION]
       });
     } else if (token[RP_OPERATOR]) {
       results.push({
         type: TOKEN_TYPES.OPERATOR,
-        value: token[RP_OPERATOR],
+        value: token[RP_OPERATOR]
       });
     } else if (token[RP_LITERAL]) {
       results.push({
         type: TOKEN_TYPES.TEXT_LITERAL,
-        value: token[RP_LITERAL],
+        value: token[RP_LITERAL]
       });
     } else if (token[RP_LEFT_BR]) {
       results.push({
         type: TOKEN_TYPES.LEFT_BR,
-        value: token[RP_LEFT_BR],
+        value: token[RP_LEFT_BR]
       });
     } else if (token[RP_RIGHT_BR]) {
       results.push({
         type: TOKEN_TYPES.RIGHT_BR,
-        value: token[RP_RIGHT_BR],
+        value: token[RP_RIGHT_BR]
       });
     } else if (token[RP_COMMA]) {
       results.push({
         type: TOKEN_TYPES.SEPARATOR,
-        value: token[RP_COMMA],
+        value: token[RP_COMMA]
       });
     } else if (token[RP_SQ_STR] || token[RP_DQ_STR]) {
       results.push({
         type: TOKEN_TYPES.QUOTED_LITERAL,
-        value: token[RP_SQ_STR] || token[RP_DQ_STR],
+        value: token[RP_SQ_STR] || token[RP_DQ_STR]
       });
     } else if (token[RP_NUM]) {
       results.push({
         type: TOKEN_TYPES.NUMERIC_LITERAL,
         value: token[RP_NUM],
-        units: token[RP_UNIT],
+        units: token[RP_UNIT]
       });
     } else if (token[RP_SPACE]) {
       if (results.length) {
@@ -192,6 +127,7 @@ var getTokenList = function getTokenList(inStr) {
       //     type: TOKEN_TYPES.UNKNOWN,
       //     value: token,
       //   });
+
     }
 
     token = tokenRegex.exec(inStr);
@@ -204,21 +140,12 @@ var addToCurrent = function addToCurrent(current, value) {
   var target;
   var host = current;
 
-  if (
-    current.type === TOKEN_TYPES.FUNCTION ||
-    current.type === TOKEN_TYPES.BRACKETED_CONTENT
-  ) {
+  if (current.type === TOKEN_TYPES.FUNCTION || current.type === TOKEN_TYPES.BRACKETED_CONTENT) {
     // may have one or more items
-    host =
-      current.items.length && current.items[0].type === TOKEN_TYPES.LIST
-        ? current.items[0]
-        : current;
+    host = current.items.length && current.items[0].type === TOKEN_TYPES.LIST ? current.items[0] : current;
 
     if (host.type === TOKEN_TYPES.LIST) {
-      host.raw = ""
-        .concat(host.raw, ", ")
-        .concat(value.raw)
-        .concat(value.spaceAfter ? " " : "");
+      host.raw = "".concat(host.raw, ", ").concat(value.raw).concat(value.spaceAfter ? " " : "");
     }
   } else {
     host = current;
@@ -226,10 +153,7 @@ var addToCurrent = function addToCurrent(current, value) {
 
   if (host.type === TOKEN_TYPES.LIST) {
     target = host.items[host.items.length - 1];
-    target.raw = ""
-      .concat(target.raw || "")
-      .concat(value.raw)
-      .concat(value.spaceAfter ? " " : "");
+    target.raw = "".concat(target.raw || "").concat(value.raw).concat(value.spaceAfter ? " " : "");
   } else {
     target = host;
   }
@@ -262,42 +186,31 @@ var doEndMath = function doEndMath(current) {
 // where T.type = BRACKETED_CONTENT, T.items contains array of T
 // where T.type = FUNCTION, T.items contains an array of T representing the parameters
 
+
 var tokenizeValue = function tokenizeValue(value) {
   var tokenList = getTokenList(value);
   var result = {
-    items: [],
+    items: []
   };
   var current = result;
   var lastToken = {};
 
   var _iterator = _createForOfIteratorHelper(tokenList),
-    _step;
+      _step;
 
   try {
-    for (_iterator.s(); !(_step = _iterator.n()).done; ) {
+    for (_iterator.s(); !(_step = _iterator.n()).done;) {
       var token = _step.value;
-      var endsMath =
-        current.type === TOKEN_TYPES.MATH &&
-        maybeMathEnd(lastToken.type) &&
-        maybeMathEnd(token.type);
-      token.raw = token.units
-        ? "".concat(token.value).concat(token.units)
-        : "".concat(token.value);
+      var endsMath = current.type === TOKEN_TYPES.MATH && maybeMathEnd(lastToken.type) && maybeMathEnd(token.type);
+      token.raw = token.units ? "".concat(token.value).concat(token.units) : "".concat(token.value);
       var space = token.spaceAfter ? " " : "";
 
       if (endsMath) {
         current = doEndMath(current);
       }
 
-      if (
-        token.type !== TOKEN_TYPES.LEFT_BR &&
-        token.type !== TOKEN_TYPES.FUNCTION &&
-        token.type !== TOKEN_TYPES.SEPARATOR
-      ) {
-        current.raw = ""
-          .concat(current.raw || "")
-          .concat(token.raw)
-          .concat(space);
+      if (token.type !== TOKEN_TYPES.LEFT_BR && token.type !== TOKEN_TYPES.FUNCTION && token.type !== TOKEN_TYPES.SEPARATOR) {
+        current.raw = "".concat(current.raw || "").concat(token.raw).concat(space);
       }
 
       if (token.type === TOKEN_TYPES.FUNCTION) {
@@ -308,7 +221,7 @@ var tokenizeValue = function tokenizeValue(value) {
           parent: current,
           creatingFunction: true,
           isCalc: token.value === "calc",
-          raw: "".concat(token.value, "("),
+          raw: "".concat(token.value, "(")
         };
         current = _item;
       } else if (token.type === TOKEN_TYPES.LEFT_BR) {
@@ -319,7 +232,7 @@ var tokenizeValue = function tokenizeValue(value) {
             items: [],
             type: TOKEN_TYPES.BRACKETED_CONTENT,
             parent: current,
-            raw: "(",
+            raw: "("
           };
           current = _item2;
         }
@@ -338,11 +251,7 @@ var tokenizeValue = function tokenizeValue(value) {
           items: [prev],
           parent: current,
           type: TOKEN_TYPES.MATH,
-          raw: ""
-            .concat(prev.raw)
-            .concat(lastToken.spaceAfter ? " " : "")
-            .concat(token.raw)
-            .concat(space),
+          raw: "".concat(prev.raw).concat(lastToken.spaceAfter ? " " : "").concat(token.raw).concat(space)
         };
         current.raw = current.raw.substring(0, current.raw.indexOf(prev.raw));
         current = _item4;
@@ -350,54 +259,42 @@ var tokenizeValue = function tokenizeValue(value) {
       } else if (token.type === TOKEN_TYPES.SEPARATOR) {
         // list all the way to end of function or value
         if (current.type !== TOKEN_TYPES.LIST) {
-          if (
-            current.type === TOKEN_TYPES.FUNCTION ||
-            current.type === TOKEN_TYPES.BRACKETED_CONTENT
-          ) {
+          if (current.type === TOKEN_TYPES.FUNCTION || current.type === TOKEN_TYPES.BRACKETED_CONTENT) {
             var _item5 = {
-              items: [
-                {
-                  type: TOKEN_TYPES.LIST_ITEM,
-                  items: current.items,
-                  raw: lastToken.raw,
-                },
-                {
-                  type: TOKEN_TYPES.LIST_ITEM,
-                  items: [],
-                  raw: "",
-                },
-              ],
+              items: [{
+                type: TOKEN_TYPES.LIST_ITEM,
+                items: current.items,
+                raw: lastToken.raw
+              }, {
+                type: TOKEN_TYPES.LIST_ITEM,
+                items: [],
+                raw: ""
+              }],
               type: TOKEN_TYPES.LIST,
-              raw: lastToken.raw,
+              raw: lastToken.raw
             };
             current.items = [_item5];
           } else {
             current.type = TOKEN_TYPES.LIST;
-            current.items = [
-              {
-                type: TOKEN_TYPES.LIST_ITEM,
-                items: current.items,
-                raw: current.raw,
-              },
-              {
-                type: TOKEN_TYPES.LIST_ITEM,
-                items: [],
-                raw: "",
-              },
-            ];
+            current.items = [{
+              type: TOKEN_TYPES.LIST_ITEM,
+              items: current.items,
+              raw: current.raw
+            }, {
+              type: TOKEN_TYPES.LIST_ITEM,
+              items: [],
+              raw: ""
+            }];
           }
         } else {
           current.items.push({
             type: TOKEN_TYPES.LIST_ITEM,
             items: [],
-            raw: "",
+            raw: ""
           });
         }
 
-        current.raw = ""
-          .concat(current.raw || "")
-          .concat(token.raw)
-          .concat(space);
+        current.raw = "".concat(current.raw || "").concat(token.raw).concat(space);
       } else {
         addToCurrent(current, token);
       }
