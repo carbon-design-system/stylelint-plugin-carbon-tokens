@@ -8,7 +8,7 @@ export default function isValidOption(option) {
     if (!getPropSpec(opt)) {
       // eslint-disable-next-line no-console
       console.warn(
-        "Invalid option supplied, expect regular expression or string."
+        `Invalid option supplied, expect regular expression or string. "${opt}"`
       );
 
       return false;

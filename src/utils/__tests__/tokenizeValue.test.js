@@ -2,13 +2,13 @@ import { tokenizeValue /*, TOKEN_TYPES */ } from "..";
 
 describe("tokenizeValue", () => {
   it("Handles empty input", () => {
-    expect(tokenizeValue([""])).toEqual({
+    expect(tokenizeValue("")).toEqual({
       items: [],
     });
   });
 
   it("Handles single quoted strings", () => {
-    expect(tokenizeValue(["'a value'"])).toEqual({
+    expect(tokenizeValue("'a value'")).toEqual({
       items: [
         {
           type: "Quoted literal",
@@ -21,7 +21,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles double quoted strings", () => {
-    expect(tokenizeValue(['"a value"'])).toEqual({
+    expect(tokenizeValue('"a value"')).toEqual({
       items: [
         {
           type: "Quoted literal",
@@ -34,7 +34,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles single $varaiable", () => {
-    expect(tokenizeValue(["$test"])).toEqual({
+    expect(tokenizeValue("$test")).toEqual({
       items: [
         {
           type: "scss variable",
@@ -47,7 +47,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles single CSS varaiable", () => {
-    expect(tokenizeValue(["var(--test)"])).toEqual({
+    expect(tokenizeValue("var(--test)")).toEqual({
       items: [
         {
           items: [
@@ -68,7 +68,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles a function with multiple parameters", () => {
-    expect(tokenizeValue(["func('test', 'a value')"])).toEqual({
+    expect(tokenizeValue("func('test', 'a value')")).toEqual({
       items: [
         {
           items: [
@@ -112,7 +112,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles calc", () => {
-    expect(tokenizeValue(["calc(100vw - 20px)"])).toEqual({
+    expect(tokenizeValue("calc(100vw - 20px)")).toEqual({
       items: [
         {
           items: [
@@ -153,7 +153,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles math", () => {
-    expect(tokenizeValue(["100vw - 20px"])).toEqual({
+    expect(tokenizeValue("100vw - 20px")).toEqual({
       items: [
         {
           items: [
@@ -186,7 +186,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles multiple space seperated values", () => {
-    expect(tokenizeValue(["$a $b $c"])).toEqual({
+    expect(tokenizeValue("$a $b $c")).toEqual({
       items: [
         { type: "scss variable", value: "$a", spaceAfter: true, raw: "$a" },
         { type: "scss variable", value: "$b", spaceAfter: true, raw: "$b" },
@@ -197,7 +197,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles comma seperated list", () => {
-    expect(tokenizeValue(["$a, $b,$c"])).toEqual({
+    expect(tokenizeValue("$a, $b,$c")).toEqual({
       items: [
         {
           type: "Item in list",
@@ -217,6 +217,14 @@ describe("tokenizeValue", () => {
       ],
       raw: "$a, $b,$c",
       type: "Comma sepaarted list",
+    });
+  });
+
+  it("Handles unexpected input", () => {
+    expect(tokenizeValue("'unterminated quoted literal")).toMatchObject({
+      items: [],
+      message: "Failed to parse value",
+      raw: "'unterminated quoted literal",
     });
   });
 });

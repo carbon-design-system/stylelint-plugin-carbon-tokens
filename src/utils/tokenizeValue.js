@@ -188,7 +188,7 @@ const doEndMath = (current) => {
 // where T.type = BRACKETED_CONTENT, T.items contains array of T
 // where T.type = FUNCTION, T.items contains an array of T representing the parameters
 
-const tokenizeValue = (value) => {
+const tokenizeValueInner = (value) => {
   const tokenList = getTokenList(value);
   const result = { items: [] };
   let current = result;
@@ -320,6 +320,18 @@ const tokenizeValue = (value) => {
 
       addToCurrent(current, item);
     }
+  }
+
+  return result;
+};
+
+const tokenizeValue = (value) => {
+  let result;
+
+  try {
+    result = tokenizeValueInner(value);
+  } catch (error) {
+    result = { items: [], raw: value, error, message: "Failed to parse value" };
   }
 
   return result;

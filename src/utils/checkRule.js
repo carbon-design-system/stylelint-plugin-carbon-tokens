@@ -127,36 +127,49 @@ export default function checkRule(
   root.walkDecls((decl) => {
     const tokenizedValue = tokenizeValue(decl.value);
 
-    if (isVariable(decl.prop)) {
-      // add to variable declarations
-      // expects all variables to appear before use
-      // expects all variables to be simple (not map or list)
-      knownVariables[normaliseVariableName(decl.prop)] =
-        tokenizedValue.items[0];
-    }
+    if (tokenizedValue && tokenizedValue.error) {
+      // eslint-disable-next-line
+      console.warn(
+        `Unexpected syntax in value: "${decl.value}". If you see this message PLEASE copy the contents of this message and raise a github issue. Thankyou in advance for helping us to improve the tool.`
+      );
+    } else {
+      if (isVariable(decl.prop)) {
+        // add to variable declarations
+        // expects all variables to appear before use
+        // expects all variables to be simple (not map or list)
+        knownVariables[normaliseVariableName(decl.prop)] =
+          tokenizedValue.items[0];
+      }
 
-    // read the prop spec
-    const propSpec = checkProp(decl.prop, options.includeProps);
+      // read the prop spec
+      const propSpec = checkProp(decl.prop, options.includeProps);
 
-    if (propSpec) {
-      // is supported prop
-      // Some color properties have
-      // variable parameters lists where color is not at a fixed position
+      if (propSpec) {
+        // is supported prop
+        // Some color properties have
+        // variable parameters lists where color is not at a fixed position
 
-      const ruleInfo = getRuleInfo(options);
+        const ruleInfo = getRuleInfo(options);
 
-      if (tokenizedValue.type === TOKEN_TYPES.LIST) {
-        for (const listItem of tokenizedValue.items) {
-          checkItems(listItem.items, decl, propSpec, ruleInfo, knownVariables);
+        if (tokenizedValue.type === TOKEN_TYPES.LIST) {
+          for (const listItem of tokenizedValue.items) {
+            checkItems(
+              listItem.items,
+              decl,
+              propSpec,
+              ruleInfo,
+              knownVariables
+            );
+          }
+        } else {
+          checkItems(
+            tokenizedValue.items,
+            decl,
+            propSpec,
+            ruleInfo,
+            knownVariables
+          );
         }
-      } else {
-        checkItems(
-          tokenizedValue.items,
-          decl,
-          propSpec,
-          ruleInfo,
-          knownVariables
-        );
       }
     }
   });
