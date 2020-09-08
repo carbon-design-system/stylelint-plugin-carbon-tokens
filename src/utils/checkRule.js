@@ -130,7 +130,9 @@ export default function checkRule(
     if (tokenizedValue && tokenizedValue.error) {
       // eslint-disable-next-line
       console.warn(
-        `Unexpected syntax in value: "${decl.value}". If you see this message PLEASE copy the contents of this message and raise a github issue. Thankyou in advance for helping us to improve the tool.`
+        `Unexpected syntax in decl: ${JSON.stringify(
+          decl
+        )}. \n\n HELP. If you see this message PLEASE copy the contents of the message above and raise a github issue. Thankyou in advance for helping us to improve the tool.`
       );
     } else {
       if (isVariable(decl.prop)) {
