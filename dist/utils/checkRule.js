@@ -171,16 +171,16 @@ function _arrayWithHoles(arr) {
   if (Array.isArray(arr)) return arr;
 }
 
-var checkIgnoreToken = function checkIgnoreToken(item) {
-  var ignoredValues =
+var checkAcceptValues = function checkAcceptValues(item) {
+  var acceptedValues =
     arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : [];
   // Simply check raw values, improve later
   var result = false;
 
   if (item) {
-    result = ignoredValues.some(function (ignoredValue) {
+    result = acceptedValues.some(function (acceptedValue) {
       // regex or string
-      var testValue = (0, _.parseToRegexOrString)(ignoredValue);
+      var testValue = (0, _.parseToRegexOrString)(acceptedValue);
       return (
         (testValue.test && testValue.test(item.raw)) || testValue === item.raw
       );
@@ -200,8 +200,7 @@ function checkRule(root, result, ruleName, options, messages, getRuleInfo) {
   ) {
     // Expects to be passed an item containing either a token { raw, type, value} or
     // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
-    // Make checkIgnoreToken look at raw or value and deal with item being undefined (not found in range).
-    if (!checkIgnoreToken(item, options.ignoreValues)) {
+    if (!checkAcceptValues(item, options.acceptValues)) {
       var testResult = (0, _.testItem)(item, ruleInfo, options, knownVariables);
       var message;
 

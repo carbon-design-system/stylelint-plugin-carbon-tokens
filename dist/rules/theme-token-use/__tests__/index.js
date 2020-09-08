@@ -71,7 +71,7 @@ testRule(_["default"], {
   config: [
     true,
     {
-      ignoreValues: ["/((--)|[$])my-value-accept/", "*"],
+      acceptValues: ["/((--)|[$])my-value-accept/", "*"],
     },
   ],
   syntax: "scss",
@@ -141,7 +141,7 @@ testRule(_["default"], {
   config: [
     true,
     {
-      ignoreValues: ["/((--)|[$])my-value-accept/", "*"],
+      acceptValues: ["/((--)|[$])my-value-accept/", "*"],
       acceptCarbonColorTokens: true,
     },
   ],
@@ -168,7 +168,7 @@ testRule(_["default"], {
   config: [
     true,
     {
-      ignoreValues: ["/((--)|[$])my-value-accept/", "*"],
+      acceptValues: ["/((--)|[$])my-value-accept/", "*"],
       acceptIBMColorTokens: true,
     },
   ],
