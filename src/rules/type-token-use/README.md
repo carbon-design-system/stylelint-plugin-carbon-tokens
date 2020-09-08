@@ -10,7 +10,7 @@ It optionally allows use of carbon--font-weight function.
 const defaultOptions = {
   // include standard type properites
   includeProps: ["font", "/^font-*/", "line-height", "letterSpacing"],
-  ignoreValues: ["/inherit|initial/"],
+  acceptValues: ["/inherit|initial/"],
   acceptCarbonFontWeightFunction: false, // permit use of carbon font weight function
   acceptCarbonTypeScaleFunction: false, // permit use of carbon type scale function
 };

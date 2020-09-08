@@ -12,7 +12,7 @@ import { getThemeInfo } from "./utils";
 export const ruleName = namespace("theme-token-use");
 export const messages = getMessages(ruleName, "theme");
 
-const isValidIgnoreValues = isValidOption;
+const isValidAcceptValues = isValidOption;
 const isValidIncludeProps = isValidOption;
 
 const defaultOptions = {
@@ -25,8 +25,8 @@ const defaultOptions = {
     "fill",
     "stroke",
   ],
-  // ignore transparent, common reset values and 0 on its own
-  ignoreValues: [
+  // Accept transparent, common reset values and 0 on its own
+  acceptValues: [
     "/transparent|inherit|initial|none|unset/",
     "/^0$/",
     "currentColor",
@@ -50,7 +50,7 @@ export default function rule(primaryOptions, secondaryOptions) {
         actual: options,
         possible: {
           includeProps: [isValidIncludeProps],
-          ignoreValues: [isValidIgnoreValues],
+          acceptValues: [isValidAcceptValues],
           acceptCarbonColorTokens: (val) =>
             val === undefined || typeof val === "boolean",
           acceptIBMColorTokens: (val) =>

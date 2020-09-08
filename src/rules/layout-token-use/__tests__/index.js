@@ -83,7 +83,7 @@ testRule(rule, {
   config: [
     true,
     {
-      ignoreValues: ["/((--)|[$])my-value-accept/", "*"],
+      acceptValues: ["/((--)|[$])my-value-accept/", "*"],
     },
   ],
   syntax: "scss",
@@ -93,9 +93,9 @@ testRule(rule, {
 
 // testConfig(rule, {
 //   ruleName,
-//   description: "Check for invalid ignore values",
+//   description: "Check for invalid accept values",
 //   message: messages.expected,
-//   config: ["always", { ignoreValues: ["/wibble/"] }],
+//   config: ["always", { acceptValues: ["/wibble/"] }],
 // });
 
 // "$container-01", // only bad for default options

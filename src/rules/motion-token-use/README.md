@@ -19,8 +19,8 @@ const defaultOptions = {
     "animation<1>", // only permitted definition order fails otherwise
     "animation-duration",
   ],
-  //  Ignore reset values
-  ignoreValues: ["0s", "0"],
+  //  Accept reset values
+  acceptValues: ["0s", "0"],
   acceptUndefinedVariables: true,
 };
 ```

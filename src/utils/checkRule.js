@@ -11,14 +11,14 @@ import {
   parseRangeValue,
 } from "./";
 
-const checkIgnoreToken = (item, ignoredValues = []) => {
+const checkAcceptValues = (item, acceptedValues = []) => {
   // Simply check raw values, improve later
   let result = false;
 
   if (item) {
-    result = ignoredValues.some((ignoredValue) => {
+    result = acceptedValues.some((acceptedValue) => {
       // regex or string
-      const testValue = parseToRegexOrString(ignoredValue);
+      const testValue = parseToRegexOrString(acceptedValue);
 
       return (
         (testValue.test && testValue.test(item.raw)) || testValue === item.raw
@@ -41,8 +41,7 @@ export default function checkRule(
     // Expects to be passed an item containing either a token { raw, type, value} or
     // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
 
-    // Make checkIgnoreToken look at raw or value and deal with item being undefined (not found in range).
-    if (!checkIgnoreToken(item, options.ignoreValues)) {
+    if (!checkAcceptValues(item, options.acceptValues)) {
       const testResult = testItem(item, ruleInfo, options, knownVariables);
       let message;
 

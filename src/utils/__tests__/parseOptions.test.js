@@ -3,7 +3,7 @@ import { parseOptions } from "..";
 describe("parseOptions", () => {
   const defaults = {
     includeProps: ["1", "3", "4"],
-    ignoreValues: ["1", "5", "6"],
+    acceptValues: ["1", "5", "6"],
     acceptCarbonColorTokens: false,
     acceptIBMColorTokens: false,
     acceptUndefinedVariables: true,
@@ -23,11 +23,11 @@ describe("parseOptions", () => {
 
   const options3 = { includeProps: [] };
 
-  it("Uses default options when options without ignoreValues", () => {
+  it("Uses default options when options without acceptValues", () => {
     expect(parseOptions(options3, defaults)).toEqual(defaults);
   });
 
-  const options4 = { ignoreValues: [] };
+  const options4 = { acceptValues: [] };
 
   it("Uses default options when options without includeProps", () => {
     expect(parseOptions(options4, defaults)).toEqual(defaults);
@@ -35,7 +35,7 @@ describe("parseOptions", () => {
 
   const options5 = {
     includeProps: ["*"],
-    ignoreValues: ["*"],
+    acceptValues: ["*"],
   };
 
   it("Uses default options when using * only", () => {
@@ -44,12 +44,12 @@ describe("parseOptions", () => {
 
   const options6 = {
     includeProps: ["*", "banana"],
-    ignoreValues: ["fish", "*"],
+    acceptValues: ["fish", "*"],
   };
 
   const combinedOpts1 = {
     includeProps: ["banana"].concat(defaults.includeProps),
-    ignoreValues: ["fish"].concat(defaults.ignoreValues),
+    acceptValues: ["fish"].concat(defaults.acceptValues),
     acceptCarbonColorTokens: false,
     acceptIBMColorTokens: false,
     acceptUndefinedVariables: true,
@@ -61,15 +61,15 @@ describe("parseOptions", () => {
 
   const options7 = {
     includeProps: ["*", "cake", "2", "3"],
-    ignoreValues: ["eagle", "*", "5", "7"],
+    acceptValues: ["eagle", "*", "5", "7"],
   };
 
   const combinedOpts2 = {
     includeProps: ["cake", "2", "3"].concat(
       defaults.includeProps.filter((item) => item !== "3")
     ),
-    ignoreValues: ["eagle", "5", "7"].concat(
-      defaults.ignoreValues.filter((item) => item !== "5")
+    acceptValues: ["eagle", "5", "7"].concat(
+      defaults.acceptValues.filter((item) => item !== "5")
     ),
     acceptCarbonColorTokens: false,
     acceptIBMColorTokens: false,

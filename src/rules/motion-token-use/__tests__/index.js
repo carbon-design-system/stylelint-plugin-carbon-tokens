@@ -142,7 +142,7 @@ testRule(rule, {
 
 // testConfig(rule, {
 //   ruleName,
-//   description: "Check for invalid ignore values",
+//   description: "Check for invalid accept values",
 //   message: messages.expected,
-//   config: ["always", { ignoreValues: ["/wibble/"] }],
+//   config: ["always", { acceptValues: ["/wibble/"] }],
 // });

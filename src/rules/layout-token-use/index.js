@@ -12,7 +12,7 @@ import { getLayoutInfo } from "./utils";
 export const ruleName = namespace("layout-token-use");
 export const messages = getMessages(ruleName, "layout");
 
-const isValidIgnoreValues = isValidOption;
+const isValidAcceptValues = isValidOption;
 const isValidIncludeProps = isValidOption;
 
 const defaultOptions = {
@@ -34,8 +34,8 @@ const defaultOptions = {
     // "/^border-/",
     // "/^box-shadow$/<1 -2>",
   ],
-  // ignore transparent, common reset values, 0, proportioanl values,
-  ignoreValues: [
+  // Accept transparent, common reset values, 0, proportioanl values,
+  acceptValues: [
     "/inherit|initial|auto|none|unset/",
     "/^0[a-z]*$/",
     "/^[0-9]*(%|vw|vh)$/",
@@ -61,7 +61,7 @@ export default function rule(primaryOptions, secondaryOptions) {
         actual: options,
         possible: {
           includeProps: [isValidIncludeProps],
-          ignoreValues: [isValidIgnoreValues],
+          acceptValues: [isValidAcceptValues],
           acceptUndefinedVariables: (val) =>
             val === undefined || typeof val === "boolean",
           acceptContainerTokens: (val) =>

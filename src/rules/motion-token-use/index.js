@@ -12,7 +12,7 @@ import { getMotionInfo } from "./utils";
 export const ruleName = namespace("motion-token-use");
 export const messages = getMessages(ruleName, "motion");
 
-const isValidIgnoreValues = isValidOption;
+const isValidAcceptValues = isValidOption;
 const isValidIncludeProps = isValidOption;
 
 const defaultOptions = {
@@ -23,8 +23,8 @@ const defaultOptions = {
     "animation<1>", // only permitted definition order fails otherwise
     "animation-duration",
   ],
-  //  Ignore reset values
-  ignoreValues: ["/$0s?/", "/inherit|initial|none|unset/"],
+  //  Accept reset values
+  acceptValues: ["/$0s?/", "/inherit|initial|none|unset/"],
   acceptUndefinedVariables: true,
 };
 
@@ -42,7 +42,7 @@ export default function rule(primaryOptions, secondaryOptions) {
         actual: options,
         possible: {
           includeProps: [isValidIncludeProps],
-          ignoreValues: [isValidIgnoreValues],
+          acceptValues: [isValidAcceptValues],
           acceptUndefinedVariables: (val) =>
             val === undefined || typeof val === "boolean",
         },

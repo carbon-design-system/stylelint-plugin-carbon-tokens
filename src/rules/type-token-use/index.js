@@ -12,13 +12,13 @@ import { getTypeInfo } from "./utils";
 export const ruleName = namespace("type-token-use");
 export const messages = getMessages(ruleName, "type");
 
-const isValidIgnoreValues = isValidOption;
+const isValidAcceptValues = isValidOption;
 const isValidIncludeProps = isValidOption;
 
 const defaultOptions = {
   // include standard type properites
   includeProps: ["font", "/^font-*/", "line-height", "letterSpacing"],
-  ignoreValues: ["/inherit|initial|none|unset/"],
+  acceptValues: ["/inherit|initial|none|unset/"],
   acceptCarbonFontWeightFunction: false, // permit use of carbon font weight function
   acceptCarbonTypeScaleFunction: false, // permit use of carbon type scale function
 };
@@ -37,7 +37,7 @@ export default function rule(primaryOptions, secondaryOptions) {
         actual: options,
         possible: {
           includeProps: [isValidIncludeProps],
-          ignoreValues: [isValidIgnoreValues],
+          acceptValues: [isValidAcceptValues],
           acceptCarbonFontWeightFunction: (val) =>
             val === undefined || typeof val === "boolean",
           acceptCarbonTypeScaleFunction: (val) =>

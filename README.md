@@ -8,6 +8,10 @@ It includes, but may not be limited to, linting for @carbon/themes, @carbon/colo
 
 Not incluced, as they're not used through SCSS, are Carbon Icons, Grid and any other DOM related checks..
 
+## Please be helpful
+
+Before we start this project is a work in progress which deliberately outputs warnings when it comes accross a syntax that has not yet been catered for. If you see one of these warnings please raise an issue so that it can be addressed.
+
 ## Stylelint
 
 Before you can use this stylelint plugin you will need to install and configure stylelint.
@@ -64,6 +68,12 @@ modules.exports = {
 
 NOTE: Motion is shown above with a standard stylelint secondary option `severity` set to `warning` the default is `error`.
 
+## Variables
+
+SCSS `$variables` and CSS `--variable` declared before are checked.
+
+## Secondary Options
+
 Each of the rules listed above have secondary options which are documented in the individual rule README.md files along with defaults..
 
 - [Layout token use](./src/rules/layout-token-use/README.md)
@@ -71,14 +81,40 @@ Each of the rules listed above have secondary options which are documented in th
 - [Theme token use](./src/rules/theme-token-use/README.md)
 - [Type token use](./src/rules/type-token-use/README.md)
 
-### Common secondary options
+The simplest type of secondary options are boolean and of the form `acceptSomeThing: Boolean`
 
-These properties can be omitted to accept the defaults.
+e.g.
 
-- includeProps
-- ignoreValues
+```js
+modules.exports = {
+  // stylelint.js
+  //...
+  rules: {
+    //... other rules
+    'carbon/type-token-use': [
+      true,
+      {
+        severity: 'warning',
+        acceptUndefinedVariables: true,
+        acceptCarbonTypeScaleFunction: false,
+      },
+    ],
+    //...other rules
+  },
+  //...
+};
+```
 
-Accepts arrays of strings and/or Regex followed by a range in angled brackets.
+NOTE: By default rules accept SCSS and CSS variables not defined in the current file prior to their use. Set acceptUndefinedVariables to false to disable this behaviour.
+
+## Advanced options
+
+These options when omitted to accept the defaults. They are intended to support non-standard use cases and accept values that use a syntax which may well need some refining as the project moves forward.
+
+- includeProps: Array
+- acceptValues: Array
+
+Arrays of strings and/or Regex followed by a range in angled brackets.
 
 The defaults for these are defined in the individual README files listed above.
 
@@ -88,11 +124,9 @@ The defaults for these are defined in the individual README files listed above.
 
 The last option here shows how you could elect to check your own tokens refer to values acceptable to the linter.
 
-- `ignoreValues: ["$/^\\$my-color--/"]` - Ignore SCSS variables starting "\$my-color--"
+- `acceptValues: ["$/^\\$my-color--/"]` - Accept SCSS variables starting "\$my-color--"
 
-NOTE: By default rules ignore SCSS and CSS variables not defined in the current prior to their use.
-
-#### includeProps Range
+### includeProps Range
 
 Can innclude a range value expressed inside greater than and less than signs.
 
@@ -111,7 +145,7 @@ The range value allows values to be selected from a multipart value such as a bo
 - A single value means only that value in a list is checked
 - Two values represent start and end values of a range in the list.
 
-#### includeProps specific values
+### includeProps specific values
 
 For some props e.g. transform we are only intereste in values that match a certain criteria.
 
@@ -121,7 +155,7 @@ e.g. `translate[/^transform/]`
 
 In this case only values starting `transform` are tested so not `skew` for example. As per the prop definition the can be a plain string or regular expression.
 
-#### Function values specific range for function parameters
+### Function values specific range for function parameters
 
 If not specified then parameters are treated as a single value.
 
@@ -130,7 +164,3 @@ The range for parameters is specified in ()
 e.g. `calc(1)` or `translate(1,2)`.
 
 NOTE: this is not currently a user configurable option.
-
-### Variables
-
-SCSS `$variables` and CSS `--variable` declared before are checked
