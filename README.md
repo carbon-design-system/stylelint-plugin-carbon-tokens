@@ -12,7 +12,7 @@ Not incluced, as they're not used through SCSS, are Carbon Icons, Grid and any o
 
 Before we start this project is a work in progress which deliberately outputs warnings when it comes accross a syntax that has not yet been catered for. If you see one of these warnings please raise an issue so that it can be addressed.
 
-## Stylelint
+## Stylelint
 
 Before you can use this stylelint plugin you will need to install and configure stylelint.
 
