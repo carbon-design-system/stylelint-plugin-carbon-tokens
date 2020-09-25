@@ -1,7 +1,7 @@
 "use strict"; // eslint-disable-line strict
 
-const _ = require("lodash");
-const stylelint = require("stylelint");
+import _ from "lodash";
+import stylelint from "stylelint";
 
 global.testRule = (rule, schema) => {
   expect.extend({

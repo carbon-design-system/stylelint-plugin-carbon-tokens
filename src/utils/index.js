@@ -10,3 +10,4 @@ export { getPropSpec, checkProp, parseRangeValue } from "./propUtils";
 export { default as checkRule } from "./checkRule";
 export { tokenizeValue, TOKEN_TYPES } from "./tokenizeValue";
 export { default as getMessages } from "./messages";
+export { default as getCarbonFilePath } from "./getCarbonFilePath";

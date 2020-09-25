@@ -41,7 +41,6 @@
     "eslint": "^6.8.0",
     "eslint-config-prettier": "^6.11.0",
     "eslint-config-stylelint": "^11.1.0",
-    "eslint-plugin-lodash": "^7.1.0",
     "github-contributors-list": "^1.2.4",
     "husky": "^4.2.5",
     "jest": "^25.3.0",
@@ -71,9 +70,6 @@
       "jest": true,
       "node": true
     },
-    "plugins": [
-      "lodash"
-    ],
     "globals": {
       "testRule": true,
       "testConfig": true

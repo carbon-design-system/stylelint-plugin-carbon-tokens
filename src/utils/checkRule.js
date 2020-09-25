@@ -127,7 +127,7 @@ export default function checkRule(
     const tokenizedValue = tokenizeValue(decl.value);
 
     if (tokenizedValue && tokenizedValue.error) {
-      // eslint-disable-next-line
+      // eslint-disable-next-line no-console
       console.warn(
         `Unexpected syntax in decl: ${JSON.stringify(
           decl
