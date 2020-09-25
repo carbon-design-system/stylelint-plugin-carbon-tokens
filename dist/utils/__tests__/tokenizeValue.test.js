@@ -251,4 +251,16 @@ describe("tokenizeValue", function () {
       raw: "'unterminated quoted literal",
     });
   });
+  it("Treats #{$var} as is scss variable", function () {
+    expect((0, _.tokenizeValue)("#{$i-am-not-easily-knowable}")).toMatchObject({
+      items: [
+        {
+          raw: "#{$i-am-not-easily-knowable}",
+          type: "scss variable",
+          value: "#{$i-am-not-easily-knowable}",
+        },
+      ],
+      raw: "#{$i-am-not-easily-knowable}",
+    });
+  });
 });

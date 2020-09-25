@@ -306,7 +306,7 @@ function checkRule(root, result, ruleName, options, messages, getRuleInfo) {
     var tokenizedValue = (0, _.tokenizeValue)(decl.value);
 
     if (tokenizedValue && tokenizedValue.error) {
-      // eslint-disable-next-line
+      // eslint-disable-next-line no-console
       console.warn(
         "Unexpected syntax in decl: ".concat(
           JSON.stringify(decl),

@@ -114,7 +114,7 @@ var getTokenList = function getTokenList(inStr) {
   // |([^\w$ (),#])
   // or space
   // |( )*
-  var tokenRegex = /('[^']*')|("[^"]*")|((-{0,1}[0-9.]+)([\w%]*))|(-{0,1}\$[\w-]+)|(([\w-#]{2,}|\w+)(\(*))|(\()|(\))|(,)|([^\w\n (),#])|( )/g; // TODO: While the above regex is technically entertaining swap out for a simple character walk and state engine.
+  var tokenRegex = /('[^']*')|("[^"]*")|((-{0,1}[0-9.]+)([\w%]*))|(-{0,1}(#{)*\$[\w-]+}*)|(([\w-#]{2,})(\(*))|(\()|(\))|(,)|([^\w$\n (),#])|( )/g; // TODO: While the above regex is technically entertaining swap out for a simple character walk and state engine.
   // regex parts
 
   var RP_SQ_STR = 1;
@@ -122,13 +122,13 @@ var getTokenList = function getTokenList(inStr) {
   var RP_NUM = 4;
   var RP_UNIT = 5;
   var RP_SCSS_VAR = 6;
-  var RP_LITERAL = 8;
-  var RP_FUNCTION = 9;
-  var RP_LEFT_BR = 10;
-  var RP_RIGHT_BR = 11;
-  var RP_COMMA = 12;
-  var RP_OPERATOR = 13;
-  var RP_SPACE = 14;
+  var RP_LITERAL = 9;
+  var RP_FUNCTION = 10;
+  var RP_LEFT_BR = 11;
+  var RP_RIGHT_BR = 12;
+  var RP_COMMA = 13;
+  var RP_OPERATOR = 14;
+  var RP_SPACE = 15;
   var token = tokenRegex.exec(inStr);
   var results = [];
 
