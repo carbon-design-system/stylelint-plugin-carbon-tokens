@@ -26,7 +26,7 @@ const getTokenList = (inStr) => {
   // or numeric with or without units
   // ((-{0,1}[0-9.]+)([\w%]*))
   // or scss var with optional - prefix
-  // |(-{0,1}\$[\w-]+)
+  // |(-{0,1}(#{)*\$[\w-]+}*)
   // or css var or literal at least 2 if with - to prevent match with operator could be function with opening (
   // |(([\w-#]{2,}|\w*)
   // or ( or ) or ,

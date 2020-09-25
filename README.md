@@ -91,10 +91,10 @@ modules.exports = {
   //...
   rules: {
     //... other rules
-    'carbon/type-token-use': [
+    "carbon/type-token-use": [
       true,
       {
-        severity: 'warning',
+        severity: "warning",
         acceptUndefinedVariables: true,
         acceptCarbonTypeScaleFunction: false,
       },
