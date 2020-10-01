@@ -12,6 +12,12 @@ var _utils = require("../../utils");
 
 var _utils2 = require("./utils");
 
+/**
+ * Copyright IBM Corp. 2016, 2020
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 // import valueParser from "postcss-value-parser";
 var ruleName = (0, _utils.namespace)("type-token-use");
 exports.ruleName = ruleName;

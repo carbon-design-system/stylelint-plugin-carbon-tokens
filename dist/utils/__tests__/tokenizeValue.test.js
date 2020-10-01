@@ -2,6 +2,12 @@
 
 var _ = require("..");
 
+/**
+ * Copyright IBM Corp. 2016, 2020
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
 describe("tokenizeValue", function () {
   it("Handles empty input", function () {
     expect((0, _.tokenizeValue)("")).toEqual({
