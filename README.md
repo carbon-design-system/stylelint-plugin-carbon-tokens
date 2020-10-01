@@ -1,4 +1,4 @@
-# stylelint-carbon-use
+# stylelint-plugin-carbon-tokens
 
 This project is intended to help users identify cases where tokens, functions and mixins defined as part of various projects relating to the Carbon Design System are used. [www.carbondesignsystem.com]
 
@@ -24,15 +24,11 @@ E.g. // stylelint-disable-next-line
 ## Installation
 
 ```bash
-# NOT YET DEPLOYED TO NPM
-# npm install @carbon/stylelint-carbon-use
-npm install git+https://git@github.com/lee-chase/carbon-use.git
+npm install stylelint-plugin-carbon-tokens
 ```
 
 ```bash
-# NOT YET DEPLOYED TO NPM
-# yarn add @carbon/stylelint-carbon-use
-yarn add git+https://git@github.com/lee-chase/carbon-use.git
+yarn add stylelint-plugin-carbon-tokens
 ```
 
 ## Usage
@@ -43,7 +39,7 @@ Add it to your stylelint config `plugins` array.
 module.exports = {
   // stylelint.js
   // ...
-  plugins: ["stylelint-carbon-use"],
+  plugins: ["stylelint-plugin-carbon-tokens"],
   //...
 };
 ```

@@ -1,6 +1,6 @@
 {
-  "name": "stylelint-carbon-use",
-  "version": "0.0.1",
+  "name": "stylelint-plugin-carbon-tokens",
+  "version": "0.1.0",
   "description": "A stylelint plugin to support the use of carbon component tokens.",
   "keywords": [
     "stylelint",
@@ -111,7 +111,7 @@
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lee-chase/carbon-use.git"
+    "url": "git+https://github.com/lee-chase/stylelint-plugin-carbon-tokens.git"
   },
   "jest": {
     "clearMocks": true,
