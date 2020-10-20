@@ -64,6 +64,65 @@ modules.exports = {
 
 NOTE: Motion is shown above with a standard stylelint secondary option `severity` set to `warning` the default is `error`.
 
+## Recommended config
+
+### Strict
+
+```js
+  rules: {
+    // ADDED TO TEST CARBON USE
+    'carbon/layout-token-use': [true, { severity: 'error', acceptUndefinedVariables: false }],
+    'carbon/motion-token-use': [true, { severity: 'error', acceptUndefinedVariables: false }],
+    'carbon/theme-token-use': [true, { severity: 'error', acceptUndefinedVariables: false }],
+    'carbon/type-token-use': [
+      true,
+      {
+        severity: 'error',
+        acceptCarbonTypeScaleFunction: true,
+        acceptCarbonFontWeightFunction: true,
+      },
+    ],
+  },
+```
+
+### Default
+
+```js
+  rules: {
+    // ADDED TO TEST CARBON USE
+    'carbon/layout-token-use': [true, { severity: 'error' }],
+    'carbon/motion-token-use': [true, { severity: 'error' }],
+    'carbon/theme-token-use': [true, { severity: 'error' }],
+    'carbon/type-token-use': [
+      true,
+      {
+        severity: 'error',
+        acceptCarbonTypeScaleFunction: true,
+        acceptCarbonFontWeightFunction: true,
+      },
+    ],
+  },
+```
+
+### Light touch
+
+```js
+  rules: {
+    // ADDED TO TEST CARBON USE
+    'carbon/layout-token-use': [true, { severity: 'warning' }],
+    'carbon/motion-token-use': [true, { severity: 'warning' }],
+    'carbon/theme-token-use': [true, { severity: 'warning' }],
+    'carbon/type-token-use': [
+      true,
+      {
+        severity: 'warning',
+        acceptCarbonTypeScaleFunction: true,
+        acceptCarbonFontWeightFunction: true,
+      },
+    ],
+  },
+```
+
 ## Variables
 
 SCSS `$variables` and CSS `--variable` declared before are checked.
