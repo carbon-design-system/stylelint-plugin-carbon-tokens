@@ -5,48 +5,28 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import postcss from "postcss";
-import scss from "postcss-scss";
-import fs from "fs";
-import path from "path";
+import { colors } from "@carbon/colors";
+// colors comes in as object depth 2
+// keys are color names, values are objects
+// value objects container key: intensity number, value actual color
+import { formatTokenName } from "@carbon/themes";
 
-const carbonColorsMixin = "carbon--colors()";
-const ibmColorsMixin = "ibm--colors()";
-let carbonColorTokens = [];
-let ibmColorTokens = []; // deprecated
+const carbonColorPrefix = "$carbon--";
+const ibmColorPrefix = "$ibm-color__";
 
-const nodeModulesIndex = __dirname.indexOf("/node_modules/");
-const nodeModulesPath =
-  nodeModulesIndex > -1
-    ? __dirname.substr(0, nodeModulesIndex + 14)
-    : path.join(__dirname, "../../../../node_modules/");
+const carbonColorTokens = [];
+const ibmColorTokens = []; // deprecated
 
-const colorFile = path.join(nodeModulesPath, "@carbon/colors/scss/mixins.scss");
+for (const key in colors) {
+  const colorMap = colors[key];
 
-const scssFromFile = fs.readFileSync(colorFile, "utf8");
+  for (const index in colorMap) {
+    const colorName = formatTokenName(`${key}${index}`);
 
-const result = postcss().process(`${scssFromFile}`, {
-  from: `${colorFile}`,
-  syntax: scss,
-  stringifier: scss.stringify,
-});
-
-result.root.walkAtRules((atRule) => {
-  if (atRule.name === "mixin") {
-    if ([ibmColorsMixin, carbonColorsMixin].includes(atRule.params)) {
-      const processedResults = [];
-
-      atRule.each((rule) => {
-        processedResults.push(rule.prop);
-      });
-
-      if (atRule.params === ibmColorsMixin) {
-        ibmColorTokens = processedResults;
-      } else {
-        carbonColorTokens = processedResults;
-      }
-    }
+    carbonColorTokens.push(`${carbonColorPrefix}${colorName}`);
+    carbonColorTokens.push(`$${colorName}`);
+    ibmColorTokens.push(`${ibmColorPrefix}${colorName}`);
   }
-});
+}
 
 export { carbonColorTokens, ibmColorTokens };
