@@ -7,7 +7,7 @@
 
 import { tokens, formatTokenName } from "@carbon/themes";
 
-// map themes to recognisable tokens
+// map themes to recognizable tokens
 const themeTokens = tokens.colors.map((token) => `$${formatTokenName(token)}`);
 // permitted carbon theme functions
 // TODO: read this from carbon
