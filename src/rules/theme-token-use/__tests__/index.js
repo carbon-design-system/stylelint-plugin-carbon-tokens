@@ -255,3 +255,38 @@ testRule(rule, {
     },
   ],
 });
+
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptUndefinedVariables: false,
+      includeProps: ["/\\$.*do-check.*$/", "*"],
+    },
+  ],
+  syntax: "scss",
+  accept: [
+    {
+      code: "$do-check-me: $ui-01;",
+      description: "Should check '$do-check-me' using a carbon theme token",
+    },
+    {
+      code: "$also-do-check-me-too: $ui-01;",
+      description:
+        "Should check '$also-do-check-me-too' using a carbon theme token",
+    },
+    {
+      code: "$do-not-check-me-too: $ui-01;",
+      description:
+        "Should ignore '$do-not-check-me' using a carbon theme token",
+    },
+  ],
+  reject: [
+    {
+      code: "$do-check-me: red;",
+      description:
+        "Should check '$do-check-me` not using a carbon theme token'",
+    },
+  ],
+});
