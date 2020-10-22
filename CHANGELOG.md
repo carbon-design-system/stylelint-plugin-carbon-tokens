@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.0
+
+- feat: switch layout to use js import of tokens
+
 ## 0.2.0
 
 - chore: Removed dist from github
