@@ -5,11 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { containerTokens } from "./initContainer";
-import { fluidSpacingTokens } from "./initFluidSpacing";
-import { iconSizeTokens } from "./initIconSize";
-import { layoutTokens, layoutFunctions } from "./initLayout";
-import { spacingTokens } from "./initSpacing";
+import {
+  containerTokens,
+  fluidSpacingTokens,
+  iconSizeTokens,
+  layoutTokens,
+  layoutFunctions,
+  spacingTokens,
+} from "./initAll";
 
 export default function getLayoutInfo(options) {
   return {

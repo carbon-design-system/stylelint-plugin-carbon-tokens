@@ -16,7 +16,7 @@ const getMessages = (ruleName, label) => {
     rejectedVariable: (property, variable, value) =>
       `Expected carbon ${label} token, mixin or function to be set for variable "${variable}" used by "${property}" found "${value}".`,
     rejectedMaths: (property, value) =>
-      `Expected calc of the form calc(P o $). Where P is a proportional value (vw, vh or %), o is + or - and $ is a carbon ${label} token, mixin or function for "${property}" found "${value}".`,
+      `Expected calc of the form calc(P O #{$}) or calc(-1 * #{$}). Where 'P' is in (vw, vh or %), 'O' is + or -,  '$' is a carbon ${label} token, mixin or function for "${property}" found "${value}".`,
   });
 };
 

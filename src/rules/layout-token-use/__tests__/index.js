@@ -338,6 +338,7 @@ testRule(rule, {
       description: `Reject calc($ - $)".`,
     },
     {
+      // This test case is not supported as it would otherwise allow any value to be created from a token
       code: `.foo { right: calc(#{$carbon--spacing-01} * 1.5); }`,
       description: `Reject calc($ * number)".`,
     },
