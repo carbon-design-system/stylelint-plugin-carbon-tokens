@@ -39,7 +39,6 @@ result.root.walkDecls((decl) => {
 });
 
 // permitted carbon motion functions
-// TODO: read this from carbon
-// const motionFunctions = ["motion", "carbon--motion"];
+const motionFunctions = ["motion", "carbon--motion"];
 
-export { motionTokens };
+export { motionTokens, motionFunctions };

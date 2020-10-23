@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { motionTokens } from "./initMotionTokens";
+import { motionTokens, motionFunctions } from "./initMotionTokens";
 
 export default function getMotionInfo() {
   return {
@@ -17,11 +17,11 @@ export default function getMotionInfo() {
       },
     ],
     functions: [
-      //   {
-      //     source: "Motion",
-      //     accept: true,
-      //     values: motionFunctions,
-      //   },
+      {
+        source: "Motion",
+        accept: true,
+        values: motionFunctions,
+      },
     ],
   };
 }
