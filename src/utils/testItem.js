@@ -5,17 +5,70 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { isVariable, parseRangeValue } from ".";
+import { isVariable, normalizeVariableName, parseRangeValue } from ".";
 import { TOKEN_TYPES } from "./tokenizeValue";
 
-const checkTokens = function (variable, ruleInfo) {
+const unquoteIfNeeded = (val) => {
+  if (typeof val === "string") {
+    if (
+      (val.startsWith("'") && val.endsWith("'")) ||
+      (val.startsWith('"') && val.endsWith('"'))
+    ) {
+      return val.substring(1, val.length - 1);
+    }
+  }
+
+  return val;
+};
+
+const preProcessToken = (variable, knownVariables) => {
+  const regex = /#{([$\w-]*)}/g;
+  const replacements = [];
+  let result = variable;
+
+  for (const match of variable.matchAll(regex)) {
+    const replacement = knownVariables[match[1]];
+
+    if (replacement) {
+      replacements.push({
+        index: match.index,
+        match: match[0],
+        replacement: unquoteIfNeeded(replacement.raw),
+      });
+    } else {
+      replacements.push({
+        index: match.index,
+        match: match[0],
+        replacement: match[1],
+      });
+    }
+  }
+
+  for (let i = replacements.length - 1; i >= 0; i--) {
+    const replacement = replacements[i];
+
+    const lastIndex = result.lastIndexOf(replacement.match);
+
+    result =
+      result.substr(0, lastIndex) +
+      replacement.replacement +
+      result.substr(lastIndex + replacement.match.length);
+  }
+
+  result = normalizeVariableName(result);
+
+  while (knownVariables[result]) {
+    result = normalizeVariableName(knownVariables[result].raw);
+  }
+
+  return result;
+};
+
+const checkTokens = function (variable, ruleInfo, knownVariables) {
   const result = { accepted: false, done: false };
 
   // cope with variables wrapped in #{}
-  const _variable =
-    variable.startsWith("#{") && variable.endsWith("}")
-      ? variable.substr(2, variable.length - 3)
-      : variable;
+  const _variable = preProcessToken(variable, knownVariables);
 
   for (const tokenSet of ruleInfo.tokens) {
     const tokenSpecs = tokenSet.values;
@@ -31,7 +84,7 @@ const checkTokens = function (variable, ruleInfo) {
   return result;
 };
 
-const checkProportionalMath = (mathItems, ruleInfo) => {
+const checkProportionalMath = (mathItems, ruleInfo, knownVariables) => {
   let otherItem;
 
   if (
@@ -49,14 +102,14 @@ const checkProportionalMath = (mathItems, ruleInfo) => {
   if (otherItem !== undefined) {
     if (["+", "-"].indexOf(mathItems[1].value) > -1) {
       // is plus or minus
-      return checkTokens(otherItem.raw, ruleInfo);
+      return checkTokens(otherItem.raw, ruleInfo, knownVariables);
     }
   }
 
   return {};
 };
 
-const checkNegation = (mathItems, ruleInfo) => {
+const checkNegation = (mathItems, ruleInfo, knownVariables) => {
   let otherItem;
   let numeric;
 
@@ -77,14 +130,14 @@ const checkNegation = (mathItems, ruleInfo) => {
   if (otherItem !== undefined) {
     if (["*", "/"].indexOf(mathItems[1].value) > -1 && numeric.raw === "-1") {
       // is times or divide by -1
-      return checkTokens(otherItem.raw, ruleInfo);
+      return checkTokens(otherItem.raw, ruleInfo, knownVariables);
     }
   }
 
   return {};
 };
 
-const testItemInner = function (item, ruleInfo) {
+const testItemInner = function (item, ruleInfo, knownVariables) {
   // Expects to be passed an item containing either a item { raw, type, value} or
   // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
   const result = {
@@ -149,13 +202,25 @@ const testItemInner = function (item, ruleInfo) {
                 // allow proportional + or - checkTokens
                 const mathItems = paramItems[pos].items;
 
-                tokenResult = checkProportionalMath(mathItems, ruleInfo);
+                tokenResult = checkProportionalMath(
+                  mathItems,
+                  ruleInfo,
+                  knownVariables
+                );
 
                 if (!tokenResult.accepted) {
-                  tokenResult = checkNegation(mathItems, ruleInfo);
+                  tokenResult = checkNegation(
+                    mathItems,
+                    ruleInfo,
+                    knownVariables
+                  );
                 }
               } else {
-                tokenResult = checkTokens(paramItems[pos].raw, ruleInfo);
+                tokenResult = checkTokens(
+                  paramItems[pos].raw,
+                  ruleInfo,
+                  knownVariables
+                );
               }
 
               if (!tokenResult.accepted) {
@@ -179,13 +244,14 @@ const testItemInner = function (item, ruleInfo) {
       }
     }
   } else if (item.type === TOKEN_TYPES.MATH) {
-    const tokenResult = checkNegation(item.items, ruleInfo);
+    const tokenResult = checkNegation(item.items, ruleInfo, knownVariables);
 
     result.source = tokenResult.source;
     result.accepted = tokenResult.accepted;
     result.done = tokenResult.done;
-  } else if (_item.type === TOKEN_TYPES.SCSS_VAR) {
-    const tokenResult = checkTokens(_item.value, ruleInfo);
+  } else {
+    // test what ever is left over
+    const tokenResult = checkTokens(_item.value, ruleInfo, knownVariables);
 
     result.source = tokenResult.source;
     result.accepted = tokenResult.accepted;
@@ -219,6 +285,9 @@ export default function testItem(item, ruleInfo, options, knownVariables) {
   // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
   let result = {};
 
+  //   // eslint-disable-next-line no-console
+  // console.log(JSON.stringify(item));
+
   if (item === undefined) {
     // do not accept undefined
     result.done = true;
@@ -226,30 +295,14 @@ export default function testItem(item, ruleInfo, options, knownVariables) {
     return result;
   }
 
-  let testItem = item;
-
-  result.done = false;
-  while (testItem && !result.done) {
-    // loop checking testItem;
-    result = testItemInner(testItem, ruleInfo);
-
-    if (!result.done && isVariable(testItem)) {
-      // may be a variable referring to a item
-      testItem = knownVariables[testItem.raw];
-
-      if (!testItem) {
-        if (options.acceptUndefinedVariables) {
-          result.accepted = true;
-        }
-
-        result.done = true;
-      }
-    } else {
-      result.done = true;
-    }
-  }
+  result = testItemInner(item, ruleInfo, knownVariables);
 
   result.isVariable = isVariable(item); // causes different result message
+
+  if (!result.done && result.isVariable && options.acceptUndefinedVariables) {
+    result.accepted = true;
+  }
+
   result.variableItem = testItem; // last testItem found
 
   // if (result.isCalc) {

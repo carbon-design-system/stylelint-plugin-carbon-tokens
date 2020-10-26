@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export default function normaliseVariableName(variable) {
+export default function normalizeVariableName(variable) {
   if (variable.startsWith("--")) {
     return `var(${variable})`;
   } else {

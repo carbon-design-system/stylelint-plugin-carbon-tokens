@@ -12,7 +12,7 @@ export { default as isVariable } from "./isVariable";
 export { default as isValidOption } from "./isValidOption";
 export { default as testItem } from "./testItem";
 export { default as parseToRegexOrString } from "./parseToRegexOrString";
-export { default as normaliseVariableName } from "./normaliseVariableName";
+export { default as normalizeVariableName } from "./normalizeVariableName";
 export { getPropSpec, checkProp, parseRangeValue } from "./propUtils";
 export { default as checkRule } from "./checkRule";
 export { tokenizeValue, TOKEN_TYPES } from "./tokenizeValue";

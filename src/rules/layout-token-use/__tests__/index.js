@@ -348,3 +348,20 @@ testRule(rule, {
     },
   ],
 });
+
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptUndefinedVariables: false,
+    },
+  ],
+  syntax: "scss",
+  accept: [
+    {
+      code: `$block-class: 'test'; --test--breadcrumb-title-top: $spacing-02; .foo { top: var(--#{$block-class}--breadcrumb-title-top); }`,
+      description: `Accept CSS custom prop with preprocessor in name".`,
+    },
+  ],
+});

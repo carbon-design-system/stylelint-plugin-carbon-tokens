@@ -35,7 +35,7 @@ testRule(rule, {
       code:
         "--my-value-accept: $duration--moderate-01; .foo { transition-duration: var(--my-value-accept); }",
       description:
-        "Accept --variable declared before use with Carbon motion tokens.",
+        "Accept --variable declared before use with Carbon motion tokens (default config).",
     },
     {
       code: ".foo { transition: all $my-value-accept; }",
@@ -57,7 +57,7 @@ testRule(rule, {
       code:
         "--my-value-accept: $duration--moderate-01; .foo { animation-duration: var(--my-value-accept); }",
       description:
-        "Accept --variable declared before use with Carbon motion tokens.",
+        "Accept --variable declared before use for animation duration with Carbon motion tokens.",
     },
     {
       code: ".foo { animation: $my-value-accept myAnim; }",
@@ -112,13 +112,13 @@ testRule(rule, {
       code:
         "$my-value-accept: $duration--fast-01; .foo { transition-duration: $my-value-accept; }",
       description:
-        "Accept $varaible declared before use with Carbon motion tokens.",
+        "Accept $variable declared before use with Carbon motion tokens and acceptUndefinedVariables is false.",
     },
     {
       code:
         "--my-value-accept: $duration--moderate-01; .foo { transition-duration: var(--my-value-accept); }",
       description:
-        "Accept --variable declared before use with Carbon motion tokens.",
+        "Accept --variable declared before use with Carbon motion tokens and acceptUndefinedVariables is false.",
     },
   ],
 

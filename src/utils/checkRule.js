@@ -10,7 +10,7 @@ import {
   declarationValueIndex,
   checkProp,
   isVariable,
-  normaliseVariableName,
+  normalizeVariableName,
   parseToRegexOrString,
   testItem,
   tokenizeValue,
@@ -147,7 +147,7 @@ export default function checkRule(
         // add to variable declarations
         // expects all variables to appear before use
         // expects all variables to be simple (not map or list)
-        knownVariables[normaliseVariableName(decl.prop)] =
+        knownVariables[normalizeVariableName(decl.prop)] =
           tokenizedValue.items[0];
       }
 

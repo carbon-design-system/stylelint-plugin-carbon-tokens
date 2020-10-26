@@ -33,7 +33,7 @@ const getTokenList = (inStr) => {
   // or numeric with or without units
   // ((-{0,1}[0-9.]+)([\w%]*))
   // or scss var with optional - prefix
-  // |(-{0,1}(#{)*\$[\w-]+}*)
+  // |(-{0,2}(#{)*\$[\w-]+}*)
   // or css var or literal at least 2 if with - to prevent match with operator could be function with opening (
   // |(([\w-#]{2,}|\w*)
   // or ( or ) or ,
@@ -42,8 +42,7 @@ const getTokenList = (inStr) => {
   // |([^\w$ (),#])
   // or space
   // |( )*
-  const tokenRegex = /('[^']*')|("[^"]*")|((-{0,1}[0-9.]+)([\w%]*))|(-{0,1}(#{)*\$[\w-]+}*)|(([\w-#]{2,})(\(*))|(\()|(\))|(,)|([^\w$\n (),#])|( )/g;
-
+  const tokenRegex = /('[^']*')|("[^"]*")|((-{0,1}[0-9.]+)([\w%]*))|(-{0,2}(#{)*\$[\w-]+}*)|(([\w-#]{2,})(\(*))|(\()|(\))|(,)|([^\w$\n (),#])|( )/g;
   // TODO: While the above regex is technically entertaining swap out for a simple character walk and state engine.
 
   // regex parts
@@ -52,6 +51,7 @@ const getTokenList = (inStr) => {
   const RP_NUM = 4;
   const RP_UNIT = 5;
   const RP_SCSS_VAR = 6;
+  // const RP_SCSS_PREP = 7; // SCSS PRE PROCESSOR
   const RP_LITERAL = 9;
   const RP_FUNCTION = 10;
   const RP_LEFT_BR = 11;
@@ -308,6 +308,19 @@ const tokenizeValueInner = (value) => {
       }
 
       current.raw = `${current.raw || ""}${token.raw}${space}`;
+    } else if (
+      !lastToken.spaceAfter &&
+      (token.type === TOKEN_TYPES.TEXT_LITERAL ||
+        token.type === TOKEN_TYPES.SCSS_VAR) &&
+      (lastToken.type === TOKEN_TYPES.TEXT_LITERAL ||
+        lastToken.type === TOKEN_TYPES.SCSS_VAR)
+    ) {
+      // There was not space after the last token so we continue to build it
+      // // continue last item - type does not change
+      const currentItem = current.items[current.items.length - 1];
+
+      currentItem.value = `${currentItem.value}${token.value}`;
+      currentItem.raw = `${currentItem.raw}${token.raw}`;
     } else {
       addToCurrent(current, token);
     }
