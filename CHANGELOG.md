@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0
+
+- feat: improve support for #{} syntax
+
 ## 0.3.0
 
 - feat: switch layout to use js import of tokens
