@@ -147,6 +147,9 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "babel src --out-dir dist",
+    "format": "prettier --write '**/*.{scss,css,js,md}' '!**/{build,es,lib,storybook,ts,umd,dist}/**'",
+    "format:diff": "prettier --list-different '**/*.{scss,css,js,md}' '!**/{dist,storybook-static}/**'",
+    "format:staged": "prettier --write '**/*.{scss,css,js,md,vue}' '!**/{dist,storybook-static}/**'",
     "lint": "eslint src --ignore-path .gitignore",
     "prettify": "prettier --write \"src/**/*.js\"",
     "prepublishOnly": "npm run build",
@@ -155,6 +158,7 @@
     "jest": "jest",
     "test": "npm run jest -- --coverage",
     "watch": "npm run jest -- --watch",
+    "ci-check": "yarn format:diff && yarn test --maxWorkers=5 && yarn test && yarn build",
     "test-rule": "npm run jest",
     "test-util": "npm run jest",
     "generate-contributors-list": "githubcontrib --owner lee-chase --repo stylelint-scss --cols 6 --sortOrder desc --filter greenkeeper[bot],dependabot[bot] --showlogin true --imagesize 80 --format html"
