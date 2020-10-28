@@ -25,8 +25,11 @@ const preProcessToken = (variable, knownVariables) => {
   const regex = /#{([$\w-]*)}/g;
   const replacements = [];
   let result = variable;
+  let match;
 
-  for (const match of variable.matchAll(regex)) {
+  // for (const match of regex.exec(variable).matchAll(regex)) {
+  while ((match = regex.exec(variable)) !== null) {
+    // node 10 does not support matchAll
     const replacement = knownVariables[match[1]];
 
     if (replacement) {
