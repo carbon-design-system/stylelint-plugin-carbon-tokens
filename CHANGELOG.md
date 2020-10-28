@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.5.0
+
+- fix: Replace use of matchAll with regex.exec to better support node 10
+
 ## 0.4.0
 
 - feat: improve support for #{} syntax
