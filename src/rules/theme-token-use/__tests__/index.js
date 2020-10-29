@@ -246,18 +246,6 @@ testRule(rule, {
 
 testRule(rule, {
   ruleName,
-  config: true,
-  syntax: "scss",
-  accept: [
-    {
-      code: ".foo { fill: &NOTE_this_should_generate_a_warning_under_test }",
-      description: "Should generate warning under test but no error",
-    },
-  ],
-});
-
-testRule(rule, {
-  ruleName,
   config: [
     true,
     {

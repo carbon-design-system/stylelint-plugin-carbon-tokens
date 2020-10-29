@@ -18,343 +18,382 @@ const TOKEN_TYPES = {
   TEXT_LITERAL: "Text Literal",
   COLOR_LITERAL: "Color Literal",
   MATH: "Math",
-  LIST: "Comma sepaarted list",
+  LIST: "Comma separated list",
   LIST_ITEM: "Item in list",
   UNKNOWN: "Unknown",
 };
 
-const getTokenList = (inStr) => {
-  // match (single quoted string) or (double quoted string) or (numeric with or without units)
-  // or (scss var with optional - prefix) or (css var or literal, could be function) or ( or ) or , or operator
-  // single quoted string
-  // ('[^']*')
-  // or double quoted string
-  // |("[^"]*")|
-  // or numeric with or without units
-  // ((-{0,1}[0-9.]+)([\w%]*))
-  // or scss var with optional - prefix
-  // |(-{0,2}(#{)*\$[\w-]+}*)
-  // or css var or literal at least 2 if with - to prevent match with operator could be function with opening (
-  // |(([\w-#]{2,}|\w*)
-  // or ( or ) or ,
-  // |(\()|(\))|(,)
-  // or operator
-  // |([^\w$ (),#])
-  // or space
-  // |( )*
-  const tokenRegex = /('[^']*')|("[^"]*")|((-{0,1}[0-9.]+)([\w%]*))|(-{0,2}(#{)*\$[\w-]+}*)|(([\w-#]{2,})(\(*))|(\()|(\))|(,)|([^\w$\n (),#])|( )/g;
-  // TODO: While the above regex is technically entertaining swap out for a simple character walk and state engine.
+const COMMA = 1;
+const SQ = 2;
+const DQ = 3;
+const SPACE = 4;
+const LEFT_BR = 5;
+const RIGHT_BR = 6;
 
-  // regex parts
-  const RP_SQ_STR = 1;
-  const RP_DQ_STR = 2;
-  const RP_NUM = 4;
-  const RP_UNIT = 5;
-  const RP_SCSS_VAR = 6;
-  // const RP_SCSS_PREP = 7; // SCSS PRE PROCESSOR
-  const RP_LITERAL = 9;
-  const RP_FUNCTION = 10;
-  const RP_LEFT_BR = 11;
-  const RP_RIGHT_BR = 12;
-  const RP_COMMA = 13;
-  const RP_OPERATOR = 14;
-  const RP_SPACE = 15;
+const structureParse = (value) => {
+  // This method parses out a basic structure, it will be thrown by bracketed content with commas outside
+  // of a function but we are not trying to parse the full SCSS syntax.
 
-  let token = tokenRegex.exec(inStr);
-  const results = [];
+  const regex = /(,)|(')|(")|(\s)|(\()|(\))|([^,"'()\s]*)/g; // This regex splits by ', "()
 
-  while (token) {
-    if (token[RP_SCSS_VAR]) {
-      results.push({
-        type: TOKEN_TYPES.SCSS_VAR,
-        value: token[RP_SCSS_VAR],
-      });
-    } else if (token[RP_FUNCTION]) {
-      results.push({
-        type: TOKEN_TYPES.FUNCTION,
-        value: token[RP_LITERAL],
-      });
-      results.push({
-        type: TOKEN_TYPES.LEFT_BR,
-        value: token[RP_FUNCTION],
-      });
-    } else if (token[RP_OPERATOR]) {
-      results.push({
-        type: TOKEN_TYPES.OPERATOR,
-        value: token[RP_OPERATOR],
-      });
-    } else if (token[RP_LITERAL]) {
-      results.push({
-        type: TOKEN_TYPES.TEXT_LITERAL,
-        value: token[RP_LITERAL],
-      });
-    } else if (token[RP_LEFT_BR]) {
-      results.push({
-        type: TOKEN_TYPES.LEFT_BR,
-        value: token[RP_LEFT_BR],
-      });
-    } else if (token[RP_RIGHT_BR]) {
-      results.push({
-        type: TOKEN_TYPES.RIGHT_BR,
-        value: token[RP_RIGHT_BR],
-      });
-    } else if (token[RP_COMMA]) {
-      results.push({
-        type: TOKEN_TYPES.SEPARATOR,
-        value: token[RP_COMMA],
-      });
-    } else if (token[RP_SQ_STR] || token[RP_DQ_STR]) {
-      results.push({
-        type: TOKEN_TYPES.QUOTED_LITERAL,
-        value: token[RP_SQ_STR] || token[RP_DQ_STR],
-      });
-    } else if (token[RP_NUM]) {
-      results.push({
-        type: TOKEN_TYPES.NUMERIC_LITERAL,
-        value: token[RP_NUM],
-        units: token[RP_UNIT],
-      });
-    } else if (token[RP_SPACE]) {
-      if (results.length) {
-        results[results.length - 1].spaceAfter = true;
+  let inDoubleQuotes = false;
+  let inSingleQuotes = false;
+
+  const commaSplit = [];
+  let matches = [];
+  const depth = [];
+
+  let match;
+
+  while ((match = regex.exec(value)) !== null && match.index < value.length) {
+    const inQuotes = inDoubleQuotes || inSingleQuotes;
+    const maybeSplit = !(inQuotes || depth.length > 0);
+
+    if (maybeSplit && match[COMMA]) {
+      // only commas outside of quotes and functions split the value
+      if (matches.length) {
+        commaSplit.push(matches);
       }
-      // } else {
-      // ignore unknown
-      //   results.push({
-      //     type: TOKEN_TYPES.UNKNOWN,
-      //     value: token,
-      //   });
-    }
 
-    token = tokenRegex.exec(inStr);
-  }
+      matches = [];
+    } else if (maybeSplit && match[SPACE]) {
+      if (matches.length) {
+        matches.push(match);
+      }
+      // otherwise NO-OP
+    } else {
+      if (!inQuotes && match[RIGHT_BR]) {
+        const oldMatches = depth.pop();
 
-  return results;
-};
+        oldMatches.push(matches);
+        matches = oldMatches;
 
-const addToCurrent = (current, value) => {
-  let target;
-  let host = current;
-
-  if (
-    current.type === TOKEN_TYPES.FUNCTION ||
-    current.type === TOKEN_TYPES.BRACKETED_CONTENT
-  ) {
-    // may have one or more items
-    host =
-      current.items.length && current.items[0].type === TOKEN_TYPES.LIST
-        ? current.items[0]
-        : current;
-
-    if (host.type === TOKEN_TYPES.LIST) {
-      host.raw = `${host.raw}, ${value.raw}${value.spaceAfter ? " " : ""}`;
-    }
-  } else {
-    host = current;
-  }
-
-  if (host.type === TOKEN_TYPES.LIST) {
-    target = host.items[host.items.length - 1];
-    target.raw = `${target.raw || ""}${value.raw}${
-      value.spaceAfter ? " " : ""
-    }`;
-  } else {
-    target = host;
-  }
-
-  target.items.push(value);
-};
-
-const maybeMathEnd = (type) => {
-  return type !== TOKEN_TYPES.OPERATOR && type !== TOKEN_TYPES.LEFT_BR;
-};
-
-const doEndMath = (current) => {
-  const newCurrent = current.parent;
-
-  delete current.parent;
-  addToCurrent(newCurrent, current);
-
-  newCurrent.raw = `${newCurrent.raw || ""}${current.raw}`;
-
-  return newCurrent;
-};
-
-// tokenizeValue generates a output that looks like the following
-// { items: [T], raw: 'R' } where [T] is an array tokens and R is the string value
-// Each T is an object of the form
-// {
-//   items, // undefined or array of type T
-//   type, // type of the item e.g. "Quoted literal",
-//   value, // undefined or value e.g. matches raw for simple types,
-//          // otherwise undefined except for type functions where it contains the name,
-//   raw, // string value representing the whole item
-// }
-// where T.type = MATH, T.items contains maths (an array of T)
-// where T.type = LIST, T.itmes is an array of { type: LIST_ITEM, items: [T], raw: 'raw value' }
-// where T.type = BRACKETED_CONTENT, T.items contains array of T
-// where T.type = FUNCTION, T.items contains an array of T representing the parameters
-
-const tokenizeValueInner = (value) => {
-  const tokenList = getTokenList(value);
-  const result = { items: [] };
-  let current = result;
-  let lastToken = {};
-
-  for (const token of tokenList) {
-    const endsMath =
-      current.type === TOKEN_TYPES.MATH &&
-      maybeMathEnd(lastToken.type) &&
-      maybeMathEnd(token.type);
-
-    token.raw = token.units ? `${token.value}${token.units}` : `${token.value}`;
-    const space = token.spaceAfter ? " " : "";
-
-    if (endsMath) {
-      current = doEndMath(current);
-    }
-
-    if (
-      token.type !== TOKEN_TYPES.LEFT_BR &&
-      token.type !== TOKEN_TYPES.FUNCTION &&
-      token.type !== TOKEN_TYPES.SEPARATOR
-    ) {
-      current.raw = `${current.raw || ""}${token.raw}${space}`;
-    }
-
-    if (token.type === TOKEN_TYPES.FUNCTION) {
-      const item = {
-        items: [],
-        type: token.type,
-        value: token.value,
-        parent: current,
-        creatingFunction: true,
-        isCalc: token.value === "calc",
-        raw: `${token.value}(`,
-      };
-
-      current = item;
-    } else if (token.type === TOKEN_TYPES.LEFT_BR) {
-      if (current.creatingFunction) {
-        delete current.creatingFunction;
+        // don't push brackets depth indicates brackets
       } else {
-        const item = {
-          items: [],
-          type: TOKEN_TYPES.BRACKETED_CONTENT,
-          parent: current,
-          raw: "(",
-        };
+        if (!inQuotes && match[LEFT_BR]) {
+          // start of a function or bracketed content
+          const newMatches = [];
 
-        current = item;
-      }
-    } else if (token.type === TOKEN_TYPES.RIGHT_BR && current.parent) {
-      const item = current;
+          depth.push(matches);
+          matches = newMatches;
 
-      current = item.parent;
-      delete item.parent;
-      addToCurrent(current, item); //do we need right bracket
-      current.raw = `${current.raw || ""}${item.raw}`;
-    } else if (token.type === TOKEN_TYPES.OPERATOR) {
-      // is Math ends with litreal followed by non-operator
-      const prev = current.items.pop(); // maths starts with previuos item
-      const item = {
-        items: [prev],
-        parent: current,
-        type: TOKEN_TYPES.MATH,
-        raw: `${prev.raw}${lastToken.spaceAfter ? " " : ""}${
-          token.raw
-        }${space}`,
-      };
-
-      current.raw = current.raw.substring(0, current.raw.indexOf(prev.raw));
-
-      current = item;
-      addToCurrent(current, token); // add operator
-    } else if (token.type === TOKEN_TYPES.SEPARATOR) {
-      // list all the way to end of function or value
-
-      if (current.type !== TOKEN_TYPES.LIST) {
-        if (
-          current.type === TOKEN_TYPES.FUNCTION ||
-          current.type === TOKEN_TYPES.BRACKETED_CONTENT
-        ) {
-          const item = {
-            items: [
-              {
-                type: TOKEN_TYPES.LIST_ITEM,
-                items: current.items,
-                raw: lastToken.raw,
-              },
-              { type: TOKEN_TYPES.LIST_ITEM, items: [], raw: "" },
-            ],
-            type: TOKEN_TYPES.LIST,
-            raw: lastToken.raw,
-          };
-
-          current.items = [item];
+          // don't push brackets depth indicates brackets
         } else {
-          current.type = TOKEN_TYPES.LIST;
-          current.items = [
-            {
-              type: TOKEN_TYPES.LIST_ITEM,
-              items: current.items,
-              raw: current.raw,
-            },
-            { type: TOKEN_TYPES.LIST_ITEM, items: [], raw: "" },
-          ];
+          if (
+            (match[DQ] && !inSingleQuotes) ||
+            (match[SQ] && !inDoubleQuotes)
+          ) {
+            // This section pre-parses quoted values into full string matches
+            // If no terminating quote is found a list of not really parsed brackets might be found
+            // but again we are not worried about parsing the full SCSS syntax
+
+            if (
+              (match[DQ] && inDoubleQuotes) ||
+              (match[SQ] && inSingleQuotes)
+            ) {
+              // exiting quotes
+              const oldMatches = depth.pop();
+              // construct something that looks like a regex match but contains the full string
+              const newMatch = { input: match.input, groups: undefined };
+              const priorMatches = [];
+
+              for (const index in matches) {
+                priorMatches.push(matches[index][0]);
+              }
+
+              const priorMatchString = priorMatches.join("");
+
+              newMatch[0] = `${priorMatchString}${match[0]}`;
+              newMatch[match[DQ] ? DQ : SQ] = newMatch[0];
+              newMatch.index = match.index - priorMatchString.length;
+              oldMatches.push(newMatch);
+              matches = oldMatches;
+            } else {
+              // entering quotes
+              const newMatches = [];
+
+              depth.push(matches);
+              matches = newMatches;
+              matches.push(match);
+            }
+
+            inDoubleQuotes = match[DQ] !== undefined && !inDoubleQuotes;
+            inSingleQuotes = match[SQ] !== undefined && !inSingleQuotes;
+          } else {
+            matches.push(match);
+          }
         }
-      } else {
-        current.items.push({ type: TOKEN_TYPES.LIST_ITEM, items: [], raw: "" });
       }
-
-      current.raw = `${current.raw || ""}${token.raw}${space}`;
-    } else if (
-      !lastToken.spaceAfter &&
-      (token.type === TOKEN_TYPES.TEXT_LITERAL ||
-        token.type === TOKEN_TYPES.SCSS_VAR) &&
-      (lastToken.type === TOKEN_TYPES.TEXT_LITERAL ||
-        lastToken.type === TOKEN_TYPES.SCSS_VAR)
-    ) {
-      // There was not space after the last token so we continue to build it
-      // // continue last item - type does not change
-      const currentItem = current.items[current.items.length - 1];
-
-      currentItem.value = `${currentItem.value}${token.value}`;
-      currentItem.raw = `${currentItem.raw}${token.raw}`;
-    } else {
-      addToCurrent(current, token);
     }
-
-    lastToken = token;
   }
 
-  while (current.parent) {
-    // attempt to tidy up if not back at result
-    if (current.type === TOKEN_TYPES.MATH) {
-      current = doEndMath(current);
+  if (matches.length) {
+    commaSplit.push(matches);
+  }
+
+  return commaSplit;
+};
+
+const tokensAreList = (tokens) => {
+  // inside bracketed content do we have a list
+  // tokens are matches from a regex
+  return (
+    tokens.findIndex(
+      (token) => token.input !== undefined && token[COMMA] !== undefined
+    ) > -1
+  );
+};
+
+const formatParamsAsTokenList = (tokens) => {
+  // The most common scenario is that this is parsing a function parameter list like (a, b)
+  // It could be (a, b(c, d) e)
+  // Both scenarios above output a list with two tokens [[a], [b]] and [[a], [b(c, d) f]]
+  // In the latter case 'c, d' will be in a sub array so we do not need to worry
+
+  const tokenList = [];
+  let tokensToAdd = [];
+  let lastWasComma = false;
+
+  // any brackets we meet form part of an inner token list
+  for (const index in tokens) {
+    const token = tokens[index];
+
+    if (token.input === undefined) {
+      // plain array
+      tokensToAdd.push(token);
+      lastWasComma = false;
+    } else if (token[COMMA]) {
+      lastWasComma = true;
+      tokenList.push(tokensToAdd);
+      tokensToAdd = [];
     } else {
-      const item = current;
+      if (!(token[SPACE] && lastWasComma)) {
+        // don't bother adding spaces after commas they can be added back later
+        tokensToAdd.push(token);
+        lastWasComma = false;
+      }
+    }
+  }
 
-      current = item.parent;
-      delete item.parent;
+  if (tokensToAdd.length) {
+    tokenList.push(tokensToAdd);
+  }
 
-      addToCurrent(current, item);
+  return tokenList;
+};
+
+const addToItems = (lastItem, host, newItem) => {
+  let continueMath = lastItem && lastItem.type === TOKEN_TYPES.MATH;
+
+  if (continueMath) {
+    continueMath =
+      lastItem.items.length > 0 &&
+      lastItem.items[lastItem.items.length - 1].type === TOKEN_TYPES.OPERATOR;
+  }
+
+  if (continueMath) {
+    lastItem.items.push(newItem);
+    lastItem.raw += ` ${newItem.raw}`;
+    host.raw += newItem.raw; // only add space to lastItem, host will already have it
+  } else {
+    host.items.push(newItem);
+    host.raw += newItem.raw;
+  }
+};
+
+const processTokens = (tokens) => {
+  // At this point tokens represents a valid SCSS property value
+  // It may be a list e.g. such as that used by a border
+  // The individual parts can be simple values, function calls or math that does not require a calc
+  // Math may be surrounded by brackets inside or outside a calc
+  const result = { items: [], raw: "" };
+
+  let lastItem;
+
+  for (const index in tokens) {
+    const token = tokens[index];
+
+    // NOTE: token here is a regex match or an array
+    let item;
+
+    lastItem =
+      result && result.items
+        ? result.items[result.items.length - 1]
+        : undefined;
+
+    if (token && token.input === undefined) {
+      // we are going into bracketed content
+      if (lastItem && lastItem.type === TOKEN_TYPES.TEXT_LITERAL) {
+        // update existing item
+        item = lastItem;
+        item.items = [];
+        item.type = TOKEN_TYPES.FUNCTION;
+        item.isCalc = lastItem.value === "calc";
+        item.raw += "(";
+        result.raw += "(";
+      } else {
+        item = { type: TOKEN_TYPES.BRACKETED_CONTENT, raw: "(", items: [] };
+        addToItems(lastItem, result, item);
+      }
+
+      let processedStuff;
+
+      if (tokensAreList(token)) {
+        // eslint-disable-next-line no-use-before-define
+        processedStuff = processList(formatParamsAsTokenList(token));
+        addToItems(undefined, item, processedStuff);
+      } else {
+        // not a list just ordinary tokens space separated
+        processedStuff = processTokens(token);
+
+        for (const index in processedStuff.items) {
+          addToItems(undefined, item, processedStuff.items[index]);
+        }
+      }
+
+      result.raw += processedStuff.raw;
+
+      if (lastItem && lastItem.type === TOKEN_TYPES.MATH) {
+        lastItem.raw += processedStuff.raw;
+        lastItem.raw += ")"; // close the brackets
+      }
+
+      item.raw += ")"; // close the brackets
+      result.raw += ")"; // close the brackets
+    } else {
+      const tokenValue = token[0];
+      // at this point we have either math or simple tokens with some spaces
+      // That is SQ, DQ or UNKNOWN
+
+      if ("+-*%/".indexOf(tokenValue) > -1 && tokenValue.length === 1) {
+        // are we continuing math or creating new math?
+        if (lastItem && lastItem.type === TOKEN_TYPES.MATH) {
+          // continue math
+          lastItem.items.push({
+            type: TOKEN_TYPES.OPERATOR,
+            value: tokenValue,
+            raw: tokenValue,
+          });
+          lastItem.raw += ` ${tokenValue}`;
+        } else {
+          // new Math
+          result.items.length -= 1; // we already have lastItem recorded
+          item = {
+            items: [lastItem],
+            type: TOKEN_TYPES.MATH,
+            raw: lastItem.raw,
+          };
+          item.items.push({
+            type: TOKEN_TYPES.OPERATOR,
+            value: tokenValue,
+            raw: tokenValue,
+          });
+          item.raw += ` ${tokenValue}`;
+          result.items.push(item);
+        }
+
+        result.raw += tokenValue;
+      } else if (token[COMMA]) {
+        // does last item need space?
+        if (lastItem) {
+          lastItem.raw += token[COMMA];
+        }
+
+        result.raw += token[COMMA];
+      } else if (token[SPACE]) {
+        // never add space to last item it is not needed and confuses tests
+        result.raw += token[SPACE];
+      } else {
+        // process all remaining into an item before deciding where to put it.
+        const numeric = /^(-{0,1}[0-9.]+)([^0-9.-]*)$/.exec(token[0]);
+
+        if (numeric) {
+          const units = numeric[2];
+
+          item = {
+            value: numeric[1],
+            type: TOKEN_TYPES.NUMERIC_LITERAL,
+            raw: `${numeric[1]}${units}`,
+            units,
+          };
+        } else {
+          let type = TOKEN_TYPES.UNKNOWN;
+
+          if (token[SQ] || token[DQ]) {
+            // We have found a quoted literal
+            type = TOKEN_TYPES.QUOTED_LITERAL;
+          } else if (/^#[0-9a-f]*$/.test(token[0])) {
+            // color literal
+            type = TOKEN_TYPES.COLOR_LITERAL;
+          } else if (/^-{0,1}\$/.test(token[0])) {
+            type = TOKEN_TYPES.SCSS_VAR;
+          } else if (/^[^0-9#]/.test(token[0])) {
+            type = TOKEN_TYPES.TEXT_LITERAL;
+          }
+
+          item = { value: token[0], type, raw: token[0] };
+        }
+
+        addToItems(lastItem, result, item);
+      }
     }
   }
 
   return result;
+};
+
+const processListItems = (listItems) => {
+  const items = [];
+  let raw = "";
+
+  for (const index in listItems) {
+    // if (!listItems[index][COMMA] && !listItems[index][SPACE]) {
+    // ignore space and comma in list
+    const listItemValues = processTokens(listItems[index]);
+    const comma = raw.length ? ", " : "";
+
+    items.push({
+      type: TOKEN_TYPES.LIST_ITEM,
+      items: listItemValues.items,
+      raw: listItemValues.raw,
+    });
+    raw += `${comma}${listItemValues.raw}`;
+    // }
+  }
+
+  return { items, raw };
+};
+
+const processList = (list) => {
+  const result = { type: TOKEN_TYPES.LIST };
+
+  const processedListItem = processListItems(list);
+
+  result.items = processedListItem.items;
+  result.raw = processedListItem.raw;
+
+  return result;
+};
+
+const postProcessStructuredTokens = (structuredTokens) => {
+  // At this point we have a hierarchical array structure.
+  // The top level is an array of stuff separated by non quoted and non-function parameter commas.
+  // This is because some CSS values e.g box-shadow have a comma separated list of valid values
+
+  if (structuredTokens.length <= 1) {
+    // only one item do not treat as list
+    return processTokens(structuredTokens[0]);
+  } else {
+    // a list of items
+    return processList(structuredTokens);
+  }
 };
 
 const tokenizeValue = (value) => {
-  let result;
+  const structuredTokens = structureParse(value);
 
-  try {
-    result = tokenizeValueInner(value);
-  } catch (error) {
-    result = { items: [], raw: value, error, message: "Failed to parse value" };
-  }
-
-  return result;
+  // return structuredTokens;
+  return postProcessStructuredTokens(structuredTokens);
 };
 
 export { tokenizeValue, TOKEN_TYPES };

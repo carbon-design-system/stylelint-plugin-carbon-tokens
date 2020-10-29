@@ -228,8 +228,8 @@ testRule(rule, {
       description: `Accept translateY using layout tokens".`,
     },
     {
-      code: `.foo { transform: translateY($layout-01 $layout-01); }`,
-      description: `Accept translateY using layout tokens".`,
+      code: `.foo { transform: translate($layout-01, $layout-01); }`,
+      description: `Accept translate using layout tokens".`,
     },
     {
       code: `.foo { transform: skew(20deg) translate($layout-01); }`,
