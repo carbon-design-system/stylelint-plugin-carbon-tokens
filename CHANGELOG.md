@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.1
+
+- chore: add additional tests for value construction via pre-processor
+
 ## 0.6.0
 
 - chore: switch tokenizer to simpler version
