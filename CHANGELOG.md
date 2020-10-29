@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.6.0-canary.0
+
+- chore: switch tokenizer to simpler version
+
 ## 0.5.0
 
 - fix: Replace use of matchAll with regex.exec to better support node 10
