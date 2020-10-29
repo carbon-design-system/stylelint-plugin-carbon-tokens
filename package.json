@@ -17,7 +17,7 @@
     ]
   },
   "bugs": {
-    "url": "https://github.com/kristerkari/stylelint-scss/issues"
+    "url": "https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/issues"
   },
   "dependencies": {
     "@carbon/colors": "^10.9.2",
@@ -111,7 +111,7 @@
   "main": "dist/index.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/lee-chase/stylelint-plugin-carbon-tokens.git"
+    "url": "git+https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens.git"
   },
   "jest": {
     "clearMocks": true,
