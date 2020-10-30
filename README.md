@@ -64,6 +64,8 @@ modules.exports = {
 
 NOTE: Motion is shown above with a standard stylelint secondary option `severity` set to `warning` the default is `error`.
 
+FYI: There are no automated fixes with --fix. See [Why no --fix?](#Why%20no%20--fix?)
+
 ## Recommended config
 
 ### Strict
@@ -219,3 +221,29 @@ The range for parameters is specified in ()
 e.g. `calc(1)` or `translate(1,2)`.
 
 NOTE: this is not currently a user configurable option.
+
+## Why no --fix?
+
+The main reason there are no automated fixes is that it is very hard to translate from physical value or scss variable or css custom property or function to a logical version. It is also the case that the user may not have imported the relevant SCSS file, or even have the package installed. Although the relevant Carbon packages are currently listed as dependencies they may be more loosely coupled in the future and a user would still need to import them in order to build.
+
+### Color
+
+Gray 80 - #393939 is the value used by the following color tokens:
+
+- (White and Gray 10 theme) - $interactive-02 and $inverse-02
+- (Gray 90 theme) - $ui-01, $field-01, $active-secondary and $disabled-01
+- (Gray 100 theme) - $ui-02, $ui-03, $field-02, $active-seconary, $selected-ui and $skeleton-02
+
+Now having a setting for the theme in the options would narrow this down to at best two and even there it is hard to pick one.
+
+### Layout
+
+The task is perhaps simpler for layout where Carbon only lists spacing tokens (2, 4, 8, 12, 24, 32, 40, 48)px and layout tokens (16, 24, 32, 48, 64, 96, 160)px, however, the full picture includes container tokens (24, 32, 40, 48, 64)px, icon-size (16, 20)px, fluid-layout tokens (0, 2, 5, 10)vw.
+
+### Motion
+
+Motion is a combination of timing and easing and is a possibility as there is a one to one match between timings and tokens. The easing functions are slightly more complicated with some undocumented values declared with the timing values, that said Carbon lists six distinct options here https://www.carbondesignsystem.com/guidelines/motion/overview
+
+### Type
+
+Is not just one css value but a range of values; type, font-size, line-height, font-weight and letter-spacing. There are also functions which could be used to font-weight and font-family. In theory, we should only see font-weight explicitly set by function or mixin, line-height however can be used as a layout mechanism in some scenarios.
