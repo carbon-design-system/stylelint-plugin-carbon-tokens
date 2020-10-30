@@ -27,4 +27,4 @@ jobs:
     - run: yarn install --offline
     - run: yarn format:diff
     - run: yarn test
-    - run: yarn build --if-present
+    - run: yarn build
