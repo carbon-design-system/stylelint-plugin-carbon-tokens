@@ -4,6 +4,7 @@ lib
 dist
 umd
 
+.coverage
 node_modules
 packages/*/examples/*
 
