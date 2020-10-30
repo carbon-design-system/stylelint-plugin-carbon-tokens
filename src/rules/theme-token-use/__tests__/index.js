@@ -278,31 +278,3 @@ testRule(rule, {
     },
   ],
 });
-
-testRule(rule, {
-  ruleName,
-  config: [
-    true,
-    {
-      acceptUndefinedVariables: false,
-      knownTokens: [
-        "carbon-components/scss/globals/scss/_colors.scss",
-        "../local-settings/_settings.scss",
-      ],
-    },
-  ],
-  syntax: "scss",
-  accept: [
-    {
-      code: ".foo { color: ",
-      description: "Should check '$do-check-me' using a carbon theme token",
-    },
-  ],
-  reject: [
-    {
-      code: "$do-check-me: red;",
-      description:
-        "Should check '$do-check-me` not using a carbon theme token'",
-    },
-  ],
-});
