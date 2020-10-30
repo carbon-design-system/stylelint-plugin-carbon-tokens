@@ -66,6 +66,8 @@ NOTE: Motion is shown above with a standard stylelint secondary option `severity
 
 FYI: There are no automated fixes with --fix. See [Why no --fix?](#Why%20no%20--fix?)
 
+FYI: With regards to math. See [What math is OK?](#What%20math%20is%20OK?)
+
 ## Recommended config
 
 ### Strict
@@ -247,3 +249,29 @@ Motion is a combination of timing and easing and is a possibility as there is a 
 ### Type
 
 Is not just one css value but a range of values; type, font-size, line-height, font-weight and letter-spacing. There are also functions which could be used to font-weight and font-family. In theory, we should only see font-weight explicitly set by function or mixin, line-height however can be used as a layout mechanism in some scenarios.
+
+## What math is OK?
+
+The range of math permitted is limited in order to ensure carbon tokens are used appropriately.
+
+| Math                              | Description                                               |
+| --------------------------------- | --------------------------------------------------------- |
+| `calc(P O $)`                     | Where P is (%, vw or vh), O is (+ or -) and \$ is a token |
+| `calc(-1 * $)` and `calc($ * -1)` | To allow negation                                         |
+
+### Not allowed
+
+While it is tempting to allow arbitrary math on tokens, such as the following.
+
+e.g. `$layout-01 * 1.25` or `$layout-01 - 2px`
+
+Doing so would allow any value to be constructed without the user having to add any reasoning in the source file. The recommendation here is to use a stylelint disable and add a comment.
+
+```scss
+// stylelint-disable-next-line carbon/layout-token-use
+top: calc($layout-07 * 3.14); /* A value related to PI was needed */
+```
+
+While this example is a bit silly it serves to demonstrate how easy allowing arbitrary math would allow any value, not using the mini-grid could be calculated.
+
+If there is demand, an option to allow the loosening of this rule could be created (feel free to submit a PR). This would likely go no further than allowing multiplication by whole numbers so as to keep the result on a mini-unit boundary.
