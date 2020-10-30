@@ -147,6 +147,7 @@
   "scripts": {
     "prebuild": "rimraf dist",
     "build": "babel src --out-dir dist",
+    "clean": "rimraf node_modules dist",
     "format": "prettier --write '**/*.{scss,css,js,md}' '!**/{build,es,lib,storybook,ts,umd,dist}/**'",
     "format:diff": "prettier --list-different '**/*.{scss,css,js,md}' '!**/{dist,storybook-static}/**'",
     "format:staged": "prettier --write '**/*.{scss,css,js,md,vue}' '!**/{dist,storybook-static}/**'",
