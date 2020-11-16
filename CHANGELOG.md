@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.0
+
+- feat: add support of -ve proportional values
+
 ## 0.6.1
 
 - chore: add additional tests for value construction via pre-processor
