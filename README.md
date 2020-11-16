@@ -269,7 +269,7 @@ Doing so would allow any value to be constructed without the user having to add 
 
 ```scss
 // stylelint-disable-next-line carbon/layout-token-use
-top: calc($layout-07 * 3.14); /* A value related to PI was needed */
+top: calc($layout-07 * 3.14); // A value related to PI was needed
 ```
 
 While this example is a bit silly it serves to demonstrate how easy allowing arbitrary math would allow any value, not using the mini-grid could be calculated.

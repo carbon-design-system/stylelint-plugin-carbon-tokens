@@ -18,10 +18,13 @@ const generatedTests = () => {
     "-$layout-01",
     "$carbon--spacing-01",
     "$carbon--layout-01",
+    "-100%",
     "100%",
     "50%",
+    "-100vw",
     "100vw",
     "50vw",
+    "-100vh",
     "100vh",
     "50vh",
     "0xxx",
@@ -47,10 +50,12 @@ const generatedTests = () => {
     for (let g = 0; g < good.length - 4; g++) {
       // good tokens
       for (let n = 1; n < 5; n++) {
+        const tokens = `${good.slice(g, g + n)}`;
+
         // number of values
         accept.push({
-          code: `.foo { ${prop}: ${good.slice(g, g + n)}; }`,
-          description: `A ${prop} using ${n} token(s) is accepted`,
+          code: `.foo { ${prop}: ${tokens}; }`,
+          description: `A ${prop} using tokens "${tokens}" is accepted`,
         });
       }
     }
@@ -58,10 +63,12 @@ const generatedTests = () => {
     for (let b = 0; b < bad.length - 4; b++) {
       // bad tokens
       for (let n = 1; n < 5; n++) {
+        const tokens = `${bad.slice(b, b + n)}`;
+
         // number of values
         reject.push({
-          code: `.foo { ${prop}: ${bad.slice(b, b + n)}; }`,
-          description: `A ${prop} using ${n} non-token(s) is rejected`,
+          code: `.foo { ${prop}: ${tokens}; }`,
+          description: `A ${prop} using non-token(s) "${tokens}" is rejected`,
         });
       }
     }
@@ -72,11 +79,11 @@ const generatedTests = () => {
   for (const prop of moreProps) {
     accept.push({
       code: `.foo { ${prop}: ${good[0]}; }`,
-      description: `A ${prop} using a token is accepted.`,
+      description: `A ${prop} using a token "${good[0]}" is accepted.`,
     });
     reject.push({
       code: `.foo { ${prop}: ${bad[0]}; }`,
-      description: `A ${prop} using a non-token is rejected.`,
+      description: `A ${prop} using a non-token "${bad[0]}" is rejected.`,
     });
   }
 

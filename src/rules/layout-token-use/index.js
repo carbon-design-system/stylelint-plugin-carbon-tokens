@@ -45,7 +45,7 @@ const defaultOptions = {
   acceptValues: [
     "/inherit|initial|auto|none|unset/",
     "/^0[a-z]*$/",
-    "/^[0-9]*(%|vw|vh)$/",
+    "/^-{0,1}[0-9]*(%|vw|vh)$/",
   ],
   acceptUndefinedVariables: true,
   acceptContainerTokens: false,
