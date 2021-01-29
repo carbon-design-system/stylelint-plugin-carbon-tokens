@@ -5,6 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+class MathsError extends Error {
+  constructor(...args) {
+    super(...args);
+    Error.captureStackTrace(this, MathsError);
+  }
+}
+
 const TOKEN_TYPES = {
   NUMERIC_LITERAL: "Numeric literal",
   SCSS_VAR: "scss variable",
@@ -276,6 +283,12 @@ const processTokens = (tokens) => {
           });
           lastItem.raw += ` ${tokenValue}`;
         } else {
+          if (result.items.length < 1) {
+            throw new MathsError(
+              "It looks like you are starting some math but no prior value exists to apply it to."
+            );
+          }
+
           // new Math
           result.items.length -= 1; // we already have lastItem recorded
           item = {
@@ -390,10 +403,26 @@ const postProcessStructuredTokens = (structuredTokens) => {
 };
 
 const tokenizeValue = (value) => {
-  const structuredTokens = structureParse(value);
+  let result;
 
-  // return structuredTokens;
-  return postProcessStructuredTokens(structuredTokens);
+  try {
+    const structuredTokens = structureParse(value);
+
+    result = postProcessStructuredTokens(structuredTokens);
+  } catch (error) {
+    if (error instanceof MathsError) {
+      result = { items: [], raw: value, message: error.message };
+    } else {
+      result = {
+        items: [],
+        raw: value,
+        error,
+        message: "Failed to parse value",
+      };
+    }
+  }
+
+  return result;
 };
 
 export { tokenizeValue, TOKEN_TYPES };
