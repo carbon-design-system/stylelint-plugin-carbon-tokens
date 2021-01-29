@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.7.1
+
+- fix: failure to parse math that has no value before it. Now emits warning
+
 ## 0.7.0
 
 - feat: add support of -ve proportional values

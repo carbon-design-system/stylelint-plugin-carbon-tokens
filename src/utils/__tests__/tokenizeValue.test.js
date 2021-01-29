@@ -271,4 +271,12 @@ describe("tokenizeValue", () => {
       raw: "#{$i-am-not-easily-knowable}",
     });
   });
+
+  it("Handles content split accross lines", () => {
+    expect(
+      tokenizeValue(`url(
+  "/graphics/settings/checkMark.svg"
+)`)
+    ).toMatchObject({});
+  });
 });
