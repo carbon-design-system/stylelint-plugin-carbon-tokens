@@ -187,6 +187,13 @@ describe("tokenizeValue", () => {
       ],
       raw: "100vw - 20px",
     });
+
+    expect(tokenizeValue("- 10px")).toEqual({
+      items: [],
+      message:
+        "It looks like you are starting some math but no prior value exists to apply it to.",
+      raw: "- 10px",
+    });
   });
 
   it("Handles multiple space separated values", () => {
