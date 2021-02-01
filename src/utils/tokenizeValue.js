@@ -291,7 +291,7 @@ const processTokens = (tokens) => {
           lastItem.raw += ` ${tokenValue}`;
         } else {
           if (result.items.length < 1) {
-            if (tokenValue !== "*") {
+            if (tokenValue !== "*" && tokenValue !== "/") {
               unattachedOperators += tokenValue; // can be a whole string of minus
               continue;
             } else {
