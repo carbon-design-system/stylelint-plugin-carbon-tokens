@@ -142,6 +142,9 @@ export default function checkRule(
           decl
         )}. \n\n HELP. If you see this message PLEASE copy the contents of the message above and raise a github issue. Thankyou in advance for helping us to improve the tool.`
       );
+    } else if (tokenizedValue && tokenizedValue.warning) {
+      // eslint-disable-next-line no-console
+      console.warn(tokenizeValue.warning);
     } else {
       if (isVariable(decl.prop)) {
         // add to variable declarations

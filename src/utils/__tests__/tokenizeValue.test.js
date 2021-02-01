@@ -189,10 +189,34 @@ describe("tokenizeValue", () => {
     });
 
     expect(tokenizeValue("- 10px")).toEqual({
-      items: [],
-      message:
-        "It looks like you are starting some math but no prior value exists to apply it to.",
+      items: [
+        {
+          raw: "- 10px",
+          type: "Numeric literal",
+          units: "px",
+          value: "- 10",
+        },
+      ],
       raw: "- 10px",
+    });
+
+    expect(tokenizeValue("+ 10px")).toEqual({
+      items: [
+        {
+          raw: "+ 10px",
+          type: "Numeric literal",
+          units: "px",
+          value: "+ 10",
+        },
+      ],
+      raw: "+ 10px",
+    });
+
+    expect(tokenizeValue("* 10px")).toEqual({
+      items: [],
+      warning:
+        "It looks like you are starting some math with '*' without anything to apply it to.",
+      raw: "* 10px",
     });
   });
 

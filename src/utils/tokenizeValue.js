@@ -6,8 +6,9 @@
  */
 
 class MathsError extends Error {
-  constructor(...args) {
-    super(...args);
+  constructor(msg) {
+    super(msg);
+    this.name = "MathsError";
     Error.captureStackTrace(this, MathsError);
   }
 }
@@ -216,6 +217,7 @@ const processTokens = (tokens) => {
   const result = { items: [], raw: "" };
 
   let lastItem;
+  let unattachedOperators = ""; // "border: - 5px" is valid SCSS but not CSS. Compiles to "border: -5px" only / is prohibited
 
   for (const index in tokens) {
     const token = tokens[index];
@@ -239,7 +241,12 @@ const processTokens = (tokens) => {
         item.raw += "(";
         result.raw += "(";
       } else {
-        item = { type: TOKEN_TYPES.BRACKETED_CONTENT, raw: "(", items: [] };
+        item = {
+          type: TOKEN_TYPES.BRACKETED_CONTENT,
+          raw: `${unattachedOperators}(`,
+          items: [],
+        };
+        unattachedOperators = "";
         addToItems(lastItem, result, item);
       }
 
@@ -284,9 +291,14 @@ const processTokens = (tokens) => {
           lastItem.raw += ` ${tokenValue}`;
         } else {
           if (result.items.length < 1) {
-            throw new MathsError(
-              "It looks like you are starting some math but no prior value exists to apply it to."
-            );
+            if (tokenValue !== "*") {
+              unattachedOperators += tokenValue; // can be a whole string of minus
+              continue;
+            } else {
+              throw new MathsError(
+                `It looks like you are starting some math with '${tokenValue}' without anything to apply it to.`
+              );
+            }
           }
 
           // new Math
@@ -315,7 +327,14 @@ const processTokens = (tokens) => {
         result.raw += token[COMMA];
       } else if (token[SPACE]) {
         // never add space to last item it is not needed and confuses tests
-        result.raw += token[SPACE];
+
+        if (unattachedOperators) {
+          unattachedOperators += token[SPACE];
+        } else {
+          result.raw += token[SPACE];
+        }
+
+        continue;
       } else {
         // process all remaining into an item before deciding where to put it.
         const numeric = /^(-{0,1}[0-9.]+)([^0-9.-]*)$/.exec(token[0]);
@@ -324,11 +343,12 @@ const processTokens = (tokens) => {
           const units = numeric[2];
 
           item = {
-            value: numeric[1],
+            value: `${unattachedOperators}${numeric[1]}`,
             type: TOKEN_TYPES.NUMERIC_LITERAL,
-            raw: `${numeric[1]}${units}`,
+            raw: `${unattachedOperators}${numeric[1]}${units}`,
             units,
           };
+          unattachedOperators = "";
         } else {
           let type = TOKEN_TYPES.UNKNOWN;
 
@@ -344,11 +364,24 @@ const processTokens = (tokens) => {
             type = TOKEN_TYPES.TEXT_LITERAL;
           }
 
-          item = { value: token[0], type, raw: token[0] };
+          item = {
+            value: `${unattachedOperators}${token[0]}`,
+            type,
+            raw: `${unattachedOperators}${token[0]}`,
+          };
+          unattachedOperators = "";
         }
 
         addToItems(lastItem, result, item);
       }
+
+      if (unattachedOperators) {
+        throw new MathsError(
+          `It looks like you are starting some math with '${unattachedOperators}' without anything to apply it to.`
+        );
+      }
+
+      unattachedOperators = "";
     }
   }
 
@@ -411,7 +444,7 @@ const tokenizeValue = (value) => {
     result = postProcessStructuredTokens(structuredTokens);
   } catch (error) {
     if (error instanceof MathsError) {
-      result = { items: [], raw: value, message: error.message };
+      result = { items: [], raw: value, warning: error.message };
     } else {
       result = {
         items: [],
