@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.1
+
+- fix: Previous version failed to process - and + and allowed / which is illegal in CSS and SCSS
+
 ## 0.8.0
 
 - feat: improve handling of unattached operators
