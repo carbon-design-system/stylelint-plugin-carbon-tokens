@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.8.0
+
+- feat: improve handling of unattached operators
+
 ## 0.7.1
 
 - fix: failure to parse math that has no value before it. Now emits warning
