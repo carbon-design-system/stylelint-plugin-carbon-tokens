@@ -200,6 +200,18 @@ describe("tokenizeValue", () => {
       raw: "- 10px",
     });
 
+    expect(tokenizeValue("- - + - 10%")).toEqual({
+      items: [
+        {
+          raw: "- - + - 10%",
+          type: "Numeric literal",
+          units: "%",
+          value: "- - + - 10",
+        },
+      ],
+      raw: "- - + - 10%",
+    });
+
     expect(tokenizeValue("+ 10px")).toEqual({
       items: [
         {
@@ -217,6 +229,13 @@ describe("tokenizeValue", () => {
       warning:
         "It looks like you are starting some math with '*' without anything to apply it to.",
       raw: "* 10px",
+    });
+
+    expect(tokenizeValue("/ 10px")).toEqual({
+      items: [],
+      warning:
+        "It looks like you are starting some math with '/' without anything to apply it to.",
+      raw: "/ 10px",
     });
   });
 

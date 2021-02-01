@@ -402,3 +402,36 @@ testRule(rule, {
     },
   ],
 });
+
+// Odd maths checks
+testRule(rule, {
+  ruleName,
+  config: true,
+  syntax: "scss",
+  accept: [
+    {
+      code: `.foo { margin: - 10% $layout}`,
+      description: `Accept unconnected operator - with %`,
+    },
+    {
+      code: `.foo { margin: + 10% $layout}`,
+      description: `Accept unconnected operator + with %`,
+    },
+    {
+      code: `.foo { margin: - - - 10% $layout}`,
+      description: `Accept multiple unconnected operator with %`,
+    },
+    {
+      code: `.foo { margin: - + - + - 10% $layout}`,
+      description: `Accept five unconnected operators with %`,
+    },
+    {
+      code: `.foo { margin: * 10% $layout}`,
+      description: `Warn when unconnected operator * with %. Console message shown on test.`,
+    },
+    {
+      code: `.foo { margin: / 10% $layout}`,
+      description: `Warn when unconnected operator / with %. Console message shown on test.`,
+    },
+  ],
+});

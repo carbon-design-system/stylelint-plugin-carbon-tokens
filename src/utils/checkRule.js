@@ -18,6 +18,24 @@ import {
   parseRangeValue,
 } from "./";
 
+const sanitizeUnconnectedOperators = (val) => {
+  const regex = /^([+ -]*)([^+-]*)$/;
+  const matches = val.match(regex);
+  let sign = "";
+  let resultVal = val;
+
+  if (matches && matches[1] && matches[2]) {
+    // index is start of non sign part
+    const signs = `${matches[1]}1`;
+
+    sign = parseInt(signs) < 0 ? "-" : "";
+
+    resultVal = `${sign}${matches[2]}`;
+  }
+
+  return resultVal;
+};
+
 const checkAcceptValues = (item, acceptedValues = []) => {
   // Simply check raw values, improve later
   let result = false;
@@ -28,7 +46,9 @@ const checkAcceptValues = (item, acceptedValues = []) => {
       const testValue = parseToRegexOrString(acceptedValue);
 
       return (
-        (testValue.test && testValue.test(item.raw)) || testValue === item.raw
+        (testValue.test &&
+          testValue.test(sanitizeUnconnectedOperators(item.raw))) ||
+        testValue === item.raw
       );
     });
   }
@@ -144,7 +164,7 @@ export default function checkRule(
       );
     } else if (tokenizedValue && tokenizedValue.warning) {
       // eslint-disable-next-line no-console
-      console.warn(tokenizeValue.warning);
+      console.warn(tokenizedValue.warning);
     } else {
       if (isVariable(decl.prop)) {
         // add to variable declarations
