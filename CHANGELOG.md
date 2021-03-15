@@ -1,5 +1,10 @@
 # Changelog
 
+
+## 0.9.0
+
+- feat: Apply the 'acceptValues' in function parameters. Add tests for transform(x%, y%)
+
 ## 0.8.1
 
 - fix: Previous version failed to process - and + and allowed / which is illegal in CSS and SCSS
