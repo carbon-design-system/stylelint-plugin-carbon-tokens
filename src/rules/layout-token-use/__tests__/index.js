@@ -223,6 +223,30 @@ testRule(rule, {
   syntax: "scss",
   accept: [
     {
+      code: `.foo { transform: translate(49%, 49%); }`,
+      description: `Accept translate using relative values".`,
+    },
+    {
+      code: `.foo { transform: translate(-48%, -48%); }`,
+      description: `Accept translate using negative relative values".`,
+    },
+    {
+      code: `.foo { transform: translate(-20vw, $layout-06); }`,
+      description: `Accept translate using relative value".`,
+    },
+    {
+      code: `.foo { transform: translate($layout-06, -20vh); }`,
+      description: `Accept translate using relative value".`,
+    },
+    {
+      code: `.foo { transform: translateX(-20%); }`,
+      description: `Accept translateX using relative value".`,
+    },
+    {
+      code: `.foo { transform: translateY(-20%); }`,
+      description: `Accept translateY using relative value".`,
+    },
+    {
       code: `.foo { transform: translate($layout-01); }`,
       description: `Accept translate using layout tokens".`,
     },
@@ -263,23 +287,23 @@ testRule(rule, {
   syntax: "scss",
   reject: [
     {
-      code: `.foo { transform: translate(-20%, -10%); }`,
+      code: `.foo { transform: translate(-20px, -1em); }`,
       description: `Reject translate not using layout tokens".`,
     },
     {
-      code: `.foo { transform: translate(-20%, $layout-06); }`,
+      code: `.foo { transform: translate(-20px, $layout-06); }`,
       description: `Reject translate not using layout tokens for first param".`,
     },
     {
-      code: `.foo { transform: translate($layout-06, -20%); }`,
+      code: `.foo { transform: translate($layout-06, -20px); }`,
       description: `Reject translate not using layout tokens for second param".`,
     },
     {
-      code: `.foo { transform: translateX(-20%); }`,
+      code: `.foo { transform: translateX(-20px); }`,
       description: `Reject translateX not using layout tokens".`,
     },
     {
-      code: `.foo { transform: translateY(-20%); }`,
+      code: `.foo { transform: translateY(-20px); }`,
       description: `Reject translateY not using layout tokens".`,
     },
   ],

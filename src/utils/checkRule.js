@@ -11,50 +11,11 @@ import {
   checkProp,
   isVariable,
   normalizeVariableName,
-  parseToRegexOrString,
   testItem,
   tokenizeValue,
   TOKEN_TYPES,
   parseRangeValue,
 } from "./";
-
-const sanitizeUnconnectedOperators = (val) => {
-  const regex = /^([+ -]*)([^+-]*)$/;
-  const matches = val.match(regex);
-  let sign = "";
-  let resultVal = val;
-
-  if (matches && matches[1] && matches[2]) {
-    // index is start of non sign part
-    const signs = `${matches[1]}1`;
-
-    sign = parseInt(signs) < 0 ? "-" : "";
-
-    resultVal = `${sign}${matches[2]}`;
-  }
-
-  return resultVal;
-};
-
-const checkAcceptValues = (item, acceptedValues = []) => {
-  // Simply check raw values, improve later
-  let result = false;
-
-  if (item) {
-    result = acceptedValues.some((acceptedValue) => {
-      // regex or string
-      const testValue = parseToRegexOrString(acceptedValue);
-
-      return (
-        (testValue.test &&
-          testValue.test(sanitizeUnconnectedOperators(item.raw))) ||
-        testValue === item.raw
-      );
-    });
-  }
-
-  return result;
-};
 
 export default function checkRule(
   root,
@@ -68,43 +29,40 @@ export default function checkRule(
     // Expects to be passed an item containing either a token { raw, type, value} or
     // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
 
-    if (!checkAcceptValues(item, options.acceptValues)) {
-      const testResult = testItem(item, ruleInfo, options, knownVariables);
-      let message;
+    const testResult = testItem(item, ruleInfo, options, knownVariables);
+    let message;
 
-      if (!testResult.accepted) {
-        if (item === undefined) {
-          message = messages.rejectedUndefinedRange(
-            decl.prop,
-            item,
-            propSpec.range
-          );
-        } else if (testResult.isCalc) {
-          message = messages.rejectedMaths(decl.prop, item.raw);
-        } else if (testResult.isVariable) {
-          message = messages.rejectedVariable(
-            decl.prop,
-            item.raw,
-            testResult.variableValue === undefined
-              ? "an unknown, undefined or unrecognized value"
-              : testResult.variableValue
-          );
-        } else {
-          message = messages.rejected(decl.prop, decl.value);
-        }
-
-        // adjust position for multipart value
-        const offsetValue =
-          item !== undefined ? decl.value.indexOf(item.raw) : 0;
-
-        utils.report({
-          ruleName,
-          result,
-          message,
-          index: declarationValueIndex(decl) + offsetValue,
-          node: decl,
-        });
+    if (!testResult.accepted) {
+      if (item === undefined) {
+        message = messages.rejectedUndefinedRange(
+          decl.prop,
+          item,
+          propSpec.range
+        );
+      } else if (testResult.isCalc) {
+        message = messages.rejectedMaths(decl.prop, item.raw);
+      } else if (testResult.isVariable) {
+        message = messages.rejectedVariable(
+          decl.prop,
+          item.raw,
+          testResult.variableValue === undefined
+            ? "an unknown, undefined or unrecognized value"
+            : testResult.variableValue
+        );
+      } else {
+        message = messages.rejected(decl.prop, decl.value);
       }
+
+      // adjust position for multipart value
+      const offsetValue = item !== undefined ? decl.value.indexOf(item.raw) : 0;
+
+      utils.report({
+        ruleName,
+        result,
+        message,
+        index: declarationValueIndex(decl) + offsetValue,
+        node: decl,
+      });
     }
 
     return false;

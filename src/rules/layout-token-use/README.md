@@ -1,6 +1,6 @@
 # Layout Token Use
 
-This rule is intended enfoce use of Carbon theme tokens, functions, mixins and CSS classes as defined.
+This rule is intended enforce use of Carbon theme tokens, functions, mixins and CSS classes as defined.
 
 - [https://www.carbondesignsystem.com/guidelines/layout/overview](https://www.carbondesignsystem.com/guidelines/layout/overview)
 
@@ -14,7 +14,7 @@ Optionally accepts container, icon size and fluid spacing tokens.
 
 ```js
 const defaultOptions = {
-  // include standard layout properites
+  // include standard layout properties
   includeProps: [
     "/^margin$/<1 4>",
     "/^margin-/",
@@ -28,7 +28,7 @@ const defaultOptions = {
     "right",
     "transform",
   ],
-  // Accept transparent, common reset values, 0, proportioanl values,
+  // Accept transparent, common reset values, 0, proportional values,
   acceptValues: ["/inherit|initial/", "/^0[a-z]*$/", "/^[0-9]*(%|vw|vh)$/"],
   acceptUndefinedVariables: true,
   acceptContainerTokens: false,

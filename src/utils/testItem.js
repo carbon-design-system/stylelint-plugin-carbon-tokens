@@ -5,8 +5,51 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { isVariable, normalizeVariableName, parseRangeValue } from ".";
+import {
+  isVariable,
+  normalizeVariableName,
+  parseRangeValue,
+  parseToRegexOrString,
+} from ".";
 import { TOKEN_TYPES } from "./tokenizeValue";
+
+const sanitizeUnconnectedOperators = (val) => {
+  const regex = /^([+ -]*)([^+-]*)$/;
+  const matches = val.match(regex);
+  let sign = "";
+  let resultVal = val;
+
+  if (matches && matches[1] && matches[2]) {
+    // index is start of non sign part
+    const signs = `${matches[1]}1`;
+
+    sign = parseInt(signs) < 0 ? "-" : "";
+
+    resultVal = `${sign}${matches[2]}`;
+  }
+
+  return resultVal;
+};
+
+const checkAcceptValues = (item, acceptedValues = []) => {
+  // Simply check raw values, improve later
+  let result = false;
+
+  if (item) {
+    result = acceptedValues.some((acceptedValue) => {
+      // regex or string
+      const testValue = parseToRegexOrString(acceptedValue);
+
+      return (
+        (testValue.test &&
+          testValue.test(sanitizeUnconnectedOperators(item.raw))) ||
+        testValue === item.raw
+      );
+    });
+  }
+
+  return result;
+};
 
 const unquoteIfNeeded = (val) => {
   if (typeof val === "string") {
@@ -140,7 +183,7 @@ const checkNegation = (mathItems, ruleInfo, knownVariables) => {
   return {};
 };
 
-const testItemInner = function (item, ruleInfo, knownVariables) {
+const testItemInner = function (item, ruleInfo, options, knownVariables) {
   // Expects to be passed an item containing either a item { raw, type, value} or
   // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
   const result = {
@@ -150,6 +193,14 @@ const testItemInner = function (item, ruleInfo, knownVariables) {
 
   if (item === undefined) {
     // do not accept undefined
+    result.done = true;
+
+    return result;
+  }
+
+  if (checkAcceptValues(item, options.acceptValues)) {
+    // value matches one of the acceptValues
+    result.accepted = true;
     result.done = true;
 
     return result;
@@ -194,6 +245,8 @@ const testItemInner = function (item, ruleInfo, knownVariables) {
             end = parseRangeValue(end, paramItems.length) || start; // start if end empty
 
             for (let pos = start; pos <= end; pos++) {
+              // check each param to see if it is acceptable
+
               if (!paramItems[pos]) {
                 break; // ignore parts after undefined
               }
@@ -219,11 +272,18 @@ const testItemInner = function (item, ruleInfo, knownVariables) {
                   );
                 }
               } else {
-                tokenResult = checkTokens(
-                  paramItems[pos].raw,
-                  ruleInfo,
-                  knownVariables
+                tokenResult.accepted = checkAcceptValues(
+                  paramItems[pos],
+                  options.acceptValues
                 );
+
+                if (!tokenResult.accepted) {
+                  tokenResult = checkTokens(
+                    paramItems[pos].raw,
+                    ruleInfo,
+                    knownVariables
+                  );
+                }
               }
 
               if (!tokenResult.accepted) {
@@ -298,7 +358,7 @@ export default function testItem(item, ruleInfo, options, knownVariables) {
     return result;
   }
 
-  result = testItemInner(item, ruleInfo, knownVariables);
+  result = testItemInner(item, ruleInfo, options, knownVariables);
 
   result.isVariable = isVariable(item); // causes different result message
 
