@@ -1,5 +1,8 @@
 # Changelog
 
+## 0.10.0
+
+- feat: Minor package dependency bumps including Carbon
 
 ## 0.9.0
 
