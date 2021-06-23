@@ -343,6 +343,14 @@ testRule(rule, {
       description: `Accept -1 * $".`,
     },
     {
+      code: `.foo { right: -#{$carbon--spacing-04} }`,
+      description: `Accept -1 * $".`,
+    },
+    {
+      code: `.foo { right: -(#{$carbon--spacing-04}) }`,
+      description: `Accept -1 * $".`,
+    },
+    {
       code: `.foo { right: #{$carbon--spacing-04} * -1 }`,
       description: `Accept $ * -1".`,
     },
@@ -462,14 +470,36 @@ testRule(rule, {
   ],
 });
 
-// // Additional  test for reported issue
-// // top: -($body--height - $carbon--spacing-05);
-// testRule(rule, {
-//   ruleName,
-//   config: true,
-//   syntax: "scss",
-//   accept: {
-//     code: `.foo { top: -($body--height - $carbon--spacing-05); }`,
-//     description: `See if ths works`
-//   }
-// });
+// Additional  test for reported issue
+// top: -($body--height - $carbon--spacing-05);
+testRule(rule, {
+  ruleName,
+  config: true,
+  syntax: "scss",
+  reject: [
+    {
+      code: `.foo { $body--height: 400px; top: -($body--height - $carbon--spacing-05); }`,
+      description: `See if ths works`,
+    },
+    {
+      code: `.foo { top: -($body--height - $carbon--spacing-05); }`,
+      description: `See if ths works`,
+    },
+    {
+      code: `.foo { $body--height: 400px; top: ($body--height - $carbon--spacing-05); }`,
+      description: `See if ths works`,
+    },
+    {
+      code: `.foo { top: ($body--height - $carbon--spacing-05); }`,
+      description: `See if ths works`,
+    },
+    {
+      code: `.foo { $body--height: 400px; top: $body--height - $carbon--spacing-05; }`,
+      description: `See if ths works`,
+    },
+    {
+      code: `.foo { top: $body--height - $carbon--spacing-05; }`,
+      description: `See if ths works`,
+    },
+  ],
+});
