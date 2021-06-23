@@ -452,10 +452,24 @@ testRule(rule, {
     {
       code: `.foo { margin: * 10% $layout}`,
       description: `Warn when unconnected operator * with %. Console message shown on test.`,
+      expectWarnings: true,
     },
     {
       code: `.foo { margin: / 10% $layout}`,
       description: `Warn when unconnected operator / with %. Console message shown on test.`,
+      expectWarnings: true,
     },
   ],
 });
+
+// // Additional  test for reported issue
+// // top: -($body--height - $carbon--spacing-05);
+// testRule(rule, {
+//   ruleName,
+//   config: true,
+//   syntax: "scss",
+//   accept: {
+//     code: `.foo { top: -($body--height - $carbon--spacing-05); }`,
+//     description: `See if ths works`
+//   }
+// });

@@ -36,6 +36,14 @@ global.testRule = (rule, schema) => {
       },
     };
 
+    let spyWarn;
+
+    afterEach(() => {
+      if (spyWarn) {
+        spyWarn.mockRestore();
+      }
+    });
+
     if (schema.accept && schema.accept.length) {
       describe("accept", () => {
         schema.accept.forEach((testCase) => {
@@ -47,6 +55,12 @@ global.testRule = (rule, schema) => {
               config: stylelintConfig,
               syntax: schema.syntax,
             };
+
+            if (testCase.expectWarnings) {
+              spyWarn = jest
+                .spyOn(console, "warn")
+                .mockImplementation(() => {});
+            }
 
             return stylelint.lint(options).then((output) => {
               expect(output.results[0].warnings).toEqual([]);
@@ -84,6 +98,12 @@ global.testRule = (rule, schema) => {
             return stylelint.lint(options).then((output) => {
               const warnings = output.results[0].warnings;
               const warning = warnings[0];
+
+              if (testCase.expectWarnings) {
+                spyWarn = jest
+                  .spyOn(console, "warn")
+                  .mockImplementation(() => {});
+              }
 
               expect(warnings.length).toBeGreaterThanOrEqual(1);
               // expect(testCase).toHaveMessage();

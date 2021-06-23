@@ -8,9 +8,23 @@
 import { isValidOption } from "..";
 
 describe("isValidOptions", () => {
+  let spyWarn;
+
+  beforeEach(() => {
+    // The component instantiations that follow will generate a stack of
+    // console errors and warnings about required props not provided or
+    // conditions not met, and for the purposes of these tests we don't care.
+    spyWarn = jest.spyOn(console, "warn").mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    spyWarn.mockRestore();
+  });
+
   it("Option to be invalid", () => {
     expect(isValidOption(["/expected to cause warning during test"])).toEqual(
       false
     );
+    expect(spyWarn).toHaveBeenCalled();
   });
 });
