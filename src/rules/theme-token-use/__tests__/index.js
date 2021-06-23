@@ -31,8 +31,7 @@ testRule(rule, {
         "Accept $varaible declared before use with Carbon theme tokens.",
     },
     {
-      code:
-        "--my-value-accept: $ui-01; .foo { color: var(--my-value-accept); }",
+      code: "--my-value-accept: $ui-01; .foo { color: var(--my-value-accept); }",
       description:
         "Accept --variable declared before use with Carbon theme tokens.",
     },
@@ -153,8 +152,7 @@ testRule(rule, {
         "Accept $varaible declared before use when acceptUndefinedVariables is false.",
     },
     {
-      code:
-        "--my-value-accept: $ui-01; .foo { color: var(--my-value-accept); }",
+      code: "--my-value-accept: $ui-01; .foo { color: var(--my-value-accept); }",
       description:
         "Accept --variable declared before use when acceptUndefinedVariables is false.",
     },
