@@ -44,10 +44,14 @@ for (const key in tokens) {
       tokenArray = spacingTokens;
       break;
     default:
-      // eslint-disable-next-line no-console
-      console.warn(
-        `Unexpected token "${token}" found in @carbon/layout - please raise an issue`
-      );
+      if (tokenWithoutNumber.startsWith("size")) {
+        tokenArray = containerTokens;
+      } else {
+        // eslint-disable-next-line no-console
+        console.warn(
+          `Unexpected token "${token}" found in @carbon/layout - please raise an issue`
+        );
+      }
   }
 
   if (tokenArray) {

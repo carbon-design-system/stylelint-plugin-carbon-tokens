@@ -70,21 +70,26 @@ const preProcessToken = (variable, knownVariables) => {
   let result = variable;
   let match;
 
-  // for (const match of regex.exec(variable).matchAll(regex)) {
   while ((match = regex.exec(variable)) !== null) {
+    // This function copes with various forms and returns the scss variable or css custom prop
+    // var(--test) --test -$test -#{$test} -var(--test) etc.
+
     // node 10 does not support matchAll
     const replacement = knownVariables[match[1]];
+    const isMinus = variable.match(/^-[^-]/);
+
+    const replacementMatch = isMinus ? `-${match[0]}` : match[0];
 
     if (replacement) {
       replacements.push({
         index: match.index,
-        match: match[0],
+        match: replacementMatch,
         replacement: unquoteIfNeeded(replacement.raw),
       });
     } else {
       replacements.push({
         index: match.index,
-        match: match[0],
+        match: replacementMatch,
         replacement: match[1],
       });
     }
@@ -155,7 +160,7 @@ const checkProportionalMath = (mathItems, ruleInfo, knownVariables) => {
   return {};
 };
 
-const checkNegation = (mathItems, ruleInfo, knownVariables) => {
+const checkNegationMaths = (mathItems, ruleInfo, knownVariables) => {
   let otherItem;
   let numeric;
 
@@ -212,7 +217,23 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
       ? item.items[0]
       : item;
 
-  if (_item.type === TOKEN_TYPES.FUNCTION) {
+  if (item.type === TOKEN_TYPES.BRACKETED_CONTENT) {
+    // test all parts
+    const bracketContentsGood = item.items.every((bracketedItem) => {
+      const bracketedItemResult = testItemInner(
+        bracketedItem,
+        ruleInfo,
+        options,
+        knownVariables
+      );
+
+      return bracketedItemResult.accepted;
+    });
+
+    result.source = "Bracketed content";
+    result.accepted = bracketContentsGood;
+    result.done = true; // all tests completed
+  } else if (_item.type === TOKEN_TYPES.FUNCTION) {
     for (const funcSet of ruleInfo.functions) {
       const funcSpecs = funcSet.values;
 
@@ -265,7 +286,7 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
                 );
 
                 if (!tokenResult.accepted) {
-                  tokenResult = checkNegation(
+                  tokenResult = checkNegationMaths(
                     mathItems,
                     ruleInfo,
                     knownVariables
@@ -307,7 +328,15 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
       }
     }
   } else if (item.type === TOKEN_TYPES.MATH) {
-    const tokenResult = checkNegation(item.items, ruleInfo, knownVariables);
+    let tokenResult = checkProportionalMath(
+      item.items,
+      ruleInfo,
+      knownVariables
+    );
+
+    if (!tokenResult.accepted) {
+      tokenResult = checkNegationMaths(item.items, ruleInfo, knownVariables);
+    }
 
     result.source = tokenResult.source;
     result.accepted = tokenResult.accepted;

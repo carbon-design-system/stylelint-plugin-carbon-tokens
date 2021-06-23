@@ -21,6 +21,7 @@
   },
   "dependencies": {
     "@carbon/colors": "^10.26.0",
+    "@carbon/layout": "^10.25.0",
     "@carbon/motion": "^10.19.0",
     "@carbon/themes": "^10.36.0",
     "carbon-components": "^10.37.0",
