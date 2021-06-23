@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.11.0
+
+- Mocked console warnings thrown out during testing
+- Added support for various forms of simple negation using
+- Improved bracketed content support
+
 ## 0.10.0
 
 - feat: Minor package dependency bumps including Carbon
