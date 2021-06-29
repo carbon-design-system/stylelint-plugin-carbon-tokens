@@ -230,11 +230,25 @@ const processTokens = (tokens) => {
         ? result.items[result.items.length - 1]
         : undefined;
 
+    // we are going into bracketed content (array has no input property)
     if (token && token.input === undefined) {
-      // we are going into bracketed content
-      if (lastItem && lastItem.type === TOKEN_TYPES.TEXT_LITERAL) {
+      const lastItemLiteral =
+        lastItem && lastItem.type === TOKEN_TYPES.TEXT_LITERAL;
+      const lastItemMathLiteral =
+        lastItem &&
+        lastItem.type === TOKEN_TYPES.MATH &&
+        lastItem.items[lastItem.items.length - 1].type ===
+          TOKEN_TYPES.TEXT_LITERAL;
+
+      if (lastItemLiteral || lastItemMathLiteral) {
         // update existing item
-        item = lastItem;
+        if (lastItemLiteral) {
+          item = lastItem;
+        } else {
+          item = lastItem.items[lastItem.items.length - 1];
+          lastItem.raw += "(";
+        }
+
         item.items = [];
         item.type = TOKEN_TYPES.FUNCTION;
         item.isCalc = lastItem.value === "calc";

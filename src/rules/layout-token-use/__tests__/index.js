@@ -479,27 +479,31 @@ testRule(rule, {
   reject: [
     {
       code: `.foo { $body--height: 400px; top: -($body--height - $carbon--spacing-05); }`,
-      description: `See if ths works`,
+      description: `Reject non-supported maths of form $x: 1px; -($x - $token)`,
     },
     {
       code: `.foo { top: -($body--height - $carbon--spacing-05); }`,
-      description: `See if ths works`,
+      description: `Reject non-supported maths of form -($unknown - $token)`,
     },
     {
       code: `.foo { $body--height: 400px; top: ($body--height - $carbon--spacing-05); }`,
-      description: `See if ths works`,
+      description: `Reject non-supported maths of form $x: 1px; ($x - $token)`,
     },
     {
       code: `.foo { top: ($body--height - $carbon--spacing-05); }`,
-      description: `See if ths works`,
+      description: `Reject non-supported maths of form ($unknown - $token)`,
     },
     {
       code: `.foo { $body--height: 400px; top: $body--height - $carbon--spacing-05; }`,
-      description: `See if ths works`,
+      description: `Reject non-supported maths of form $x: 1px; $x - $token`,
     },
     {
       code: `.foo { top: $body--height - $carbon--spacing-05; }`,
-      description: `See if ths works`,
+      description: `Reject non-supported maths of form $unknown - $token`,
+    },
+    {
+      code: `.foo {margin-top: 1 + map-get($map: (key: 1rem), $key: key);}`,
+      description: "Reject 1 + map-get",
     },
   ],
 });
