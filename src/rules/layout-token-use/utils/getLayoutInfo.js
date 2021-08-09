@@ -52,7 +52,12 @@ export default function getLayoutInfo(options) {
       {
         source: "CSS",
         accept: true,
-        values: ["translate(1 2)", "translateX(1)", "translateY(1)"],
+        values: [
+          "translate(1 2)",
+          "translateX(1)",
+          "translateY(1)",
+          "translate3d(1 2)",
+        ],
       },
       { source: "CSS", accept: true, values: ["calc(1)"] },
     ],

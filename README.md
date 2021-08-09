@@ -6,11 +6,11 @@ It consists of a stylelint plugin and depends on various Carbon Design System pa
 
 It includes, but may not be limited to, linting for @carbon/themes, @carbon/colors, @carbon/layout, @carbon/type and @carbon/motion.
 
-Not incluced, as they're not used through SCSS, are Carbon Icons, Grid and any other DOM related checks..
+Not included, as they're not used through SCSS, are Carbon Icons, Grid and any other DOM related checks..
 
 ## Please be helpful
 
-Before we start this project is a work in progress which deliberately outputs warnings when it comes accross a syntax that has not yet been catered for. If you see one of these warnings please raise an issue so that it can be addressed.
+Before we start this project is a work in progress which deliberately outputs warnings when it comes across a syntax that has not yet been catered for. If you see one of these warnings please raise an issue so that it can be addressed.
 
 ## Stylelint
 
@@ -164,7 +164,7 @@ modules.exports = {
 };
 ```
 
-NOTE: By default rules accept SCSS and CSS variables not defined in the current file prior to their use. Set acceptUndefinedVariables to false to disable this behaviour.
+NOTE: By default rules accept SCSS and CSS variables not defined in the current file prior to their use. Set acceptUndefinedVariables to false to disable this behavior.
 
 ## Advanced options
 
@@ -187,7 +187,7 @@ The last option here shows how you could elect to check your own tokens refer to
 
 ### includeProps Range
 
-Can innclude a range value expressed inside greater than and less than signs.
+Can include a range value expressed inside greater than and less than signs.
 
 e.g. `["/prop-a$/<-1>", "/prop-b$/<1 -2>"]`
 
@@ -206,7 +206,7 @@ The range value allows values to be selected from a multipart value such as a bo
 
 ### includeProps specific values
 
-For some props e.g. transform we are only intereste in values that match a certain criteria.
+For some props e.g. transform we are only interested in values that match a certain criteria.
 
 This is specified as part of the includedProp inside [].
 
@@ -234,7 +234,7 @@ Gray 80 - #393939 is the value used by the following color tokens:
 
 - (White and Gray 10 theme) - $interactive-02 and $inverse-02
 - (Gray 90 theme) - $ui-01, $field-01, $active-secondary and $disabled-01
-- (Gray 100 theme) - $ui-02, $ui-03, $field-02, $active-seconary, $selected-ui and $skeleton-02
+- (Gray 100 theme) - $ui-02, $ui-03, $field-02, $active-secondary, $selected-ui and $skeleton-02
 
 Now having a setting for the theme in the options would narrow this down to at best two and even there it is hard to pick one.
 

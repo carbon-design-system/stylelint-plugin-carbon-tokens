@@ -507,3 +507,33 @@ testRule(rule, {
     },
   ],
 });
+
+testRule(rule, {
+  ruleName,
+  config: true,
+  syntax: "scss",
+  accept: [
+    {
+      code: `.foo { transform: translate3d($spacing-04, $spacing-04, 100px)}`,
+      description:
+        "Accept translate3d with first two parameters as carbon tokens.",
+    },
+  ],
+  reject: [
+    {
+      code: `.foo { transform: translate3d(100px, $spacing-04, 100px)}`,
+      description:
+        "Reject translate3d with first parameter not a carbon token.",
+    },
+    {
+      code: `.foo { transform: translate3d($spacing-04, 100px, 100px)}`,
+      description:
+        "Reject translate3d with second parameter not a carbon token.",
+    },
+    {
+      code: `.foo { transform: translate3d(100px, 100px, 100px)}`,
+      description:
+        "Reject translate3d with neither first two parameters carbon tokens.",
+    },
+  ],
+});
