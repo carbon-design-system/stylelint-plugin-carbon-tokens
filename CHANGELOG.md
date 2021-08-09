@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.11.2
+
+- Add support for translate3d
+
 ## 0.11.1
 
 - Prevent linter falling over when passed the following forms
