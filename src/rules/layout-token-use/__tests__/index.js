@@ -385,6 +385,10 @@ testRule(rule, {
       code: `.foo { right: calc(50% - 8px); }`,
       description: `Reject calc(% - px)".`,
     },
+    {
+      code: `.foo { $arbitrary-pixel-size: 3.14159265; left: calc(#{$arbitrary-pixel-size} * #{$spacing-01} / 2) }`,
+      description: "Reject calc(N * $ / N)",
+    },
   ],
 });
 
