@@ -385,6 +385,10 @@ testRule(rule, {
       code: `.foo { right: calc(50% - 8px); }`,
       description: `Reject calc(% - px)".`,
     },
+    {
+      code: `.foo { $arbitrary-pixel-size: 3.14159265; left: calc(#{$arbitrary-pixel-size} * #{$spacing-01} / 2) }`,
+      description: "Reject calc(N * $ / N)",
+    },
   ],
 });
 
@@ -504,6 +508,36 @@ testRule(rule, {
     {
       code: `.foo {margin-top: 1 + map-get($map: (key: 1rem), $key: key);}`,
       description: "Reject 1 + map-get",
+    },
+  ],
+});
+
+testRule(rule, {
+  ruleName,
+  config: true,
+  syntax: "scss",
+  accept: [
+    {
+      code: `.foo { transform: translate3d($spacing-04, $spacing-04, 100px)}`,
+      description:
+        "Accept translate3d with first two parameters as carbon tokens.",
+    },
+  ],
+  reject: [
+    {
+      code: `.foo { transform: translate3d(100px, $spacing-04, 100px)}`,
+      description:
+        "Reject translate3d with first parameter not a carbon token.",
+    },
+    {
+      code: `.foo { transform: translate3d($spacing-04, 100px, 100px)}`,
+      description:
+        "Reject translate3d with second parameter not a carbon token.",
+    },
+    {
+      code: `.foo { transform: translate3d(100px, 100px, 100px)}`,
+      description:
+        "Reject translate3d with neither first two parameters carbon tokens.",
     },
   ],
 });
