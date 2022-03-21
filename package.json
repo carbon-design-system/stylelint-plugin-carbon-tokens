@@ -20,12 +20,13 @@
     "url": "https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/issues"
   },
   "dependencies": {
-    "@carbon/colors": "^10.26.0",
-    "@carbon/layout": "^10.25.0",
-    "@carbon/motion": "^10.19.0",
-    "@carbon/themes": "^10.36.0",
-    "carbon-components": "^10.37.0",
+    "@carbon/colors": "^10.37.1",
+    "@carbon/layout": "^10.37.1",
+    "@carbon/motion": "^10.29.0",
+    "@carbon/themes": "^10.53.2",
+    "carbon-components": "^10.55.2",
     "lodash": "^4.17.21",
+    "npm-check-updates": "^12.5.4",
     "postcss": "^7.0.27",
     "postcss-media-query-parser": "^0.2.3",
     "postcss-resolve-nested-selector": "^0.1.1",
@@ -163,7 +164,13 @@
     "ci-check": "yarn format:diff && yarn test --maxWorkers=5 && yarn test && yarn build",
     "test-rule": "npm run jest",
     "test-util": "npm run jest",
-    "generate-contributors-list": "githubcontrib --owner lee-chase --repo stylelint-scss --cols 6 --sortOrder desc --filter greenkeeper[bot],dependabot[bot] --showlogin true --imagesize 80 --format html"
+    "generate-contributors-list": "githubcontrib --owner lee-chase --repo stylelint-scss --cols 6 --sortOrder desc --filter greenkeeper[bot],dependabot[bot] --showlogin true --imagesize 80 --format html",
+    "upgrade:dependencies:top": "npm-check-updates -u --dep dev,peer,prod --reject '/(carbon|^react$|^react-dom$)/'",
+    "upgrade:dependencies:packages": "yarn -s run-all --no-sort --concurrency 1 upgrade-dependencies",
+    "upgrade:dependencies:yarn": "yarn set version latest",
+    "upgrade:automatic": "run-s -s upgrade:dependencies:*",
+    "upgrade:carbon": "npm-check-updates -u --dep dev,peer,prod --packageFile '{package.json,{config/**,packages/**}/package.json}' --filter '/carbon/'",
+    "upgrade:manual": "sh ./scripts/monorepo-npm-upgrade.sh"
   },
   "lint-staged": {
     "**/*.{js,json}": [
