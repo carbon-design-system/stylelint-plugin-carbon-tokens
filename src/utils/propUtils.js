@@ -10,7 +10,7 @@ import parseToRegexOrString from "./parseToRegexOrString";
 const getPropSpec = (prop) => {
   // starts with / and has another /
   // or does not start with /
-  // optionally folloed by <anything in angled brackets>
+  // optionally followed by <anything in angled brackets>
 
   let propSpec = false;
 

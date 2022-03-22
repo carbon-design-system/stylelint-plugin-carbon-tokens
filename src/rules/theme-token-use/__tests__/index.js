@@ -18,6 +18,22 @@ testRule(rule, {
   syntax: "scss",
   accept: [
     {
+      code: ".foo { color: none; }",
+      description: "Accept reset using none",
+    },
+    {
+      code: ".foo { color: inherit; }",
+      description: "Accept reset using inherit",
+    },
+    {
+      code: ".foo { color: initial; }",
+      description: "Accept reset using initial",
+    },
+    {
+      code: ".foo { color: unset; }",
+      description: "Accept reset using unset",
+    },
+    {
       code: ".foo { color: $ui-01; }",
       description: "Carbon theme token expected.",
     },

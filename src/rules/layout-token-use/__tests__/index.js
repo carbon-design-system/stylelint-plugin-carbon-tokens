@@ -223,6 +223,22 @@ testRule(rule, {
   syntax: "scss",
   accept: [
     {
+      code: ".foo { transform: none; }",
+      description: "Accept reset using none",
+    },
+    {
+      code: ".foo { transform: inherit; }",
+      description: "Accept reset using inherit",
+    },
+    {
+      code: ".foo { transform: initial; }",
+      description: "Accept reset using initial",
+    },
+    {
+      code: ".foo { transform: unset; }",
+      description: "Accept reset using unset",
+    },
+    {
       code: `.foo { transform: translate(49%, 49%); }`,
       description: `Accept translate using relative values".`,
     },

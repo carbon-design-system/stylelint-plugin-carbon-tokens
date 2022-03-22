@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-// import valueParser from "postcss-value-parser";
 import { utils } from "stylelint";
 import {
   isValidOption,

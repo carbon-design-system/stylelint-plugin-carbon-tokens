@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-// import valueParser from "postcss-value-parser";
 import { utils } from "stylelint";
 import {
   isValidOption,
@@ -34,9 +33,9 @@ const defaultOptions = {
   ],
   // Accept transparent, common reset values and 0 on its own
   acceptValues: [
-    "/transparent|inherit|initial|none|unset/",
+    "/inherit|initial|none|unset/",
     "/^0$/",
-    "currentColor",
+    "/currentColor|transparent/",
   ],
   acceptCarbonColorTokens: false,
   acceptIBMColorTokens: false,
