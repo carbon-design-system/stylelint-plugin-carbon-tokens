@@ -5,7 +5,6 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-// import valueParser from "postcss-value-parser";
 import { utils } from "stylelint";
 import {
   isValidOption,
@@ -28,6 +27,7 @@ const defaultOptions = {
   acceptValues: ["/inherit|initial|none|unset/"],
   acceptCarbonFontWeightFunction: false, // permit use of carbon font weight function
   acceptCarbonTypeScaleFunction: false, // permit use of carbon type scale function
+  acceptCarbonFontFamilyFunction: false, // permit use of carbon font family function
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
@@ -48,6 +48,8 @@ export default function rule(primaryOptions, secondaryOptions) {
           acceptCarbonFontWeightFunction: (val) =>
             val === undefined || typeof val === "boolean",
           acceptCarbonTypeScaleFunction: (val) =>
+            val === undefined || typeof val === "boolean",
+          acceptCarbonFontFamilyFunction: (val) =>
             val === undefined || typeof val === "boolean",
         },
         optional: true,

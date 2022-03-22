@@ -20,6 +20,10 @@ const typeFunctions = [
     name: "carbon--type-scale",
     accept: "acceptCarbonTypeScaleFunction",
   },
+  {
+    name: "carbon--font-family",
+    accept: "acceptCarbonFontFamilyFunction",
+  },
 ];
 
 export { typeFunctions };

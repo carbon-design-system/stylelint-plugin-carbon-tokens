@@ -81,15 +81,7 @@ testRule(rule, {
   accept: [
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
-      description: "Used non-token duration.",
-      message: messages.expected,
-    },
-  ],
-  reject: [
-    {
-      code: ".foo { font-weight: carbon--type-scale(1); }",
-      description: "Used non-token duration.",
-      message: messages.expected,
+      description: "Permit Carbon font weight function.",
     },
   ],
 });
@@ -106,14 +98,47 @@ testRule(rule, {
   accept: [
     {
       code: ".foo { font-weight: carbon--type-scale(1); }",
-      description: "Used non-token duration.",
-      message: messages.expected,
+      description: "Permit Carbon type scale function.",
     },
   ],
+});
+
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptCarbonFontFamilyFunction: true,
+    },
+  ],
+  syntax: "scss",
+  accept: [
+    {
+      code: ".foo { font-family: carbon--font-family(1); }",
+      description: "Permit Carbon font family function.",
+    },
+  ],
+});
+
+testRule(rule, {
+  ruleName,
+  config: [true, {}],
+  syntax: "scss",
+  accept: [],
   reject: [
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
-      description: "Used non-token duration.",
+      description: "Reject Carbon font weight function.",
+      message: messages.expected,
+    },
+    {
+      code: ".foo { font-weight: carbon--font-weight('light'); }",
+      description: "Reject Carbon font weight function.",
+      message: messages.expected,
+    },
+    {
+      code: ".foo { font-weight: carbon--font-weight('light'); }",
+      description: "Reject Carbon font weight function.",
       message: messages.expected,
     },
   ],

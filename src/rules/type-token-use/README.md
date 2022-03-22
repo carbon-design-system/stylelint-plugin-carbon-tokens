@@ -13,5 +13,6 @@ const defaultOptions = {
   acceptValues: ["/inherit|initial/"],
   acceptCarbonFontWeightFunction: false, // permit use of carbon font weight function
   acceptCarbonTypeScaleFunction: false, // permit use of carbon type scale function
+  acceptCarbonFontFamilyFunction: false, // permit use of carbon font family function
 };
 ```
