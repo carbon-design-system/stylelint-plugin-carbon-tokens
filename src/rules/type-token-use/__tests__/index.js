@@ -11,7 +11,24 @@ testRule(rule, {
   ruleName,
   config: [true],
   syntax: "scss",
-  accept: [], // there are not type tokens used directly
+  accept: [
+    {
+      code: ".foo { font-style: none; }",
+      description: "Accept reset using none",
+    },
+    {
+      code: ".foo { font-style: inherit; }",
+      description: "Accept reset using inherit",
+    },
+    {
+      code: ".foo { font-style: initial; }",
+      description: "Accept reset using initial",
+    },
+    {
+      code: ".foo { font-style: unset; }",
+      description: "Accept reset using unset",
+    },
+  ], // there are not type tokens used directly
   reject: [
     {
       code: ".foo { font-style: italic; }",

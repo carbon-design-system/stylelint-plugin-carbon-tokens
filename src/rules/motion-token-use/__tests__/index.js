@@ -13,6 +13,22 @@ testRule(rule, {
   syntax: "scss",
   accept: [
     {
+      code: ".foo { transition: none; }",
+      description: "Accept reset using none",
+    },
+    {
+      code: ".foo { transition: inherit; }",
+      description: "Accept reset using inherit",
+    },
+    {
+      code: ".foo { transition: initial; }",
+      description: "Accept reset using initial",
+    },
+    {
+      code: ".foo { transition: unset; }",
+      description: "Accept reset using unset",
+    },
+    {
       code: ".foo { transition: width $duration--fast-01 linear ease-in; }",
       description: "Carbon motion token expected for transition.",
     },

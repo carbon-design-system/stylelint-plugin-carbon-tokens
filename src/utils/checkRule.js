@@ -68,11 +68,20 @@ export default function checkRule(
     return false;
   };
 
+  const specialItems = ["inherit", "initial", "none", "unset"];
+
   const checkItems = (items, decl, propSpec, ruleInfo, knownVariables) => {
     // expects to be passed an items array containing tokens
     let itemsToCheck;
+    const isRange = propSpec.range !== undefined;
 
-    if (propSpec.range) {
+    if (
+      !isRange ||
+      (items.length === 1 && specialItems.includes(items[0].value))
+    ) {
+      // check all items in list
+      itemsToCheck = items;
+    } else if (isRange) {
       // for the range select only the values to check
       // 1 = first value, -1 = last value
       let [start, end] = propSpec.range.split(" ");
@@ -87,9 +96,6 @@ export default function checkRule(
       } else {
         itemsToCheck.push(items[start]);
       }
-    } else {
-      // check all items in list
-      itemsToCheck = items;
     }
 
     // look at propSpec.valueCheck
