@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.12.0
+
+- chore: update Carbon versions
+- chore: update browser list
+- fix: resetting motion using none, unset, initial, inherit
+- chore: read motion tokens using js
+
 ## 0.11.2
 
 - Add support for translate3d
