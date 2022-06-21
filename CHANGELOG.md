@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.0.0
+
+Updates to the latest version of Carbon 10 and calls V1 in prep for a v-next or v2 branch for Carbon 11. V1 will continue to track v10 with updates published on a request only basis.
+
+├── @carbon/colors@10.37.1
+├── @carbon/layout@10.37.1
+├── @carbon/motion@10.29.0
+├── @carbon/themes@10.54.0
+├── carbon-components@10.56.0
+
 ## 0.12.0
 
 - chore: update Carbon versions
