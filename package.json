@@ -1,6 +1,6 @@
 {
   "name": "stylelint-plugin-carbon-tokens",
-  "version": "0.12.0",
+  "version": "1.0.0",
   "description": "A stylelint plugin to support the use of carbon component tokens.",
   "keywords": [
     "stylelint",
@@ -20,11 +20,11 @@
     "url": "https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/issues"
   },
   "dependencies": {
-    "@carbon/colors": "^10.37.1",
-    "@carbon/layout": "^10.37.1",
-    "@carbon/motion": "^10.29.0",
-    "@carbon/themes": "^10.53.2",
-    "carbon-components": "^10.55.2",
+    "@carbon/colors": "^10",
+    "@carbon/layout": "^10",
+    "@carbon/motion": "^10",
+    "@carbon/themes": "^10",
+    "carbon-components": "^10",
     "lodash": "^4.17.21",
     "npm-check-updates": "^12.5.4"
   },
