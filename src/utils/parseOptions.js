@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -40,12 +40,10 @@ export default function parseOptions(options, defaults) {
         (options && options[prop]) || [],
         defaults[prop]
       );
+    } else if (options && options[prop] !== undefined) {
+      optsOut[prop] = options[prop];
     } else {
-      if (options && options[prop] !== undefined) {
-        optsOut[prop] = options[prop];
-      } else {
-        optsOut[prop] = defaults[prop];
-      }
+      optsOut[prop] = defaults[prop];
     }
   }
 

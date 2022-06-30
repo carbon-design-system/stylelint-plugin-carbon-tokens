@@ -1,19 +1,19 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import { utils } from "stylelint";
 import {
-  isValidOption,
-  namespace,
-  parseOptions,
   checkRule,
   getMessages,
+  isValidOption,
+  namespace,
+  parseOptions
 } from "../../utils";
 import { getLayoutInfo } from "./utils";
+import { utils } from "stylelint";
 
 export const ruleName = namespace("layout-token-use");
 export const messages = getMessages(ruleName, "layout");
@@ -32,7 +32,7 @@ const defaultOptions = {
     "top",
     "bottom",
     "right",
-    "transform[/^translate/]",
+    "transform[/^translate/]"
     // the following are not really layout or spacing
     // "height",
     // "width",
@@ -44,13 +44,13 @@ const defaultOptions = {
   acceptValues: [
     "/inherit|initial|auto|none|unset/",
     "/^0[a-z]*$/",
-    "/^-{0,1}[0-9]*(%|vw|vh)$/",
+    "/^-{0,1}[0-9]*(%|vw|vh)$/"
   ],
   acceptUndefinedVariables: true,
   acceptContainerTokens: false,
   acceptIconSizeTokens: false,
   acceptFluidSpacingTokens: false,
-  acceptCarbonMiniUnitsFunction: false,
+  acceptCarbonMiniUnitsFunction: false
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
@@ -61,7 +61,7 @@ export default function rule(primaryOptions, secondaryOptions) {
       result,
       ruleName,
       {
-        actual: primaryOptions,
+        actual: primaryOptions
       },
       {
         actual: options,
@@ -77,9 +77,9 @@ export default function rule(primaryOptions, secondaryOptions) {
           acceptFluidSpacingTokens: (val) =>
             val === undefined || typeof val === "boolean",
           acceptCarbonMiniUnitsFunction: (val) =>
-            val === undefined || typeof val === "boolean",
+            val === undefined || typeof val === "boolean"
         },
-        optional: true,
+        optional: true
       }
     );
 

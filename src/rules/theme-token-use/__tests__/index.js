@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -12,85 +12,85 @@ testRule(rule, {
   config: [
     true,
     {
-      acceptValues: ["/((--)|[$])my-value-accept/", "*"],
-    },
+      acceptValues: ["/((--)|[$])my-value-accept/", "*"]
+    }
   ],
-  syntax: "scss",
+  customSyntax: "postcss-scss",
   accept: [
     {
       code: ".foo { color: none; }",
-      description: "Accept reset using none",
+      description: "Accept reset using none"
     },
     {
       code: ".foo { color: inherit; }",
-      description: "Accept reset using inherit",
+      description: "Accept reset using inherit"
     },
     {
       code: ".foo { color: initial; }",
-      description: "Accept reset using initial",
+      description: "Accept reset using initial"
     },
     {
       code: ".foo { color: unset; }",
-      description: "Accept reset using unset",
+      description: "Accept reset using unset"
     },
     {
-      code: ".foo { color: $ui-01; }",
-      description: "Carbon theme token expected.",
+      code: ".foo { color: $layer-01; }",
+      description: "Carbon theme token expected."
     },
     {
-      code: ".foo { box-shadow: 0 0 5px $ui-01, 0 0 10px $ui-02; }",
-      description: "All color tokens in split are Carbon theme tokens.",
+      code: ".foo { box-shadow: 0 0 5px $layer-01, 0 0 10px $layer-02; }",
+      description: "All color tokens in split are Carbon theme tokens."
     },
     {
-      code: "$my-value-accept: $ui-01; .foo { color: $my-value-accept; }",
+      code: "$my-value-accept: $layer-01; .foo { color: $my-value-accept; }",
       description:
-        "Accept $varaible declared before use with Carbon theme tokens.",
+        "Accept $variable declared before use with Carbon theme tokens."
     },
     {
-      code: "--my-value-accept: $ui-01; .foo { color: var(--my-value-accept); }",
+      code: "--my-value-accept: $layer-01; .foo { color: var(--my-value-accept); }",
       description:
-        "Accept --variable declared before use with Carbon theme tokens.",
+        "Accept --variable declared before use with Carbon theme tokens."
     },
     {
-      code: ".foo { box-shadow: $layout-01 $layout-01 $ui-01; }",
+      code: ".foo { box-shadow: $layout-01 $layout-01 $layer-01; }",
       description:
-        "Position one and two can can be non color variables three of three matches",
+        "Position one and two can can be non color variables three of three matches"
     },
     {
-      code: ".foo { box-shadow: 0 0 $layout-01 $ui-01; }",
+      code: ".foo { box-shadow: 0 0 $layout-01 $layer-01; }",
       description:
-        "Position three of four can can be non color variables four of four matches",
+        "Position three of four can can be non color variables four of four matches"
     },
     {
-      code: ".foo { border: 1px solid get-light-value('ui-01'); }",
-      description: "Permitted function get-light-value passes",
+      code: ".foo { border: 1px solid get-light-value('layer-01'); }",
+      description: "Permitted function get-light-value passes"
     },
     {
       code: ".foo { color: $my-value-accept; }",
-      description: "Accept undeclared $variable by defaullt.",
+      description: "Accept undeclared $variable by defaullt."
     },
     {
       code: ".foo { color: var(--my-value-accept); }",
-      description: "Accept undeclared --variable by default.",
-    },
+      description: "Accept undeclared --variable by default."
+    }
   ],
 
   reject: [
     {
       code: ".foo { background-color: #f4f4f4; }",
       description: "Used #color instead of Carbon theme token expected.",
-      message: messages.expected,
+      message: messages.expected
     },
     {
-      code: ".foo { box-shadow: 0 0 5px $ui-01, 0 0 10px #fefefe; }",
+      code: ".foo { box-shadow: 0 0 5px $layer-01, 0 0 10px #fefefe; }",
       description: "Used #color in a split property not Carbon theme tokens.",
-      message: messages.expected,
+      message: messages.expected
     },
     {
-      code: ".foo { border: 1px solid my-value-fun($ui-01); }",
-      description: "Other functions should fail my-value-fn fails",
-    },
-  ],
+      code: ".foo { border: 1px solid my-value-fun($layer-01); }",
+      description: "Other functions should fail my-value-fn fails"
+    }
+  ]
 });
 
 // verify use of carbon color tokens
@@ -100,16 +100,16 @@ testRule(rule, {
     true,
     {
       acceptValues: ["/((--)|[$])my-value-accept/", "*"],
-      acceptCarbonColorTokens: true,
-    },
+      acceptCarbonColorTokens: true
+    }
   ],
-  syntax: "scss",
+  customSyntax: "postcss-scss",
   accept: [
     {
       code: ".foo { background-color: $carbon--blue-90; }",
       description: "Accept using a carbon color token",
-      message: messages.expected,
-    },
+      message: messages.expected
+    }
   ],
 
   reject: [
@@ -117,9 +117,9 @@ testRule(rule, {
     {
       code: ".foo { background-color: $ibm-color__blue-90; }",
       description: "Reject using a ibm color token",
-      message: messages.expected,
-    },
-  ],
+      message: messages.expected
+    }
+  ]
 });
 
 // verify use of carbon color tokens
@@ -129,16 +129,16 @@ testRule(rule, {
     true,
     {
       acceptValues: ["/((--)|[$])my-value-accept/", "*"],
-      acceptIBMColorTokens: true,
-    },
+      acceptIBMColorTokens: true
+    }
   ],
-  syntax: "scss",
+  customSyntax: "postcss-scss",
   accept: [
     {
       code: ".foo { background-color: $ibm-color__blue-90; }",
       description: "Accept using a ibm color token",
-      message: messages.expected,
-    },
+      message: messages.expected
+    }
   ],
 
   reject: [
@@ -146,9 +146,9 @@ testRule(rule, {
     {
       code: ".foo { background-color: $carbon--blue-90; }",
       description: "Reject using a carbon color token",
-      message: messages.expected,
-    },
-  ],
+      message: messages.expected
+    }
+  ]
 });
 
 // verify rejection of undeclared variables
@@ -157,21 +157,21 @@ testRule(rule, {
   config: [
     true,
     {
-      acceptUndefinedVariables: false,
-    },
+      acceptUndefinedVariables: false
+    }
   ],
-  syntax: "scss",
+  customSyntax: "postcss-scss",
   accept: [
     {
-      code: "$my-value-accept: $ui-01; .foo { color: $my-value-accept; }",
+      code: "$my-value-accept: $layer-01; .foo { color: $my-value-accept; }",
       description:
-        "Accept $varaible declared before use when acceptUndefinedVariables is false.",
+        "Accept $variable declared before use when acceptUndefinedVariables is false."
     },
     {
-      code: "--my-value-accept: $ui-01; .foo { color: var(--my-value-accept); }",
+      code: "--my-value-accept: $layer-01; .foo { color: var(--my-value-accept); }",
       description:
-        "Accept --variable declared before use when acceptUndefinedVariables is false.",
-    },
+        "Accept --variable declared before use when acceptUndefinedVariables is false."
+    }
   ],
 
   reject: [
@@ -179,27 +179,27 @@ testRule(rule, {
     {
       code: ".foo { color: $my-value-reject; }",
       description:
-        "Reject undeclared $variable  when acceptUndefinedVariables is false.",
+        "Reject undeclared $variable  when acceptUndefinedVariables is false."
     },
     {
       code: ".foo { color: var(--my-value-reject); }",
       description:
-        "Reject undeclared --variable  when acceptUndefinedVariables is false.",
-    },
-  ],
+        "Reject undeclared --variable  when acceptUndefinedVariables is false."
+    }
+  ]
 });
 
 // verify use of rgba with carbon theme token
 testRule(rule, {
   ruleName,
   config: true,
-  syntax: "scss",
+  customSyntax: "postcss-scss",
   accept: [
     {
-      code: ".foo { background-color: rgba($ui-01, 0.5); }",
+      code: ".foo { background-color: rgba($layer-01, 0.5); }",
       description: "Accept using a carbon theme token with rgba()",
-      message: messages.expected,
-    },
+      message: messages.expected
+    }
   ],
 
   reject: [
@@ -207,55 +207,55 @@ testRule(rule, {
     {
       code: ".foo { background-color: rgba(100, 100, 255, 0.5); }",
       description: "Reject using a non-carbon theme token with rgba()",
-      message: messages.expected,
-    },
-  ],
+      message: messages.expected
+    }
+  ]
 });
 
 // verify use of full and stroke with carbon theme token
 testRule(rule, {
   ruleName,
   config: true,
-  syntax: "scss",
+  customSyntax: "postcss-scss",
   accept: [
     {
-      code: ".foo { fill: $ui-01; }",
+      code: ".foo { fill: $layer-01; }",
       description: "Accept carbon theme token for fill property by default",
-      message: messages.expected,
+      message: messages.expected
     },
     {
-      code: ".foo { stroke: $ui-01; }",
+      code: ".foo { stroke: $layer-01; }",
       description: "Accept carbon theme token for stroke property by default",
-      message: messages.expected,
-    },
+      message: messages.expected
+    }
   ],
   reject: [
     {
       code: ".foo { fill: #fefefe; }",
       description: "Reject non-carbon theme token for fill property by default",
-      message: messages.expected,
+      message: messages.expected
     },
     {
       code: ".foo { stroke: red; }",
       description:
         "Reject non-carbon theme token for stroke property by default",
-      message: messages.expected,
-    },
-  ],
+      message: messages.expected
+    }
+  ]
 });
 
 // accept currentColor can be used as a value
 testRule(rule, {
   ruleName,
   config: true,
-  syntax: "scss",
+  customSyntax: "postcss-scss",
   accept: [
     {
       code: ".foo { fill: currentColor; }",
       description: "Accept currentColor on the assumption color is valid",
-      message: messages.expected,
-    },
-  ],
+      message: messages.expected
+    }
+  ]
 });
 
 testRule(rule, {
@@ -264,31 +264,29 @@ testRule(rule, {
     true,
     {
       acceptUndefinedVariables: false,
-      includeProps: ["/\\$.*do-check.*$/", "*"],
-    },
+      includeProps: ["/\\$.*do-check.*$/", "*"]
+    }
   ],
-  syntax: "scss",
+  customSyntax: "postcss-scss",
   accept: [
     {
-      code: "$do-check-me: $ui-01;",
-      description: "Should check '$do-check-me' using a carbon theme token",
+      code: "$do-check-me: $layer-01;",
+      description: "Should check '$do-check-me' using a carbon theme token"
     },
     {
-      code: "$also-do-check-me-too: $ui-01;",
+      code: "$also-do-check-me-too: $layer-01;",
       description:
-        "Should check '$also-do-check-me-too' using a carbon theme token",
+        "Should check '$also-do-check-me-too' using a carbon theme token"
     },
     {
-      code: "$do-not-check-me-too: $ui-01;",
-      description:
-        "Should ignore '$do-not-check-me' using a carbon theme token",
-    },
+      code: "$do-not-check-me-too: $layer-01;",
+      description: "Should ignore '$do-not-check-me' using a carbon theme token"
+    }
   ],
   reject: [
     {
       code: "$do-check-me: red;",
-      description:
-        "Should check '$do-check-me` not using a carbon theme token'",
-    },
-  ],
+      description: "Should check '$do-check-me` not using a carbon theme token'"
+    }
+  ]
 });

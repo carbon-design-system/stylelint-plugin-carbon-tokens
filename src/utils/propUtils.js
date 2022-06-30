@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -14,7 +14,8 @@ const getPropSpec = (prop) => {
 
   let propSpec = false;
 
-  const checkRegex = /^((\/[^/]*\/)|([^</[]+))(<([^>]*)>)*(\[([^]+)\])*/;
+  // eslint-disable-next-line regexp/no-unused-capturing-group
+  const checkRegex = /^((\/[^/]*\/)|([^</[]+))(<([^>]*)>)*(\[([\s\S]+)\])*/;
 
   const matches = checkRegex.exec(prop);
 
@@ -23,7 +24,7 @@ const getPropSpec = (prop) => {
       prop: matches[1],
       test: parseToRegexOrString(matches[1]),
       range: matches[5], // 5 may be undefined
-      valueCheck: parseToRegexOrString(matches[7]), // may be undefined
+      valueCheck: parseToRegexOrString(matches[7]) // may be undefined
     };
   }
 
@@ -64,9 +65,9 @@ const parseRangeValue = (value, length) => {
     // -ve from end
 
     return length + _value; // zero based
-  } else {
-    return _value - 1; // make it zero based
   }
+
+  return _value - 1; // make it zero based
 };
 
 export { getPropSpec, checkProp, parseRangeValue };

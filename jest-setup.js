@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -17,14 +17,14 @@ global.testRule = (rule, schema) => {
         return {
           message: () =>
             'Expected "reject" test case to have a "message" property',
-          pass: false,
+          pass: false
         };
       }
 
       return {
-        pass: true,
+        pass: true
       };
-    },
+    }
   });
 
   // eslint-disable-next-line jest/valid-describe
@@ -32,8 +32,8 @@ global.testRule = (rule, schema) => {
     const stylelintConfig = {
       plugins: ["./src"],
       rules: {
-        [schema.ruleName]: schema.config,
-      },
+        [schema.ruleName]: schema.config
+      }
     };
 
     let spyWarn;
@@ -53,7 +53,7 @@ global.testRule = (rule, schema) => {
             const options = {
               code: testCase.code,
               config: stylelintConfig,
-              syntax: schema.syntax,
+              syntax: schema.syntax
             };
 
             if (testCase.expectWarnings) {
@@ -71,7 +71,7 @@ global.testRule = (rule, schema) => {
 
               // Check the fix
               return stylelint
-                .lint(Object.assign({ fix: true }, options))
+                .lint({ fix: true, ...options })
                 .then((output2) => {
                   const fixedCode = getOutputCss(output2);
 
@@ -92,7 +92,7 @@ global.testRule = (rule, schema) => {
             const options = {
               code: testCase.code,
               config: stylelintConfig,
-              syntax: schema.syntax,
+              syntax: schema.syntax
             };
 
             return stylelint.lint(options).then((output) => {
@@ -132,7 +132,7 @@ global.testRule = (rule, schema) => {
 
               // Check the fix
               return stylelint
-                .lint(Object.assign({ fix: true }, options))
+                .lint({ fix: true, ...options })
                 .then((output2) => {
                   const fixedCode = getOutputCss(output2);
 
@@ -170,14 +170,14 @@ global.testConfig = (schema) => {
       testFn(schema.description, () => {
         const config = {
           rules: {
-            [schema.ruleName]: schema.config,
-          },
+            [schema.ruleName]: schema.config
+          }
         };
 
         stylelint
           .lint({
             code: "",
-            config,
+            config
           })
           .then((data) => {
             const invalidOptionWarnings = data.results[0].warnings;

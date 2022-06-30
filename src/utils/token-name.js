@@ -5,10 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export default function normalizeVariableName(variable) {
-  if (variable.startsWith("--")) {
-    return `var(${variable})`;
-  }
+const formatTokenName = (token) => {
+  return `${token
+    .split(/(?=[A-Z]|[0-9]{2})/)
+    .join("-")
+    .toLowerCase()}`;
+};
 
-  return variable;
-}
+export { formatTokenName };

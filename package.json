@@ -22,7 +22,8 @@
   "dependencies": {
     "@carbon/styles": "^1.5.0",
     "lodash": "^4.17.21",
-    "npm-check-updates": "^14.0.1"
+    "postcss-scss": "^4.0.4",
+    "postcss-value-parser": "^4.2.0"
   },
   "devDependencies": {
     "@babel/cli": "^7.17.10",
@@ -38,7 +39,7 @@
     "jest": "^28.1.1",
     "jest-cli": "^28.1.1",
     "lint-staged": "^13.0.2",
-    "npm-check-updates": "^12.5.4",
+    "npm-check-updates": "^14.0.1",
     "npm-run-all": "^4.1.5",
     "npmpub": "^5.1.1",
     "prettier": "^2.7.1",
@@ -65,6 +66,7 @@
       "node": true
     },
     "globals": {
+      "__dirname": true,
       "testRule": true,
       "testConfig": true
     },
@@ -74,12 +76,12 @@
         "error",
         "nofunc"
       ],
-      "sort-requires/sort-requires": "error",
       "strict": [
         "error",
         "global"
       ],
       "arrow-spacing": "error",
+      "guard-for-in": "off",
       "no-var": "error",
       "object-shorthand": "error",
       "prefer-const": "error",
@@ -93,7 +95,9 @@
           ]
         }
       ],
-      "eslint-comments/no-unlimited-disable": "warn"
+      "eslint-comments/no-unlimited-disable": "off",
+      "node/no-extraneous-import": "off",
+      "sort-requires/sort-requires": "off"
     }
   },
   "files": [
@@ -135,7 +139,7 @@
     ],
     "testRegex": ".*\\.test\\.js$|src/.*/__tests__/.*\\.js$",
     "transform": {
-      "^.+\\.jsx?$": "./babel-jest.js"
+      "^.+\\.jsx?$": "babel-jest"
     }
   },
   "scripts": {
@@ -152,7 +156,8 @@
     "pretest": "npm run lint",
     "release": "npmpub",
     "jest": "jest",
-    "test": "npm run jest -- --coverage",
+    "test": "npm run jest",
+    "test-c": "npm run jest -- --coverage",
     "watch": "npm run jest -- --watch",
     "ci-check": "yarn format:diff && yarn test --maxWorkers=5 && yarn test && yarn build",
     "test-rule": "npm run jest",

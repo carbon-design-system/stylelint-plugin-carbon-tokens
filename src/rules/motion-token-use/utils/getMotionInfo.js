@@ -1,11 +1,11 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import { motionTokens, motionFunctions } from "./initMotionTokens";
+import { motionFunctions, motionTokens } from "./initMotionTokens";
 
 export default function getMotionInfo() {
   return {
@@ -13,15 +13,15 @@ export default function getMotionInfo() {
       {
         source: "Motion",
         accept: true,
-        values: motionTokens,
-      },
+        values: motionTokens
+      }
     ],
     functions: [
       {
         source: "Motion",
         accept: true,
-        values: motionFunctions,
-      },
-    ],
+        values: motionFunctions
+      }
+    ]
   };
 }

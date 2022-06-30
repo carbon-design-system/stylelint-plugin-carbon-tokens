@@ -1,21 +1,22 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import { utils } from "stylelint";
 import {
-  declarationValueIndex,
+  TOKEN_TYPES,
   checkProp,
+  declarationValueIndex,
   isVariable,
   normalizeVariableName,
-  testItem,
-  tokenizeValue,
-  TOKEN_TYPES,
   parseRangeValue,
+  testItem,
+  tokenizeValue
 } from "./";
+import { utils } from "stylelint";
+// import valueParser from "postcss-value-parser";
 
 export default function checkRule(
   root,
@@ -61,7 +62,7 @@ export default function checkRule(
         result,
         message,
         index: declarationValueIndex(decl) + offsetValue,
-        node: decl,
+        node: decl
       });
     }
 
@@ -103,9 +104,9 @@ export default function checkRule(
       itemsToCheck = itemsToCheck.filter((item) => {
         if (typeof propSpec.valueCheck === "object") {
           return propSpec.valueCheck.test(item.raw);
-        } else {
-          return propSpec.valueCheck === item.raw;
         }
+
+        return propSpec.valueCheck === item.raw;
       });
     }
 

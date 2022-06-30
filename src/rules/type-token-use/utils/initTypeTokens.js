@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -14,16 +14,16 @@
 const typeFunctions = [
   {
     name: "carbon--font-weight",
-    accept: "acceptCarbonFontWeightFunction",
+    accept: "acceptCarbonFontWeightFunction"
   },
   {
     name: "carbon--type-scale",
-    accept: "acceptCarbonTypeScaleFunction",
+    accept: "acceptCarbonTypeScaleFunction"
   },
   {
     name: "carbon--font-family",
-    accept: "acceptCarbonFontFamilyFunction",
-  },
+    accept: "acceptCarbonFontFamilyFunction"
+  }
 ];
 
 export { typeFunctions };

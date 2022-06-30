@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -9,11 +9,12 @@ import {
   isVariable,
   normalizeVariableName,
   parseRangeValue,
-  parseToRegexOrString,
+  parseToRegexOrString
 } from ".";
 import { TOKEN_TYPES } from "./tokenizeValue";
 
 const sanitizeUnconnectedOperators = (val) => {
+  // eslint-disable-next-line regexp/no-super-linear-backtracking
   const regex = /^([+ -]*)([^+-]*)$/;
   const matches = val.match(regex);
   let sign = "";
@@ -65,7 +66,7 @@ const unquoteIfNeeded = (val) => {
 };
 
 const preProcessToken = (variable, knownVariables) => {
-  const regex = /#{([$\w-]*)}/g;
+  const regex = /#\{([$\w-]*)\}/g;
   const replacements = [];
   let result = variable;
   let match;
@@ -84,13 +85,13 @@ const preProcessToken = (variable, knownVariables) => {
       replacements.push({
         index: match.index,
         match: replacementMatch,
-        replacement: unquoteIfNeeded(replacement.raw),
+        replacement: unquoteIfNeeded(replacement.raw)
       });
     } else {
       replacements.push({
         index: match.index,
         match: replacementMatch,
-        replacement: match[1],
+        replacement: match[1]
       });
     }
   }
@@ -193,7 +194,7 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
   // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
   const result = {
     accepted: false,
-    done: false,
+    done: false
   };
 
   if (item === undefined) {
@@ -243,81 +244,81 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
         if (parts.length === 1) {
           // no parameter checks
           return parts[0] === _item.value;
-        } else {
-          // check parameters
-          if (parts[0] === _item.value) {
-            // a function will contain an items array that is either a LIST or not
-            // IF TRUE a list then _item.items[0] === list which contains LIST_ITEMS in which case LIST_ITEMS.items is what we are interested in
-            // IF FALSE a list contains values which could include math or brackets or function calls
-            // NOTE: we do not try to deal with function calls inside function calls
+        }
 
-            const inList = !!(
-              _item.items && _item.items[0].type === TOKEN_TYPES.LIST
-            );
-            const paramItems = inList
-              ? _item.items[0].items // List[0] contains list items
-              : _item.items; // otherwise contains Tokens
+        // check parameters
+        if (parts[0] === _item.value) {
+          // a function will contain an items array that is either a LIST or not
+          // IF TRUE a list then _item.items[0] === list which contains LIST_ITEMS in which case LIST_ITEMS.items is what we are interested in
+          // IF FALSE a list contains values which could include math or brackets or function calls
+          // NOTE: we do not try to deal with function calls inside function calls
 
-            let [start, end] = parts[1]
-              .substring(0, parts[1].length - 1)
-              .split(" ");
+          const inList = Boolean(
+            _item.items && _item.items[0].type === TOKEN_TYPES.LIST
+          );
+          const paramItems = inList
+            ? _item.items[0].items // List[0] contains list items
+            : _item.items; // otherwise contains Tokens
 
-            start = parseRangeValue(start, paramItems.length);
-            end = parseRangeValue(end, paramItems.length) || start; // start if end empty
+          let [start, end] = parts[1]
+            .substring(0, parts[1].length - 1)
+            .split(" ");
 
-            for (let pos = start; pos <= end; pos++) {
-              // check each param to see if it is acceptable
+          start = parseRangeValue(start, paramItems.length);
+          end = parseRangeValue(end, paramItems.length) || start; // start if end empty
 
-              if (!paramItems[pos]) {
-                break; // ignore parts after undefined
-              }
+          for (let pos = start; pos <= end; pos++) {
+            // check each param to see if it is acceptable
 
-              // raw value of list and non-list item does allow for math
-              let tokenResult = {};
+            if (!paramItems[pos]) {
+              break; // ignore parts after undefined
+            }
 
-              if (_item.isCalc && paramItems[pos].type === TOKEN_TYPES.MATH) {
-                // allow proportional + or - checkTokens
-                const mathItems = paramItems[pos].items;
+            // raw value of list and non-list item does allow for math
+            let tokenResult = {};
 
-                tokenResult = checkProportionalMath(
+            if (_item.isCalc && paramItems[pos].type === TOKEN_TYPES.MATH) {
+              // allow proportional + or - checkTokens
+              const mathItems = paramItems[pos].items;
+
+              tokenResult = checkProportionalMath(
+                mathItems,
+                ruleInfo,
+                knownVariables
+              );
+
+              if (!tokenResult.accepted) {
+                tokenResult = checkNegationMaths(
                   mathItems,
                   ruleInfo,
                   knownVariables
                 );
-
-                if (!tokenResult.accepted) {
-                  tokenResult = checkNegationMaths(
-                    mathItems,
-                    ruleInfo,
-                    knownVariables
-                  );
-                }
-              } else {
-                tokenResult.accepted = checkAcceptValues(
-                  paramItems[pos],
-                  options.acceptValues
-                );
-
-                if (!tokenResult.accepted) {
-                  tokenResult = checkTokens(
-                    paramItems[pos].raw,
-                    ruleInfo,
-                    knownVariables
-                  );
-                }
               }
+            } else {
+              tokenResult.accepted = checkAcceptValues(
+                paramItems[pos],
+                options.acceptValues
+              );
 
               if (!tokenResult.accepted) {
-                return false;
+                tokenResult = checkTokens(
+                  paramItems[pos].raw,
+                  ruleInfo,
+                  knownVariables
+                );
               }
             }
 
-            // all variables in function passed so return true
-            return true;
-          } else {
-            return false;
+            if (!tokenResult.accepted) {
+              return false;
+            }
           }
+
+          // all variables in function passed so return true
+          return true;
         }
+
+        return false;
       });
 
       if (matchesFuncSpec) {
