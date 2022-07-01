@@ -21,6 +21,7 @@ const defaultOptions = {
   ],
   //  Accept reset values
   acceptValues: ["0s", "0"],
+  acceptsScopes: ["motion"],
   acceptUndefinedVariables: false,
 };
 ```

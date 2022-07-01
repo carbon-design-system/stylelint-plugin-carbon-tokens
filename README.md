@@ -8,6 +8,8 @@ It includes, but may not be limited to, linting for @carbon/themes, @carbon/colo
 
 Not included, as they're not used through SCSS, are Carbon Icons, Grid and any other DOM related checks..
 
+NOTE: The parameters of Carbon functions are not normally tested as these do no typically have Carbon tokens as parameters.
+
 ## Please be helpful
 
 Before we start this project is a work in progress which deliberately outputs warnings when it comes across a syntax that has not yet been catered for. If you see one of these warnings please raise an issue so that it can be addressed.
@@ -154,7 +156,6 @@ modules.exports = {
       true,
       {
         severity: "warning",
-        acceptUndefinedVariables: false,
         acceptCarbonTypeScaleFunction: false,
       },
     ],
@@ -170,6 +171,7 @@ These options when omitted to accept the defaults. They are intended to support 
 
 - includeProps: Array
 - acceptValues: Array
+- acceptScopes: Array
 
 Arrays of strings and/or Regex followed by a range in angled brackets.
 
@@ -179,9 +181,15 @@ The defaults for these are defined in the individual README files listed above.
 - `includeProps: ["*"]` - Indicates default, same as omitting the property
 - `includeProps: ["/^\\$my-color--/", "*"]` - SCSS variable starting "\$my-color--", plus default values specified
 
-The last option here shows how you could elect to check your own tokens refer to values acceptable to the linter.
+The acceptValues option allows you to check your own tokens refer to values acceptable to the linter.
 
 - `acceptValues: ["$/^\\$my-color--/"]` - Accept SCSS variables starting "\$my-color--"
+
+The acceptScopes option allows you to alter the scope value for all rules using regex or a string. For example you may wish to use short scope names.
+
+- `acceptScopes: ["/^la(yout)?$/", "/^mo(tion)?$/", "/^th(eme)?$/", "/^ty(pe)?$/"]` - using regex to accept abbreviations
+- `acceptScopes: ["la", "mo", "th", "ty"]` - abbreviations but not defaults
+- `acceptScopes: ["la", "mo", "th", "ty", "*"]` - abbreviations plus defaults with "*"
 
 ### includeProps Range
 
