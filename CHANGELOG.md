@@ -1,6 +1,11 @@
 # Changelog
 
-## 2.0 0
+## 2.0 0-alpha.2
+
+- Add scope support
+- Change acceptUndefinedVariables default to false
+
+## 2.0 0-alpha.1
 
 - Carbon V11 support
 - Carbon 10 support dropped, use V1 for Carbon 10 support.

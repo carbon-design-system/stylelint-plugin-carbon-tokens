@@ -315,3 +315,112 @@ testRule(rule, {
     }
   ]
 });
+
+// Scope tests
+testRule(rule, {
+  ruleName,
+  config: true,
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { color: theme.$layer-01; }`,
+      description: "Accept theme scope."
+    },
+    {
+      code: `.foo { color: get-light-value(theme.$layer-01)}`,
+      description: "Accept theme scope in function."
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { color: th.$layer-01; }`,
+      description: "Reject scope 'th' without acceptScopes setting."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [true, { acceptScopes: ["th"] }],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { color: th.$layer-01; }`,
+      description: "Accept scope 'th' with acceptScopes setting."
+    },
+    {
+      code: `.foo { color: get-light-value(th.$layer-01)}`,
+      description: "Accept scope 'th' with acceptScopes setting in function."
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { color: theme.$layer-01; }`,
+      description: "Reject theme scope with scope setting."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [true, { acceptScopes: ["th", "*"] }],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { color: th.$layer-01; }`,
+      description: "Accept scope 'th' with acceptScopes setting."
+    },
+    {
+      code: `.foo { color: get-light-value(th.$layer-01)}`,
+      description: "Accept scope 'th' with acceptScopes setting in function."
+    },
+    {
+      code: `.foo { color: theme.$layer-01; }`,
+      description: "Accept theme scope with scope setting including default."
+    },
+    {
+      code: `.foo { color: get-light-value(theme.$layer-01)}`,
+      description:
+        "Accept theme scope in function with scope setting including default."
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { color: reject.$layer-01; }`,
+      description: "Reject scope not included in scope setting."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [true, { acceptScopes: ["/^th(eme)?$/"] }],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { color: th.$layer-01; }`,
+      description: "Accept scope 'th' with acceptScopes regex setting."
+    },
+    {
+      code: `.foo { color: get-light-value(th.$layer-01)}`,
+      description:
+        "Accept scope 'th' with acceptScopes regex setting in function."
+    },
+    {
+      code: `.foo { color: theme.$layer-01; }`,
+      description:
+        "Accept theme scope with scope regex setting including default."
+    },
+    {
+      code: `.foo { color: get-light-value(theme.$layer-01)}`,
+      description:
+        "Accept theme scope in function with scope regex setting including default."
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { color: reject.$layer-01; }`,
+      description: "Reject scope not included in scope regex setting."
+    }
+  ]
+});

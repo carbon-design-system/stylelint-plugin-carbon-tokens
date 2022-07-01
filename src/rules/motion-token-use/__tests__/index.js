@@ -164,3 +164,112 @@ testRule(rule, {
 //   message: messages.expected,
 //   config: ["always", { acceptValues: ["/wibble/"] }],
 // });
+
+// Scope tests
+testRule(rule, {
+  ruleName,
+  config: true,
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { animation-duration: motion.$duration--fast-01; }`,
+      description: "Accept motion scope."
+    },
+    {
+      code: `.foo { animation-duration: motion(motion.$duration--fast-01)}`,
+      description: "Accept motion scope in function."
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { animation-duration: mo.$duration--fast-01; }`,
+      description: "Reject scope 'mo' without acceptScopes setting."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [true, { acceptScopes: ["mo"] }],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { animation-duration: mo.$duration--fast-01; }`,
+      description: "Accept scope 'mo' with acceptScopes setting."
+    },
+    {
+      code: `.foo { animation-duration: motion(mo.$duration--fast-01)}`,
+      description: "Accept scope 'mo' with acceptScopes setting in function.."
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { animation-duration: motion.$duration--fast-01; }`,
+      description: "Reject motion scope with scope setting."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [true, { acceptScopes: ["mo", "*"] }],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { animation-duration: mo.$duration--fast-01; }`,
+      description: "Accept scope 'mo' with acceptScopes setting."
+    },
+    {
+      code: `.foo { animation-duration: motion(mo.$duration--fast-01)}`,
+      description: "Accept scope 'mo' with acceptScopes setting in function."
+    },
+    {
+      code: `.foo { animation-duration: motion.$duration--fast-01; }`,
+      description: "Accept motion scope with scope setting including default."
+    },
+    {
+      code: `.foo { animation-duration: motion(motion.$duration--fast-01)}`,
+      description:
+        "Accept motion scope in function with scope setting including default."
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { animation-duration: reject.$duration--fast-01; }`,
+      description: "Reject scope not included in scope setting."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [true, { acceptScopes: ["/^mo(tion)?$/"] }],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { animation-duration: mo.$duration--fast-01; }`,
+      description: "Accept scope 'mo' with acceptScopes regex setting."
+    },
+    {
+      code: `.foo { animation-duration: motion(mo.$duration--fast-01)}`,
+      description:
+        "Accept scope 'mo' with acceptScopes regex setting in function.."
+    },
+    {
+      code: `.foo { animation-duration: motion.$duration--fast-01; }`,
+      description:
+        "Accept motion scope with scope regex setting including default."
+    },
+    {
+      code: `.foo { animation-duration: motion(motion.$duration--fast-01)}`,
+      description:
+        "Accept motion scope in function with scope regex setting including default."
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { animation-duration: reject.$duration--fast-01; }`,
+      description: "Reject scope not included in scope regex setting."
+    }
+  ]
+});

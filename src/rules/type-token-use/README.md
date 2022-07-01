@@ -11,6 +11,7 @@ const defaultOptions = {
   // include standard type properites
   includeProps: ["font", "/^font-*/", "line-height", "letterSpacing"],
   acceptValues: ["/inherit|initial/"],
+  acceptsScopes: ["type"],
   acceptCarbonFontWeightFunction: false, // permit use of carbon font weight function
   acceptCarbonTypeScaleFunction: false, // permit use of carbon type scale function
   acceptCarbonFontFamilyFunction: false, // permit use of carbon font family function

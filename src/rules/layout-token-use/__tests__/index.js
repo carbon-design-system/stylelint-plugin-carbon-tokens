@@ -250,22 +250,22 @@ testRule(rule, {
     {
       code: `.foo { transform: translateY(-20%); }`,
       description: `Accept translateY using relative value`
-      // },
-      // {
-      //   code: `.foo { transform: translateX(calc(-1 * $spacing-05)); }`,
-      //   description: `Accept translateX using relative value`
-      // },
-      // {
-      //   code: `.foo { transform: translateY(calc(-1 * $spacing-05)); }`,
-      //   description: `Accept translateY using relative value`
-      // },
-      // {
-      //   code: `.foo { transform: translateX(calc(-1 * #{$spacing-05})); }`,
-      //   description: `Accept translateX using relative value`
-      // },
-      // {
-      //   code: `.foo { transform: translateY(calc(-1 * #{$spacing-05})); }`,
-      //   description: `Accept translateY using relative value`
+    },
+    {
+      code: `.foo { transform: translateX(calc(-1 * $spacing-05)); }`,
+      description: `Accept translateX using a calc(-1 * $)`
+    },
+    {
+      code: `.foo { transform: translateY(calc(-1 * $spacing-05)); }`,
+      description: `Accept translateY using calc(-1 * $)`
+    },
+    {
+      code: `.foo { transform: translateX(calc(-1 * #{$spacing-05})); }`,
+      description: `Accept translateX using calc(-1 * #{$})`
+    },
+    {
+      code: `.foo { transform: translateY(calc(-1 * #{$spacing-05})); }`,
+      description: `Accept translateY using  calc(-1 * #{$})`
     }
   ]
 });
@@ -535,6 +535,124 @@ testRule(rule, {
       code: `.foo { transform: translate3d(100px, 100px, 100px)}`,
       description:
         "Reject translate3d with neither first two parameters carbon tokens."
+    }
+  ]
+});
+
+// Scope tests
+testRule(rule, {
+  ruleName,
+  config: true,
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { left: layout.$spacing-05; }`,
+      description: "Accept layout scope."
+    },
+    {
+      code: `.foo { transform: translate3d(layout.$spacing-04, layout.$spacing-04, layout.$spacing-04)}`,
+      description: "Accept layout scope in function."
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { left: la.$spacing-05; }`,
+      description: "Reject scope 'la' without acceptScopes setting."
+    },
+    {
+      code: `.foo { transform: translate3d(la.$spacing-04, la.$spacing-04, layout.$spacing-04)}`,
+      description:
+        "Reject scope 'la' without acceptScopes setting in translation."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [true, { acceptScopes: ["la"] }],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { left: la.$spacing-05; }`,
+      description: "Accept scope 'la' with acceptScopes setting."
+    },
+    {
+      code: `.foo { transform: translate3d(la.$spacing-04, la.$spacing-04, layout.$spacing-04)}`,
+      description: "Accept scope 'la' with acceptScopes setting in translation."
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { left: layout.$spacing-05; }`,
+      description: "Reject layout scope with scope setting."
+    },
+    {
+      code: `.foo { transform: translate3d(layout.$spacing-04, layout.$spacing-04, layout.$spacing-04)}`,
+      description: "Reject layout scope in function with scope setting."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [true, { acceptScopes: ["la", "*"] }],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { left: la.$spacing-05; }`,
+      description: "Accept scope 'la' with acceptScopes setting."
+    },
+    {
+      code: `.foo { transform: translate3d(la.$spacing-04, la.$spacing-04, layout.$spacing-04)}`,
+      description: "Accept scope 'la' with acceptScopes setting in translatio.n"
+    },
+    {
+      code: `.foo { left: layout.$spacing-05; }`,
+      description: "Accept layout scope with scope setting including default."
+    },
+    {
+      code: `.foo { transform: translate3d(layout.$spacing-04, layout.$spacing-04, layout.$spacing-04)}`,
+      description:
+        "Accept layout scope in function with scope setting including default."
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { left: reject.$spacing-05; }`,
+      description: "Reject scope not included in scope setting."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [true, { acceptScopes: ["/^la(yout)?$/"] }],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { left: la.$spacing-05; }`,
+      description: "Accept scope 'la' with acceptScopes regex setting."
+    },
+    {
+      code: `.foo { transform: translate3d(la.$spacing-04, la.$spacing-04, layout.$spacing-04)}`,
+      description:
+        "Accept scope 'la' with acceptScopes regex setting in translation."
+    },
+    {
+      code: `.foo { left: layout.$spacing-05; }`,
+      description:
+        "Accept layout scope with scope regex setting including default."
+    },
+    {
+      code: `.foo { transform: translate3d(layout.$spacing-04, layout.$spacing-04, layout.$spacing-04)}`,
+      description:
+        "Accept layout scope in function with scope regex setting including default."
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { left: reject.$spacing-05; }`,
+      description: "Reject scope not included in scope regex setting."
     }
   ]
 });

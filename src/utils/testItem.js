@@ -343,12 +343,27 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
               );
 
               if (!tokenResult.accepted) {
-                tokenResult = checkTokens(
-                  paramItems[pos],
-                  ruleInfo,
-                  options,
-                  knownVariables
-                );
+                const paramItem =
+                  paramItems[pos].type === TOKEN_TYPES.LIST_ITEM
+                    ? paramItems[pos].items[0]
+                    : paramItems[pos];
+
+                if (paramItem.type === TOKEN_TYPES.FUNCTION) {
+                  // child function
+                  tokenResult = testItemInner(
+                    paramItem,
+                    ruleInfo,
+                    options,
+                    knownVariables
+                  );
+                } else {
+                  tokenResult = checkTokens(
+                    paramItem,
+                    ruleInfo,
+                    options,
+                    knownVariables
+                  );
+                }
               }
             }
 
