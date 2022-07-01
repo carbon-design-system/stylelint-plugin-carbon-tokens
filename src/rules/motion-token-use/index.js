@@ -31,7 +31,8 @@ const defaultOptions = {
   ],
   //  Accept reset values
   acceptValues: ["/$0s?/", "/inherit|initial|none|unset/"],
-  acceptUndefinedVariables: true
+  acceptUndefinedVariables: false,
+  acceptScopes: ["motion"]
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
@@ -49,6 +50,7 @@ export default function rule(primaryOptions, secondaryOptions) {
         possible: {
           includeProps: [isValidIncludeProps],
           acceptValues: [isValidAcceptValues],
+          acceptScopes: [isValidAcceptValues],
           acceptUndefinedVariables: (val) =>
             val === undefined || typeof val === "boolean"
         },

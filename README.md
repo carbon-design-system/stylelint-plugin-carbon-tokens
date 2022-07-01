@@ -154,7 +154,7 @@ modules.exports = {
       true,
       {
         severity: "warning",
-        acceptUndefinedVariables: true,
+        acceptUndefinedVariables: false,
         acceptCarbonTypeScaleFunction: false,
       },
     ],
@@ -163,8 +163,6 @@ modules.exports = {
   //...
 };
 ```
-
-NOTE: By default rules accept SCSS and CSS variables not defined in the current file prior to their use. Set acceptUndefinedVariables to false to disable this behavior.
 
 ## Advanced options
 

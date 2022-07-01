@@ -46,11 +46,12 @@ const defaultOptions = {
     "/^0[a-z]*$/",
     "/^-{0,1}[0-9]*(%|vw|vh)$/"
   ],
-  acceptUndefinedVariables: true,
+  acceptUndefinedVariables: false,
   acceptContainerTokens: false,
   acceptIconSizeTokens: false,
   acceptFluidSpacingTokens: false,
-  acceptCarbonMiniUnitsFunction: false
+  acceptCarbonMiniUnitsFunction: false,
+  acceptScopes: ["layout"]
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
@@ -68,6 +69,7 @@ export default function rule(primaryOptions, secondaryOptions) {
         possible: {
           includeProps: [isValidIncludeProps],
           acceptValues: [isValidAcceptValues],
+          acceptScopes: [isValidAcceptValues],
           acceptUndefinedVariables: (val) =>
             val === undefined || typeof val === "boolean",
           acceptContainerTokens: (val) =>

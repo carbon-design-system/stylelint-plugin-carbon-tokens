@@ -30,7 +30,7 @@ const defaultOptions = {
   ],
   // Accept transparent, common reset values, 0, proportional values,
   acceptValues: ["/inherit|initial/", "/^0[a-z]*$/", "/^[0-9]*(%|vw|vh)$/"],
-  acceptUndefinedVariables: true,
+  acceptUndefinedVariables: false,
   acceptContainerTokens: false,
   acceptIconSizeTokens: false,
   acceptFluidSpacingTokens: false,

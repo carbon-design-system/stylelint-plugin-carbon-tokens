@@ -32,19 +32,38 @@ const sanitizeUnconnectedOperators = (val) => {
   return resultVal;
 };
 
-const checkAcceptValues = (item, acceptedValues = []) => {
+const checkScope = (item, options) => {
+  return options.acceptScopes.some((acceptedScope) => {
+    const testValue = parseToRegexOrString(acceptedScope);
+
+    return (
+      (testValue.test && testValue.test(item.scope)) || testValue === item.scope
+    );
+  });
+};
+
+const checkAcceptValues = (item, options) => {
   // Simply check raw values, improve later
   let result = false;
+  let valueToCheck = item.raw;
 
   if (item) {
-    result = acceptedValues.some((acceptedValue) => {
+    if (item.scope) {
+      valueToCheck = item.value;
+
+      if (!checkScope(item, options)) {
+        return result;
+      }
+    }
+
+    result = options.acceptValues.some((acceptedValue) => {
       // regex or string
       const testValue = parseToRegexOrString(acceptedValue);
 
       return (
         (testValue.test &&
-          testValue.test(sanitizeUnconnectedOperators(item.raw))) ||
-        testValue === item.raw
+          testValue.test(sanitizeUnconnectedOperators(valueToCheck))) ||
+        testValue === valueToCheck
       );
     });
   }
@@ -116,11 +135,27 @@ const preProcessToken = (variable, knownVariables) => {
   return result;
 };
 
-const checkTokens = function (variable, ruleInfo, knownVariables) {
+const checkTokens = function (item, ruleInfo, options, knownVariables) {
   const result = { accepted: false, done: false };
+  let valueToCheck = item.raw;
+
+  if (item.scope) {
+    valueToCheck = item.value;
+
+    if (!checkScope(item, options)) {
+      return result;
+    }
+  }
+
+  const start = valueToCheck.substr(0, 2);
+
+  if (start[0] === "-" && start[1] !== "-") {
+    // is negation not a variable
+    valueToCheck = valueToCheck.substr(1);
+  }
 
   // cope with variables wrapped in #{}
-  const _variable = preProcessToken(variable, knownVariables);
+  const _variable = preProcessToken(valueToCheck, knownVariables);
 
   for (const tokenSet of ruleInfo.tokens) {
     const tokenSpecs = tokenSet.values;
@@ -136,7 +171,12 @@ const checkTokens = function (variable, ruleInfo, knownVariables) {
   return result;
 };
 
-const checkProportionalMath = (mathItems, ruleInfo, knownVariables) => {
+const checkProportionalMath = (
+  mathItems,
+  ruleInfo,
+  options,
+  knownVariables
+) => {
   let otherItem;
 
   if (
@@ -154,14 +194,14 @@ const checkProportionalMath = (mathItems, ruleInfo, knownVariables) => {
   if (otherItem !== undefined) {
     if (["+", "-"].indexOf(mathItems[1].value) > -1) {
       // is plus or minus
-      return checkTokens(otherItem.raw, ruleInfo, knownVariables);
+      return checkTokens(otherItem, ruleInfo, options, knownVariables);
     }
   }
 
   return {};
 };
 
-const checkNegationMaths = (mathItems, ruleInfo, knownVariables) => {
+const checkNegationMaths = (mathItems, ruleInfo, options, knownVariables) => {
   let otherItem;
   let numeric;
 
@@ -182,7 +222,7 @@ const checkNegationMaths = (mathItems, ruleInfo, knownVariables) => {
   if (otherItem !== undefined) {
     if (["*", "/"].indexOf(mathItems[1].value) > -1 && numeric.raw === "-1") {
       // is times or divide by -1
-      return checkTokens(otherItem.raw, ruleInfo, knownVariables);
+      return checkTokens(otherItem, ruleInfo, options, knownVariables);
     }
   }
 
@@ -204,7 +244,7 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
     return result;
   }
 
-  if (checkAcceptValues(item, options.acceptValues)) {
+  if (checkAcceptValues(item, options)) {
     // value matches one of the acceptValues
     result.accepted = true;
     result.done = true;
@@ -284,6 +324,7 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
               tokenResult = checkProportionalMath(
                 mathItems,
                 ruleInfo,
+                options,
                 knownVariables
               );
 
@@ -291,19 +332,21 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
                 tokenResult = checkNegationMaths(
                   mathItems,
                   ruleInfo,
+                  options,
                   knownVariables
                 );
               }
             } else {
               tokenResult.accepted = checkAcceptValues(
                 paramItems[pos],
-                options.acceptValues
+                options
               );
 
               if (!tokenResult.accepted) {
                 tokenResult = checkTokens(
-                  paramItems[pos].raw,
+                  paramItems[pos],
                   ruleInfo,
+                  options,
                   knownVariables
                 );
               }
@@ -332,11 +375,17 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
     let tokenResult = checkProportionalMath(
       item.items,
       ruleInfo,
+      options,
       knownVariables
     );
 
     if (!tokenResult.accepted) {
-      tokenResult = checkNegationMaths(item.items, ruleInfo, knownVariables);
+      tokenResult = checkNegationMaths(
+        item.items,
+        ruleInfo,
+        options,
+        knownVariables
+      );
     }
 
     result.source = tokenResult.source;
@@ -344,7 +393,8 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
     result.done = tokenResult.done;
   } else {
     // test what ever is left over
-    const tokenResult = checkTokens(_item.value, ruleInfo, knownVariables);
+
+    const tokenResult = checkTokens(_item, ruleInfo, options, knownVariables);
 
     result.source = tokenResult.source;
     result.accepted = tokenResult.accepted;

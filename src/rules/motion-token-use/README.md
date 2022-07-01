@@ -21,6 +21,6 @@ const defaultOptions = {
   ],
   //  Accept reset values
   acceptValues: ["0s", "0"],
-  acceptUndefinedVariables: true,
+  acceptUndefinedVariables: false,
 };
 ```

@@ -389,4 +389,18 @@ describe("tokenizeValue", () => {
 )`)
     ).toMatchObject({});
   });
+
+  it("can parse scope", () => {
+    expect(tokenizeValue("scope.$test")).toEqual({
+      items: [
+        {
+          type: "scss variable",
+          value: "$test",
+          scope: "scope",
+          raw: "scope.$test"
+        }
+      ],
+      raw: "scope.$test"
+    });
+  });
 });

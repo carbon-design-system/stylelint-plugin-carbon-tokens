@@ -341,6 +341,7 @@ const processTokens = (tokens) => {
       } else {
         // process all remaining into an item before deciding where to put it.
         const numeric = /^(-?[0-9.]+)([^0-9.-]*)$/.exec(token[0]);
+        const addInfo = {};
 
         if (numeric) {
           const units = numeric[2];
@@ -361,6 +362,12 @@ const processTokens = (tokens) => {
           } else if (/^#[0-9a-f]*$/.test(token[0])) {
             // color literal
             type = TOKEN_TYPES.COLOR_LITERAL;
+          } else if (/^[A-Z_-]+\.\$/i.test(token[0])) {
+            const parts = token[0].split(".");
+
+            addInfo.scope = parts[0];
+            addInfo.value = parts[1];
+            type = TOKEN_TYPES.SCSS_VAR;
           } else if (/^-?\$/.test(token[0])) {
             type = TOKEN_TYPES.SCSS_VAR;
           } else if (/^[^0-9#]/.test(token[0])) {
@@ -370,7 +377,8 @@ const processTokens = (tokens) => {
           item = {
             value: `${unattachedOperators}${token[0]}`,
             type,
-            raw: `${unattachedOperators}${token[0]}`
+            raw: `${unattachedOperators}${token[0]}`,
+            ...addInfo
           };
           unattachedOperators = "";
         }

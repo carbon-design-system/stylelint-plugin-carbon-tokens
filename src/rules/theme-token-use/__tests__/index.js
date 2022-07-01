@@ -67,11 +67,11 @@ testRule(rule, {
     },
     {
       code: ".foo { color: $my-value-accept; }",
-      description: "Accept undeclared $variable by defaullt."
+      description: "Accept undeclared $variable of defined format"
     },
     {
       code: ".foo { color: var(--my-value-accept); }",
-      description: "Accept undeclared --variable by default."
+      description: "Reject undeclared --variable by of defined format."
     }
   ],
 
@@ -154,12 +154,7 @@ testRule(rule, {
 // verify rejection of undeclared variables
 testRule(rule, {
   ruleName,
-  config: [
-    true,
-    {
-      acceptUndefinedVariables: false
-    }
-  ],
+  config: [true],
   customSyntax: "postcss-scss",
   accept: [
     {
@@ -179,12 +174,14 @@ testRule(rule, {
     {
       code: ".foo { color: $my-value-reject; }",
       description:
-        "Reject undeclared $variable  when acceptUndefinedVariables is false."
+        "Reject undeclared $variable  when acceptUndefinedVariables is false.",
+      message: messages.expected
     },
     {
       code: ".foo { color: var(--my-value-reject); }",
       description:
-        "Reject undeclared --variable  when acceptUndefinedVariables is false."
+        "Reject undeclared --variable  when acceptUndefinedVariables is false.",
+      message: messages.expected
     }
   ]
 });
@@ -263,7 +260,6 @@ testRule(rule, {
   config: [
     true,
     {
-      acceptUndefinedVariables: false,
       includeProps: ["/\\$.*do-check.*$/", "*"]
     }
   ],
@@ -287,6 +283,35 @@ testRule(rule, {
     {
       code: "$do-check-me: red;",
       description: "Should check '$do-check-me` not using a carbon theme token'"
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptValues: ["/((--)|[$])my-value-accept/", "*"]
+    }
+  ],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `
+@use '@carbon/theme';
+
+.foo {
+  background-color: theme.$layer-01;
+};
+`,
+      description: "Should accept scoped theme token"
+    }
+  ],
+  reject: [
+    {
+      code: "background-color: other.$layer-01;",
+      description: "Should reject unrecognized scoped theme token"
     }
   ]
 });

@@ -21,6 +21,6 @@ const defaultOptions = {
   acceptValues: ["/transparent|inherit|initial/", "/^0$/"],
   acceptCarbonColorTokens: false,
   acceptIBMColorTokens: false,
-  acceptUndefinedVariables: true,
+  acceptUndefinedVariables: false,
 };
 ```

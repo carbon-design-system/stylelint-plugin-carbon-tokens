@@ -39,7 +39,8 @@ const defaultOptions = {
   ],
   acceptCarbonColorTokens: false,
   acceptIBMColorTokens: false,
-  acceptUndefinedVariables: true
+  acceptUndefinedVariables: false,
+  acceptScopes: ["theme"]
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
@@ -57,6 +58,7 @@ export default function rule(primaryOptions, secondaryOptions) {
         possible: {
           includeProps: [isValidIncludeProps],
           acceptValues: [isValidAcceptValues],
+          acceptScopes: [isValidAcceptValues],
           acceptCarbonColorTokens: (val) =>
             val === undefined || typeof val === "boolean",
           acceptIBMColorTokens: (val) =>

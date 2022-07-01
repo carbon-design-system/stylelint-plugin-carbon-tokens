@@ -47,7 +47,7 @@ const generatedTests = () => {
     for (let g = 0; g < good.length - 4; g++) {
       // good tokens
       for (let n = 1; n < 5; n++) {
-        const tokens = `${good.slice(g, g + n)}`;
+        const tokens = `${good.slice(g, g + n).join(" ")}`;
 
         // number of values
         accept.push({
@@ -60,7 +60,7 @@ const generatedTests = () => {
     for (let b = 0; b < bad.length - 4; b++) {
       // bad tokens
       for (let n = 1; n < 5; n++) {
-        const tokens = `${bad.slice(b, b + n)}`;
+        const tokens = `${bad.slice(b, b + n).join(" ")}`;
 
         // number of values
         reject.push({
@@ -250,6 +250,22 @@ testRule(rule, {
     {
       code: `.foo { transform: translateY(-20%); }`,
       description: `Accept translateY using relative value`
+      // },
+      // {
+      //   code: `.foo { transform: translateX(calc(-1 * $spacing-05)); }`,
+      //   description: `Accept translateX using relative value`
+      // },
+      // {
+      //   code: `.foo { transform: translateY(calc(-1 * $spacing-05)); }`,
+      //   description: `Accept translateY using relative value`
+      // },
+      // {
+      //   code: `.foo { transform: translateX(calc(-1 * #{$spacing-05})); }`,
+      //   description: `Accept translateX using relative value`
+      // },
+      // {
+      //   code: `.foo { transform: translateY(calc(-1 * #{$spacing-05})); }`,
+      //   description: `Accept translateY using relative value`
     }
   ]
 });
@@ -380,12 +396,7 @@ testRule(rule, {
 testRule(rule, {
   ruleName,
   customSyntax: "postcss-scss",
-  config: [
-    true,
-    {
-      acceptUndefinedVariables: false
-    }
-  ],
+  config: [true],
   accept: [
     {
       code: `$block-class: 'test'; --test--breadcrumb-title-top: $spacing-02; .foo { top: var(--#{$block-class}--breadcrumb-title-top); }`,
@@ -412,7 +423,9 @@ testRule(rule, {
     {
       code: `$block-class: 'test'; --test--breadcrumb-title-top: $spacing-02; .foo { top: var(--#{$block-class}--breadcrumb-title-top); }`,
       description: `Accept CSS custom prop with preprocessor in name`
-    },
+    }
+  ],
+  reject: [
     {
       code: `$block-class: 'test'; .foo { top: var(--#{$block-class}--breadcrumb-title-top); }`,
       description: `Reject undefined SCSS var constructed with a CSS custom prop with preprocessor in name if undeclared and undefined variables is on`

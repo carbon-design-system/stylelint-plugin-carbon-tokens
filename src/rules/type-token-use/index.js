@@ -27,7 +27,8 @@ const defaultOptions = {
   acceptValues: ["/inherit|initial|none|unset/"],
   acceptCarbonFontWeightFunction: false, // permit use of carbon font weight function
   acceptCarbonTypeScaleFunction: false, // permit use of carbon type scale function
-  acceptCarbonFontFamilyFunction: false // permit use of carbon font family function
+  acceptCarbonFontFamilyFunction: false, // permit use of carbon font family function
+  acceptScopes: ["type"]
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
@@ -45,6 +46,7 @@ export default function rule(primaryOptions, secondaryOptions) {
         possible: {
           includeProps: [isValidIncludeProps],
           acceptValues: [isValidAcceptValues],
+          acceptScopes: [isValidAcceptValues],
           acceptCarbonFontWeightFunction: (val) =>
             val === undefined || typeof val === "boolean",
           acceptCarbonTypeScaleFunction: (val) =>

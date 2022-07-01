@@ -51,14 +51,6 @@ testRule(rule, {
         "Accept --variable declared before use with Carbon motion tokens (default config)."
     },
     {
-      code: ".foo { transition: all $my-value-accept; }",
-      description: "Accept undeclared $variable by default in transition."
-    },
-    {
-      code: ".foo { transition: all var(--my-value-accept); }",
-      description: "Accept undeclared --variable by default."
-    },
-    {
       code: ".foo { animation: $duration--fast-01 linear ease-in myAnim; }",
       description: "Carbon motion token expected for animation."
     },
@@ -70,18 +62,30 @@ testRule(rule, {
       code: "--my-value-accept: $duration--moderate-01; .foo { animation-duration: var(--my-value-accept); }",
       description:
         "Accept --variable declared before use for animation duration with Carbon motion tokens."
-    },
-    {
-      code: ".foo { animation: $my-value-accept myAnim; }",
-      description: "Accept undeclared $variable by default in animation."
-    },
-    {
-      code: ".foo { animation: var(--my-value-accept) myAnim; }",
-      description: "Accept undeclared --variable by default."
     }
   ],
 
   reject: [
+    {
+      code: ".foo { transition: all $my-value-accept; }",
+      description: "Reject undeclared $variable by default in transition.",
+      message: messages.expected
+    },
+    {
+      code: ".foo { transition: all var(--my-value-accept); }",
+      description: "Reject undeclared --variable by default.",
+      message: messages.expected
+    },
+    {
+      code: ".foo { animation: $my-value-accept myAnim; }",
+      description: "Reject undeclared $variable by default in animation.",
+      message: messages.expected
+    },
+    {
+      code: ".foo { animation: var(--my-value-accept) myAnim; }",
+      description: "Reject undeclared --variable by default.",
+      message: messages.expected
+    },
     {
       code: ".foo { transition: $duration--fast-01; }",
       description: "Carbon motion token used in non-standard order.",
@@ -110,12 +114,7 @@ testRule(rule, {
 // verify rejection of undeclared variables
 testRule(rule, {
   ruleName,
-  config: [
-    true,
-    {
-      acceptUndefinedVariables: false
-    }
-  ],
+  config: [true],
   customSyntax: "postcss-scss",
   accept: [
     {
@@ -135,22 +134,26 @@ testRule(rule, {
     {
       code: ".foo { transition: all $my-value-reject; }",
       description:
-        "Reject undeclared $variable for transittion when acceptUndefinedVariables is false."
+        "Reject undeclared $variable for transition when acceptUndefinedVariables is false.",
+      message: messages.expected
     },
     {
       code: ".foo { animation: $my-value-reject myAnim; }",
       description:
-        "Reject undeclared $variable for animation when acceptUndefinedVariables is false."
+        "Reject undeclared $variable for animation when acceptUndefinedVariables is false.",
+      message: messages.expected
     },
     {
       code: ".foo { transition-duration: var(--my-value-reject); }",
       description:
-        "Reject undeclared --variable for transition-duration when acceptUndefinedVariables is false."
+        "Reject undeclared --variable for transition-duration when acceptUndefinedVariables is false.",
+      message: messages.expected
     },
     {
       code: ".foo { animation-duration: var(--my-value-reject); }",
       description:
-        "Reject undeclared --variable for animation-duration when acceptUndefinedVariables is false."
+        "Reject undeclared --variable for animation-duration when acceptUndefinedVariables is false.",
+      message: messages.expected
     }
   ]
 });
