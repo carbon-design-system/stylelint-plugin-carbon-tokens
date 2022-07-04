@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { colors } from "@carbon/colors";
+import { colors as installedColors } from "@carbon/colors";
 // colors comes in as object depth 2
 // keys are color names, values are objects
 // value objects container key: intensity number, value actual color
@@ -14,23 +14,41 @@ import { formatTokenName } from "../../../utils/token-name";
 const carbonColorPrefix = "$carbon--";
 const ibmColorPrefix = "$ibm-color__";
 
-const carbonColorTokens = [];
-const ibmColorTokens = []; // deprecated
+const doInitColors = async (target) => {
+  const isV10 = target === "v10";
+  let colorTokens;
+  const carbonColorTokens = [];
+  const ibmColorTokens = []; // deprecated
 
-for (const key in colors) {
-  if (Object.hasOwn(colors, key)) {
-    const colorMap = colors[key];
+  if (isV10 && process.env.NODE_ENV === "test") {
+    // eslint-disable-next-line
+    const module = await import("@carbon/colors-10");
 
-    for (const index in colorMap) {
-      if (Object.hasOwn(colorMap, index)) {
-        const colorName = formatTokenName(`${key}${index}`);
+    colorTokens = module.colors;
+  } else {
+    colorTokens = installedColors;
+  }
 
-        carbonColorTokens.push(`${carbonColorPrefix}${colorName}`);
-        carbonColorTokens.push(`$${colorName}`);
-        ibmColorTokens.push(`${ibmColorPrefix}${colorName}`);
+  for (const key in colorTokens) {
+    if (Object.hasOwn(colorTokens, key)) {
+      const colorMap = colorTokens[key];
+
+      for (const index in colorMap) {
+        if (Object.hasOwn(colorMap, index)) {
+          const colorName = formatTokenName(`${key}${index}`);
+
+          carbonColorTokens.push(`$${colorName}`);
+
+          if (isV10) {
+            carbonColorTokens.push(`${carbonColorPrefix}${colorName}`);
+            ibmColorTokens.push(`${ibmColorPrefix}${colorName}`);
+          }
+        }
       }
     }
   }
-}
 
-export { carbonColorTokens, ibmColorTokens };
+  return { carbonColorTokens, ibmColorTokens };
+};
+
+export { doInitColors };

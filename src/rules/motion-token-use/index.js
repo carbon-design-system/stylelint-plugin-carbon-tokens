@@ -39,7 +39,7 @@ const defaultOptions = {
 export default function rule(primaryOptions, secondaryOptions) {
   const options = parseOptions(secondaryOptions, defaultOptions);
 
-  return (root, result) => {
+  return async (root, result) => {
     const validOptions = utils.validateOptions(
       result,
       ruleName,
@@ -65,6 +65,6 @@ export default function rule(primaryOptions, secondaryOptions) {
       return;
     }
 
-    checkRule(root, result, ruleName, options, messages, getMotionInfo);
+    await checkRule(root, result, ruleName, options, messages, getMotionInfo);
   };
 }

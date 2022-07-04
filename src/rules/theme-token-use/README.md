@@ -20,8 +20,8 @@ const defaultOptions = {
   // Accept transparent, common reset values and 0 on its own
   acceptValues: ["/transparent|inherit|initial/", "/^0$/"],
   acceptsScopes: ["theme"],
-  acceptCarbonColorTokens: false,
-  acceptIBMColorTokens: false,
+  acceptCarbonColorTokens: false, // use of carbon-- prefix is v10 only
+  acceptIBMColorTokens: false, // Carbon v10 only
   acceptUndefinedVariables: false,
 };
 ```

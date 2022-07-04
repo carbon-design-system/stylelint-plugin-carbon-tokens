@@ -18,7 +18,7 @@ import {
 import { utils } from "stylelint";
 // import valueParser from "postcss-value-parser";
 
-export default function checkRule(
+export default async function checkRule(
   root,
   result,
   ruleName,
@@ -117,7 +117,7 @@ export default function checkRule(
 
   const knownVariables = {}; // used to contain variable declarations
 
-  root.walkDecls(async (decl) => {
+  await root.walkDecls(async (decl) => {
     const tokenizedValue = tokenizeValue(decl.value);
 
     if (tokenizedValue && tokenizedValue.error) {

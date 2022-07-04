@@ -5,9 +5,11 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { typeFunctions } from "./initTypeTokens";
+import { doInit } from "./initTypeTokens";
 
-export default function getTypeInfo(options) {
+export default async function getTypeInfo(options) {
+  const { typeFunctions } = await doInit(options.target);
+
   return {
     // There are no type tokens that are used directly
     // Types are applied via mixins and functions

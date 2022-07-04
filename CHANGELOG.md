@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0-beta.1
+
+- Restore optional v10 support.
+
 ## 2.0 0-alpha.2
 
 - Add scope support
