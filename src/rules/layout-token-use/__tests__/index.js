@@ -176,7 +176,7 @@ testRule(rule, {
   customSyntax: "postcss-scss",
   config: [true, { acceptCarbonMiniUnitsFunction: true }],
 
-  accept: [
+  reject: [
     {
       code: `.foo { left: mini-units(4); }`,
       description: `A left using a mini-units is accepted with option.`
@@ -191,16 +191,43 @@ testRule(rule, {
 testRule(rule, {
   ruleName,
   customSyntax: "postcss-scss",
-  config: true,
+  config: [true, { target: "v10" }],
+  accept: [
+    {
+      code: `.foo { left: $carbon--spacing-04; }`,
+      description: `v10 test: Accept 'carbon--' prefix.`
+    }
+  ]
+});
 
-  reject: [
+testRule(rule, {
+  ruleName,
+  customSyntax: "postcss-scss",
+  config: [true, { acceptCarbonMiniUnitsFunction: true, target: "v10" }],
+  accept: [
     {
       code: `.foo { left: mini-units(4); }`,
-      description: `A left using a mini-units is rejected without option "acceptCaronMiniUnitsFunction`
+      description: `v10 test: A left using a mini-units is accepted with option.`
     },
     {
       code: `.foo { left: mini-units(4); }`,
-      description: `A left using a mini-units is rejected without option "acceptCaronMiniUnitsFunction`
+      description: `v10 test: A left using a mini-units is accepted with option.`
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  customSyntax: "postcss-scss",
+  config: [true, { target: "v10" }],
+  reject: [
+    {
+      code: `.foo { left: mini-units(4); }`,
+      description: `v10 test: A left using a mini-units is rejected without option "acceptCaronMiniUnitsFunction`
+    },
+    {
+      code: `.foo { left: mini-units(4); }`,
+      description: `v10 test: A left using a mini-units is rejected without option "acceptCaronMiniUnitsFunction`
     }
   ]
 });
