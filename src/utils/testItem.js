@@ -443,9 +443,6 @@ export default function testItem(item, ruleInfo, options, knownVariables) {
   // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
   let result = {};
 
-  //   // eslint-disable-next-line no-console
-  // console.log(JSON.stringify(item));
-
   if (item === undefined) {
     // do not accept undefined
     result.done = true;

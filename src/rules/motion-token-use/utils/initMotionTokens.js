@@ -6,21 +6,36 @@
  */
 
 import { formatTokenName } from "../../../utils/token-name";
-import { unstable_tokens as tokens } from "@carbon/motion";
+import { unstable_tokens as installedTokens } from "@carbon/motion";
 
-const durationPrefix = "$duration--";
+const doInit = async (target) => {
+  const motionTokens = [];
+  const motionFunctions = ["motion"];
 
-const motionTokens = [];
+  const isV10 = target === "v10";
+  const durationPrefix = "$duration--";
+  let tokens;
 
-for (const key in tokens) {
-  if (Object.hasOwn(tokens, key)) {
-    const token = formatTokenName(tokens[key]);
+  if (isV10 && process.env.NODE_ENV === "test") {
+    motionFunctions.push("carbon--motion");
 
-    motionTokens.push(`${durationPrefix}${token}`);
+    // eslint-disable-next-line
+    const module = await import("@carbon/motion-10");
+
+    tokens = module.unstable_tokens;
+  } else {
+    tokens = installedTokens;
   }
-}
 
-// permitted carbon motion functions
-const motionFunctions = ["motion", "carbon--motion"];
+  for (const key in tokens) {
+    if (Object.hasOwn(tokens, key)) {
+      const token = formatTokenName(tokens[key]);
 
-export { motionTokens, motionFunctions };
+      motionTokens.push(`${durationPrefix}${token}`);
+    }
+  }
+
+  return { motionTokens, motionFunctions };
+};
+
+export { doInit };

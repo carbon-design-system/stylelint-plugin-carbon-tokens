@@ -32,7 +32,8 @@ const defaultOptions = {
   //  Accept reset values
   acceptValues: ["/$0s?/", "/inherit|initial|none|unset/"],
   acceptUndefinedVariables: false,
-  acceptScopes: ["motion"]
+  acceptScopes: ["motion"],
+  target: undefined
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
@@ -52,7 +53,8 @@ export default function rule(primaryOptions, secondaryOptions) {
           acceptValues: [isValidAcceptValues],
           acceptScopes: [isValidAcceptValues],
           acceptUndefinedVariables: (val) =>
-            val === undefined || typeof val === "boolean"
+            val === undefined || typeof val === "boolean",
+          target: (val) => val === undefined || ["v10", "v11"].includes(val)
         },
         optional: true
       }

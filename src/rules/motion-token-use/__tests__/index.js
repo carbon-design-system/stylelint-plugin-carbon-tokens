@@ -46,11 +46,6 @@ testRule(rule, {
         "Accept $variable declared before use with Carbon motion tokens."
     },
     {
-      code: "--my-value-accept: $duration--moderate-01; .foo { transition-duration: var(--my-value-accept); }",
-      description:
-        "Accept --variable declared before use with Carbon motion tokens (default config)."
-    },
-    {
       code: ".foo { animation: $duration--fast-01 linear ease-in myAnim; }",
       description: "Carbon motion token expected for animation."
     },
@@ -174,10 +169,6 @@ testRule(rule, {
     {
       code: `.foo { animation-duration: motion.$duration--fast-01; }`,
       description: "Accept motion scope."
-    },
-    {
-      code: `.foo { animation-duration: motion(motion.$duration--fast-01)}`,
-      description: "Accept motion scope in function."
     }
   ],
   reject: [
@@ -202,12 +193,7 @@ testRule(rule, {
       description: "Accept scope 'mo' with acceptScopes setting in function.."
     }
   ],
-  reject: [
-    {
-      code: `.foo { animation-duration: motion.$duration--fast-01; }`,
-      description: "Reject motion scope with scope setting."
-    }
-  ]
+  reject: []
 });
 
 testRule(rule, {
@@ -272,4 +258,41 @@ testRule(rule, {
       description: "Reject scope not included in scope regex setting."
     }
   ]
+});
+
+testRule(rule, {
+  ruleName,
+  customSyntax: "postcss-scss",
+  config: true,
+  accept: [
+    {
+      code: `.foo { animation-timing-function: motion('standard', 'productive'); }`,
+      description: "Accept Carbon motion function."
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { animation-timing-function: : carbon--motion('standard', 'productive');}`,
+      description: "Reject carbon--motion removed in v11.",
+      message: messages.expected
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  customSyntax: "postcss-scss",
+  // config: true,
+  config: [true, { target: "v10" }],
+  accept: [
+    {
+      code: `.foo { animation-timing-function: motion('standard', 'productive'); }`,
+      description: "Accept Carbon motion function."
+    },
+    {
+      code: `.foo { animation-timing-function: carbon--motion('standard', 'productive');}`,
+      description: "Accept carbon--motion with carbon 10 switch."
+    }
+  ],
+  reject: []
 });

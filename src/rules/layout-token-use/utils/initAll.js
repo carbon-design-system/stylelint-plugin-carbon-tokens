@@ -10,7 +10,7 @@
 // This is to maintain the ability to separate out sizes not called out
 // on the carbon designs system website.
 import { formatTokenName } from "../../../utils/token-name";
-import { unstable_tokens as v11Tokens } from "@carbon/layout";
+import { unstable_tokens as installedTokens } from "@carbon/layout";
 
 const carbonPrefix = "$carbon--";
 
@@ -26,12 +26,12 @@ const doInit = async (target) => {
 
   if (isV10 && process.env.NODE_ENV === "test") {
     // eslint-disable-next-line
-    const module = await import("@carbon/layout");
+    const module = await import("@carbon/layout-10");
 
     tokens = module.unstable_tokens;
     functions = ["carbon--mini-units", "mini-units"];
   } else {
-    tokens = v11Tokens;
+    tokens = installedTokens;
     functions = [];
   }
 
