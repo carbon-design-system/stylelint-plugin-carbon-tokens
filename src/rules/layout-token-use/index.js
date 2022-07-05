@@ -52,7 +52,7 @@ const defaultOptions = {
   acceptFluidSpacingTokens: false,
   acceptCarbonMiniUnitsFunction: false,
   acceptScopes: ["layout"],
-  target: undefined
+  testOnlyTarget: undefined
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
@@ -81,7 +81,8 @@ export default function rule(primaryOptions, secondaryOptions) {
             val === undefined || typeof val === "boolean",
           acceptCarbonMiniUnitsFunction: (val) =>
             val === undefined || typeof val === "boolean",
-          target: (val) => val === undefined || ["v10", "v11"].includes(val)
+          testOnlyTarget: (val) =>
+            val === undefined || ["v10", "v11"].includes(val)
         },
         optional: true
       }

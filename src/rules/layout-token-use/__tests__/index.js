@@ -191,7 +191,7 @@ testRule(rule, {
 testRule(rule, {
   ruleName,
   customSyntax: "postcss-scss",
-  config: [true, { target: "v10" }],
+  config: [true, { testOnlyTarget: "v10" }],
   accept: [
     {
       code: `.foo { left: $carbon--spacing-04; }`,
@@ -203,7 +203,10 @@ testRule(rule, {
 testRule(rule, {
   ruleName,
   customSyntax: "postcss-scss",
-  config: [true, { acceptCarbonMiniUnitsFunction: true, target: "v10" }],
+  config: [
+    true,
+    { acceptCarbonMiniUnitsFunction: true, testOnlyTarget: "v10" }
+  ],
   accept: [
     {
       code: `.foo { left: mini-units(4); }`,
@@ -219,7 +222,7 @@ testRule(rule, {
 testRule(rule, {
   ruleName,
   customSyntax: "postcss-scss",
-  config: [true, { target: "v10" }],
+  config: [true, { testOnlyTarget: "v10" }],
   reject: [
     {
       code: `.foo { left: mini-units(4); }`,

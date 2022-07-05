@@ -38,10 +38,10 @@ const defaultOptions = {
     "/currentColor|transparent/"
   ],
   acceptCarbonColorTokens: false,
-  acceptIBMColorTokens: false,
+  acceptIBMColorTokensCarbonV10Only: false,
   acceptUndefinedVariables: false,
   acceptScopes: ["theme"],
-  target: undefined
+  testOnlyTarget: undefined
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
@@ -62,11 +62,12 @@ export default function rule(primaryOptions, secondaryOptions) {
           acceptScopes: [isValidAcceptValues],
           acceptCarbonColorTokens: (val) =>
             val === undefined || typeof val === "boolean",
-          acceptIBMColorTokens: (val) =>
+          acceptIBMColorTokensCarbonV10Only: (val) =>
             val === undefined || typeof val === "boolean",
           acceptUndefinedVariables: (val) =>
             val === undefined || typeof val === "boolean",
-          target: (val) => val === undefined || ["v10", "v11"].includes(val)
+          testOnlyTarget: (val) =>
+            val === undefined || ["v10", "v11"].includes(val)
         },
         optional: true
       }

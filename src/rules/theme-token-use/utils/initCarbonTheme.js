@@ -9,9 +9,10 @@ import { formatTokenName } from "../../../utils/token-name";
 import { unstable_tokens as installedLayout } from "@carbon/layout";
 import { unstable_tokens as installedType } from "@carbon/type";
 import { white as installedWhite } from "@carbon/themes";
+import { version } from "@carbon/themes/package.json";
 
-const doInitTheme = async (target) => {
-  const isV10 = target === "v10";
+const doInitTheme = async (testOnlyTarget) => {
+  const isV10 = testOnlyTarget === "v10" || version.startsWith("10");
   let layoutTokens;
   let typeTokens;
   let tokens;

@@ -12,7 +12,7 @@ describe("parseOptions", () => {
     includeProps: ["1", "3", "4"],
     acceptValues: ["1", "5", "6"],
     acceptCarbonColorTokens: false,
-    acceptIBMColorTokens: false,
+    acceptIBMColorTokensCarbonV10Only: false,
     acceptUndefinedVariables: true
   };
 
@@ -58,7 +58,7 @@ describe("parseOptions", () => {
     includeProps: ["banana"].concat(defaults.includeProps),
     acceptValues: ["fish"].concat(defaults.acceptValues),
     acceptCarbonColorTokens: false,
-    acceptIBMColorTokens: false,
+    acceptIBMColorTokensCarbonV10Only: false,
     acceptUndefinedVariables: true
   };
 
@@ -79,7 +79,7 @@ describe("parseOptions", () => {
       defaults.acceptValues.filter((item) => item !== "5")
     ),
     acceptCarbonColorTokens: false,
-    acceptIBMColorTokens: false,
+    acceptIBMColorTokensCarbonV10Only: false,
     acceptUndefinedVariables: true
   };
 

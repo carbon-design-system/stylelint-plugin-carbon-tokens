@@ -7,12 +7,13 @@
 
 import { formatTokenName } from "../../../utils/token-name";
 import { unstable_tokens as installedTokens } from "@carbon/motion";
+import { version } from "@carbon/motion/package.json";
 
-const doInit = async (target) => {
+const doInit = async (testOnlyTarget) => {
   const motionTokens = [];
   const motionFunctions = ["motion"];
 
-  const isV10 = target === "v10";
+  const isV10 = testOnlyTarget === "v10" || version.startsWith("10");
   const durationPrefix = "$duration--";
   let tokens;
 

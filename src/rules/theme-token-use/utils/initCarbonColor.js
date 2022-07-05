@@ -10,12 +10,13 @@ import { colors as installedColors } from "@carbon/colors";
 // keys are color names, values are objects
 // value objects container key: intensity number, value actual color
 import { formatTokenName } from "../../../utils/token-name";
+import { version } from "@carbon/colors/package.json";
 
 const carbonColorPrefix = "$carbon--";
 const ibmColorPrefix = "$ibm-color__";
 
-const doInitColors = async (target) => {
-  const isV10 = target === "v10";
+const doInitColors = async (testOnlyTarget) => {
+  const isV10 = testOnlyTarget === "v10" || version.startsWith("10");
   let colorTokens;
   const carbonColorTokens = [];
   const ibmColorTokens = []; // deprecated

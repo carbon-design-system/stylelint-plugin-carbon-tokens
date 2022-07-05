@@ -8,7 +8,7 @@
 import { doInit } from "./initTypeTokens";
 
 export default async function getTypeInfo(options) {
-  const { typeFunctions } = await doInit(options.target);
+  const { typeFunctions } = await doInit(options.testOnlyTarget);
 
   return {
     // There are no type tokens that are used directly

@@ -8,7 +8,9 @@
 import { doInit } from "./initMotionTokens";
 
 export default async function getMotionInfo(options) {
-  const { motionTokens, motionFunctions } = await doInit(options.target);
+  const { motionTokens, motionFunctions } = await doInit(
+    options.testOnlyTarget
+  );
 
   return {
     tokens: [

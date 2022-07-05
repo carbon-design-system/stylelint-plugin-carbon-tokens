@@ -283,7 +283,7 @@ testRule(rule, {
   ruleName,
   customSyntax: "postcss-scss",
   // config: true,
-  config: [true, { target: "v10" }],
+  config: [true, { testOnlyTarget: "v10" }],
   accept: [
     {
       code: `.foo { animation-timing-function: motion('standard', 'productive'); }`,
