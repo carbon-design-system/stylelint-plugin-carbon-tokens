@@ -11,16 +11,17 @@
 // on the carbon designs system website.
 import { formatTokenName } from "../../../utils/token-name";
 import { unstable_tokens as installedTokens } from "@carbon/layout";
+import { version } from "@carbon/layout/package.json";
 
 const carbonPrefix = "$carbon--";
 
-const doInit = async (target) => {
+const doInit = async (testOnlyTarget) => {
   const containerTokens = [];
   const fluidSpacingTokens = [];
   const iconSizeTokens = [];
   const layoutTokens = [];
   const spacingTokens = [];
-  const isV10 = target === "v10";
+  const isV10 = testOnlyTarget === "v10" || version.startsWith("10");
   let functions;
   let tokens;
 

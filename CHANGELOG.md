@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0-beta.2
+
+- fix: Temporarily fudge theme token list adding button category manually
+- feat: Read Carbon version from package.json
+- chore: Change `target` option to `testOnlyTarget`
+
 ## 2.0.0-beta.1
 
 - Restore optional v10 support.

@@ -99,19 +99,20 @@ testRule(rule, {
     true,
     {
       acceptCarbonColorTokens: true,
-      acceptIBMColorTokens: true
+      acceptIBMColorTokensCarbonV10Only: true
     }
   ],
   accept: [],
   reject: [
     {
       code: ".foo { background-color: $carbon--blue-90; }",
-      description: "Reject using a carbon color token without v10 target",
+      description:
+        "Reject using a carbon color token without v10 testOnlyTarget",
       message: messages.expected
     },
     {
       code: ".foo { background-color: $ibm-color__blue-90; }",
-      description: "Reject using a ibm color token without v10 target",
+      description: "Reject using a ibm color token without v10 testOnlyTarget",
       message: messages.expected
     }
   ]
@@ -124,7 +125,7 @@ testRule(rule, {
     true,
     {
       acceptCarbonColorTokens: true,
-      target: "v10"
+      testOnlyTarget: "v10"
     }
   ],
   customSyntax: "postcss-scss",
@@ -149,8 +150,8 @@ testRule(rule, {
   config: [
     true,
     {
-      acceptIBMColorTokens: true,
-      target: "v10"
+      acceptIBMColorTokensCarbonV10Only: true,
+      testOnlyTarget: "v10"
     }
   ],
   customSyntax: "postcss-scss",
@@ -165,6 +166,33 @@ testRule(rule, {
     {
       code: ".foo { background-color: $carbon--blue-90; }",
       description: "Reject using a carbon color token",
+      message: messages.expected
+    }
+  ]
+});
+
+// verify use of v10 theme tokens
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptIBMColorTokensCarbonV10Only: true,
+      testOnlyTarget: "v10"
+    }
+  ],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: ".foo { background-color: $ui-01; }",
+      description: "Accept v10 theme token in v10 test"
+    }
+  ],
+  reject: [
+    // an ibm color token
+    {
+      code: ".foo { background-color: $layer-01; }",
+      description: "Reject v11 theme token in v10 test",
       message: messages.expected
     }
   ]
@@ -440,6 +468,22 @@ testRule(rule, {
     {
       code: `.foo { color: reject.$layer-01; }`,
       description: "Reject scope not included in scope regex setting."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: true,
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { color: $button-danger-primary; }`,
+      description: "Accept theme token button danger primary."
+    },
+    {
+      code: `.foo { color: theme.$button-danger-primary; }`,
+      description: "Accept theme token button danger primary with theme."
     }
   ]
 });

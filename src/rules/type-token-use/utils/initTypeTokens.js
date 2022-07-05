@@ -8,15 +8,31 @@
 // There are no type tokens that are used directly
 // Types are applied via mixins and functions
 // const typeTokens = [];
+import { version } from "@carbon/type/package.json";
 
-const doInit = async (target) => {
+const doInit = async (testOnlyTarget) => {
   // permitted carbon type functions
   // TODO: read this from carbon
-  let typeFunctions;
-  const isV10 = target === "v10";
+  const isV10 = testOnlyTarget === "v10" || version.startsWith("10");
 
-  if (isV10 && process.env.NODE_ENV === "test") {
-    typeFunctions = [
+  const typeFunctions = [
+    {
+      name: "font-weight",
+      accept: "acceptCarbonFontWeightFunction"
+    },
+    {
+      name: "type-scale",
+      accept: "acceptCarbonTypeScaleFunction"
+    },
+    {
+      name: "font-family",
+      accept: "acceptCarbonFontFamilyFunction"
+    }
+  ];
+
+  if (isV10) {
+    // add carbon 10 prefix versions
+    typeFunctions.push(
       {
         name: "carbon--font-weight",
         accept: "acceptCarbonFontWeightFunction"
@@ -29,22 +45,7 @@ const doInit = async (target) => {
         name: "carbon--font-family",
         accept: "acceptCarbonFontFamilyFunction"
       }
-    ];
-  } else {
-    typeFunctions = [
-      {
-        name: "font-weight",
-        accept: "acceptCarbonFontWeightFunction"
-      },
-      {
-        name: "type-scale",
-        accept: "acceptCarbonTypeScaleFunction"
-      },
-      {
-        name: "font-family",
-        accept: "acceptCarbonFontFamilyFunction"
-      }
-    ];
+    );
   }
 
   return { typeFunctions };

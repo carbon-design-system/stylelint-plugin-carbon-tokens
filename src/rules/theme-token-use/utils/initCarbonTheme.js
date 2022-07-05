@@ -9,9 +9,28 @@ import { formatTokenName } from "../../../utils/token-name";
 import { unstable_tokens as installedLayout } from "@carbon/layout";
 import { unstable_tokens as installedType } from "@carbon/type";
 import { white as installedWhite } from "@carbon/themes";
+import { version } from "@carbon/themes/package.json";
 
-const doInitTheme = async (target) => {
-  const isV10 = target === "v10";
+const missingButtonTokens = [
+  "button-danger-active",
+  "button-danger-hover",
+  "button-danger-primary",
+  "button-danger-secondary",
+  "button-disabled",
+  "button-primary",
+  "button-primary-active",
+  "button-primary-hover",
+  "button-secondary",
+  "button-secondary-active",
+  "button-secondary-hover",
+  "button-separator",
+  "button-tertiary",
+  "button-tertiary-active",
+  "button-tertiary-hover"
+];
+
+const doInitTheme = async (testOnlyTarget) => {
+  const isV10 = testOnlyTarget === "v10" || version.startsWith("10");
   let layoutTokens;
   let typeTokens;
   let tokens;
@@ -34,12 +53,16 @@ const doInitTheme = async (target) => {
   }
 
   // map themes to recognizable tokens
-
   const themeTokens = Object.keys(tokens)
     .filter(
       (token) => !layoutTokens.includes(token) && !typeTokens.includes(token)
     )
     .map((token) => `$${formatTokenName(token)}`);
+
+  // TODO remove when available in @carbon/themes
+  missingButtonTokens.forEach((token) => {
+    themeTokens.push(`$${formatTokenName(token)}`);
+  });
 
   // permitted carbon theme functions
   // TODO: read this from carbon
