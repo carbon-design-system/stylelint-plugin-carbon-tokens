@@ -171,6 +171,33 @@ testRule(rule, {
   ]
 });
 
+// verify use of v10 theme tokens
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptIBMColorTokensCarbonV10Only: true,
+      testOnlyTarget: "v10"
+    }
+  ],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: ".foo { background-color: $ui-01; }",
+      description: "Accept v10 theme token in v10 test"
+    }
+  ],
+  reject: [
+    // an ibm color token
+    {
+      code: ".foo { background-color: $layer-01; }",
+      description: "Reject v11 theme token in v10 test",
+      message: messages.expected
+    }
+  ]
+});
+
 // verify rejection of undeclared variables
 testRule(rule, {
   ruleName,
@@ -441,6 +468,22 @@ testRule(rule, {
     {
       code: `.foo { color: reject.$layer-01; }`,
       description: "Reject scope not included in scope regex setting."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: true,
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { color: $button-danger-primary; }`,
+      description: "Accept theme token button danger primary."
+    },
+    {
+      code: `.foo { color: theme.$button-danger-primary; }`,
+      description: "Accept theme token button danger primary with theme."
     }
   ]
 });
