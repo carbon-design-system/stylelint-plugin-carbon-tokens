@@ -41,12 +41,6 @@ testRule(rule, {
       message: messages.expected
     },
     {
-      code: ".foo { font-weight: carbon--font-weight('light'); }",
-      description:
-        "Reject directly setting font-weight with carbon--font-weight function without option",
-      message: messages.expected
-    },
-    {
       code: ".foo { font-weight: 5px; }",
       description: "Reject directly setting font-weight",
       message: messages.expected
@@ -74,30 +68,13 @@ testRule(rule, {
   config: [
     true,
     {
-      acceptCarbonFontWeightFunction: true
-    }
-  ],
-  customSyntax: "postcss-scss",
-  accept: [
-    {
-      code: ".foo { font-weight: carbon--font-weight('light'); }",
-      description: "Permit Carbon font weight function."
-    }
-  ]
-});
-
-testRule(rule, {
-  ruleName,
-  config: [
-    true,
-    {
       acceptCarbonTypeScaleFunction: true
     }
   ],
   customSyntax: "postcss-scss",
   accept: [
     {
-      code: ".foo { font-weight: carbon--type-scale(1); }",
+      code: ".foo { font-size: type-scale(1); }",
       description: "Permit Carbon type scale function."
     }
   ]
@@ -114,8 +91,79 @@ testRule(rule, {
   customSyntax: "postcss-scss",
   accept: [
     {
-      code: ".foo { font-family: carbon--font-family(1); }",
+      code: ".foo { font-family: font-family(1); }",
       description: "Permit Carbon font family function."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptCarbonFontWeightFunction: true
+    }
+  ],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: ".foo { font-weight: font-weight('bold'); }",
+      description: "Permit Carbon font weight function."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptCarbonTypeScaleFunction: true,
+      target: "v10"
+    }
+  ],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: ".foo { font-size: carbon--type-scale(1); }",
+      description: "Permit Carbon v10 type scale function."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptCarbonFontFamilyFunction: true,
+      target: "v10"
+    }
+  ],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: ".foo { font-family: carbon--font-family(1); }",
+      description: "Permit v10 Carbon font family function."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptCarbonFontWeightFunction: true,
+      target: "v10"
+    }
+  ],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: ".foo { font-weight: carbon--font-weight('bold'); }",
+      description: "Permit v10 Carbon font weight function."
     }
   ]
 });
@@ -128,16 +176,31 @@ testRule(rule, {
   reject: [
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
-      description: "Reject Carbon font weight function.",
+      description: "Reject v10 Carbon font weight function.",
       message: messages.expected
     },
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
-      description: "Reject Carbon font weight function.",
+      description: "Reject v10 Carbon font weight function.",
       message: messages.expected
     },
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
+      description: "Reject v10 Carbon font weight function.",
+      message: messages.expected
+    },
+    {
+      code: ".foo { font-weight: font-weight('light'); }",
+      description: "Reject Carbon font weight function.",
+      message: messages.expected
+    },
+    {
+      code: ".foo { font-weight: font-weight('light'); }",
+      description: "Reject Carbon font weight function.",
+      message: messages.expected
+    },
+    {
+      code: ".foo { font-weight: font-weight('light'); }",
       description: "Reject Carbon font weight function.",
       message: messages.expected
     }

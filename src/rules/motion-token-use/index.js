@@ -32,13 +32,14 @@ const defaultOptions = {
   //  Accept reset values
   acceptValues: ["/$0s?/", "/inherit|initial|none|unset/"],
   acceptUndefinedVariables: false,
-  acceptScopes: ["motion"]
+  acceptScopes: ["motion"],
+  target: undefined
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
   const options = parseOptions(secondaryOptions, defaultOptions);
 
-  return (root, result) => {
+  return async (root, result) => {
     const validOptions = utils.validateOptions(
       result,
       ruleName,
@@ -52,7 +53,8 @@ export default function rule(primaryOptions, secondaryOptions) {
           acceptValues: [isValidAcceptValues],
           acceptScopes: [isValidAcceptValues],
           acceptUndefinedVariables: (val) =>
-            val === undefined || typeof val === "boolean"
+            val === undefined || typeof val === "boolean",
+          target: (val) => val === undefined || ["v10", "v11"].includes(val)
         },
         optional: true
       }
@@ -63,6 +65,6 @@ export default function rule(primaryOptions, secondaryOptions) {
       return;
     }
 
-    checkRule(root, result, ruleName, options, messages, getMotionInfo);
+    await checkRule(root, result, ruleName, options, messages, getMotionInfo);
   };
 }

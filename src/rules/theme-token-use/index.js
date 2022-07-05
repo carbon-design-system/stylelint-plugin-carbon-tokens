@@ -40,13 +40,14 @@ const defaultOptions = {
   acceptCarbonColorTokens: false,
   acceptIBMColorTokens: false,
   acceptUndefinedVariables: false,
-  acceptScopes: ["theme"]
+  acceptScopes: ["theme"],
+  target: undefined
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
   const options = parseOptions(secondaryOptions, defaultOptions);
 
-  return (root, result) => {
+  return async (root, result) => {
     const validOptions = utils.validateOptions(
       result,
       ruleName,
@@ -64,7 +65,8 @@ export default function rule(primaryOptions, secondaryOptions) {
           acceptIBMColorTokens: (val) =>
             val === undefined || typeof val === "boolean",
           acceptUndefinedVariables: (val) =>
-            val === undefined || typeof val === "boolean"
+            val === undefined || typeof val === "boolean",
+          target: (val) => val === undefined || ["v10", "v11"].includes(val)
         },
         optional: true
       }
@@ -75,6 +77,6 @@ export default function rule(primaryOptions, secondaryOptions) {
       return;
     }
 
-    checkRule(root, result, ruleName, options, messages, getThemeInfo);
+    await checkRule(root, result, ruleName, options, messages, getThemeInfo);
   };
 }

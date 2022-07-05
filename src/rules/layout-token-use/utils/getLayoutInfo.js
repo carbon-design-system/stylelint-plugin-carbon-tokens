@@ -5,16 +5,18 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import {
-  containerTokens,
-  fluidSpacingTokens,
-  iconSizeTokens,
-  layoutFunctions,
-  layoutTokens,
-  spacingTokens
-} from "./initAll";
+import { doInit } from "./initAll";
 
-export default function getLayoutInfo(options) {
+export default async function getLayoutInfo(options) {
+  const {
+    containerTokens,
+    fluidSpacingTokens,
+    iconSizeTokens,
+    layoutFunctions,
+    layoutTokens,
+    spacingTokens
+  } = await doInit(options.target);
+
   return {
     tokens: [
       {

@@ -51,13 +51,14 @@ const defaultOptions = {
   acceptIconSizeTokens: false,
   acceptFluidSpacingTokens: false,
   acceptCarbonMiniUnitsFunction: false,
-  acceptScopes: ["layout"]
+  acceptScopes: ["layout"],
+  target: undefined
 };
 
 export default function rule(primaryOptions, secondaryOptions) {
   const options = parseOptions(secondaryOptions, defaultOptions);
 
-  return (root, result) => {
+  return async (root, result) => {
     const validOptions = utils.validateOptions(
       result,
       ruleName,
@@ -79,7 +80,8 @@ export default function rule(primaryOptions, secondaryOptions) {
           acceptFluidSpacingTokens: (val) =>
             val === undefined || typeof val === "boolean",
           acceptCarbonMiniUnitsFunction: (val) =>
-            val === undefined || typeof val === "boolean"
+            val === undefined || typeof val === "boolean",
+          target: (val) => val === undefined || ["v10", "v11"].includes(val)
         },
         optional: true
       }
@@ -90,6 +92,6 @@ export default function rule(primaryOptions, secondaryOptions) {
       return;
     }
 
-    checkRule(root, result, ruleName, options, messages, getLayoutInfo);
+    await checkRule(root, result, ruleName, options, messages, getLayoutInfo);
   };
 }

@@ -93,27 +93,48 @@ testRule(rule, {
   ]
 });
 
-// verify use of carbon color tokens
 testRule(rule, {
   ruleName,
   config: [
     true,
     {
-      acceptValues: ["/((--)|[$])my-value-accept/", "*"],
-      acceptCarbonColorTokens: true
+      acceptCarbonColorTokens: true,
+      acceptIBMColorTokens: true
+    }
+  ],
+  accept: [],
+  reject: [
+    {
+      code: ".foo { background-color: $carbon--blue-90; }",
+      description: "Reject using a carbon color token without v10 target",
+      message: messages.expected
+    },
+    {
+      code: ".foo { background-color: $ibm-color__blue-90; }",
+      description: "Reject using a ibm color token without v10 target",
+      message: messages.expected
+    }
+  ]
+});
+
+// // verify use of v10 carbon color tokens
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptCarbonColorTokens: true,
+      target: "v10"
     }
   ],
   customSyntax: "postcss-scss",
   accept: [
     {
       code: ".foo { background-color: $carbon--blue-90; }",
-      description: "Accept using a carbon color token",
-      message: messages.expected
+      description: "Accept using a carbon color token"
     }
   ],
-
   reject: [
-    // an ibm color token
     {
       code: ".foo { background-color: $ibm-color__blue-90; }",
       description: "Reject using a ibm color token",
@@ -122,25 +143,23 @@ testRule(rule, {
   ]
 });
 
-// verify use of carbon color tokens
+// verify use of v10 carbon color tokens
 testRule(rule, {
   ruleName,
   config: [
     true,
     {
-      acceptValues: ["/((--)|[$])my-value-accept/", "*"],
-      acceptIBMColorTokens: true
+      acceptIBMColorTokens: true,
+      target: "v10"
     }
   ],
   customSyntax: "postcss-scss",
   accept: [
     {
       code: ".foo { background-color: $ibm-color__blue-90; }",
-      description: "Accept using a ibm color token",
-      message: messages.expected
+      description: "Accept using a ibm color token"
     }
   ],
-
   reject: [
     // an ibm color token
     {
@@ -180,7 +199,7 @@ testRule(rule, {
     {
       code: ".foo { color: var(--my-value-reject); }",
       description:
-        "Reject undeclared --variable  when acceptUndefinedVariables is false.",
+        "Reject undeclared --variable when acceptUndefinedVariables is false.",
       message: messages.expected
     }
   ]

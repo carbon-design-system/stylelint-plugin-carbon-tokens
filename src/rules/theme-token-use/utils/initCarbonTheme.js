@@ -6,18 +6,46 @@
  */
 
 import { formatTokenName } from "../../../utils/token-name";
-import { unstable_tokens as layout } from "@carbon/layout";
-import { white as tokens } from "@carbon/themes";
-import { unstable_tokens as types } from "@carbon/type";
+import { unstable_tokens as installedLayout } from "@carbon/layout";
+import { unstable_tokens as installedType } from "@carbon/type";
+import { white as installedWhite } from "@carbon/themes";
 
-// map themes to recognizable tokens
+const doInitTheme = async (target) => {
+  const isV10 = target === "v10";
+  let layoutTokens;
+  let typeTokens;
+  let tokens;
 
-const themeTokens = Object.keys(tokens)
-  .filter((token) => !types.includes(token) && !layout.includes(token))
-  .map((token) => `$${formatTokenName(token)}`);
+  if (isV10 && process.env.NODE_ENV === "test") {
+    // eslint-disable-next-line
+    const layoutModule = await import("@carbon/layout-10");
+    // eslint-disable-next-line
+    const typeModule = await import("@carbon/type-10");
+    // eslint-disable-next-line
+    const themeModule = await import("@carbon/themes-10");
 
-// permitted carbon theme functions
-// TODO: read this from carbon
-const themeFunctions = ["get-light-value"];
+    layoutTokens = layoutModule.unstable_tokens;
+    typeTokens = typeModule.unstable_tokens;
+    tokens = themeModule.white;
+  } else {
+    layoutTokens = installedLayout;
+    typeTokens = installedType;
+    tokens = installedWhite;
+  }
 
-export { themeTokens, themeFunctions };
+  // map themes to recognizable tokens
+
+  const themeTokens = Object.keys(tokens)
+    .filter(
+      (token) => !layoutTokens.includes(token) && !typeTokens.includes(token)
+    )
+    .map((token) => `$${formatTokenName(token)}`);
+
+  // permitted carbon theme functions
+  // TODO: read this from carbon
+  const themeFunctions = ["get-light-value"];
+
+  return { themeTokens, themeFunctions };
+};
+
+export { doInitTheme };

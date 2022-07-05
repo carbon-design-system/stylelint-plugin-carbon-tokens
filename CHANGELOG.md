@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0-beta.1
+
+- Restore optional v10 support.
+
 ## 2.0 0-alpha.2
 
 - Add scope support
@@ -34,13 +38,13 @@ Updates to the latest version of Carbon 10 and calls V1 in prep for a v-next or 
 ## 0.11.1
 
 - Prevent linter falling over when passed the following forms
-  code: `.foo { $body--height: 400px; top: -($body--height - $carbon--spacing-05); }`,
-  code: `.foo { top: -($body--height - $carbon--spacing-05); }`,
-  code: `.foo { $body--height: 400px; top: ($body--height - $carbon--spacing-05); }`,
-  code: `.foo { top: ($body--height - $carbon--spacing-05); }`,
-  code: `.foo { $body--height: 400px; top: $body--height - $carbon--spacing-05; }`,
+  code: `.foo { $body--height: 400px; top: -($body--height - $spacing-05); }`,
+  code: `.foo { top: -($body--height - $spacing-05); }`,
+  code: `.foo { $body--height: 400px; top: ($body--height - $spacing-05); }`,
+  code: `.foo { top: ($body--height - $spacing-05); }`,
+  code: `.foo { $body--height: 400px; top: $body--height - $spacing-05; }`,
   description: `Reject non-supported maths of form $x: 1px; $x - $token`,
-  code: `.foo { top: $body--height - $carbon--spacing-05; }`,
+  code: `.foo { top: $body--height - $spacing-05; }`,
   description: `Reject non-supported maths of form $unknown - $token`,
   code: `.foo {margin-top: 1 + map-get($map: (key: 1rem), $key: key);}`,
 

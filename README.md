@@ -129,6 +129,21 @@ FYI: With regards to math. See [What math is OK?](#What%20math%20is%20OK?)
   },
 ```
 
+### Carbon V10 support
+
+Carbon V10 support needs the following switch to be added. It is also dependant on the V10 packages for layout, motion, theme and type being installed (NOT V11).
+
+NOTE: That some options are only available in V10. These typically impact on the availability of prefixes such as `Carbon--`, `Carbon__`, `IBM-colors__` which have been deprecated in V11.
+
+```js
+rules: {
+  'carbon/layout-token-use': [true, { target: 'v10' }],
+  'carbon/motion-token-use': [true, { target: 'v10' }],
+  'carbon/theme-token-use': [true, { target: 'v10' }],
+  'carbon/type-token-use': [ true, { target: 'v10' }]
+},
+```
+
 ## Variables
 
 SCSS `$variables` and CSS `--variable` declared before are checked.

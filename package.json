@@ -1,6 +1,6 @@
 {
   "name": "stylelint-plugin-carbon-tokens",
-  "version": "2.0.0-alpha.2",
+  "version": "2.0.0-beta.1",
   "description": "A stylelint plugin to support the use of carbon component tokens.",
   "keywords": [
     "stylelint",
@@ -20,7 +20,6 @@
     "url": "https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/issues"
   },
   "dependencies": {
-    "@carbon/styles": "^1.5.0",
     "lodash": "^4.17.21",
     "postcss-scss": "^4.0.4",
     "postcss-value-parser": "^4.2.0"
@@ -29,6 +28,16 @@
     "@babel/cli": "^7.17.10",
     "@babel/core": "^7.18.5",
     "@babel/preset-env": "^7.18.2",
+    "@carbon/colors": "^11",
+    "@carbon/colors-10": "npm:@carbon/colors@^10",
+    "@carbon/layout": "^11",
+    "@carbon/layout-10": "npm:@carbon/layout@^10",
+    "@carbon/motion": "^11",
+    "@carbon/motion-10": "npm:@carbon/motion@^10",
+    "@carbon/themes": "^11",
+    "@carbon/themes-10": "npm:@carbon/themes@^10",
+    "@carbon/type": "^11",
+    "@carbon/type-10": "npm:@carbon/type@^10",
     "babel-plugin-istanbul": "^6.1.1",
     "babel-preset-jest": "^28.1.1",
     "eslint": "^8.18.0",
@@ -46,7 +55,13 @@
     "rimraf": "^3.0.2",
     "stylelint": "^14.9.1"
   },
-  "peerDependencies": {},
+  "peerDependencies": {
+    "@carbon/colors": ">=10 <= 11",
+    "@carbon/layout": ">=10 <= 11",
+    "@carbon/motion": ">=10 <= 11",
+    "@carbon/themes": ">=10 <= 11",
+    "@carbon/type": ">=10 <= 11"
+  },
   "engines": {
     "node": ">=14"
   },

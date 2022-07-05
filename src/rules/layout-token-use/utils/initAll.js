@@ -10,63 +10,83 @@
 // This is to maintain the ability to separate out sizes not called out
 // on the carbon designs system website.
 import { formatTokenName } from "../../../utils/token-name";
-import { unstable_tokens as tokens } from "@carbon/layout";
+import { unstable_tokens as installedTokens } from "@carbon/layout";
 
 const carbonPrefix = "$carbon--";
 
-const containerTokens = [];
-const fluidSpacingTokens = [];
-const iconSizeTokens = [];
-const layoutTokens = [];
-const spacingTokens = [];
-const layoutFunctions = ["carbon--mini-units", "mini-units"];
+const doInit = async (target) => {
+  const containerTokens = [];
+  const fluidSpacingTokens = [];
+  const iconSizeTokens = [];
+  const layoutTokens = [];
+  const spacingTokens = [];
+  const isV10 = target === "v10";
+  let functions;
+  let tokens;
 
-for (const key in tokens) {
-  if (Object.hasOwn(tokens, key)) {
-    const token = formatTokenName(tokens[key]);
+  if (isV10 && process.env.NODE_ENV === "test") {
+    // eslint-disable-next-line
+    const module = await import("@carbon/layout-10");
 
-    const tokenWithoutNumber = token.substr(0, token.lastIndexOf("-"));
-    let tokenArray = undefined;
+    tokens = module.unstable_tokens;
+    functions = ["carbon--mini-units", "mini-units"];
+  } else {
+    tokens = installedTokens;
+    functions = [];
+  }
 
-    switch (tokenWithoutNumber) {
-      case "container":
-        tokenArray = containerTokens;
-        break;
-      case "fluid-spacing":
-        tokenArray = fluidSpacingTokens;
-        break;
-      case "icon-size":
-        tokenArray = iconSizeTokens;
-        break;
-      case "layout":
-        tokenArray = layoutTokens;
-        break;
-      case "spacing":
-        tokenArray = spacingTokens;
-        break;
-      default:
-        if (tokenWithoutNumber.startsWith("size")) {
+  for (const key in tokens) {
+    if (Object.hasOwn(tokens, key)) {
+      const token = formatTokenName(tokens[key]);
+
+      const tokenWithoutNumber = token.substr(0, token.lastIndexOf("-"));
+      let tokenArray = undefined;
+
+      switch (tokenWithoutNumber) {
+        case "container":
           tokenArray = containerTokens;
-        } else {
-          // eslint-disable-next-line no-console
-          console.warn(
-            `Unexpected token "${token}" found in @carbon/layout - please raise an issue`
-          );
-        }
-    }
+          break;
+        case "fluid-spacing":
+          tokenArray = fluidSpacingTokens;
+          break;
+        case "icon-size":
+          tokenArray = iconSizeTokens;
+          break;
+        case "layout":
+          tokenArray = layoutTokens;
+          break;
+        case "spacing":
+          tokenArray = spacingTokens;
+          break;
+        default:
+          if (tokenWithoutNumber.startsWith("size")) {
+            tokenArray = containerTokens;
+          } else {
+            // eslint-disable-next-line no-console
+            console.warn(
+              `Unexpected token "${token}" found in @carbon/layout - please raise an issue`
+            );
+          }
+      }
 
-    if (tokenArray) {
-      tokenArray.push(`$${token}`);
-      tokenArray.push(`${carbonPrefix}${token}`);
+      if (tokenArray) {
+        tokenArray.push(`$${token}`);
+
+        if (isV10) {
+          tokenArray.push(`${carbonPrefix}${token}`);
+        }
+      }
     }
   }
-}
 
-export {
-  containerTokens,
-  fluidSpacingTokens,
-  iconSizeTokens,
-  layoutFunctions,
-  layoutTokens,
-  spacingTokens
+  return {
+    containerTokens,
+    fluidSpacingTokens,
+    iconSizeTokens,
+    layoutFunctions: functions,
+    layoutTokens,
+    spacingTokens
+  };
 };
+
+export { doInit };

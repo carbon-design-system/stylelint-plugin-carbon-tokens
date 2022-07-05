@@ -5,11 +5,17 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { carbonColorTokens, ibmColorTokens } from "./initCarbonColor";
-import { themeFunctions, themeTokens } from "./initCarbonTheme";
+import { doInitColors } from "./initCarbonColor";
+import { doInitTheme } from "./initCarbonTheme";
 import { sassColorFunctions } from "./initSassFunctions";
 
-export default function getThemeInfo(options) {
+export default async function getThemeInfo(options) {
+  // eslint-disable-next-line
+  const { carbonColorTokens, ibmColorTokens } = await doInitColors(
+    options.target
+  );
+  const { themeTokens, themeFunctions } = await doInitTheme(options.target);
+
   return {
     tokens: [
       {
