@@ -137,8 +137,10 @@ NOTE: That some options are only available in V10. These typically impact on the
 
 ```js
 rules: {
-  // Carbon v10 support
-  target: 'v10',
+  'carbon/layout-token-use': [true, { target: 'v10' }],
+  'carbon/motion-token-use': [true, { target: 'v10' }],
+  'carbon/theme-token-use': [true, { target: 'v10' }],
+  'carbon/type-token-use': [ true, { target: 'v10' }]
 },
 ```
 
