@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0-beta.3
+
+- Animation order should expect name first
+- Changed v10 motion `duration--` prefix to v11 `duration-`
+- Added v10 specific motion test for `duration--`.
+- Add transition and animation specific messages.
+
 ## 2.0.0-beta.2
 
 - fix: Temporarily fudge theme token list adding button category manually

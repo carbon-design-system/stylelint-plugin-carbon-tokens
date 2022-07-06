@@ -42,6 +42,10 @@ export default async function checkRule(
         );
       } else if (testResult.isCalc) {
         message = messages.rejectedMaths(decl.prop, item.raw);
+      } else if (decl.prop === "transition") {
+        message = messages.rejectedTransition(decl.prop, item.raw);
+      } else if (decl.prop === "animation") {
+        message = messages.rejectedAnimation(decl.prop, item.raw);
       } else if (testResult.isVariable) {
         message = messages.rejectedVariable(
           decl.prop,
