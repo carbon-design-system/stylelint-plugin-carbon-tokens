@@ -16,7 +16,7 @@ const defaultOptions = {
   includeProps: [
     "transition<2>", // only permitted definition order fails otherwise
     "transition-duration",
-    "animation<1>", // only permitted definition order fails otherwise
+    "animation<2>", // only permitted definition order fails otherwise
     "animation-duration",
   ],
   //  Accept reset values

@@ -29,32 +29,32 @@ testRule(rule, {
       description: "Accept reset using unset"
     },
     {
-      code: ".foo { transition: width $duration--fast-01 linear ease-in; }",
+      code: ".foo { transition: width $duration-fast-01 linear ease-in; }",
       description: "Carbon motion token expected for transition."
     },
     {
-      code: ".foo { transition-duration: $duration--moderate-01; }",
+      code: ".foo { transition-duration: $duration-moderate-01; }",
       description: "Carbon motion token expected for transition duration."
     },
     {
-      code: ".foo { transition: width $duration--fast-01 linear ease-in, height $duration--moderate-01 ease-out; }",
+      code: ".foo { transition: width $duration-fast-02 linear ease-in, height $duration-moderate-01 ease-out; }",
       description: "Carbon motion token expected for split transitions."
     },
     {
-      code: "$my-value-accept: $duration--fast-01; .foo { transition-duration: $my-value-accept; }",
+      code: "$my-value-accept: $duration-fast-01; .foo { transition-duration: $my-value-accept; }",
       description:
         "Accept $variable declared before use with Carbon motion tokens."
     },
     {
-      code: ".foo { animation: $duration--fast-01 linear ease-in myAnim; }",
+      code: ".foo { animation: test $duration-fast-01 linear ease-in myAnim; }",
       description: "Carbon motion token expected for animation."
     },
     {
-      code: ".foo { animation-duration: $duration--moderate-01; }",
+      code: ".foo { animation-duration: $duration-moderate-01; }",
       description: "Carbon motion token expected for animation duration."
     },
     {
-      code: "--my-value-accept: $duration--moderate-01; .foo { animation-duration: var(--my-value-accept); }",
+      code: "--my-value-accept: $duration-moderate-01; .foo { animation-duration: var(--my-value-accept); }",
       description:
         "Accept --variable declared before use for animation duration with Carbon motion tokens."
     }
@@ -77,12 +77,17 @@ testRule(rule, {
       message: messages.expected
     },
     {
-      code: ".foo { animation: var(--my-value-accept) myAnim; }",
+      code: ".foo { animation: test var(--my-value-accept) myAnim; }",
       description: "Reject undeclared --variable by default.",
       message: messages.expected
     },
     {
-      code: ".foo { transition: $duration--fast-01; }",
+      code: ".foo { transition: $duration-fast-01; }",
+      description: "Carbon motion token used in non-standard order.",
+      message: messages.expected
+    },
+    {
+      code: ".foo { animation: $duration-fast-01 test; }",
       description: "Carbon motion token used in non-standard order.",
       message: messages.expected
     },
@@ -92,16 +97,32 @@ testRule(rule, {
       message: messages.expected
     },
     {
-      code: ".foo { transition: width 99s linear ease-in, height $duration--fast-01 ease-out; }",
+      code: ".foo { transition: width 99s linear ease-in, height $duration-fast-01 ease-out; }",
       description:
         "Used non-token in first split property not Carbon motion tokens.",
       message: messages.expected
     },
     {
-      code: ".foo { transition: width $duration--fast-01 linear ease-in, height 2s ease-out; }",
+      code: ".foo { transition: width $duration-fast-01 linear ease-in, height 2s ease-out; }",
       description:
         "Used non-token in non-first split property not Carbon motion tokens.",
       message: messages.expected
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [true, { testOnlyTarget: "v10" }],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: ".foo { transition: width $duration--fast-01 linear ease-in; }",
+      description: "Carbon motion token expected for transition."
+    },
+    {
+      code: ".foo { animation: test $duration--fast-01 linear ease-in myAnim; }",
+      description: "Carbon motion token expected for animation."
     }
   ]
 });
@@ -113,12 +134,12 @@ testRule(rule, {
   customSyntax: "postcss-scss",
   accept: [
     {
-      code: "$my-value-accept: $duration--fast-01; .foo { transition-duration: $my-value-accept; }",
+      code: "$my-value-accept: $duration-fast-01; .foo { transition-duration: $my-value-accept; }",
       description:
         "Accept $variable declared before use with Carbon motion tokens and acceptUndefinedVariables is false."
     },
     {
-      code: "--my-value-accept: $duration--moderate-01; .foo { transition-duration: var(--my-value-accept); }",
+      code: "--my-value-accept: $duration-moderate-01; .foo { transition-duration: var(--my-value-accept); }",
       description:
         "Accept --variable declared before use with Carbon motion tokens and acceptUndefinedVariables is false."
     }
@@ -167,13 +188,13 @@ testRule(rule, {
   customSyntax: "postcss-scss",
   accept: [
     {
-      code: `.foo { animation-duration: motion.$duration--fast-01; }`,
+      code: `.foo { animation-duration: motion.$duration-fast-01; }`,
       description: "Accept motion scope."
     }
   ],
   reject: [
     {
-      code: `.foo { animation-duration: mo.$duration--fast-01; }`,
+      code: `.foo { animation-duration: mo.$duration-fast-01; }`,
       description: "Reject scope 'mo' without acceptScopes setting."
     }
   ]
@@ -185,11 +206,11 @@ testRule(rule, {
   customSyntax: "postcss-scss",
   accept: [
     {
-      code: `.foo { animation-duration: mo.$duration--fast-01; }`,
+      code: `.foo { animation-duration: mo.$duration-fast-01; }`,
       description: "Accept scope 'mo' with acceptScopes setting."
     },
     {
-      code: `.foo { animation-duration: motion(mo.$duration--fast-01)}`,
+      code: `.foo { animation-duration: motion(mo.$duration-fast-01)}`,
       description: "Accept scope 'mo' with acceptScopes setting in function.."
     }
   ],
@@ -202,26 +223,26 @@ testRule(rule, {
   customSyntax: "postcss-scss",
   accept: [
     {
-      code: `.foo { animation-duration: mo.$duration--fast-01; }`,
+      code: `.foo { animation-duration: mo.$duration-fast-01; }`,
       description: "Accept scope 'mo' with acceptScopes setting."
     },
     {
-      code: `.foo { animation-duration: motion(mo.$duration--fast-01)}`,
+      code: `.foo { animation-duration: motion(mo.$duration-fast-01)}`,
       description: "Accept scope 'mo' with acceptScopes setting in function."
     },
     {
-      code: `.foo { animation-duration: motion.$duration--fast-01; }`,
+      code: `.foo { animation-duration: motion.$duration-fast-01; }`,
       description: "Accept motion scope with scope setting including default."
     },
     {
-      code: `.foo { animation-duration: motion(motion.$duration--fast-01)}`,
+      code: `.foo { animation-duration: motion(motion.$duration-fast-01)}`,
       description:
         "Accept motion scope in function with scope setting including default."
     }
   ],
   reject: [
     {
-      code: `.foo { animation-duration: reject.$duration--fast-01; }`,
+      code: `.foo { animation-duration: reject.$duration-fast-01; }`,
       description: "Reject scope not included in scope setting."
     }
   ]
@@ -233,28 +254,28 @@ testRule(rule, {
   customSyntax: "postcss-scss",
   accept: [
     {
-      code: `.foo { animation-duration: mo.$duration--fast-01; }`,
+      code: `.foo { animation-duration: mo.$duration-fast-01; }`,
       description: "Accept scope 'mo' with acceptScopes regex setting."
     },
     {
-      code: `.foo { animation-duration: motion(mo.$duration--fast-01)}`,
+      code: `.foo { animation-duration: motion(mo.$duration-fast-01)}`,
       description:
         "Accept scope 'mo' with acceptScopes regex setting in function.."
     },
     {
-      code: `.foo { animation-duration: motion.$duration--fast-01; }`,
+      code: `.foo { animation-duration: motion.$duration-fast-01; }`,
       description:
         "Accept motion scope with scope regex setting including default."
     },
     {
-      code: `.foo { animation-duration: motion(motion.$duration--fast-01)}`,
+      code: `.foo { animation-duration: motion(motion.$duration-fast-01)}`,
       description:
         "Accept motion scope in function with scope regex setting including default."
     }
   ],
   reject: [
     {
-      code: `.foo { animation-duration: reject.$duration--fast-01; }`,
+      code: `.foo { animation-duration: reject.$duration-fast-01; }`,
       description: "Reject scope not included in scope regex setting."
     }
   ]

@@ -34,6 +34,10 @@ testRule(rule, {
       description: "Accept reset using unset"
     },
     {
+      code: ".foo { color: transparent; }",
+      description: "Accept using transparent"
+    },
+    {
       code: ".foo { color: $layer-01; }",
       description: "Carbon theme token expected."
     },
@@ -47,10 +51,21 @@ testRule(rule, {
         "Accept $variable declared before use with Carbon theme tokens."
     },
     {
-      code: "--my-value-accept: $layer-01; .foo { color: var(--my-value-accept); }",
+      code: ":root {--my-value-accept: $layer-01;} .foo { color: var(--my-value-accept); }",
       description:
         "Accept --variable declared before use with Carbon theme tokens."
     },
+    {
+      code: "$block: 'block'; :root {--block-value-accept: $layer-01;} .foo { color: var(--#{$block}-value-accept); }",
+      description:
+        "Accept --#{block}-variable declared before use with Carbon theme tokens. Cheats on custom property declaration"
+    },
+    // {
+    //   // TODO: fix this - fails to even get into
+    //   code: "$block: 'block'; :root {--#{$block}__value-accept: $layer-01;} .foo { color: var(--#{$block}__value-accept); }",
+    //   description:
+    //     "Accept --#{block}-variable declared before use with Carbon theme tokens."
+    // },
     {
       code: ".foo { box-shadow: $layout-01 $layout-01 $layer-01; }",
       description:

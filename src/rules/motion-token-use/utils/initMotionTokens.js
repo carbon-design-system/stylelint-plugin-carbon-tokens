@@ -14,7 +14,7 @@ const doInit = async (testOnlyTarget) => {
   const motionFunctions = ["motion"];
 
   const isV10 = testOnlyTarget === "v10" || version.startsWith("10");
-  const durationPrefix = "$duration--";
+  const durationPrefix = isV10 ? "$duration--" : "$duration-";
   let tokens;
 
   if (isV10 && process.env.NODE_ENV === "test") {
