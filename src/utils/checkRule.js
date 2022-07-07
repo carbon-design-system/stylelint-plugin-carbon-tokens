@@ -136,11 +136,26 @@ export default async function checkRule(
       console.warn(tokenizedValue.warning);
     } else {
       if (isVariable(decl.prop)) {
-        // add to variable declarations
-        // expects all variables to appear before use
-        // expects all variables to be simple (not map or list)
-        knownVariables[normalizeVariableName(decl.prop)] =
-          tokenizedValue.items[0];
+        const newKeys = [normalizeVariableName(decl.prop)];
+
+        // In some decl.prop may contain an existing known value
+        // Store the value as an additional key
+        Object.keys(knownVariables).forEach((key) => {
+          const interpolatedKey = `#{${key}}`;
+
+          if (decl.prop.indexOf(key) !== -1) {
+            newKeys.push(
+              decl.prop.replace(interpolatedKey, knownVariables[key])
+            );
+          }
+        });
+
+        newKeys.forEach((key) => {
+          // add to variable declarations
+          // expects all variables to appear before use
+          // expects all variables to be simple (not map or list)
+          knownVariables[normalizeVariableName(key)] = tokenizedValue.items[0];
+        });
       }
 
       // read the prop spec
