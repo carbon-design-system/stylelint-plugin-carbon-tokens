@@ -42,6 +42,19 @@ const checkScope = (item, options) => {
   });
 };
 
+const checkAcceptValuesRaw = (valueToCheck, options) => {
+  return options.acceptValues.some((acceptedValue) => {
+    // regex or string
+    const testValue = parseToRegexOrString(acceptedValue);
+
+    return (
+      (testValue.test &&
+        testValue.test(sanitizeUnconnectedOperators(valueToCheck))) ||
+      testValue === valueToCheck
+    );
+  });
+};
+
 const checkAcceptValues = (item, options) => {
   // Simply check raw values, improve later
   let result = false;
@@ -56,16 +69,7 @@ const checkAcceptValues = (item, options) => {
       }
     }
 
-    result = options.acceptValues.some((acceptedValue) => {
-      // regex or string
-      const testValue = parseToRegexOrString(acceptedValue);
-
-      return (
-        (testValue.test &&
-          testValue.test(sanitizeUnconnectedOperators(valueToCheck))) ||
-        testValue === valueToCheck
-      );
-    });
+    result = checkAcceptValuesRaw(valueToCheck, options);
   }
 
   return result;
@@ -155,16 +159,27 @@ const checkTokens = function (item, ruleInfo, options, knownVariables) {
   }
 
   // cope with variables wrapped in #{}
-  const _variable = preProcessToken(valueToCheck, knownVariables);
+  let _variable = preProcessToken(valueToCheck, knownVariables);
 
-  for (const tokenSet of ruleInfo.tokens) {
-    const tokenSpecs = tokenSet.values;
+  if (_variable.startsWith("#")) {
+    // token set does not contain #{}
+    _variable = _variable.substr(2, _variable.length - 3);
+  }
 
-    if (tokenSpecs.includes(_variable)) {
-      result.source = tokenSet.source;
-      result.accepted = tokenSet.accept;
-      result.done = true; // all tests completed
-      break;
+  if (checkAcceptValuesRaw(_variable, options)) {
+    // value matches one of the acceptValues
+    result.accepted = true;
+    result.done = true;
+  } else {
+    for (const tokenSet of ruleInfo.tokens) {
+      const tokenSpecs = tokenSet.values;
+
+      if (tokenSpecs.includes(_variable)) {
+        result.source = tokenSet.source;
+        result.accepted = tokenSet.accept;
+        result.done = true; // all tests completed
+        break;
+      }
     }
   }
 

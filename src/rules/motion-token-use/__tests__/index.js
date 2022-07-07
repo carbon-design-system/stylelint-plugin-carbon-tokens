@@ -50,6 +50,11 @@ testRule(rule, {
       description: "Carbon motion token expected for animation."
     },
     {
+      code: "$test: 'test'; .foo { animation: $test $duration-fast-01 linear ease-in myAnim; }",
+      description:
+        "Carbon motion token expected for animation other token used a"
+    },
+    {
       code: ".foo { animation-duration: $duration-moderate-01; }",
       description: "Carbon motion token expected for animation duration."
     },
@@ -111,6 +116,7 @@ testRule(rule, {
   ]
 });
 
+// v10 test
 testRule(rule, {
   ruleName,
   config: [true, { testOnlyTarget: "v10" }],
