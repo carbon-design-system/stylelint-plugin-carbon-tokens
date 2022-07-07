@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.0.0-beta.5
+
+- Fix tests of #{$var} against token list.
+
+## 2.0.0-beta.4
+
+- Test fix for block class
 ## 2.0.0-beta.3
 
 - Animation order should expect name first
