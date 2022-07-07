@@ -145,7 +145,7 @@ export default async function checkRule(
 
           if (decl.prop.indexOf(key) !== -1) {
             newKeys.push(
-              decl.prop.replace(interpolatedKey, knownVariables[key])
+              decl.prop.replace(interpolatedKey, knownVariables[key].value)
             );
           }
         });

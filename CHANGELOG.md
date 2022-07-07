@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0-beta.6
+
+- Fix interpolated known values
+
 ## 2.0.0-beta.5
 
 - Fix tests of #{$var} against token list.
