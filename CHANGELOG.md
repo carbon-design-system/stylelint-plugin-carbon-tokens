@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.0-beta.7
+
+- fix: mini-unit and carbon--mini-unit function use in v10
+- fix: token name format to cope with `hoverSelectedUI`
+
 ## 2.0.0-beta.6
 
 - Fix interpolated known values

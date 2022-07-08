@@ -22,7 +22,6 @@ const doInit = async (testOnlyTarget) => {
   const layoutTokens = [];
   const spacingTokens = [];
   const isV10 = testOnlyTarget === "v10" || version.startsWith("10");
-  let functions;
   let tokens;
 
   if (isV10 && process.env.NODE_ENV === "test") {
@@ -30,11 +29,11 @@ const doInit = async (testOnlyTarget) => {
     const module = await import("@carbon/layout-10");
 
     tokens = module.unstable_tokens;
-    functions = ["carbon--mini-units", "mini-units"];
   } else {
     tokens = installedTokens;
-    functions = [];
   }
+
+  const functions = isV10 ? ["carbon--mini-units", "mini-units"] : [];
 
   for (const key in tokens) {
     if (Object.hasOwn(tokens, key)) {

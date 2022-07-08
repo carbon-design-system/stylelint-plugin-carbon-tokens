@@ -148,6 +148,10 @@ testRule(rule, {
     {
       code: ".foo { background-color: $carbon--blue-90; }",
       description: "Accept using a carbon color token"
+    },
+    {
+      code: ".foo { background-color: $hover-selected-ui; }",
+      description: "Accept using a carbon hoverSelectedUI token"
     }
   ],
   reject: [
