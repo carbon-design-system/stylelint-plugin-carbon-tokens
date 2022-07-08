@@ -179,13 +179,34 @@ testRule(rule, {
   reject: [
     {
       code: `.foo { left: mini-units(4); }`,
-      description: `A left using a mini-units is accepted with option.`
+      description: `Reject mini-units in v11`
     },
+    {
+      code: `.foo { padding: carbon--mini-units(2) }`,
+      description: `Reject Carbon-mini-units in v11.`
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  customSyntax: "postcss-scss",
+  config: [
+    true,
+    { acceptCarbonMiniUnitsFunction: true, testOnlyTarget: "v10" }
+  ],
+
+  accept: [
     {
       code: `.foo { left: mini-units(4); }`,
       description: `A left using a mini-units is accepted with option.`
+    },
+    {
+      code: `.foo { padding: carbon--mini-units(2) }`,
+      description: `Accepts carbon--mini-units function with option.`
     }
-  ]
+  ],
+  reject: []
 });
 
 testRule(rule, {
