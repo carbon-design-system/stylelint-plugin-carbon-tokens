@@ -70,7 +70,20 @@ FYI: There are no automated fixes with --fix. See [Why no --fix?](#Why%20no%20--
 
 FYI: With regards to math. See [What math is OK?](#What%20math%20is%20OK?)
 
+### Fix
+
+Version 2 introduces the ability to auto fix some usage. See the rule README files for details.
+
+NOTE: Automatic fixes should be reviewed in the same way any other code is reviewed.
+
 ## Recommended config
+
+### Stylelint switches
+
+It's good practice to document any linter disables and to tidy up any that are no longer needed. As a result it is recommended that you use the following switches as part of your stylelint command.
+
+- --report-descriptionless-disables [https://stylelint.io/user-guide/usage/options#reportdescriptionlessdisables]
+- --report-needless-disables [https://stylelint.io/user-guide/usage/options#reportneedlessdisables]
 
 ### Strict
 
@@ -129,20 +142,9 @@ FYI: With regards to math. See [What math is OK?](#What%20math%20is%20OK?)
   },
 ```
 
-### Carbon V10 support
+### Carbon Versions supported
 
-Carbon V10 support needs the following switch to be added. It is also dependant on the V10 packages for layout, motion, theme and type being installed (NOT V11).
-
-NOTE: That some options are only available in V10. These typically impact on the availability of prefixes such as `Carbon--`, `Carbon__`, `IBM-colors__` which have been deprecated in V11.
-
-```js
-rules: {
-  'carbon/layout-token-use': [true, { target: 'v10' }],
-  'carbon/motion-token-use': [true, { target: 'v10' }],
-  'carbon/theme-token-use': [true, { target: 'v10' }],
-  'carbon/type-token-use': [ true, { target: 'v10' }]
-},
-```
+Carbon V10 and V11 are supported, but not currently in the same repository.
 
 ## Variables
 

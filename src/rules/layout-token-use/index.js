@@ -55,7 +55,7 @@ const defaultOptions = {
   testOnlyTarget: undefined
 };
 
-export default function rule(primaryOptions, secondaryOptions) {
+export default function rule(primaryOptions, secondaryOptions, context) {
   const options = parseOptions(secondaryOptions, defaultOptions);
 
   return async (root, result) => {
@@ -93,6 +93,14 @@ export default function rule(primaryOptions, secondaryOptions) {
       return;
     }
 
-    await checkRule(root, result, ruleName, options, messages, getLayoutInfo);
+    await checkRule(
+      root,
+      result,
+      ruleName,
+      options,
+      messages,
+      getLayoutInfo,
+      context
+    );
   };
 }

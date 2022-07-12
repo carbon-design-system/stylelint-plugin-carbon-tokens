@@ -6,6 +6,7 @@
  */
 
 import { doInit } from "./initAll";
+import { fixes } from "./fixes";
 
 export default async function getLayoutInfo(options) {
   const {
@@ -62,6 +63,7 @@ export default async function getLayoutInfo(options) {
         ]
       },
       { source: "CSS", accept: true, values: ["calc(1)"] }
-    ]
+    ],
+    fixes
   };
 }

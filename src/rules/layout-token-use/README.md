@@ -37,3 +37,11 @@ const defaultOptions = {
   acceptFluidSpacingTokens: false,
 };
 ```
+
+## Fix
+
+The automatic fixes for the layout rule are as follows.
+
+- Replace `$carbon--` with `$`
+- Replace `$layout-0x` tokens with `$spacing-0y` tokens of the same size.
+- Replace pixel and rem sizes that match `$spacing-0y` token.

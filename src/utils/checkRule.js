@@ -24,7 +24,8 @@ export default async function checkRule(
   ruleName,
   options,
   messages,
-  getRuleInfo
+  getRuleInfo,
+  context
 ) {
   const checkItem = (decl, item, propSpec, ruleInfo, knownVariables) => {
     // Expects to be passed an item containing either a token { raw, type, value} or
@@ -61,16 +62,16 @@ export default async function checkRule(
       // adjust position for multipart value
       const offsetValue = item !== undefined ? decl.value.indexOf(item.raw) : 0;
 
-      utils.report({
+      return {
         ruleName,
         result,
         message,
         index: declarationValueIndex(decl) + offsetValue,
         node: decl
-      });
+      };
     }
 
-    return false;
+    return null;
   };
 
   const specialItems = ["inherit", "initial", "none", "unset"];
@@ -79,6 +80,7 @@ export default async function checkRule(
     // expects to be passed an items array containing tokens
     let itemsToCheck;
     const isRange = propSpec.range !== undefined;
+    const reports = [];
 
     if (
       !isRange ||
@@ -115,8 +117,15 @@ export default async function checkRule(
     }
 
     for (const item of itemsToCheck) {
-      checkItem(decl, item, propSpec, ruleInfo, knownVariables);
+      const report = checkItem(decl, item, propSpec, ruleInfo, knownVariables);
+
+      if (report) {
+        // contains report
+        reports.push(report);
+      }
     }
+
+    return reports;
   };
 
   const knownVariables = {}; // used to contain variable declarations
@@ -167,25 +176,83 @@ export default async function checkRule(
         // variable parameters lists where color is not at a fixed position
 
         const ruleInfo = await getRuleInfo(options);
+        const itemsToCheck =
+          tokenizeValue.type === TOKEN_TYPES.LIST
+            ? tokenizedValue.items
+            : [tokenizedValue];
 
-        if (tokenizedValue.type === TOKEN_TYPES.LIST) {
-          for (const listItem of tokenizedValue.items) {
-            checkItems(
-              listItem.items,
-              decl,
-              propSpec,
-              ruleInfo,
-              knownVariables
-            );
-          }
-        } else {
-          checkItems(
-            tokenizedValue.items,
+        const reports = [];
+
+        for (const itemToCheck of itemsToCheck) {
+          const newReports = checkItems(
+            itemToCheck.items,
             decl,
             propSpec,
             ruleInfo,
             knownVariables
           );
+
+          if (newReports?.length > 0) {
+            reports.push(...newReports);
+          }
+        }
+
+        if (reports.length > 0) {
+          let fixed = false;
+
+          if (context && context.fix && ruleInfo.fixes) {
+            let workingValue = decl.value;
+
+            // try to fix
+            ruleInfo.fixes.forEach((fix) => {
+              if (typeof fix.replacement === "function") {
+                workingValue = fix.replacement(workingValue, fix.target);
+              } else {
+                workingValue = workingValue.replaceAll(
+                  fix.target,
+                  fix.replacement
+                );
+              }
+            });
+
+            const reportsFix = [];
+
+            if (workingValue !== decl.value) {
+              // test new value
+              const tokenizedValueFix = tokenizeValue(workingValue);
+              const itemsToCheckFix =
+                tokenizedValueFix.type === TOKEN_TYPES.LIST
+                  ? tokenizedValueFix.items
+                  : [tokenizedValueFix];
+
+              for (const itemToCheckFix of itemsToCheckFix) {
+                const newReports = checkItems(
+                  itemToCheckFix.items,
+                  decl,
+                  propSpec,
+                  ruleInfo,
+                  knownVariables
+                );
+
+                if (newReports?.length > 0) {
+                  // use original reports
+                  reportsFix.push(...newReports);
+                }
+              }
+            }
+
+            if (reportsFix.length === 0) {
+              fixed = true;
+              decl.value = workingValue;
+            }
+          }
+
+          if (!fixed) {
+            // always report original warnings not those based on fix
+            reports.forEach((report) => {
+              utils.report(report);
+            });
+          }
         }
       }
     }
