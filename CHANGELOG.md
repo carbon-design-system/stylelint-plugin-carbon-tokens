@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0-beta.8
+
+- feat: Layout automatic fixes see [./src/rules/layout-token-use/README.md]
+
 ## 2.0.0-beta.7
 
 - fix: mini-unit and carbon--mini-unit function use in v10
