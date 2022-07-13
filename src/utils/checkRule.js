@@ -177,7 +177,8 @@ export default async function checkRule(
 
         const ruleInfo = await getRuleInfo(options);
         const itemsToCheck =
-          tokenizeValue.type === TOKEN_TYPES.LIST
+          // eslint-disable-next-line eqeqeq
+          tokenizedValue.type == TOKEN_TYPES.LIST
             ? tokenizedValue.items
             : [tokenizedValue];
 

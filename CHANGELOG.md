@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0-beta.9
+
+- fix: Fix processing of comma separated values.
+
 ## 2.0.0-beta.8
 
 - feat: Layout automatic fixes see [./src/rules/layout-token-use/README.md]
