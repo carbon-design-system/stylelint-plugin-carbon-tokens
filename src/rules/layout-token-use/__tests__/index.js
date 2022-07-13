@@ -224,6 +224,182 @@ testRule(rule, {
 testRule(rule, {
   ruleName,
   customSyntax: "postcss-scss",
+  fix: true,
+  config: [
+    true,
+    {
+      acceptContainerTokens: true,
+      acceptFluidSpacingTokens: true,
+      acceptIconSizeTokens: true
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { left: $carbon--layout-04; }`,
+      fixed: `.foo { left: $spacing-09; }`,
+      description: `v11 reject 'layout' in favor of 'spacing'`
+    },
+    {
+      code: `.foo { left: $carbon--spacing-04; }`,
+      fixed: `.foo { left: $spacing-04; }`,
+      description: `v11 reject 'carbon--' prefix for spacing.`
+    },
+    {
+      code: `.foo { left: $carbon--icon-size-02; }`,
+      fixed: `.foo { left: $icon-size-02; }`,
+      description: `v11 reject 'carbon--' prefix for icon-size.`
+    },
+    {
+      code: `.foo { left: $carbon--fluid-spacing-04; }`,
+      fixed: `.foo { left: $fluid-spacing-04; }`,
+      description: `v11 reject 'carbon--' prefix for fluid-spacing.`
+    },
+    {
+      code: `.foo { left: $carbon--container-04; }`,
+      fixed: `.foo { left: $container-04; }`,
+      description: `v11 reject 'carbon--' prefix for container.`
+    },
+    {
+      code: `.foo { left: $carbon--size-small; }`,
+      fixed: `.foo { left: $size-small; }`,
+      description: `v11 reject 'carbon--' prefix for size.`
+    },
+    {
+      code: `.foo { left: 0.125rem; }`,
+      fixed: `.foo { left: $spacing-01; }`,
+      description: `Reject 0.125rem in favour of $spacing-01.`
+    },
+    {
+      code: `.foo { left: 2px; }`,
+      fixed: `.foo { left: $spacing-01; }`,
+      description: `Reject 2px in favour of $spacing-01.`
+    },
+    {
+      code: `.foo { left: 0.25rem; }`,
+      fixed: `.foo { left: $spacing-02; }`,
+      description: `Reject 0.25rem in favour of $spacing-02.`
+    },
+    {
+      code: `.foo { left: 4px; }`,
+      fixed: `.foo { left: $spacing-02; }`,
+      description: `Reject 4px in favour of $spacing-02.`
+    },
+    {
+      code: `.foo { left: 0.5rem; }`,
+      fixed: `.foo { left: $spacing-03; }`,
+      description: `Reject 0.5rem in favour of $spacing-03.`
+    },
+    {
+      code: `.foo { left: 8px; }`,
+      fixed: `.foo { left: $spacing-03; }`,
+      description: `Reject 8px in favour of $spacing-03.`
+    },
+    {
+      code: `.foo { left: 0.75rem; }`,
+      fixed: `.foo { left: $spacing-04; }`,
+      description: `Reject 0.75rem in favour of $spacing-04.`
+    },
+    {
+      code: `.foo { left: 12px; }`,
+      fixed: `.foo { left: $spacing-04; }`,
+      description: `Reject 12px in favour of $spacing-04.`
+    },
+    {
+      code: `.foo { left: 1rem; }`,
+      fixed: `.foo { left: $spacing-05; }`,
+      description: `Reject 1rem in favour of $spacing-05.`
+    },
+    {
+      code: `.foo { left: 16px; }`,
+      fixed: `.foo { left: $spacing-05; }`,
+      description: `Reject 16px in favour of $spacing-05.`
+    },
+    {
+      code: `.foo { left: 1.5rem; }`,
+      fixed: `.foo { left: $spacing-06; }`,
+      description: `Reject 1.5rem in favour of $spacing-06.`
+    },
+    {
+      code: `.foo { left: 24px; }`,
+      fixed: `.foo { left: $spacing-06; }`,
+      description: `Reject 24px in favour of $spacing-06.`
+    },
+    {
+      code: `.foo { left: 2rem; }`,
+      fixed: `.foo { left: $spacing-07; }`,
+      description: `Reject 2rem in favour of $spacing-07.`
+    },
+    {
+      code: `.foo { left: 32px; }`,
+      fixed: `.foo { left: $spacing-07; }`,
+      description: `Reject 32px in favour of $spacing-07.`
+    },
+    {
+      code: `.foo { left: 2.5rem; }`,
+      fixed: `.foo { left: $spacing-08; }`,
+      description: `Reject 2.5rem in favour of $spacing-08.`
+    },
+    {
+      code: `.foo { left: 40px; }`,
+      fixed: `.foo { left: $spacing-08; }`,
+      description: `Reject 40px in favour of $spacing-08.`
+    },
+    {
+      code: `.foo { left: 3rem; }`,
+      fixed: `.foo { left: $spacing-09; }`,
+      description: `Reject 3rem in favour of $spacing-09.`
+    },
+    {
+      code: `.foo { left: 48px; }`,
+      fixed: `.foo { left: $spacing-09; }`,
+      description: `Reject 48px in favour of $spacing-09.`
+    },
+    {
+      code: `.foo { left: 4rem; }`,
+      fixed: `.foo { left: $spacing-10; }`,
+      description: `Reject 4rem in favour of $spacing-10.`
+    },
+    {
+      code: `.foo { left: 64px; }`,
+      fixed: `.foo { left: $spacing-10; }`,
+      description: `Reject 64px in favour of $spacing-10.`
+    },
+    {
+      code: `.foo { left: 5rem; }`,
+      fixed: `.foo { left: $spacing-11; }`,
+      description: `Reject 5rem in favour of $spacing-11.`
+    },
+    {
+      code: `.foo { left: 80px; }`,
+      fixed: `.foo { left: $spacing-11; }`,
+      description: `Reject 80px in favour of $spacing-11.`
+    },
+    {
+      code: `.foo { left: 6rem; }`,
+      fixed: `.foo { left: $spacing-12; }`,
+      description: `Reject 6rem in favour of $spacing-12.`
+    },
+    {
+      code: `.foo { left: 96px; }`,
+      fixed: `.foo { left: $spacing-12; }`,
+      description: `Reject 96px in favour of $spacing-12.`
+    },
+    {
+      code: `.foo { left: 10rem; }`,
+      fixed: `.foo { left: $spacing-13; }`,
+      description: `Reject 10rem in favour of $spacing-13.`
+    },
+    {
+      code: `.foo { left: 160px; }`,
+      fixed: `.foo { left: $spacing-13; }`,
+      description: `Reject 160px in favour of $spacing-13.`
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  customSyntax: "postcss-scss",
   config: [
     true,
     { acceptCarbonMiniUnitsFunction: true, testOnlyTarget: "v10" }
