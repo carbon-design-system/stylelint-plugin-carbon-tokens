@@ -39,7 +39,7 @@
 
 - fix: Temporarily fudge theme token list adding button category manually
 - feat: Read Carbon version from package.json
-- chore: Change `target` option to `testOnlyTarget`
+- chore: Change `target` option to `testOnlyVersion`
 
 ## 2.0.0-beta.1
 

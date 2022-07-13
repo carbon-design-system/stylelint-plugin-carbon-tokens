@@ -206,13 +206,18 @@ export default async function checkRule(
 
             // try to fix
             ruleInfo.fixes.forEach((fix) => {
-              if (typeof fix.replacement === "function") {
-                workingValue = fix.replacement(workingValue, fix.target);
-              } else {
-                workingValue = workingValue.replaceAll(
-                  fix.target,
-                  fix.replacement
-                );
+              if (
+                fix.version === undefined ||
+                ruleInfo.version.startsWith(fix.version)
+              ) {
+                if (typeof fix.replacement === "function") {
+                  workingValue = fix.replacement(workingValue, fix.target);
+                } else {
+                  workingValue = workingValue.replaceAll(
+                    fix.target,
+                    fix.replacement
+                  );
+                }
               }
             });
 

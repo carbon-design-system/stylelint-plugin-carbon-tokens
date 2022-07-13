@@ -29,7 +29,7 @@ const defaultOptions = {
   acceptCarbonTypeScaleFunction: false, // permit use of carbon type scale function
   acceptCarbonFontFamilyFunction: false, // permit use of carbon font family function
   acceptScopes: ["type"],
-  testOnlyTarget: undefined
+  testOnlyVersion: undefined
 };
 
 export default function rule(primaryOptions, secondaryOptions, context) {
@@ -54,8 +54,8 @@ export default function rule(primaryOptions, secondaryOptions, context) {
             val === undefined || typeof val === "boolean",
           acceptCarbonFontFamilyFunction: (val) =>
             val === undefined || typeof val === "boolean",
-          testOnlyTarget: (val) =>
-            val === undefined || ["v10", "v11"].includes(val)
+          testOnlyVersion: (val) =>
+            val === undefined || ["10", "v11"].includes(val)
         },
         optional: true
       }

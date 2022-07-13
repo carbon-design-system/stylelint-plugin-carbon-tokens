@@ -120,7 +120,7 @@ testRule(rule, {
     true,
     {
       acceptCarbonTypeScaleFunction: true,
-      testOnlyTarget: "v10"
+      testOnlyVersion: "10"
     }
   ],
   customSyntax: "postcss-scss",
@@ -138,7 +138,7 @@ testRule(rule, {
     true,
     {
       acceptCarbonFontFamilyFunction: true,
-      testOnlyTarget: "v10"
+      testOnlyVersion: "10"
     }
   ],
   customSyntax: "postcss-scss",
@@ -156,7 +156,7 @@ testRule(rule, {
     true,
     {
       acceptCarbonFontWeightFunction: true,
-      testOnlyTarget: "v10"
+      testOnlyVersion: "10"
     }
   ],
   customSyntax: "postcss-scss",

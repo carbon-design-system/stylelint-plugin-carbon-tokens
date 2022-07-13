@@ -10,20 +10,20 @@ import { fixUsingMap } from "../../../utils/fixUsingMap";
 export const fixes = [
   {
     // remove carbon prefix from spacing tokens
-    version: "v11",
+    version: "11",
     target:
       /\$carbon--((container)|(fluid-spacing)|(icon-size)|(spacing))-([0-9]{2})/g,
     replacement: "$$$1-$6"
   },
   {
     // remove carbon prefix from size tokens
-    version: "v11",
+    version: "11",
     target: /\$carbon--(size[a-zA-Z0-9]*)/g,
     replacement: "$$$1"
   },
   {
     // replace layout tokens with spacing tokens
-    version: "v11",
+    version: "11",
     target: /\$(carbon--)?layout-([0-9]{2})/g,
     replacement: (value, target) => {
       let workingValue = value;

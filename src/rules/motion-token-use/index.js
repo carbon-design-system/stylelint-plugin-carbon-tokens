@@ -33,7 +33,7 @@ const defaultOptions = {
   acceptValues: ["/$0s?/", "/inherit|initial|none|unset/"],
   acceptUndefinedVariables: false,
   acceptScopes: ["motion"],
-  testOnlyTarget: undefined
+  testOnlyVersion: undefined
 };
 
 export default function rule(primaryOptions, secondaryOptions, context) {
@@ -54,8 +54,8 @@ export default function rule(primaryOptions, secondaryOptions, context) {
           acceptScopes: [isValidAcceptValues],
           acceptUndefinedVariables: (val) =>
             val === undefined || typeof val === "boolean",
-          testOnlyTarget: (val) =>
-            val === undefined || ["v10", "v11"].includes(val)
+          testOnlyVersion: (val) =>
+            val === undefined || ["10", "v11"].includes(val)
         },
         optional: true
       }

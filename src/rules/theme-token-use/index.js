@@ -41,7 +41,7 @@ const defaultOptions = {
   acceptIBMColorTokensCarbonV10Only: false,
   acceptUndefinedVariables: false,
   acceptScopes: ["theme"],
-  testOnlyTarget: undefined
+  testOnlyVersion: undefined
 };
 
 export default function rule(primaryOptions, secondaryOptions, context) {
@@ -66,8 +66,8 @@ export default function rule(primaryOptions, secondaryOptions, context) {
             val === undefined || typeof val === "boolean",
           acceptUndefinedVariables: (val) =>
             val === undefined || typeof val === "boolean",
-          testOnlyTarget: (val) =>
-            val === undefined || ["v10", "v11"].includes(val)
+          testOnlyVersion: (val) =>
+            val === undefined || ["10", "v11"].includes(val)
         },
         optional: true
       }

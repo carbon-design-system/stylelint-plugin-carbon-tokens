@@ -15,8 +15,9 @@ export default async function getLayoutInfo(options) {
     iconSizeTokens,
     layoutFunctions,
     layoutTokens,
-    spacingTokens
-  } = await doInit(options.testOnlyTarget);
+    spacingTokens,
+    version
+  } = await doInit(options.testOnlyVersion);
 
   return {
     tokens: [
@@ -64,6 +65,7 @@ export default async function getLayoutInfo(options) {
       },
       { source: "CSS", accept: true, values: ["calc(1)"] }
     ],
-    fixes
+    fixes,
+    version
   };
 }

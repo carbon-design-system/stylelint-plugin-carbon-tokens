@@ -10,10 +10,10 @@
 // const typeTokens = [];
 import { version } from "@carbon/type/package.json";
 
-const doInit = async (testOnlyTarget) => {
+const doInit = async (testOnlyVersion) => {
   // permitted carbon type functions
   // TODO: read this from carbon
-  const isV10 = testOnlyTarget === "v10" || version.startsWith("10");
+  const isV10 = testOnlyVersion === "10" || version.startsWith("10");
 
   const typeFunctions = [
     {

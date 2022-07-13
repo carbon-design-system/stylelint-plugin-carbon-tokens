@@ -15,13 +15,14 @@ import { version } from "@carbon/layout/package.json";
 
 const carbonPrefix = "$carbon--";
 
-const doInit = async (testOnlyTarget) => {
+const doInit = async (testOnlyVersion) => {
   const containerTokens = [];
   const fluidSpacingTokens = [];
   const iconSizeTokens = [];
   const layoutTokens = [];
   const spacingTokens = [];
-  const isV10 = testOnlyTarget === "v10" || version.startsWith("10");
+  const _version = testOnlyVersion || version;
+  const isV10 = _version.startsWith("10");
   let tokens;
 
   if (isV10 && process.env.NODE_ENV === "test") {
@@ -85,7 +86,8 @@ const doInit = async (testOnlyTarget) => {
     iconSizeTokens,
     layoutFunctions: functions,
     layoutTokens,
-    spacingTokens
+    spacingTokens,
+    version: _version
   };
 };
 

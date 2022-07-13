@@ -124,7 +124,7 @@ testRule(rule, {
 // v10 test
 testRule(rule, {
   ruleName,
-  config: [true, { testOnlyTarget: "v10" }],
+  config: [true, { testOnlyVersion: "10" }],
   customSyntax: "postcss-scss",
   accept: [
     {
@@ -315,7 +315,7 @@ testRule(rule, {
   ruleName,
   customSyntax: "postcss-scss",
   // config: true,
-  config: [true, { testOnlyTarget: "v10" }],
+  config: [true, { testOnlyVersion: "10" }],
   accept: [
     {
       code: `.foo { animation-timing-function: motion('standard', 'productive'); }`,
@@ -399,6 +399,45 @@ testRule(rule, {
       code: `.foo { transition: all 700ms; }`,
       fixed: `.foo { transition: all $duration-slow-02; }`,
       description: "v11 reject and fix literal duration matching token '700ms'"
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  customSyntax: "postcss-scss",
+  fix: true,
+  config: [true, { testOnlyVersion: "10" }],
+  reject: [
+    {
+      code: `.foo { transition: all 70ms; }`,
+      fixed: `.foo { transition: all $duration--fast-01; }`,
+      description: "v10 reject and fix literal duration matching token '70ms'"
+    },
+    {
+      code: `.foo { transition: all 110ms; }`,
+      fixed: `.foo { transition: all $duration--fast-02; }`,
+      description: "v10 reject and fix literal duration matching token '110ms'"
+    },
+    {
+      code: `.foo { transition: all 150ms; }`,
+      fixed: `.foo { transition: all $duration--moderate-01; }`,
+      description: "v10 reject and fix literal duration matching token '150ms'"
+    },
+    {
+      code: `.foo { transition: all 240ms; }`,
+      fixed: `.foo { transition: all $duration--moderate-02; }`,
+      description: "v10 reject and fix literal duration matching token '240ms'"
+    },
+    {
+      code: `.foo { transition: all 400ms; }`,
+      fixed: `.foo { transition: all $duration--slow-01; }`,
+      description: "v10 reject and fix literal duration matching token '400ms'"
+    },
+    {
+      code: `.foo { transition: all 700ms; }`,
+      fixed: `.foo { transition: all $duration--slow-02; }`,
+      description: "v10 reject and fix literal duration matching token '700ms'"
     }
   ]
 });
