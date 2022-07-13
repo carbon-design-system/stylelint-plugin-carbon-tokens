@@ -1,3 +1,12 @@
+/**
+ * Copyright IBM Corp. 2022, 2022
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import { fixUsingMap } from "../../../utils/fixUsingMap";
+
 export const fixes = [
   {
     // remove carbon prefix from spacing tokens
@@ -15,10 +24,10 @@ export const fixes = [
   {
     // replace layout tokens with spacing tokens
     version: "v11",
-    target: /(\$carbon--)?layout-([0-9]{2})/g,
+    target: /\$(carbon--)?layout-([0-9]{2})/g,
     replacement: (value, target) => {
-      let match = target.exec(value);
       let workingValue = value;
+      let match = target.exec(workingValue);
 
       while (match) {
         const spacingNumbers = ["05", "06", "07", "09", "10", "12", "13"];
@@ -41,8 +50,8 @@ export const fixes = [
   {
     // replace pixel or rem values with spacing tokens
     target: /[0-9.]+(px|rem)/g,
-    replacement: (value) => {
-      const spacingMap = {
+    replacement: (value, target) => {
+      return fixUsingMap(value, target, {
         "0.125rem": "$spacing-01",
         "2px": "$spacing-01",
         "0.25rem": "$spacing-02",
@@ -69,15 +78,7 @@ export const fixes = [
         "96px": "$spacing-12",
         "10rem": "$spacing-13",
         "160px": "$spacing-13"
-      };
-      const newValue = spacingMap[value];
-
-      if (newValue) {
-        return newValue;
-      }
-
-      // no replacement found
-      return value;
+      });
     }
   }
 ];

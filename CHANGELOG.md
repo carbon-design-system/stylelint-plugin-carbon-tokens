@@ -1,5 +1,9 @@
 # Changelog
 
+- fix: auto fix for `$layout--nn` in v11 now works.
+- fix: multi value layout e.g. padding margin
+- feat: add motion fixes
+
 ## 2.0.0-beta.9
 
 - fix: Fix processing of comma separated values.

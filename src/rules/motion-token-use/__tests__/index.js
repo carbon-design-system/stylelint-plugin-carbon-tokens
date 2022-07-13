@@ -328,3 +328,77 @@ testRule(rule, {
   ],
   reject: []
 });
+
+testRule(rule, {
+  ruleName,
+  customSyntax: "postcss-scss",
+  fix: true,
+  config: true,
+  reject: [
+    {
+      code: `.foo { transition-duration: $duration--fast-01; }`,
+      fixed: `.foo { transition-duration: $duration-fast-01; }`,
+      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p motion tokens in transition-duration'`
+    },
+    {
+      code: `.foo { transition: all $duration--fast-01; }`,
+      fixed: `.foo { transition: all $duration-fast-01; }`,
+      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p fast motion tokens in transition'`
+    },
+    {
+      code: `.foo { transition: all $duration--fast-02; }`,
+      fixed: `.foo { transition: all $duration-fast-02; }`,
+      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p fast motion tokens in transition'`
+    },
+    {
+      code: `.foo { transition: all $duration--moderate-01; }`,
+      fixed: `.foo { transition: all $duration-moderate-01; }`,
+      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p moderate-01 motion tokens in transition'`
+    },
+    {
+      code: `.foo { transition: all $duration--moderate-02; }`,
+      fixed: `.foo { transition: all $duration-moderate-02; }`,
+      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p moderate-02 motion tokens in transition'`
+    },
+    {
+      code: `.foo { transition: all $duration--slow-01; }`,
+      fixed: `.foo { transition: all $duration-slow-01; }`,
+      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p slow-01 motion tokens in transition'`
+    },
+    {
+      code: `.foo { transition: all $duration--slow-02; }`,
+      fixed: `.foo { transition: all $duration-slow-02; }`,
+      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p slow-02 motion tokens in transition'`
+    },
+    {
+      code: `.foo { transition: all 70ms; }`,
+      fixed: `.foo { transition: all $duration-fast-01; }`,
+      description: "v11 reject and fix literal duration matching token '70ms'"
+    },
+    {
+      code: `.foo { transition: all 110ms; }`,
+      fixed: `.foo { transition: all $duration-fast-02; }`,
+      description: "v11 reject and fix literal duration matching token '110ms'"
+    },
+    {
+      code: `.foo { transition: all 150ms; }`,
+      fixed: `.foo { transition: all $duration-moderate-01; }`,
+      description: "v11 reject and fix literal duration matching token '150ms'"
+    },
+    {
+      code: `.foo { transition: all 240ms; }`,
+      fixed: `.foo { transition: all $duration-moderate-02; }`,
+      description: "v11 reject and fix literal duration matching token '240ms'"
+    },
+    {
+      code: `.foo { transition: all 400ms; }`,
+      fixed: `.foo { transition: all $duration-slow-01; }`,
+      description: "v11 reject and fix literal duration matching token '400ms'"
+    },
+    {
+      code: `.foo { transition: all 700ms; }`,
+      fixed: `.foo { transition: all $duration-slow-02; }`,
+      description: "v11 reject and fix literal duration matching token '700ms'"
+    }
+  ]
+});

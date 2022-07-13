@@ -6,6 +6,7 @@
  */
 
 import { doInit } from "./initMotionTokens";
+import { fixes } from "./fixes";
 
 export default async function getMotionInfo(options) {
   const { motionTokens, motionFunctions } = await doInit(
@@ -26,6 +27,7 @@ export default async function getMotionInfo(options) {
         accept: true,
         values: motionFunctions
       }
-    ]
+    ],
+    fixes
   };
 }
