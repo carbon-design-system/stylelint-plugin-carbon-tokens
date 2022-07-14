@@ -397,7 +397,17 @@ testRule(rule, {
     {
       code: `.foo { margin: 160px 10rem 4px 2rem; }`,
       fixed: `.foo { margin: $spacing-13 $spacing-13 $spacing-02 $spacing-07; }`,
-      description: `Reject multiple literal sizes and fix matches.`
+      description: `Reject and fix multiple literal sizes and fix matches.`
+    },
+    {
+      code: `.foo { margin: 160px $carbon--spacing-13 4px 2rem; }`,
+      fixed: `.foo { margin: $spacing-13 $spacing-13 $spacing-02 $spacing-07; }`,
+      description: `Reject and fix different cases.`
+    },
+    {
+      code: `.foo { margin: 160px $not-a-token 4px 2rem; }`,
+      fixed: `.foo { margin: 160px $not-a-token 4px 2rem; }`,
+      description: `Reject partial fixes literal sizes and fix matches.`
     }
   ]
 });

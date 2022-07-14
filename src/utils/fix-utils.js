@@ -19,3 +19,15 @@ export const fixUsingMap = (value, target, map) => {
 
   return workingValue;
 };
+
+export const tryFix = ({ target, replacement, version }, value, ruleInfo) => {
+  if (version === undefined || ruleInfo.version.startsWith(version)) {
+    if (typeof replacement === "function") {
+      return replacement(value, target);
+    }
+
+    return value.replaceAll(target, replacement);
+  }
+
+  return value;
+};

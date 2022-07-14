@@ -15,7 +15,9 @@ import {
   testItem,
   tokenizeValue
 } from "./";
+import { tryFix } from "./fix-utils";
 import { utils } from "stylelint";
+
 // import valueParser from "postcss-value-parser";
 
 export default async function checkRule(
@@ -206,19 +208,7 @@ export default async function checkRule(
 
             // try to fix
             ruleInfo.fixes.forEach((fix) => {
-              if (
-                fix.version === undefined ||
-                ruleInfo.version.startsWith(fix.version)
-              ) {
-                if (typeof fix.replacement === "function") {
-                  workingValue = fix.replacement(workingValue, fix.target);
-                } else {
-                  workingValue = workingValue.replaceAll(
-                    fix.target,
-                    fix.replacement
-                  );
-                }
-              }
+              workingValue = tryFix(fix, workingValue, ruleInfo);
             });
 
             const reportsFix = [];
@@ -241,12 +231,12 @@ export default async function checkRule(
                 );
 
                 if (newReports?.length > 0) {
-                  // use original reports
                   reportsFix.push(...newReports);
                 }
               }
             }
 
+            // If any fixes applied do not create an accepted result then do NOT update decl.value
             if (reportsFix.length === 0) {
               fixed = true;
               decl.value = workingValue;

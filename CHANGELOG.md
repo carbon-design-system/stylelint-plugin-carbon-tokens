@@ -1,5 +1,7 @@
 # Changelog
 
+## 2.0.0-beta.10
+
 - fix: auto fix for `$layout--nn` in v11 now works.
 - fix: multi value layout e.g. padding margin
 - feat: add motion fixes
