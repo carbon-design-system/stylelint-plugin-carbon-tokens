@@ -29,10 +29,10 @@ const defaultOptions = {
   acceptCarbonTypeScaleFunction: false, // permit use of carbon type scale function
   acceptCarbonFontFamilyFunction: false, // permit use of carbon font family function
   acceptScopes: ["type"],
-  testOnlyTarget: undefined
+  testOnlyVersion: undefined
 };
 
-export default function rule(primaryOptions, secondaryOptions) {
+export default function rule(primaryOptions, secondaryOptions, context) {
   const options = parseOptions(secondaryOptions, defaultOptions);
 
   return async (root, result) => {
@@ -54,8 +54,8 @@ export default function rule(primaryOptions, secondaryOptions) {
             val === undefined || typeof val === "boolean",
           acceptCarbonFontFamilyFunction: (val) =>
             val === undefined || typeof val === "boolean",
-          testOnlyTarget: (val) =>
-            val === undefined || ["v10", "v11"].includes(val)
+          testOnlyVersion: (val) =>
+            val === undefined || ["10", "v11"].includes(val)
         },
         optional: true
       }
@@ -66,6 +66,14 @@ export default function rule(primaryOptions, secondaryOptions) {
       return;
     }
 
-    await checkRule(root, result, ruleName, options, messages, getTypeInfo);
+    await checkRule(
+      root,
+      result,
+      ruleName,
+      options,
+      messages,
+      getTypeInfo,
+      context
+    );
   };
 }

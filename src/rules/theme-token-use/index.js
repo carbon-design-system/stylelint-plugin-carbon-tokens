@@ -41,10 +41,10 @@ const defaultOptions = {
   acceptIBMColorTokensCarbonV10Only: false,
   acceptUndefinedVariables: false,
   acceptScopes: ["theme"],
-  testOnlyTarget: undefined
+  testOnlyVersion: undefined
 };
 
-export default function rule(primaryOptions, secondaryOptions) {
+export default function rule(primaryOptions, secondaryOptions, context) {
   const options = parseOptions(secondaryOptions, defaultOptions);
 
   return async (root, result) => {
@@ -66,8 +66,8 @@ export default function rule(primaryOptions, secondaryOptions) {
             val === undefined || typeof val === "boolean",
           acceptUndefinedVariables: (val) =>
             val === undefined || typeof val === "boolean",
-          testOnlyTarget: (val) =>
-            val === undefined || ["v10", "v11"].includes(val)
+          testOnlyVersion: (val) =>
+            val === undefined || ["10", "v11"].includes(val)
         },
         optional: true
       }
@@ -78,6 +78,14 @@ export default function rule(primaryOptions, secondaryOptions) {
       return;
     }
 
-    await checkRule(root, result, ruleName, options, messages, getThemeInfo);
+    await checkRule(
+      root,
+      result,
+      ruleName,
+      options,
+      messages,
+      getThemeInfo,
+      context
+    );
   };
 }

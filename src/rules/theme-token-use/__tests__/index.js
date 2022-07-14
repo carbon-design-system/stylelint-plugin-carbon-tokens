@@ -122,12 +122,12 @@ testRule(rule, {
     {
       code: ".foo { background-color: $carbon--blue-90; }",
       description:
-        "Reject using a carbon color token without v10 testOnlyTarget",
+        "Reject using a carbon color token without v10 testOnlyVersion",
       message: messages.expected
     },
     {
       code: ".foo { background-color: $ibm-color__blue-90; }",
-      description: "Reject using a ibm color token without v10 testOnlyTarget",
+      description: "Reject using a ibm color token without v10 testOnlyVersion",
       message: messages.expected
     }
   ]
@@ -140,7 +140,7 @@ testRule(rule, {
     true,
     {
       acceptCarbonColorTokens: true,
-      testOnlyTarget: "v10"
+      testOnlyVersion: "10"
     }
   ],
   customSyntax: "postcss-scss",
@@ -170,7 +170,7 @@ testRule(rule, {
     true,
     {
       acceptIBMColorTokensCarbonV10Only: true,
-      testOnlyTarget: "v10"
+      testOnlyVersion: "10"
     }
   ],
   customSyntax: "postcss-scss",
@@ -197,7 +197,7 @@ testRule(rule, {
     true,
     {
       acceptIBMColorTokensCarbonV10Only: true,
-      testOnlyTarget: "v10"
+      testOnlyVersion: "10"
     }
   ],
   customSyntax: "postcss-scss",

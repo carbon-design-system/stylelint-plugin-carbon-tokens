@@ -29,8 +29,8 @@ const missingButtonTokens = [
   "button-tertiary-hover"
 ];
 
-const doInitTheme = async (testOnlyTarget) => {
-  const isV10 = testOnlyTarget === "v10" || version.startsWith("10");
+const doInitTheme = async (testOnlyVersion) => {
+  const isV10 = testOnlyVersion === "10" || version.startsWith("10");
   let layoutTokens;
   let typeTokens;
   let tokens;

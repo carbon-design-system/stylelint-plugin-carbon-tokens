@@ -12,10 +12,10 @@ import { sassColorFunctions } from "./initSassFunctions";
 export default async function getThemeInfo(options) {
   // eslint-disable-next-line
   const { carbonColorTokens, ibmColorTokens } = await doInitColors(
-    options.testOnlyTarget
+    options.testOnlyVersion
   );
   const { themeTokens, themeFunctions } = await doInitTheme(
-    options.testOnlyTarget
+    options.testOnlyVersion
   );
 
   return {

@@ -35,6 +35,7 @@ const defaultOptions = {
   acceptContainerTokens: false,
   acceptIconSizeTokens: false,
   acceptFluidSpacingTokens: false,
+  acceptCarbonMiniUnitsFunction: false // V10 only
 };
 ```
 
@@ -42,6 +43,6 @@ const defaultOptions = {
 
 The automatic fixes for the layout rule are as follows.
 
-- Replace `$carbon--` with `$`
-- Replace `$layout-0x` tokens with `$spacing-0y` tokens of the same size.
+- V11: Replace `$carbon--` with `$`
+- V11: Replace `$layout-0x` tokens with `$spacing-0y` tokens of the same size.
 - Replace pixel and rem sizes that match `$spacing-0y` token.

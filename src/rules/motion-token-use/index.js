@@ -33,10 +33,10 @@ const defaultOptions = {
   acceptValues: ["/$0s?/", "/inherit|initial|none|unset/"],
   acceptUndefinedVariables: false,
   acceptScopes: ["motion"],
-  testOnlyTarget: undefined
+  testOnlyVersion: undefined
 };
 
-export default function rule(primaryOptions, secondaryOptions) {
+export default function rule(primaryOptions, secondaryOptions, context) {
   const options = parseOptions(secondaryOptions, defaultOptions);
 
   return async (root, result) => {
@@ -54,8 +54,8 @@ export default function rule(primaryOptions, secondaryOptions) {
           acceptScopes: [isValidAcceptValues],
           acceptUndefinedVariables: (val) =>
             val === undefined || typeof val === "boolean",
-          testOnlyTarget: (val) =>
-            val === undefined || ["v10", "v11"].includes(val)
+          testOnlyVersion: (val) =>
+            val === undefined || ["10", "v11"].includes(val)
         },
         optional: true
       }
@@ -66,6 +66,14 @@ export default function rule(primaryOptions, secondaryOptions) {
       return;
     }
 
-    await checkRule(root, result, ruleName, options, messages, getMotionInfo);
+    await checkRule(
+      root,
+      result,
+      ruleName,
+      options,
+      messages,
+      getMotionInfo,
+      context
+    );
   };
 }

@@ -15,8 +15,8 @@ import { version } from "@carbon/colors/package.json";
 const carbonColorPrefix = "$carbon--";
 const ibmColorPrefix = "$ibm-color__";
 
-const doInitColors = async (testOnlyTarget) => {
-  const isV10 = testOnlyTarget === "v10" || version.startsWith("10");
+const doInitColors = async (testOnlyVersion) => {
+  const isV10 = testOnlyVersion === "10" || version.startsWith("10");
   let colorTokens;
   const carbonColorTokens = [];
   const ibmColorTokens = []; // deprecated

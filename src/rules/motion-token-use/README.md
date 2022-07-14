@@ -25,3 +25,12 @@ const defaultOptions = {
   acceptUndefinedVariables: false,
 };
 ```
+
+## Fix
+
+The automatic fixes for the layout rule are as follows.
+
+- V11: Replace `$carbon--` with `$`
+- V11: Replace `$duration--` with `$duration-`
+<!-- - V11: Replace `carbon-motion` function with `motion`. -->
+- Replace timing literal match `$duration-0y` or `$duration--0y` token depending on version.

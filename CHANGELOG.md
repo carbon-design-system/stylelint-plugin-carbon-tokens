@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0-beta.10
+
+- fix: auto fix for `$layout--nn` in v11 now works.
+- fix: multi value layout e.g. padding margin
+- feat: add motion fixes
+
 ## 2.0.0-beta.9
 
 - fix: Fix processing of comma separated values.
@@ -35,7 +41,7 @@
 
 - fix: Temporarily fudge theme token list adding button category manually
 - feat: Read Carbon version from package.json
-- chore: Change `target` option to `testOnlyTarget`
+- chore: Change `target` option to `testOnlyVersion`
 
 ## 2.0.0-beta.1
 

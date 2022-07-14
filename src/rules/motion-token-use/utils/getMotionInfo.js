@@ -6,10 +6,11 @@
  */
 
 import { doInit } from "./initMotionTokens";
+import { fixes } from "./fixes";
 
 export default async function getMotionInfo(options) {
-  const { motionTokens, motionFunctions } = await doInit(
-    options.testOnlyTarget
+  const { motionTokens, motionFunctions, version } = await doInit(
+    options.testOnlyVersion
   );
 
   return {
@@ -26,6 +27,8 @@ export default async function getMotionInfo(options) {
         accept: true,
         values: motionFunctions
       }
-    ]
+    ],
+    fixes,
+    version
   };
 }
