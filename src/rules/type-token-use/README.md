@@ -2,8 +2,9 @@
 
 This rule is intended enfoce use of Carbon type tokens, functions, mixins and CSS classes as defined. [https://www.carbondesignsystem.com/guidelines/typography/overview/](https://www.carbondesignsystem.com/guidelines/typography/overview/)
 
-It optionally allows use of carbon--font-weight function.
+Often Carbon fonts are set through the use of mixins, which this linter does not check for.
 
+Carbon recommends using the mixin approach which is why these functions are optional.
 ## Default props
 
 ```js
@@ -17,3 +18,9 @@ const defaultOptions = {
   acceptCarbonFontFamilyFunction: false, // permit use of carbon font family function
 };
 ```
+
+## Fix
+
+The automatic fixes for the layout rule are as follows.
+
+- V11: Remove `carbon--` prefix from function names with e.g. `carbon--font-width`;
