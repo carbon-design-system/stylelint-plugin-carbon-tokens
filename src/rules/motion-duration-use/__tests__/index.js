@@ -219,10 +219,6 @@ testRule(rule, {
     {
       code: `.foo { animation-duration: mo.$duration-fast-01; }`,
       description: "Accept scope 'mo' with acceptScopes setting."
-    },
-    {
-      code: `.foo { animation-duration: motion(mo.$duration-fast-01)}`,
-      description: "Accept scope 'mo' with acceptScopes setting in function.."
     }
   ],
   reject: []
@@ -238,17 +234,8 @@ testRule(rule, {
       description: "Accept scope 'mo' with acceptScopes setting."
     },
     {
-      code: `.foo { animation-duration: motion(mo.$duration-fast-01)}`,
-      description: "Accept scope 'mo' with acceptScopes setting in function."
-    },
-    {
       code: `.foo { animation-duration: motion.$duration-fast-01; }`,
       description: "Accept motion scope with scope setting including default."
-    },
-    {
-      code: `.foo { animation-duration: motion(motion.$duration-fast-01)}`,
-      description:
-        "Accept motion scope in function with scope setting including default."
     }
   ],
   reject: [
@@ -269,19 +256,9 @@ testRule(rule, {
       description: "Accept scope 'mo' with acceptScopes regex setting."
     },
     {
-      code: `.foo { animation-duration: motion(mo.$duration-fast-01)}`,
-      description:
-        "Accept scope 'mo' with acceptScopes regex setting in function.."
-    },
-    {
       code: `.foo { animation-duration: motion.$duration-fast-01; }`,
       description:
         "Accept motion scope with scope regex setting including default."
-    },
-    {
-      code: `.foo { animation-duration: motion(motion.$duration-fast-01)}`,
-      description:
-        "Accept motion scope in function with scope regex setting including default."
     }
   ],
   reject: [
@@ -290,43 +267,6 @@ testRule(rule, {
       description: "Reject scope not included in scope regex setting."
     }
   ]
-});
-
-testRule(rule, {
-  ruleName,
-  customSyntax: "postcss-scss",
-  config: true,
-  accept: [
-    {
-      code: `.foo { animation-timing-function: motion('standard', 'productive'); }`,
-      description: "Accept Carbon motion function."
-    }
-  ],
-  reject: [
-    {
-      code: `.foo { animation-timing-function: : carbon--motion('standard', 'productive');}`,
-      description: "Reject carbon--motion removed in v11.",
-      message: messages.expected
-    }
-  ]
-});
-
-testRule(rule, {
-  ruleName,
-  customSyntax: "postcss-scss",
-  // config: true,
-  config: [true, { testOnlyVersion: "10" }],
-  accept: [
-    {
-      code: `.foo { animation-timing-function: motion('standard', 'productive'); }`,
-      description: "Accept Carbon motion function."
-    },
-    {
-      code: `.foo { animation-timing-function: carbon--motion('standard', 'productive');}`,
-      description: "Accept carbon--motion with carbon 10 switch."
-    }
-  ],
-  reject: []
 });
 
 testRule(rule, {

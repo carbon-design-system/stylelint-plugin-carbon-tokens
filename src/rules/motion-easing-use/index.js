@@ -12,35 +12,27 @@ import {
   namespace,
   parseOptions
 } from "../../utils";
-import { getThemeInfo } from "./utils";
+import { getMotionInfo } from "./utils";
 import { utils } from "stylelint";
 
-export const ruleName = namespace("theme-token-use");
-export const messages = getMessages(ruleName, "theme");
+export const ruleName = namespace("motion-easing-use");
+export const messages = getMessages(ruleName, "motion-dur");
 
 const isValidAcceptValues = isValidOption;
 const isValidIncludeProps = isValidOption;
 
 const defaultOptions = {
-  // include standard color properties
+  // include standard motion properties
   includeProps: [
-    "/color$/",
-    "/shadow$/<-1>",
-    "border<-1>",
-    "outline<-1>",
-    "fill",
-    "stroke"
+    "transition<3>", // only permitted definition order fails otherwise
+    "transition-timing-function",
+    "animation<3>", // only permitted definition order fails otherwise
+    "animation-timing-function"
   ],
-  // Accept transparent, common reset values and 0 on its own
-  acceptValues: [
-    "/inherit|initial|none|unset/",
-    "/^0$/",
-    "/currentColor|transparent/"
-  ],
-  acceptCarbonColorTokens: false,
-  acceptIBMColorTokensCarbonV10Only: false,
+  //  Accept reset values
+  acceptValues: ["/$0s?/", "/inherit|initial|none|unset/"],
   acceptUndefinedVariables: false,
-  acceptScopes: ["theme"],
+  acceptScopes: ["motion"],
   testOnlyVersion: undefined
 };
 
@@ -60,10 +52,6 @@ export default function rule(primaryOptions, secondaryOptions, context) {
           includeProps: [isValidIncludeProps],
           acceptValues: [isValidAcceptValues],
           acceptScopes: [isValidAcceptValues],
-          acceptCarbonColorTokens: (val) =>
-            val === undefined || typeof val === "boolean",
-          acceptIBMColorTokensCarbonV10Only: (val) =>
-            val === undefined || typeof val === "boolean",
           acceptUndefinedVariables: (val) =>
             val === undefined || typeof val === "boolean",
           testOnlyVersion: (val) =>
@@ -84,7 +72,7 @@ export default function rule(primaryOptions, secondaryOptions, context) {
       ruleName,
       options,
       messages,
-      getThemeInfo,
+      getMotionInfo,
       context
     );
   };

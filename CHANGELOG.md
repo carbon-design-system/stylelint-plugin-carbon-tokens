@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.0.0-beta.11
+
+- BREAK: `carbon/motion-token-use` has been renamed to `carbon/motion-duration-use` to allow `carbon/motion-easing-use`
+- Feat: Add `carbon/motion-easing-use` rule and fixes.
+- Fix math before function not parsing.
+
 ## 2.0.0-beta.10
 
 - fix: auto fix for `$layout--nn` in v11 now works.
@@ -50,7 +56,7 @@
 ## 2.0 0-alpha.2
 
 - Add scope support
-- Change acceptUndefinedVariables default to false
+- BREAK: Change acceptUndefinedVariables default to false
 
 ## 2.0 0-alpha.1
 

@@ -8,7 +8,7 @@ It optionally allows use of carbon--font-weight function.
 
 ```js
 const defaultOptions = {
-  // include standard type properites
+  // include standard type properties
   includeProps: ["font", "/^font-*/", "line-height", "letterSpacing"],
   acceptValues: ["/inherit|initial/"],
   acceptsScopes: ["type"],

@@ -33,6 +33,11 @@ npm install stylelint-plugin-carbon-tokens
 yarn add stylelint-plugin-carbon-tokens
 ```
 
+## BREAKING CHANGES from version 1
+
+- `carbon/motion-token-use` has been renamed to `carbon/motion-duration-use`. This was to allow `carbon/motion-easing-use` to be added.
+- `acceptUndefinedVariables` now defaults to false. As a result undefined variables will either need to be passed as `acceptValues` or be disabled.
+
 ## Usage
 
 Add it to your stylelint config `plugins` array.
@@ -55,7 +60,8 @@ modules.exports = {
   rules: {
     //... other rules
     "carbon/layout-token-use": true,
-    "carbon/motion-token-use": [true, { severity: "warning" }],
+    "carbon/motion-duration-use": [true, { severity: "warning" }],
+    "carbon/motion-easing-use": true,
     "carbon/theme-token-use": true,
     "carbon/type-token-use": true,
     //...other rules
@@ -91,9 +97,10 @@ It's good practice to document any linter disables and to tidy up any that are n
 ```js
   rules: {
     // ADDED TO TEST CARBON USE
-    'carbon/layout-token-use': [true, { severity: 'error', acceptUndefinedVariables: false }],
-    'carbon/motion-token-use': [true, { severity: 'error', acceptUndefinedVariables: false }],
-    'carbon/theme-token-use': [true, { severity: 'error', acceptUndefinedVariables: false }],
+    'carbon/layout-token-use': [true, { severity: 'error' }],
+    'carbon/motion-duration-use': [true, { severity: 'error' }],
+    "carbon/motion-easing-use": [true, { severity: 'error'}],
+    'carbon/theme-token-use': [true, { severity: 'error' }],
     'carbon/type-token-use': [
       true,
       {
@@ -111,7 +118,8 @@ It's good practice to document any linter disables and to tidy up any that are n
   rules: {
     // ADDED TO TEST CARBON USE
     'carbon/layout-token-use': [true, { severity: 'error' }],
-    'carbon/motion-token-use': [true, { severity: 'error' }],
+    'carbon/motion-duration-use': [true, { severity: 'error' }],
+    "carbon/motion-easing-use": [true, { severity: 'error'}],
     'carbon/theme-token-use': [true, { severity: 'error' }],
     'carbon/type-token-use': [
       true,
@@ -129,15 +137,17 @@ It's good practice to document any linter disables and to tidy up any that are n
 ```js
   rules: {
     // ADDED TO TEST CARBON USE
-    'carbon/layout-token-use': [true, { severity: 'warning' }],
-    'carbon/motion-token-use': [true, { severity: 'warning' }],
-    'carbon/theme-token-use': [true, { severity: 'warning' }],
+    'carbon/layout-token-use': [true, { severity: 'warning', acceptUndefinedVariables: true  }],
+    'carbon/motion-duration-use': [true, { severity: 'warning', acceptUndefinedVariables: true  }],
+    "carbon/motion-easing-use": [true, { severity: 'warning', acceptUndefinedVariables: true }],
+    'carbon/theme-token-use': [true, { severity: 'warning', acceptUndefinedVariables: true  }],
     'carbon/type-token-use': [
       true,
       {
         severity: 'warning',
         acceptCarbonTypeScaleFunction: true,
         acceptCarbonFontWeightFunction: true,
+        acceptUndefinedVariables: true
       },
     ],
   },
@@ -156,7 +166,8 @@ SCSS `$variables` and CSS `--variable` declared before are checked.
 Each of the rules listed above have secondary options which are documented in the individual rule README.md files along with defaults..
 
 - [Layout token use](./src/rules/layout-token-use/README.md)
-- [Motion token use](./src/rules/motion-token-use/README.md)
+- [Motion duration token use](./src/rules/motion-duration-use/README.md)
+- [Motion easing token use](./src/rules/motion-easing-use/README.md)
 - [Theme token use](./src/rules/theme-token-use/README.md)
 - [Type token use](./src/rules/type-token-use/README.md)
 

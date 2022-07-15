@@ -296,6 +296,10 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
       const matchesFuncSpec = funcSpecs.some((funcSpec) => {
         const parts = funcSpec.split("(");
 
+        if (_item.scope && !checkScope(_item, options)) {
+          return false;
+        }
+
         if (parts.length === 1) {
           // no parameter checks
           return parts[0] === _item.value;

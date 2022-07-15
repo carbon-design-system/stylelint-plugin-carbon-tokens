@@ -6,13 +6,15 @@
  */
 
 import layoutTokenUse from "./layout-token-use";
-import motionTokenUse from "./motion-token-use";
+import motionDurationUse from "./motion-duration-use";
+import motionEasingUse from "./motion-easing-use";
 import themeTokenUse from "./theme-token-use";
 import typeTokenUse from "./type-token-use";
 
 export default {
   "theme-token-use": themeTokenUse,
   "layout-token-use": layoutTokenUse,
-  "motion-token-use": motionTokenUse,
+  "motion-duration-use": motionDurationUse,
+  "motion-easing-use": motionEasingUse,
   "type-token-use": typeTokenUse
 };
