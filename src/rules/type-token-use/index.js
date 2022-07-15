@@ -22,7 +22,7 @@ const isValidAcceptValues = isValidOption;
 const isValidIncludeProps = isValidOption;
 
 const defaultOptions = {
-  // include standard type properites
+  // include standard type properties
   includeProps: ["font", "/^font-*/", "line-height", "letterSpacing"],
   acceptValues: ["/inherit|initial|none|unset/"],
   acceptCarbonFontWeightFunction: false, // permit use of carbon font weight function

@@ -22,7 +22,7 @@ const isValidAcceptValues = isValidOption;
 const isValidIncludeProps = isValidOption;
 
 const defaultOptions = {
-  // include standard layout properites
+  // include standard layout properties
   includeProps: [
     "/^margin$/<1 4>",
     "/^margin-/",

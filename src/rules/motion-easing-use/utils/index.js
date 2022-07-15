@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { doInit } from "./initMotionTokens";
+import { doInit } from "./initMotionEasingTokens";
 import { fixes } from "./fixes";
 
-export default async function getMotionInfo(options) {
+export async function getMotionInfo(options) {
   const { motionTokens, motionFunctions, version } = await doInit(
     options.testOnlyVersion
   );

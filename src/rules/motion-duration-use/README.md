@@ -12,7 +12,7 @@ NOTE: Transition and animation shorthand must conform to expected order
 
 ```js
 const defaultOptions = {
-  // include standard motion properites
+  // include standard motion properties
   includeProps: [
     "transition<2>", // only permitted definition order fails otherwise
     "transition-duration",
@@ -32,5 +32,4 @@ The automatic fixes for the layout rule are as follows.
 
 - V11: Replace `$carbon--` with `$`
 - V11: Replace `$duration--` with `$duration-`
-<!-- - V11: Replace `carbon-motion` function with `motion`. -->
 - Replace timing literal match `$duration-0y` or `$duration--0y` token depending on version.

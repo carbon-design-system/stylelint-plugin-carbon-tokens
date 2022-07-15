@@ -243,6 +243,16 @@ const processTokens = (tokens) => {
         item.isCalc = lastItem.value === "calc";
         item.raw += "(";
         result.raw += "(";
+
+        if (item.type === TOKEN_TYPES.FUNCTION) {
+          // last item may have scope
+          const parts = item.value.split(".");
+
+          if (parts.length === 2) {
+            item.scope = parts[0];
+            item.value = parts[1];
+          }
+        }
       } else {
         item = {
           type: TOKEN_TYPES.BRACKETED_CONTENT,
@@ -362,11 +372,14 @@ const processTokens = (tokens) => {
           } else if (/^#[0-9a-f]*$/.test(token[0])) {
             // color literal
             type = TOKEN_TYPES.COLOR_LITERAL;
-          } else if (/^[A-Z_-]+\.\$/i.test(token[0])) {
+          } else if (/^-?(?:[a-z]+\.)?\$/i.test(token[0])) {
             const parts = token[0].split(".");
 
-            addInfo.scope = parts[0];
-            addInfo.value = parts[1];
+            if (parts.length === 2) {
+              addInfo.scope = parts[0];
+              addInfo.value = parts[1];
+            }
+
             type = TOKEN_TYPES.SCSS_VAR;
           } else if (/^-?\$/.test(token[0])) {
             type = TOKEN_TYPES.SCSS_VAR;

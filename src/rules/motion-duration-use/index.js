@@ -15,14 +15,14 @@ import {
 import { getMotionInfo } from "./utils";
 import { utils } from "stylelint";
 
-export const ruleName = namespace("motion-token-use");
+export const ruleName = namespace("motion-duration-use");
 export const messages = getMessages(ruleName, "motion");
 
 const isValidAcceptValues = isValidOption;
 const isValidIncludeProps = isValidOption;
 
 const defaultOptions = {
-  // include standard motion properites
+  // include standard motion properties
   includeProps: [
     "transition<2>", // only permitted definition order fails otherwise
     "transition-duration",
