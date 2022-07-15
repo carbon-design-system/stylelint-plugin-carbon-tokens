@@ -206,3 +206,38 @@ testRule(rule, {
     }
   ]
 });
+
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptCarbonFontFamilyFunction: true,
+      acceptCarbonFontWeightFunction: true,
+      acceptCarbonTypeScaleFunction: true
+    }
+  ],
+  customSyntax: "postcss-scss",
+  fix: true,
+  accept: [],
+  reject: [
+    {
+      code: ".foo { font-weight: carbon--font-weight('light'); }",
+      fixed: ".foo { font-weight: font-weight('light'); }",
+      description: "Reject v10 Carbon font weight function.",
+      message: messages.expected
+    },
+    {
+      code: ".foo { font-weight: carbon--font-weight('light'); }",
+      fixed: ".foo { font-weight: font-weight('light'); }",
+      description: "Reject v10 Carbon font weight function.",
+      message: messages.expected
+    },
+    {
+      code: ".foo { font-weight: carbon--font-weight('light'); }",
+      fixed: ".foo { font-weight: font-weight('light'); }",
+      description: "Reject v10 Carbon font weight function.",
+      message: messages.expected
+    }
+  ]
+});

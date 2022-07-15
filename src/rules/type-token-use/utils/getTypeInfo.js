@@ -6,9 +6,10 @@
  */
 
 import { doInit } from "./initTypeTokens";
+import { fixes } from "./fixes";
 
 export default async function getTypeInfo(options) {
-  const { typeFunctions } = await doInit(options.testOnlyVersion);
+  const { typeFunctions, version } = await doInit(options.testOnlyVersion);
 
   return {
     // There are no type tokens that are used directly
@@ -28,6 +29,8 @@ export default async function getTypeInfo(options) {
       };
 
       return result;
-    })
+    }),
+    fixes,
+    version
   };
 }

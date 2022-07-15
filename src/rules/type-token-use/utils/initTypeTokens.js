@@ -13,26 +13,12 @@ import { version } from "@carbon/type/package.json";
 const doInit = async (testOnlyVersion) => {
   // permitted carbon type functions
   // TODO: read this from carbon
-  const isV10 = testOnlyVersion === "10" || version.startsWith("10");
-
-  const typeFunctions = [
-    {
-      name: "font-weight",
-      accept: "acceptCarbonFontWeightFunction"
-    },
-    {
-      name: "type-scale",
-      accept: "acceptCarbonTypeScaleFunction"
-    },
-    {
-      name: "font-family",
-      accept: "acceptCarbonFontFamilyFunction"
-    }
-  ];
+  const _version = testOnlyVersion || version;
+  const isV10 = _version.startsWith("10");
+  let typeFunctions;
 
   if (isV10) {
-    // add carbon 10 prefix versions
-    typeFunctions.push(
+    typeFunctions = [
       {
         name: "carbon--font-weight",
         accept: "acceptCarbonFontWeightFunction"
@@ -45,10 +31,25 @@ const doInit = async (testOnlyVersion) => {
         name: "carbon--font-family",
         accept: "acceptCarbonFontFamilyFunction"
       }
-    );
+    ];
+  } else {
+    typeFunctions = [
+      {
+        name: "font-weight",
+        accept: "acceptCarbonFontWeightFunction"
+      },
+      {
+        name: "type-scale",
+        accept: "acceptCarbonTypeScaleFunction"
+      },
+      {
+        name: "font-family",
+        accept: "acceptCarbonFontFamilyFunction"
+      }
+    ];
   }
 
-  return { typeFunctions };
+  return { typeFunctions, version: _version };
 };
 
 export { doInit };
