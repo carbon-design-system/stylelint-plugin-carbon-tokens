@@ -15,9 +15,8 @@ const doInit = async (testOnlyVersion) => {
   const _version = testOnlyVersion || version;
   const isV10 = _version.startsWith("10");
 
-  if (isV10 && process.env.NODE_ENV === "test") {
+  if (isV10) {
     motionFunctions.push("carbon--motion");
-
     motionTokens = baseTokens.map((token) => `$carbon--${token}`);
   } else {
     motionTokens = baseTokens.map((token) => `$${token}`);

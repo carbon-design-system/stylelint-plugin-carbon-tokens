@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.0-beta.13
+
+- Fix use of carbon--motion prefix in v10.
+- Ignore values not specified in multi-part value
+
 ## 2.0.0-beta.12
 
 - Add type fixes

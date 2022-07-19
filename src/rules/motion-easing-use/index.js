@@ -16,7 +16,7 @@ import { getMotionInfo } from "./utils";
 import { utils } from "stylelint";
 
 export const ruleName = namespace("motion-easing-use");
-export const messages = getMessages(ruleName, "motion-dur");
+export const messages = getMessages(ruleName, "motion-easing");
 
 const isValidAcceptValues = isValidOption;
 const isValidIncludeProps = isValidOption;

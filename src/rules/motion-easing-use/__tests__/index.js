@@ -13,6 +13,10 @@ testRule(rule, {
   customSyntax: "postcss-scss",
   accept: [
     {
+      code: ".foo {   transition: background-color $duration-slow-02; }",
+      description: "Accept no easing for transition."
+    },
+    {
       code: ".foo {   transition: background-color $duration-slow-02 $ease-in; }",
       description:
         "Carbon motion easing token settings expected for transition."
@@ -117,18 +121,34 @@ testRule(rule, {
 
 testRule(rule, {
   ruleName,
-  config: [true, { acceptScopes: ["mo"] }],
+  config: [true, { testOnlyVersion: "10" }],
   customSyntax: "postcss-scss",
   accept: [
     {
-      code: ".foo {   transition: background-color $duration-slow-02 mo.$ease-in; }",
-      description:
-        "Expected scope 'mo' motion easing token settings expected for transition."
+      code: ".foo {   transition: background-color $duration-slow-02 carbon--motion(standard, productive); }",
+      description: "Accept carbon--motion function in v10."
     },
     {
-      code: ".foo {   transition: background-color $duration-slow-02 mo.motion(exit, expressive); }",
-      description:
-        "Expected scope 'mo' motion easing function settings expected for transition."
+      code: ".foo { transition-timing-function: carbon--motion($name: standard); }",
+      description: "Accept carbon--motion function in v10 for timing function."
     }
   ]
 });
+
+// testRule(rule, {
+//   ruleName,
+//   config: [true, { acceptScopes: ["mo"] }],
+//   customSyntax: "postcss-scss",
+//   accept: [
+//     {
+//       code: ".foo {   transition: background-color $duration-slow-02 mo.$ease-in; }",
+//       description:
+//         "Expected scope 'mo' motion easing token settings expected for transition."
+//     },
+//     {
+//       code: ".foo {   transition: background-color $duration-slow-02 mo.motion(exit, expressive); }",
+//       description:
+//         "Expected scope 'mo' motion easing function settings expected for transition."
+//     }
+//   ]
+// });
