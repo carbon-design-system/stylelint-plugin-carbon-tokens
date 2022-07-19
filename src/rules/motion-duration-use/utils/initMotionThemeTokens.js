@@ -19,8 +19,6 @@ const doInit = async (testOnlyVersion) => {
   let tokens;
 
   if (isV10 && process.env.NODE_ENV === "test") {
-    motionFunctions.push("carbon--motion");
-
     // eslint-disable-next-line
     const module = await import("@carbon/motion-10");
 
