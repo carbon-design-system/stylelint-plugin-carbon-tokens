@@ -208,7 +208,11 @@ export default async function checkRule(
 
             // try to fix
             ruleInfo.fixes.forEach((fix) => {
-              workingValue = tryFix(fix, workingValue, ruleInfo);
+              workingValue = tryFix(fix, workingValue, {
+                ruleInfo,
+                options,
+                prop: decl.prop
+              });
             });
 
             const reportsFix = [];

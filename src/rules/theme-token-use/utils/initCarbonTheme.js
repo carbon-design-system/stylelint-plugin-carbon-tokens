@@ -30,7 +30,8 @@ const missingButtonTokens = [
 ];
 
 const doInitTheme = async (testOnlyVersion) => {
-  const isV10 = testOnlyVersion === "10" || version.startsWith("10");
+  const _version = testOnlyVersion || version;
+  const isV10 = _version.startsWith("10");
   let layoutTokens;
   let typeTokens;
   let tokens;
@@ -68,7 +69,7 @@ const doInitTheme = async (testOnlyVersion) => {
   // TODO: read this from carbon
   const themeFunctions = ["get-light-value"];
 
-  return { themeTokens, themeFunctions };
+  return { themeTokens, themeFunctions, version: _version };
 };
 
 export { doInitTheme };

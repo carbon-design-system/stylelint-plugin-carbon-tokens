@@ -7,6 +7,7 @@
 
 import { doInitColors } from "./initCarbonColor";
 import { doInitTheme } from "./initCarbonTheme";
+import { fixes } from "./fixes";
 import { sassColorFunctions } from "./initSassFunctions";
 
 export default async function getThemeInfo(options) {
@@ -14,7 +15,7 @@ export default async function getThemeInfo(options) {
   const { carbonColorTokens, ibmColorTokens } = await doInitColors(
     options.testOnlyVersion
   );
-  const { themeTokens, themeFunctions } = await doInitTheme(
+  const { themeTokens, themeFunctions, version } = await doInitTheme(
     options.testOnlyVersion
   );
 
@@ -47,6 +48,8 @@ export default async function getThemeInfo(options) {
         accept: true,
         values: sassColorFunctions
       }
-    ]
+    ],
+    fixes,
+    version
   };
 }

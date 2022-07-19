@@ -28,7 +28,7 @@ const defaultOptions = {
 
 ## Fix
 
-The automatic fixes for the layout rule are as follows.
+The automatic fixes for the motion-duration rule are as follows.
 
 - V11: Replace `$carbon--` with `$`
 - V11: Replace `$duration--` with `$duration-`
