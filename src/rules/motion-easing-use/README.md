@@ -28,7 +28,7 @@ const defaultOptions = {
 
 ## Fix
 
-The automatic fixes for the layout rule are as follows.
+The automatic fixes for the motion-easing rule are as follows.
 
 - V11: Replace `$carbon--` with `$`
 - V11: Replace `carbon-motion` function with `motion`.

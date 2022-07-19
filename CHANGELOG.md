@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.0.0-beta.12
+
+- Add type fixes
+- Add theme fixes
+
 ## 2.0.0-beta.11
 
 - BREAK: `carbon/motion-token-use` has been renamed to `carbon/motion-duration-use` to allow `carbon/motion-easing-use`

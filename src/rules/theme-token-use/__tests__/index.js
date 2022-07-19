@@ -506,3 +506,80 @@ testRule(rule, {
     }
   ]
 });
+
+// test v10 to 11 updated fixes
+testRule(rule, {
+  ruleName,
+  config: true,
+  customSyntax: "postcss-scss",
+  fix: true,
+  reject: [
+    {
+      code: ".foo { color: $active-danger; }",
+      description: "Reject v10 theme token $active-danger",
+      fixed: ".foo { color: $button-danger-active; }"
+    },
+    {
+      code: ".foo { color: $danger; }",
+      description: "Reject v10 theme token $danger",
+      fixed: ".foo { color: $button-danger-primary; }"
+    },
+    {
+      code: ".foo { color: $hover-row; }",
+      description: "Reject v10 theme token $hover-row",
+      fixed: ".foo { color: $layer-hover-01; }"
+    },
+    {
+      code: ".foo { border-color: $decorative-01; }",
+      description: "Reject v10 theme token $decorative-01",
+      fixed: ".foo { border-color: $border-subtle-02; }"
+    },
+    {
+      code: ".foo { color: $active-ui; }",
+      description: "Reject v10 theme token $active-ui and fix color",
+      fixed: ".foo { color: $layer-active-01; }"
+    },
+    {
+      code: ".foo { background-color: $active-ui; }",
+      description: "Reject v10 theme token $active-ui and fix background-color",
+      fixed: ".foo { background-color: $background-active; }"
+    },
+    {
+      code: ".foo { color: $disabled-02; }",
+      description: "Reject v10 theme token $disabled-02 and fix color",
+      fixed: ".foo { color: $text-disabled; }"
+    },
+    {
+      code: ".foo { box-shadow: 2px 2px 10px 10px $disabled-02; }",
+      description: "Reject v10 theme token $disabled-02 and fix box-shadow",
+      fixed: ".foo { box-shadow: 2px 2px 10px 10px $border-disabled; }"
+    },
+    {
+      code: ".foo { border: 2px 2px 10px 10px solid $disabled-02; }",
+      description: "Reject v10 theme token $disabled-02 and fix border",
+      fixed: ".foo { border: 2px 2px 10px 10px solid $border-disabled; }"
+    },
+    {
+      code: ".foo { outline: 2px $disabled-02; }",
+      description: "Reject v10 theme token $disabled-02 and fix outline",
+      fixed: ".foo { outline: 2px $border-disabled; }"
+    }
+  ]
+});
+
+// test v10 to 11 updated fixes preferring context
+// NOTE: Does not appear to currently be exported or well defined
+// ^^^^^
+// testRule(rule, {
+//   ruleName,
+//   config: [true, { preferContextFixes: true }],
+//   customSyntax: "postcss-scss",
+//   fix: true,
+//   reject: [
+//     {
+//       code: ".foo { border-color: $decorative-01; }",
+//       description: "Reject v10 theme token $decorative-01 preferring context",
+//       fixed: ".foo { border-color: $border-subtle; }"
+//     }
+//   ]
+// });

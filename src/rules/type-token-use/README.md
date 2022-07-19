@@ -21,6 +21,6 @@ const defaultOptions = {
 
 ## Fix
 
-The automatic fixes for the layout rule are as follows.
+The automatic fixes for the type rule are as follows.
 
 - V11: Remove `carbon--` prefix from function names with e.g. `carbon--font-width`;
