@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -24,7 +24,7 @@ describe("tokenizeValue", () => {
   it("Handles empty input", () => {
     expect(tokenizeValue("")).toEqual({
       items: [],
-      raw: "",
+      raw: ""
     });
   });
 
@@ -34,10 +34,10 @@ describe("tokenizeValue", () => {
         {
           type: "Quoted literal",
           value: "'a value'",
-          raw: "'a value'",
-        },
+          raw: "'a value'"
+        }
       ],
-      raw: "'a value'",
+      raw: "'a value'"
     });
   });
 
@@ -47,10 +47,10 @@ describe("tokenizeValue", () => {
         {
           type: "Quoted literal",
           value: '"a value"',
-          raw: '"a value"',
-        },
+          raw: '"a value"'
+        }
       ],
-      raw: '"a value"',
+      raw: '"a value"'
     });
   });
 
@@ -60,10 +60,10 @@ describe("tokenizeValue", () => {
         {
           type: "scss variable",
           value: "$test",
-          raw: "$test",
-        },
+          raw: "$test"
+        }
       ],
-      raw: "$test",
+      raw: "$test"
     });
   });
 
@@ -75,16 +75,16 @@ describe("tokenizeValue", () => {
             {
               type: "Text Literal",
               value: "--test",
-              raw: "--test",
-            },
+              raw: "--test"
+            }
           ],
           type: "function",
           value: "var",
           isCalc: false,
-          raw: "var(--test)",
-        },
+          raw: "var(--test)"
+        }
       ],
-      raw: "var(--test)",
+      raw: "var(--test)"
     });
   });
 
@@ -101,10 +101,10 @@ describe("tokenizeValue", () => {
                     {
                       type: "Quoted literal",
                       value: "'test'",
-                      raw: "'test'",
-                    },
+                      raw: "'test'"
+                    }
                   ],
-                  raw: "'test'",
+                  raw: "'test'"
                 },
                 {
                   type: "Item in list",
@@ -112,23 +112,23 @@ describe("tokenizeValue", () => {
                     {
                       type: "Quoted literal",
                       value: "'a value'",
-                      raw: "'a value'",
-                    },
+                      raw: "'a value'"
+                    }
                   ],
-                  raw: "'a value'",
-                },
+                  raw: "'a value'"
+                }
               ],
               type: "Comma separated list",
-              raw: "'test', 'a value'",
-            },
+              raw: "'test', 'a value'"
+            }
           ],
           type: "function",
           value: "func",
           isCalc: false,
-          raw: "func('test', 'a value')",
-        },
+          raw: "func('test', 'a value')"
+        }
       ],
-      raw: "func('test', 'a value')",
+      raw: "func('test', 'a value')"
     });
   });
 
@@ -143,31 +143,31 @@ describe("tokenizeValue", () => {
                   type: "Numeric literal",
                   value: "100",
                   units: "vw",
-                  raw: "100vw",
+                  raw: "100vw"
                 },
                 {
                   type: "operator",
                   value: "-",
-                  raw: "-",
+                  raw: "-"
                 },
                 {
                   type: "Numeric literal",
                   value: "20",
                   units: "px",
-                  raw: "20px",
-                },
+                  raw: "20px"
+                }
               ],
               type: "Math",
-              raw: "100vw - 20px",
-            },
+              raw: "100vw - 20px"
+            }
           ],
           type: "function",
           value: "calc",
           isCalc: true,
-          raw: "calc(100vw - 20px)",
-        },
+          raw: "calc(100vw - 20px)"
+        }
       ],
-      raw: "calc(100vw - 20px)",
+      raw: "calc(100vw - 20px)"
     });
   });
 
@@ -180,25 +180,79 @@ describe("tokenizeValue", () => {
               type: "Numeric literal",
               value: "100",
               units: "vw",
-              raw: "100vw",
+              raw: "100vw"
             },
             {
               type: "operator",
               value: "-",
-              raw: "-",
+              raw: "-"
             },
             {
               type: "Numeric literal",
               value: "20",
               units: "px",
-              raw: "20px",
-            },
+              raw: "20px"
+            }
           ],
           type: "Math",
-          raw: "100vw - 20px",
-        },
+          raw: "100vw - 20px"
+        }
       ],
-      raw: "100vw - 20px",
+      raw: "100vw - 20px"
+    });
+
+    expect(tokenizeValue("-1 * #{$test}")).toMatchObject({
+      items: [
+        {
+          items: [
+            {
+              raw: "-1",
+              type: "Numeric literal",
+              value: "-1"
+            },
+            {
+              value: "*",
+              type: "operator",
+              raw: "*"
+            },
+            {
+              raw: "#{$test}",
+              type: "Unknown",
+              value: "#{$test}"
+            }
+          ],
+          type: "Math",
+          raw: "-1 * #{$test}"
+        }
+      ],
+      raw: "-1 * #{$test}"
+    });
+
+    expect(tokenizeValue("-1 * $test")).toMatchObject({
+      items: [
+        {
+          items: [
+            {
+              raw: "-1",
+              type: "Numeric literal",
+              value: "-1"
+            },
+            {
+              value: "*",
+              type: "operator",
+              raw: "*"
+            },
+            {
+              raw: "$test",
+              type: "scss variable",
+              value: "$test"
+            }
+          ],
+          type: "Math",
+          raw: "-1 * $test"
+        }
+      ],
+      raw: "-1 * $test"
     });
 
     expect(tokenizeValue("- 10px")).toEqual({
@@ -207,10 +261,10 @@ describe("tokenizeValue", () => {
           raw: "- 10px",
           type: "Numeric literal",
           units: "px",
-          value: "- 10",
-        },
+          value: "- 10"
+        }
       ],
-      raw: "- 10px",
+      raw: "- 10px"
     });
 
     expect(tokenizeValue("- - + - 10%")).toEqual({
@@ -219,10 +273,10 @@ describe("tokenizeValue", () => {
           raw: "- - + - 10%",
           type: "Numeric literal",
           units: "%",
-          value: "- - + - 10",
-        },
+          value: "- - + - 10"
+        }
       ],
-      raw: "- - + - 10%",
+      raw: "- - + - 10%"
     });
 
     expect(tokenizeValue("+ 10px")).toEqual({
@@ -231,24 +285,24 @@ describe("tokenizeValue", () => {
           raw: "+ 10px",
           type: "Numeric literal",
           units: "px",
-          value: "+ 10",
-        },
+          value: "+ 10"
+        }
       ],
-      raw: "+ 10px",
+      raw: "+ 10px"
     });
 
     expect(tokenizeValue("* 10px")).toEqual({
       items: [],
       warning:
         "It looks like you are starting some math with '*' without anything to apply it to.",
-      raw: "* 10px",
+      raw: "* 10px"
     });
 
     expect(tokenizeValue("/ 10px")).toEqual({
       items: [],
       warning:
         "It looks like you are starting some math with '/' without anything to apply it to.",
-      raw: "/ 10px",
+      raw: "/ 10px"
     });
   });
 
@@ -257,9 +311,9 @@ describe("tokenizeValue", () => {
       items: [
         { type: "scss variable", value: "$a", raw: "$a" },
         { type: "scss variable", value: "$b", raw: "$b" },
-        { type: "scss variable", value: "$c", raw: "$c" },
+        { type: "scss variable", value: "$c", raw: "$c" }
       ],
-      raw: "$a $b $c",
+      raw: "$a $b $c"
     });
   });
 
@@ -269,21 +323,21 @@ describe("tokenizeValue", () => {
         {
           type: "Item in list",
           items: [{ type: "scss variable", value: "$a", raw: "$a" }],
-          raw: "$a",
+          raw: "$a"
         },
         {
           type: "Item in list",
           items: [{ type: "scss variable", value: "$b", raw: "$b" }],
-          raw: "$b",
+          raw: "$b"
         },
         {
           type: "Item in list",
           items: [{ type: "scss variable", value: "$c", raw: "$c" }],
-          raw: "$c",
-        },
+          raw: "$c"
+        }
       ],
       raw: "$a, $b, $c", // spaces added by parse after comma
-      type: "Comma separated list",
+      type: "Comma separated list"
     });
   });
 
@@ -293,25 +347,25 @@ describe("tokenizeValue", () => {
         {
           value: "'",
           type: "Quoted literal",
-          raw: "'",
+          raw: "'"
         },
         {
           value: "unterminated",
           type: "Text Literal",
-          raw: "unterminated",
+          raw: "unterminated"
         },
         {
           value: "quoted",
           type: "Text Literal",
-          raw: "quoted",
+          raw: "quoted"
         },
         {
           value: "literal",
           type: "Text Literal",
-          raw: "literal",
-        },
+          raw: "literal"
+        }
       ],
-      raw: "'unterminated quoted literal",
+      raw: "'unterminated quoted literal"
     });
   });
 
@@ -321,18 +375,32 @@ describe("tokenizeValue", () => {
         {
           raw: "#{$i-am-not-easily-knowable}",
           type: "Unknown",
-          value: "#{$i-am-not-easily-knowable}",
-        },
+          value: "#{$i-am-not-easily-knowable}"
+        }
       ],
-      raw: "#{$i-am-not-easily-knowable}",
+      raw: "#{$i-am-not-easily-knowable}"
     });
   });
 
-  it("Handles content split accross lines", () => {
+  it("Handles content split across lines", () => {
     expect(
       tokenizeValue(`url(
   "/graphics/settings/checkMark.svg"
 )`)
     ).toMatchObject({});
+  });
+
+  it("can parse scope", () => {
+    expect(tokenizeValue("scope.$test")).toEqual({
+      items: [
+        {
+          type: "scss variable",
+          value: "$test",
+          scope: "scope",
+          raw: "scope.$test"
+        }
+      ],
+      raw: "scope.$test"
+    });
   });
 });

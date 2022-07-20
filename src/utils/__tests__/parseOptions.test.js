@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -12,8 +12,8 @@ describe("parseOptions", () => {
     includeProps: ["1", "3", "4"],
     acceptValues: ["1", "5", "6"],
     acceptCarbonColorTokens: false,
-    acceptIBMColorTokens: false,
-    acceptUndefinedVariables: true,
+    acceptIBMColorTokensCarbonV10Only: false,
+    acceptUndefinedVariables: true
   };
 
   const options1 = undefined;
@@ -42,7 +42,7 @@ describe("parseOptions", () => {
 
   const options5 = {
     includeProps: ["*"],
-    acceptValues: ["*"],
+    acceptValues: ["*"]
   };
 
   it("Uses default options when using * only", () => {
@@ -51,15 +51,15 @@ describe("parseOptions", () => {
 
   const options6 = {
     includeProps: ["*", "banana"],
-    acceptValues: ["fish", "*"],
+    acceptValues: ["fish", "*"]
   };
 
   const combinedOpts1 = {
     includeProps: ["banana"].concat(defaults.includeProps),
     acceptValues: ["fish"].concat(defaults.acceptValues),
     acceptCarbonColorTokens: false,
-    acceptIBMColorTokens: false,
-    acceptUndefinedVariables: true,
+    acceptIBMColorTokensCarbonV10Only: false,
+    acceptUndefinedVariables: true
   };
 
   it("Adds default options when using *", () => {
@@ -68,7 +68,7 @@ describe("parseOptions", () => {
 
   const options7 = {
     includeProps: ["*", "cake", "2", "3"],
-    acceptValues: ["eagle", "*", "5", "7"],
+    acceptValues: ["eagle", "*", "5", "7"]
   };
 
   const combinedOpts2 = {
@@ -79,8 +79,8 @@ describe("parseOptions", () => {
       defaults.acceptValues.filter((item) => item !== "5")
     ),
     acceptCarbonColorTokens: false,
-    acceptIBMColorTokens: false,
-    acceptUndefinedVariables: true,
+    acceptIBMColorTokensCarbonV10Only: false,
+    acceptUndefinedVariables: true
   };
 
   it("Combines default options when using *", () => {

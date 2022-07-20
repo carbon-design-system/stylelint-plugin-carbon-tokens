@@ -1,53 +1,57 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import {
-  containerTokens,
-  fluidSpacingTokens,
-  iconSizeTokens,
-  layoutTokens,
-  layoutFunctions,
-  spacingTokens,
-} from "./initAll";
+import { doInit } from "./initAll";
+import { fixes } from "./fixes";
 
-export default function getLayoutInfo(options) {
+export default async function getLayoutInfo(options) {
+  const {
+    containerTokens,
+    fluidSpacingTokens,
+    iconSizeTokens,
+    layoutFunctions,
+    layoutTokens,
+    spacingTokens,
+    version
+  } = await doInit(options.testOnlyVersion);
+
   return {
     tokens: [
       {
         source: "Container",
         accept: options.acceptContainerTokens,
-        values: containerTokens,
+        values: containerTokens
       },
       {
         source: "Fluid spacing",
         accept: options.acceptFluidSpacingTokens,
-        values: fluidSpacingTokens,
+        values: fluidSpacingTokens
       },
       {
         source: "Icon size",
         accept: options.acceptIconSizeTokens,
-        values: iconSizeTokens,
+        values: iconSizeTokens
       },
       {
         source: "Layout",
         accept: true,
-        values: layoutTokens,
+        values: layoutTokens
       },
       {
         source: "Spacing",
         accept: true,
-        values: spacingTokens,
-      },
+        values: spacingTokens
+      }
     ],
     functions: [
       {
         source: "Layout",
         accept: options.acceptCarbonMiniUnitsFunction,
-        values: layoutFunctions,
+        values: layoutFunctions
       },
       {
         source: "CSS",
@@ -56,10 +60,12 @@ export default function getLayoutInfo(options) {
           "translate(1 2)",
           "translateX(1)",
           "translateY(1)",
-          "translate3d(1 2)",
-        ],
+          "translate3d(1 2)"
+        ]
       },
-      { source: "CSS", accept: true, values: ["calc(1)"] },
+      { source: "CSS", accept: true, values: ["calc(1)"] }
     ],
+    fixes,
+    version
   };
 }

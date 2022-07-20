@@ -1,29 +1,33 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import { utils } from "stylelint";
 import {
-  declarationValueIndex,
+  TOKEN_TYPES,
   checkProp,
+  declarationValueIndex,
   isVariable,
   normalizeVariableName,
-  testItem,
-  tokenizeValue,
-  TOKEN_TYPES,
   parseRangeValue,
+  testItem,
+  tokenizeValue
 } from "./";
+import { tryFix } from "./fix-utils";
+import { utils } from "stylelint";
 
-export default function checkRule(
+// import valueParser from "postcss-value-parser";
+
+export default async function checkRule(
   root,
   result,
   ruleName,
   options,
   messages,
-  getRuleInfo
+  getRuleInfo,
+  context
 ) {
   const checkItem = (decl, item, propSpec, ruleInfo, knownVariables) => {
     // Expects to be passed an item containing either a token { raw, type, value} or
@@ -41,6 +45,10 @@ export default function checkRule(
         );
       } else if (testResult.isCalc) {
         message = messages.rejectedMaths(decl.prop, item.raw);
+      } else if (decl.prop === "transition") {
+        message = messages.rejectedTransition(decl.prop, item.raw);
+      } else if (decl.prop === "animation") {
+        message = messages.rejectedAnimation(decl.prop, item.raw);
       } else if (testResult.isVariable) {
         message = messages.rejectedVariable(
           decl.prop,
@@ -56,16 +64,16 @@ export default function checkRule(
       // adjust position for multipart value
       const offsetValue = item !== undefined ? decl.value.indexOf(item.raw) : 0;
 
-      utils.report({
+      return {
         ruleName,
         result,
         message,
         index: declarationValueIndex(decl) + offsetValue,
-        node: decl,
-      });
+        node: decl
+      };
     }
 
-    return false;
+    return null;
   };
 
   const specialItems = ["inherit", "initial", "none", "unset"];
@@ -74,6 +82,7 @@ export default function checkRule(
     // expects to be passed an items array containing tokens
     let itemsToCheck;
     const isRange = propSpec.range !== undefined;
+    const reports = [];
 
     if (
       !isRange ||
@@ -89,7 +98,7 @@ export default function checkRule(
       itemsToCheck = [];
 
       start = parseRangeValue(start, items.length);
-      end = parseRangeValue(end, items.length);
+      end = end !== undefined ? parseRangeValue(end, items.length) : start;
 
       if (end) {
         itemsToCheck.push(...items.slice(start, end + 1)); // +1 as slice end is not inclusive
@@ -103,20 +112,27 @@ export default function checkRule(
       itemsToCheck = itemsToCheck.filter((item) => {
         if (typeof propSpec.valueCheck === "object") {
           return propSpec.valueCheck.test(item.raw);
-        } else {
-          return propSpec.valueCheck === item.raw;
         }
+
+        return propSpec.valueCheck === item.raw;
       });
     }
 
     for (const item of itemsToCheck) {
-      checkItem(decl, item, propSpec, ruleInfo, knownVariables);
+      const report = checkItem(decl, item, propSpec, ruleInfo, knownVariables);
+
+      if (report) {
+        // contains report
+        reports.push(report);
+      }
     }
+
+    return reports;
   };
 
   const knownVariables = {}; // used to contain variable declarations
 
-  root.walkDecls((decl) => {
+  await root.walkDecls(async (decl) => {
     const tokenizedValue = tokenizeValue(decl.value);
 
     if (tokenizedValue && tokenizedValue.error) {
@@ -131,11 +147,26 @@ export default function checkRule(
       console.warn(tokenizedValue.warning);
     } else {
       if (isVariable(decl.prop)) {
-        // add to variable declarations
-        // expects all variables to appear before use
-        // expects all variables to be simple (not map or list)
-        knownVariables[normalizeVariableName(decl.prop)] =
-          tokenizedValue.items[0];
+        const newKeys = [normalizeVariableName(decl.prop)];
+
+        // In some decl.prop may contain an existing known value
+        // Store the value as an additional key
+        Object.keys(knownVariables).forEach((key) => {
+          const interpolatedKey = `#{${key}}`;
+
+          if (decl.prop.indexOf(key) !== -1) {
+            newKeys.push(
+              decl.prop.replace(interpolatedKey, knownVariables[key].value)
+            );
+          }
+        });
+
+        newKeys.forEach((key) => {
+          // add to variable declarations
+          // expects all variables to appear before use
+          // expects all variables to be simple (not map or list)
+          knownVariables[normalizeVariableName(key)] = tokenizedValue.items[0];
+        });
       }
 
       // read the prop spec
@@ -146,26 +177,82 @@ export default function checkRule(
         // Some color properties have
         // variable parameters lists where color is not at a fixed position
 
-        const ruleInfo = getRuleInfo(options);
+        const ruleInfo = await getRuleInfo(options);
+        const itemsToCheck =
+          // eslint-disable-next-line eqeqeq
+          tokenizedValue.type == TOKEN_TYPES.LIST
+            ? tokenizedValue.items
+            : [tokenizedValue];
 
-        if (tokenizedValue.type === TOKEN_TYPES.LIST) {
-          for (const listItem of tokenizedValue.items) {
-            checkItems(
-              listItem.items,
-              decl,
-              propSpec,
-              ruleInfo,
-              knownVariables
-            );
-          }
-        } else {
-          checkItems(
-            tokenizedValue.items,
+        const reports = [];
+
+        for (const itemToCheck of itemsToCheck) {
+          const newReports = checkItems(
+            itemToCheck.items,
             decl,
             propSpec,
             ruleInfo,
             knownVariables
           );
+
+          if (newReports?.length > 0) {
+            reports.push(...newReports);
+          }
+        }
+
+        if (reports.length > 0) {
+          let fixed = false;
+
+          if (context && context.fix && ruleInfo.fixes) {
+            let workingValue = decl.value;
+
+            // try to fix
+            ruleInfo.fixes.forEach((fix) => {
+              workingValue = tryFix(fix, workingValue, {
+                ruleInfo,
+                options,
+                prop: decl.prop
+              });
+            });
+
+            const reportsFix = [];
+
+            if (workingValue !== decl.value) {
+              // test new value
+              const tokenizedValueFix = tokenizeValue(workingValue);
+              const itemsToCheckFix =
+                tokenizedValueFix.type === TOKEN_TYPES.LIST
+                  ? tokenizedValueFix.items
+                  : [tokenizedValueFix];
+
+              for (const itemToCheckFix of itemsToCheckFix) {
+                const newReports = checkItems(
+                  itemToCheckFix.items,
+                  decl,
+                  propSpec,
+                  ruleInfo,
+                  knownVariables
+                );
+
+                if (newReports?.length > 0) {
+                  reportsFix.push(...newReports);
+                }
+              }
+            }
+
+            // If any fixes applied do not create an accepted result then do NOT update decl.value
+            if (reportsFix.length === 0) {
+              fixed = true;
+              decl.value = workingValue;
+            }
+          }
+
+          if (!fixed) {
+            // always report original warnings not those based on fix
+            reports.forEach((report) => {
+              utils.report(report);
+            });
+          }
         }
       }
     }

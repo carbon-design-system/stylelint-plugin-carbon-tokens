@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -9,11 +9,12 @@ import {
   isVariable,
   normalizeVariableName,
   parseRangeValue,
-  parseToRegexOrString,
+  parseToRegexOrString
 } from ".";
 import { TOKEN_TYPES } from "./tokenizeValue";
 
 const sanitizeUnconnectedOperators = (val) => {
+  // eslint-disable-next-line regexp/no-super-linear-backtracking
   const regex = /^([+ -]*)([^+-]*)$/;
   const matches = val.match(regex);
   let sign = "";
@@ -31,21 +32,44 @@ const sanitizeUnconnectedOperators = (val) => {
   return resultVal;
 };
 
-const checkAcceptValues = (item, acceptedValues = []) => {
+const checkScope = (item, options) => {
+  return options.acceptScopes.some((acceptedScope) => {
+    const testValue = parseToRegexOrString(acceptedScope);
+
+    return (
+      (testValue.test && testValue.test(item.scope)) || testValue === item.scope
+    );
+  });
+};
+
+const checkAcceptValuesRaw = (valueToCheck, options) => {
+  return options.acceptValues.some((acceptedValue) => {
+    // regex or string
+    const testValue = parseToRegexOrString(acceptedValue);
+
+    return (
+      (testValue.test &&
+        testValue.test(sanitizeUnconnectedOperators(valueToCheck))) ||
+      testValue === valueToCheck
+    );
+  });
+};
+
+const checkAcceptValues = (item, options) => {
   // Simply check raw values, improve later
   let result = false;
+  let valueToCheck = item.raw;
 
   if (item) {
-    result = acceptedValues.some((acceptedValue) => {
-      // regex or string
-      const testValue = parseToRegexOrString(acceptedValue);
+    if (item.scope) {
+      valueToCheck = item.value;
 
-      return (
-        (testValue.test &&
-          testValue.test(sanitizeUnconnectedOperators(item.raw))) ||
-        testValue === item.raw
-      );
-    });
+      if (!checkScope(item, options)) {
+        return result;
+      }
+    }
+
+    result = checkAcceptValuesRaw(valueToCheck, options);
   }
 
   return result;
@@ -65,7 +89,7 @@ const unquoteIfNeeded = (val) => {
 };
 
 const preProcessToken = (variable, knownVariables) => {
-  const regex = /#{([$\w-]*)}/g;
+  const regex = /#\{([$\w-]*)\}/g;
   const replacements = [];
   let result = variable;
   let match;
@@ -84,13 +108,13 @@ const preProcessToken = (variable, knownVariables) => {
       replacements.push({
         index: match.index,
         match: replacementMatch,
-        replacement: unquoteIfNeeded(replacement.raw),
+        replacement: unquoteIfNeeded(replacement.raw)
       });
     } else {
       replacements.push({
         index: match.index,
         match: replacementMatch,
-        replacement: match[1],
+        replacement: match[1]
       });
     }
   }
@@ -115,27 +139,59 @@ const preProcessToken = (variable, knownVariables) => {
   return result;
 };
 
-const checkTokens = function (variable, ruleInfo, knownVariables) {
+const checkTokens = function (item, ruleInfo, options, knownVariables) {
   const result = { accepted: false, done: false };
+  let valueToCheck = item.raw;
+
+  if (item.scope) {
+    valueToCheck = item.value;
+
+    if (!checkScope(item, options)) {
+      return result;
+    }
+  }
+
+  const start = valueToCheck.substr(0, 2);
+
+  if (start[0] === "-" && start[1] !== "-") {
+    // is negation not a variable
+    valueToCheck = valueToCheck.substr(1);
+  }
 
   // cope with variables wrapped in #{}
-  const _variable = preProcessToken(variable, knownVariables);
+  let _variable = preProcessToken(valueToCheck, knownVariables);
 
-  for (const tokenSet of ruleInfo.tokens) {
-    const tokenSpecs = tokenSet.values;
+  if (_variable.startsWith("#")) {
+    // token set does not contain #{}
+    _variable = _variable.substr(2, _variable.length - 3);
+  }
 
-    if (tokenSpecs.includes(_variable)) {
-      result.source = tokenSet.source;
-      result.accepted = tokenSet.accept;
-      result.done = true; // all tests completed
-      break;
+  if (checkAcceptValuesRaw(_variable, options)) {
+    // value matches one of the acceptValues
+    result.accepted = true;
+    result.done = true;
+  } else {
+    for (const tokenSet of ruleInfo.tokens) {
+      const tokenSpecs = tokenSet.values;
+
+      if (tokenSpecs.includes(_variable)) {
+        result.source = tokenSet.source;
+        result.accepted = tokenSet.accept;
+        result.done = true; // all tests completed
+        break;
+      }
     }
   }
 
   return result;
 };
 
-const checkProportionalMath = (mathItems, ruleInfo, knownVariables) => {
+const checkProportionalMath = (
+  mathItems,
+  ruleInfo,
+  options,
+  knownVariables
+) => {
   let otherItem;
 
   if (
@@ -153,14 +209,14 @@ const checkProportionalMath = (mathItems, ruleInfo, knownVariables) => {
   if (otherItem !== undefined) {
     if (["+", "-"].indexOf(mathItems[1].value) > -1) {
       // is plus or minus
-      return checkTokens(otherItem.raw, ruleInfo, knownVariables);
+      return checkTokens(otherItem, ruleInfo, options, knownVariables);
     }
   }
 
   return {};
 };
 
-const checkNegationMaths = (mathItems, ruleInfo, knownVariables) => {
+const checkNegationMaths = (mathItems, ruleInfo, options, knownVariables) => {
   let otherItem;
   let numeric;
 
@@ -181,7 +237,7 @@ const checkNegationMaths = (mathItems, ruleInfo, knownVariables) => {
   if (otherItem !== undefined) {
     if (["*", "/"].indexOf(mathItems[1].value) > -1 && numeric.raw === "-1") {
       // is times or divide by -1
-      return checkTokens(otherItem.raw, ruleInfo, knownVariables);
+      return checkTokens(otherItem, ruleInfo, options, knownVariables);
     }
   }
 
@@ -193,7 +249,7 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
   // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
   const result = {
     accepted: false,
-    done: false,
+    done: false
   };
 
   if (item === undefined) {
@@ -203,7 +259,7 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
     return result;
   }
 
-  if (checkAcceptValues(item, options.acceptValues)) {
+  if (checkAcceptValues(item, options)) {
     // value matches one of the acceptValues
     result.accepted = true;
     result.done = true;
@@ -240,84 +296,106 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
       const matchesFuncSpec = funcSpecs.some((funcSpec) => {
         const parts = funcSpec.split("(");
 
+        if (_item.scope && !checkScope(_item, options)) {
+          return false;
+        }
+
         if (parts.length === 1) {
           // no parameter checks
           return parts[0] === _item.value;
-        } else {
-          // check parameters
-          if (parts[0] === _item.value) {
-            // a function will contain an items array that is either a LIST or not
-            // IF TRUE a list then _item.items[0] === list which contains LIST_ITEMS in which case LIST_ITEMS.items is what we are interested in
-            // IF FALSE a list contains values which could include math or brackets or function calls
-            // NOTE: we do not try to deal with function calls inside function calls
+        }
 
-            const inList = !!(
-              _item.items && _item.items[0].type === TOKEN_TYPES.LIST
-            );
-            const paramItems = inList
-              ? _item.items[0].items // List[0] contains list items
-              : _item.items; // otherwise contains Tokens
+        // check parameters
+        if (parts[0] === _item.value) {
+          // a function will contain an items array that is either a LIST or not
+          // IF TRUE a list then _item.items[0] === list which contains LIST_ITEMS in which case LIST_ITEMS.items is what we are interested in
+          // IF FALSE a list contains values which could include math or brackets or function calls
+          // NOTE: we do not try to deal with function calls inside function calls
 
-            let [start, end] = parts[1]
-              .substring(0, parts[1].length - 1)
-              .split(" ");
+          const inList = Boolean(
+            _item.items && _item.items[0].type === TOKEN_TYPES.LIST
+          );
+          const paramItems = inList
+            ? _item.items[0].items // List[0] contains list items
+            : _item.items; // otherwise contains Tokens
 
-            start = parseRangeValue(start, paramItems.length);
-            end = parseRangeValue(end, paramItems.length) || start; // start if end empty
+          let [start, end] = parts[1]
+            .substring(0, parts[1].length - 1)
+            .split(" ");
 
-            for (let pos = start; pos <= end; pos++) {
-              // check each param to see if it is acceptable
+          start = parseRangeValue(start, paramItems.length);
+          end = parseRangeValue(end, paramItems.length) || start; // start if end empty
 
-              if (!paramItems[pos]) {
-                break; // ignore parts after undefined
-              }
+          for (let pos = start; pos <= end; pos++) {
+            // check each param to see if it is acceptable
 
-              // raw value of list and non-list item does allow for math
-              let tokenResult = {};
+            if (!paramItems[pos]) {
+              break; // ignore parts after undefined
+            }
 
-              if (_item.isCalc && paramItems[pos].type === TOKEN_TYPES.MATH) {
-                // allow proportional + or - checkTokens
-                const mathItems = paramItems[pos].items;
+            // raw value of list and non-list item does allow for math
+            let tokenResult = {};
 
-                tokenResult = checkProportionalMath(
-                  mathItems,
-                  ruleInfo,
-                  knownVariables
-                );
+            if (_item.isCalc && paramItems[pos].type === TOKEN_TYPES.MATH) {
+              // allow proportional + or - checkTokens
+              const mathItems = paramItems[pos].items;
 
-                if (!tokenResult.accepted) {
-                  tokenResult = checkNegationMaths(
-                    mathItems,
-                    ruleInfo,
-                    knownVariables
-                  );
-                }
-              } else {
-                tokenResult.accepted = checkAcceptValues(
-                  paramItems[pos],
-                  options.acceptValues
-                );
-
-                if (!tokenResult.accepted) {
-                  tokenResult = checkTokens(
-                    paramItems[pos].raw,
-                    ruleInfo,
-                    knownVariables
-                  );
-                }
-              }
+              tokenResult = checkProportionalMath(
+                mathItems,
+                ruleInfo,
+                options,
+                knownVariables
+              );
 
               if (!tokenResult.accepted) {
-                return false;
+                tokenResult = checkNegationMaths(
+                  mathItems,
+                  ruleInfo,
+                  options,
+                  knownVariables
+                );
+              }
+            } else {
+              tokenResult.accepted = checkAcceptValues(
+                paramItems[pos],
+                options
+              );
+
+              if (!tokenResult.accepted) {
+                const paramItem =
+                  paramItems[pos].type === TOKEN_TYPES.LIST_ITEM
+                    ? paramItems[pos].items[0]
+                    : paramItems[pos];
+
+                if (paramItem.type === TOKEN_TYPES.FUNCTION) {
+                  // child function
+                  tokenResult = testItemInner(
+                    paramItem,
+                    ruleInfo,
+                    options,
+                    knownVariables
+                  );
+                } else {
+                  tokenResult = checkTokens(
+                    paramItem,
+                    ruleInfo,
+                    options,
+                    knownVariables
+                  );
+                }
               }
             }
 
-            // all variables in function passed so return true
-            return true;
-          } else {
-            return false;
+            if (!tokenResult.accepted) {
+              return false;
+            }
           }
+
+          // all variables in function passed so return true
+          return true;
         }
+
+        return false;
       });
 
       if (matchesFuncSpec) {
@@ -331,11 +409,17 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
     let tokenResult = checkProportionalMath(
       item.items,
       ruleInfo,
+      options,
       knownVariables
     );
 
     if (!tokenResult.accepted) {
-      tokenResult = checkNegationMaths(item.items, ruleInfo, knownVariables);
+      tokenResult = checkNegationMaths(
+        item.items,
+        ruleInfo,
+        options,
+        knownVariables
+      );
     }
 
     result.source = tokenResult.source;
@@ -343,7 +427,8 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
     result.done = tokenResult.done;
   } else {
     // test what ever is left over
-    const tokenResult = checkTokens(_item.value, ruleInfo, knownVariables);
+
+    const tokenResult = checkTokens(_item, ruleInfo, options, knownVariables);
 
     result.source = tokenResult.source;
     result.accepted = tokenResult.accepted;
@@ -376,9 +461,6 @@ export default function testItem(item, ruleInfo, options, knownVariables) {
   // Expects to be passed an item containing either a item { raw, type, value} or
   // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
   let result = {};
-
-  //   // eslint-disable-next-line no-console
-  // console.log(JSON.stringify(item));
 
   if (item === undefined) {
     // do not accept undefined

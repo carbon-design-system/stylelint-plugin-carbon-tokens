@@ -1,5 +1,78 @@
 # Changelog
 
+## 2.0.0-beta.13
+
+- Fix use of carbon--motion prefix in v10.
+- Ignore values not specified in multi-part value
+
+## 2.0.0-beta.12
+
+- Add type fixes
+- Add theme fixes
+
+## 2.0.0-beta.11
+
+- BREAK: `carbon/motion-token-use` has been renamed to `carbon/motion-duration-use` to allow `carbon/motion-easing-use`
+- Feat: Add `carbon/motion-easing-use` rule and fixes.
+- Fix math before function not parsing.
+
+## 2.0.0-beta.10
+
+- fix: auto fix for `$layout--nn` in v11 now works.
+- fix: multi value layout e.g. padding margin
+- feat: add motion fixes
+
+## 2.0.0-beta.9
+
+- fix: Fix processing of comma separated values.
+
+## 2.0.0-beta.8
+
+- feat: Layout automatic fixes see [./src/rules/layout-token-use/README.md]
+
+## 2.0.0-beta.7
+
+- fix: mini-unit and carbon--mini-unit function use in v10
+- fix: token name format to cope with `hoverSelectedUI`
+
+## 2.0.0-beta.6
+
+- Fix interpolated known values
+
+## 2.0.0-beta.5
+
+- Fix tests of #{$var} against token list.
+
+## 2.0.0-beta.4
+
+- Test fix for block class
+## 2.0.0-beta.3
+
+- Animation order should expect name first
+- Changed v10 motion `duration--` prefix to v11 `duration-`
+- Added v10 specific motion test for `duration--`.
+- Add transition and animation specific messages.
+
+## 2.0.0-beta.2
+
+- fix: Temporarily fudge theme token list adding button category manually
+- feat: Read Carbon version from package.json
+- chore: Change `target` option to `testOnlyVersion`
+
+## 2.0.0-beta.1
+
+- Restore optional v10 support.
+
+## 2.0 0-alpha.2
+
+- Add scope support
+- BREAK: Change acceptUndefinedVariables default to false
+
+## 2.0 0-alpha.1
+
+- Carbon V11 support
+- Carbon 10 support dropped, use V1 for Carbon 10 support.
+
 ## 1.0.0
 
 Updates to the latest version of Carbon 10 and calls V1 in prep for a v-next or v2 branch for Carbon 11. V1 will continue to track v10 with updates published on a request only basis.
@@ -24,13 +97,13 @@ Updates to the latest version of Carbon 10 and calls V1 in prep for a v-next or 
 ## 0.11.1
 
 - Prevent linter falling over when passed the following forms
-  code: `.foo { $body--height: 400px; top: -($body--height - $carbon--spacing-05); }`,
-  code: `.foo { top: -($body--height - $carbon--spacing-05); }`,
-  code: `.foo { $body--height: 400px; top: ($body--height - $carbon--spacing-05); }`,
-  code: `.foo { top: ($body--height - $carbon--spacing-05); }`,
-  code: `.foo { $body--height: 400px; top: $body--height - $carbon--spacing-05; }`,
+  code: `.foo { $body--height: 400px; top: -($body--height - $spacing-05); }`,
+  code: `.foo { top: -($body--height - $spacing-05); }`,
+  code: `.foo { $body--height: 400px; top: ($body--height - $spacing-05); }`,
+  code: `.foo { top: ($body--height - $spacing-05); }`,
+  code: `.foo { $body--height: 400px; top: $body--height - $spacing-05; }`,
   description: `Reject non-supported maths of form $x: 1px; $x - $token`,
-  code: `.foo { top: $body--height - $carbon--spacing-05; }`,
+  code: `.foo { top: $body--height - $spacing-05; }`,
   description: `Reject non-supported maths of form $unknown - $token`,
   code: `.foo {margin-top: 1 + map-get($map: (key: 1rem), $key: key);}`,
 

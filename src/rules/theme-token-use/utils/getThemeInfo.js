@@ -1,44 +1,55 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import { themeTokens, themeFunctions } from "./initCarbonTheme";
-import { ibmColorTokens, carbonColorTokens } from "./initCarbonColor";
+import { doInitColors } from "./initCarbonColor";
+import { doInitTheme } from "./initCarbonTheme";
+import { fixes } from "./fixes";
 import { sassColorFunctions } from "./initSassFunctions";
 
-export default function getThemeInfo(options) {
+export default async function getThemeInfo(options) {
+  // eslint-disable-next-line
+  const { carbonColorTokens, ibmColorTokens } = await doInitColors(
+    options.testOnlyVersion
+  );
+  const { themeTokens, themeFunctions, version } = await doInitTheme(
+    options.testOnlyVersion
+  );
+
   return {
     tokens: [
       {
         source: "Theme",
         accept: true,
-        values: themeTokens,
+        values: themeTokens
       },
       {
         source: "Carbon color",
         accept: options.acceptCarbonColorTokens,
-        values: carbonColorTokens,
+        values: carbonColorTokens
       },
       {
         source: "IBM Color",
-        accept: options.acceptIBMColorTokens,
-        values: ibmColorTokens,
-      },
+        accept: options.acceptIBMColorTokensCarbonV10Only,
+        values: ibmColorTokens
+      }
     ],
     functions: [
       {
         source: "Theme",
         accept: true,
-        values: themeFunctions,
+        values: themeFunctions
       },
       {
         source: "SASS",
         accept: true,
-        values: sassColorFunctions,
-      },
+        values: sassColorFunctions
+      }
     ],
+    fixes,
+    version
   };
 }

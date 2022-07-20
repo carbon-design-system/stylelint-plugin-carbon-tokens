@@ -1,19 +1,19 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import { utils } from "stylelint";
 import {
-  isValidOption,
-  namespace,
-  parseOptions,
   checkRule,
   getMessages,
+  isValidOption,
+  namespace,
+  parseOptions
 } from "../../utils";
 import { getThemeInfo } from "./utils";
+import { utils } from "stylelint";
 
 export const ruleName = namespace("theme-token-use");
 export const messages = getMessages(ruleName, "theme");
@@ -22,49 +22,57 @@ const isValidAcceptValues = isValidOption;
 const isValidIncludeProps = isValidOption;
 
 const defaultOptions = {
-  // include standard color properites
+  // include standard color properties
   includeProps: [
     "/color$/",
     "/shadow$/<-1>",
     "border<-1>",
     "outline<-1>",
     "fill",
-    "stroke",
+    "stroke"
   ],
   // Accept transparent, common reset values and 0 on its own
   acceptValues: [
     "/inherit|initial|none|unset/",
     "/^0$/",
-    "/currentColor|transparent/",
+    "/currentColor|transparent/"
   ],
   acceptCarbonColorTokens: false,
-  acceptIBMColorTokens: false,
-  acceptUndefinedVariables: true,
+  acceptIBMColorTokensCarbonV10Only: false,
+  acceptUndefinedVariables: false,
+  acceptScopes: ["theme"],
+  // preferContextFixes: false,
+  testOnlyVersion: undefined
 };
 
-export default function rule(primaryOptions, secondaryOptions) {
+export default function rule(primaryOptions, secondaryOptions, context) {
   const options = parseOptions(secondaryOptions, defaultOptions);
 
-  return (root, result) => {
+  return async (root, result) => {
     const validOptions = utils.validateOptions(
       result,
       ruleName,
       {
-        actual: primaryOptions,
+        actual: primaryOptions
       },
       {
         actual: options,
         possible: {
           includeProps: [isValidIncludeProps],
           acceptValues: [isValidAcceptValues],
+          acceptScopes: [isValidAcceptValues],
           acceptCarbonColorTokens: (val) =>
             val === undefined || typeof val === "boolean",
-          acceptIBMColorTokens: (val) =>
+          acceptIBMColorTokensCarbonV10Only: (val) =>
             val === undefined || typeof val === "boolean",
           acceptUndefinedVariables: (val) =>
             val === undefined || typeof val === "boolean",
+          testOnlyVersion: (val) =>
+            val === undefined || ["10", "v11"].includes(val)
+          // preferContextFixes: (val) =>
+          //   val === undefined || typeof val === "boolean"
         },
-        optional: true,
+        optional: true
       }
     );
 
@@ -73,6 +81,14 @@ export default function rule(primaryOptions, secondaryOptions) {
       return;
     }
 
-    checkRule(root, result, ruleName, options, messages, getThemeInfo);
+    await checkRule(
+      root,
+      result,
+      ruleName,
+      options,
+      messages,
+      getThemeInfo,
+      context
+    );
   };
 }

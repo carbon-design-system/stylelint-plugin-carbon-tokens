@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2016, 2020
+ * Copyright IBM Corp. 2020, 2022
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -28,7 +28,7 @@ const TOKEN_TYPES = {
   MATH: "Math",
   LIST: "Comma separated list",
   LIST_ITEM: "Item in list",
-  UNKNOWN: "Unknown",
+  UNKNOWN: "Unknown"
 };
 
 const COMMA = 1;
@@ -69,69 +69,60 @@ const structureParse = (value) => {
         matches.push(match);
       }
       // otherwise NO-OP
-    } else {
-      if (!inQuotes && match[RIGHT_BR]) {
+    } else if (!inQuotes && match[RIGHT_BR]) {
+      const oldMatches = depth.pop();
+
+      oldMatches.push(matches);
+      matches = oldMatches;
+
+      // don't push brackets depth indicates brackets
+    } else if (!inQuotes && match[LEFT_BR]) {
+      // start of a function or bracketed content
+      const newMatches = [];
+
+      depth.push(matches);
+      matches = newMatches;
+
+      // don't push brackets depth indicates brackets
+    } else if (
+      (match[DQ] && !inSingleQuotes) ||
+      (match[SQ] && !inDoubleQuotes)
+    ) {
+      // This section pre-parses quoted values into full string matches
+      // If no terminating quote is found a list of not really parsed brackets might be found
+      // but again we are not worried about parsing the full SCSS syntax
+
+      if ((match[DQ] && inDoubleQuotes) || (match[SQ] && inSingleQuotes)) {
+        // exiting quotes
         const oldMatches = depth.pop();
+        // construct something that looks like a regex match but contains the full string
+        const newMatch = { input: match.input, groups: undefined };
+        const priorMatches = [];
 
-        oldMatches.push(matches);
-        matches = oldMatches;
-
-        // don't push brackets depth indicates brackets
-      } else {
-        if (!inQuotes && match[LEFT_BR]) {
-          // start of a function or bracketed content
-          const newMatches = [];
-
-          depth.push(matches);
-          matches = newMatches;
-
-          // don't push brackets depth indicates brackets
-        } else {
-          if (
-            (match[DQ] && !inSingleQuotes) ||
-            (match[SQ] && !inDoubleQuotes)
-          ) {
-            // This section pre-parses quoted values into full string matches
-            // If no terminating quote is found a list of not really parsed brackets might be found
-            // but again we are not worried about parsing the full SCSS syntax
-
-            if (
-              (match[DQ] && inDoubleQuotes) ||
-              (match[SQ] && inSingleQuotes)
-            ) {
-              // exiting quotes
-              const oldMatches = depth.pop();
-              // construct something that looks like a regex match but contains the full string
-              const newMatch = { input: match.input, groups: undefined };
-              const priorMatches = [];
-
-              for (const index in matches) {
-                priorMatches.push(matches[index][0]);
-              }
-
-              const priorMatchString = priorMatches.join("");
-
-              newMatch[0] = `${priorMatchString}${match[0]}`;
-              newMatch[match[DQ] ? DQ : SQ] = newMatch[0];
-              newMatch.index = match.index - priorMatchString.length;
-              oldMatches.push(newMatch);
-              matches = oldMatches;
-            } else {
-              // entering quotes
-              const newMatches = [];
-
-              depth.push(matches);
-              matches = newMatches;
-              matches.push(match);
-            }
-
-            inDoubleQuotes = match[DQ] !== undefined && !inDoubleQuotes;
-            inSingleQuotes = match[SQ] !== undefined && !inSingleQuotes;
-          } else {
-            matches.push(match);
-          }
+        for (const index in matches) {
+          priorMatches.push(matches[index][0]);
         }
+
+        const priorMatchString = priorMatches.join("");
+
+        newMatch[0] = `${priorMatchString}${match[0]}`;
+        newMatch[match[DQ] ? DQ : SQ] = newMatch[0];
+        newMatch.index = match.index - priorMatchString.length;
+        oldMatches.push(newMatch);
+        matches = oldMatches;
+      } else {
+        // entering quotes
+        const newMatches = [];
+
+        depth.push(matches);
+        matches = newMatches;
+        matches.push(match);
       }
+
+      inDoubleQuotes = match[DQ] !== undefined && !inDoubleQuotes;
+      inSingleQuotes = match[SQ] !== undefined && !inSingleQuotes;
+    } else {
+      matches.push(match);
     }
   }
 
@@ -174,12 +165,10 @@ const formatParamsAsTokenList = (tokens) => {
       lastWasComma = true;
       tokenList.push(tokensToAdd);
       tokensToAdd = [];
-    } else {
-      if (!(token[SPACE] && lastWasComma)) {
-        // don't bother adding spaces after commas they can be added back later
-        tokensToAdd.push(token);
-        lastWasComma = false;
-      }
+    } else if (!(token[SPACE] && lastWasComma)) {
+      // don't bother adding spaces after commas they can be added back later
+      tokensToAdd.push(token);
+      lastWasComma = false;
     }
   }
 
@@ -254,11 +243,21 @@ const processTokens = (tokens) => {
         item.isCalc = lastItem.value === "calc";
         item.raw += "(";
         result.raw += "(";
+
+        if (item.type === TOKEN_TYPES.FUNCTION) {
+          // last item may have scope
+          const parts = item.value.split(".");
+
+          if (parts.length === 2) {
+            item.scope = parts[0];
+            item.value = parts[1];
+          }
+        }
       } else {
         item = {
           type: TOKEN_TYPES.BRACKETED_CONTENT,
           raw: `${unattachedOperators}(`,
-          items: [],
+          items: []
         };
         unattachedOperators = "";
         addToItems(lastItem, result, item);
@@ -274,8 +273,8 @@ const processTokens = (tokens) => {
         // not a list just ordinary tokens space separated
         processedStuff = processTokens(token);
 
-        for (const index in processedStuff.items) {
-          addToItems(undefined, item, processedStuff.items[index]);
+        for (const i in processedStuff.items) {
+          addToItems(undefined, item, processedStuff.items[i]);
         }
       }
 
@@ -300,7 +299,7 @@ const processTokens = (tokens) => {
           lastItem.items.push({
             type: TOKEN_TYPES.OPERATOR,
             value: tokenValue,
-            raw: tokenValue,
+            raw: tokenValue
           });
           lastItem.raw += ` ${tokenValue}`;
         } else {
@@ -320,12 +319,12 @@ const processTokens = (tokens) => {
           item = {
             items: [lastItem],
             type: TOKEN_TYPES.MATH,
-            raw: lastItem.raw,
+            raw: lastItem.raw
           };
           item.items.push({
             type: TOKEN_TYPES.OPERATOR,
             value: tokenValue,
-            raw: tokenValue,
+            raw: tokenValue
           });
           item.raw += ` ${tokenValue}`;
           result.items.push(item);
@@ -351,7 +350,8 @@ const processTokens = (tokens) => {
         continue;
       } else {
         // process all remaining into an item before deciding where to put it.
-        const numeric = /^(-{0,1}[0-9.]+)([^0-9.-]*)$/.exec(token[0]);
+        const numeric = /^(-?[0-9.]+)([^0-9.-]*)$/.exec(token[0]);
+        const addInfo = {};
 
         if (numeric) {
           const units = numeric[2];
@@ -360,7 +360,7 @@ const processTokens = (tokens) => {
             value: `${unattachedOperators}${numeric[1]}`,
             type: TOKEN_TYPES.NUMERIC_LITERAL,
             raw: `${unattachedOperators}${numeric[1]}${units}`,
-            units,
+            units
           };
           unattachedOperators = "";
         } else {
@@ -372,7 +372,16 @@ const processTokens = (tokens) => {
           } else if (/^#[0-9a-f]*$/.test(token[0])) {
             // color literal
             type = TOKEN_TYPES.COLOR_LITERAL;
-          } else if (/^-{0,1}\$/.test(token[0])) {
+          } else if (/^-?(?:[a-z]+\.)?\$/i.test(token[0])) {
+            const parts = token[0].split(".");
+
+            if (parts.length === 2) {
+              addInfo.scope = parts[0];
+              addInfo.value = parts[1];
+            }
+
+            type = TOKEN_TYPES.SCSS_VAR;
+          } else if (/^-?\$/.test(token[0])) {
             type = TOKEN_TYPES.SCSS_VAR;
           } else if (/^[^0-9#]/.test(token[0])) {
             type = TOKEN_TYPES.TEXT_LITERAL;
@@ -382,6 +391,7 @@ const processTokens = (tokens) => {
             value: `${unattachedOperators}${token[0]}`,
             type,
             raw: `${unattachedOperators}${token[0]}`,
+            ...addInfo
           };
           unattachedOperators = "";
         }
@@ -415,7 +425,7 @@ const processListItems = (listItems) => {
     items.push({
       type: TOKEN_TYPES.LIST_ITEM,
       items: listItemValues.items,
-      raw: listItemValues.raw,
+      raw: listItemValues.raw
     });
     raw += `${comma}${listItemValues.raw}`;
     // }
@@ -443,10 +453,10 @@ const postProcessStructuredTokens = (structuredTokens) => {
   if (structuredTokens.length <= 1) {
     // only one item do not treat as list
     return processTokens(structuredTokens[0]);
-  } else {
-    // a list of items
-    return processList(structuredTokens);
   }
+
+  // a list of items
+  return processList(structuredTokens);
 };
 
 const tokenizeValue = (value) => {
@@ -464,7 +474,7 @@ const tokenizeValue = (value) => {
         items: [],
         raw: value,
         error,
-        message: "Failed to parse value",
+        message: "Failed to parse value"
       };
     }
   }

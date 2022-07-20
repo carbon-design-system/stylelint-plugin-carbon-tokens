@@ -15,12 +15,22 @@ By default it accepts undefined SCSS and CSS variables.
 
 ```js
 const defaultOptions = {
-  // include standard color properites
+  // include standard color properties
   includeProps: ["/color$/", "/shadow$/<-1>", "border<-1>", "outline<-1>"],
   // Accept transparent, common reset values and 0 on its own
   acceptValues: ["/transparent|inherit|initial/", "/^0$/"],
-  acceptCarbonColorTokens: false,
-  acceptIBMColorTokens: false,
-  acceptUndefinedVariables: true,
+  acceptsScopes: ["theme"],
+  acceptCarbonColorTokens: false, // NOTE: use of `carbon--` prefix is v10 only
+  acceptIBMColorTokensCarbonV10Only: false, // Carbon v10 only
+  acceptUndefinedVariables: false,
+  // preferContextFixes: false
 };
 ```
+
+## Fix
+
+The automatic fixes for the theme rule are as follows.
+
+- V11: Attempts to update V10 tokens to V11. This is limited by not all v10 tokens mapping 1-1 to a v11 token. In some cases the property name can be used to refine the mapping, but in numerous cases the linter does not have the context to be able to make a fix. An assumption based on the primary, or first declared meaning of a v10 token may also be used.
+
+Please Review all changes.

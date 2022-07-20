@@ -7,38 +7,6 @@
     "postcss-scss": {
       "versions": "3",
       "reason": "major version"
-    },
-    "babel-preset-jest": {
-      "versions": "26",
-      "reason": "major version"
-    },
-    "eslint": {
-      "versions": "7",
-      "reason": "major version"
-    },
-    "eslint-config-prettier": {
-      "versions": "^7",
-      "reason": "major version"
-    },
-    "eslint-config-stylelint": {
-      "versions": "13.1.1",
-      "reason": ""
-    },
-    "husky": {
-      "versions": "6.0.0",
-      "reason": ""
-    },
-    "jest": {
-      "versions": "27.0.4",
-      "reason": ""
-    },
-    "jest-cli": {
-      "versions": "27.0.4",
-      "reason": ""
-    },
-    "lint-staged": {
-      "versions": "11.0.0",
-      "reason": ""
     }
   }
 }

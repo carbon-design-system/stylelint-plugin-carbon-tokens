@@ -8,6 +8,8 @@ It includes, but may not be limited to, linting for @carbon/themes, @carbon/colo
 
 Not included, as they're not used through SCSS, are Carbon Icons, Grid and any other DOM related checks..
 
+NOTE: The parameters of Carbon functions are not normally tested as these do no typically have Carbon tokens as parameters.
+
 ## Please be helpful
 
 Before we start this project is a work in progress which deliberately outputs warnings when it comes across a syntax that has not yet been catered for. If you see one of these warnings please raise an issue so that it can be addressed.
@@ -31,6 +33,11 @@ npm install stylelint-plugin-carbon-tokens
 yarn add stylelint-plugin-carbon-tokens
 ```
 
+## BREAKING CHANGES from version 1
+
+- `carbon/motion-token-use` has been renamed to `carbon/motion-duration-use`. This was to allow `carbon/motion-easing-use` to be added.
+- `acceptUndefinedVariables` now defaults to false. As a result undefined variables will either need to be passed as `acceptValues` or be disabled.
+
 ## Usage
 
 Add it to your stylelint config `plugins` array.
@@ -53,7 +60,8 @@ modules.exports = {
   rules: {
     //... other rules
     "carbon/layout-token-use": true,
-    "carbon/motion-token-use": [true, { severity: "warning" }],
+    "carbon/motion-duration-use": [true, { severity: "warning" }],
+    "carbon/motion-easing-use": true,
     "carbon/theme-token-use": true,
     "carbon/type-token-use": true,
     //...other rules
@@ -68,16 +76,31 @@ FYI: There are no automated fixes with --fix. See [Why no --fix?](#Why%20no%20--
 
 FYI: With regards to math. See [What math is OK?](#What%20math%20is%20OK?)
 
+### Fix
+
+Version 2 introduces the ability to auto fix some usage. See the rule README files for details.
+
+NOTE: Automatic fixes should be reviewed in the same way any other code is reviewed.
+NOTE 2: Currently does not support partially fixing a line e.g. `margin: 2px 3px 4px` will not become `margin: $spacing-01 3px $spacing-02` as 3px.
+
 ## Recommended config
+
+### Stylelint switches
+
+It's good practice to document any linter disables and to tidy up any that are no longer needed. As a result it is recommended that you use the following switches as part of your stylelint command.
+
+- --report-descriptionless-disables [https://stylelint.io/user-guide/usage/options#reportdescriptionlessdisables]
+- --report-needless-disables [https://stylelint.io/user-guide/usage/options#reportneedlessdisables]
 
 ### Strict
 
 ```js
   rules: {
     // ADDED TO TEST CARBON USE
-    'carbon/layout-token-use': [true, { severity: 'error', acceptUndefinedVariables: false }],
-    'carbon/motion-token-use': [true, { severity: 'error', acceptUndefinedVariables: false }],
-    'carbon/theme-token-use': [true, { severity: 'error', acceptUndefinedVariables: false }],
+    'carbon/layout-token-use': [true, { severity: 'error' }],
+    'carbon/motion-duration-use': [true, { severity: 'error' }],
+    "carbon/motion-easing-use": [true, { severity: 'error'}],
+    'carbon/theme-token-use': [true, { severity: 'error' }],
     'carbon/type-token-use': [
       true,
       {
@@ -95,7 +118,8 @@ FYI: With regards to math. See [What math is OK?](#What%20math%20is%20OK?)
   rules: {
     // ADDED TO TEST CARBON USE
     'carbon/layout-token-use': [true, { severity: 'error' }],
-    'carbon/motion-token-use': [true, { severity: 'error' }],
+    'carbon/motion-duration-use': [true, { severity: 'error' }],
+    "carbon/motion-easing-use": [true, { severity: 'error'}],
     'carbon/theme-token-use': [true, { severity: 'error' }],
     'carbon/type-token-use': [
       true,
@@ -113,19 +137,25 @@ FYI: With regards to math. See [What math is OK?](#What%20math%20is%20OK?)
 ```js
   rules: {
     // ADDED TO TEST CARBON USE
-    'carbon/layout-token-use': [true, { severity: 'warning' }],
-    'carbon/motion-token-use': [true, { severity: 'warning' }],
-    'carbon/theme-token-use': [true, { severity: 'warning' }],
+    'carbon/layout-token-use': [true, { severity: 'warning', acceptUndefinedVariables: true  }],
+    'carbon/motion-duration-use': [true, { severity: 'warning', acceptUndefinedVariables: true  }],
+    "carbon/motion-easing-use": [true, { severity: 'warning', acceptUndefinedVariables: true }],
+    'carbon/theme-token-use': [true, { severity: 'warning', acceptUndefinedVariables: true  }],
     'carbon/type-token-use': [
       true,
       {
         severity: 'warning',
         acceptCarbonTypeScaleFunction: true,
         acceptCarbonFontWeightFunction: true,
+        acceptUndefinedVariables: true
       },
     ],
   },
 ```
+
+### Carbon Versions supported
+
+Carbon V10 and V11 are supported, but not currently in the same repository.
 
 ## Variables
 
@@ -136,7 +166,8 @@ SCSS `$variables` and CSS `--variable` declared before are checked.
 Each of the rules listed above have secondary options which are documented in the individual rule README.md files along with defaults..
 
 - [Layout token use](./src/rules/layout-token-use/README.md)
-- [Motion token use](./src/rules/motion-token-use/README.md)
+- [Motion duration token use](./src/rules/motion-duration-use/README.md)
+- [Motion easing token use](./src/rules/motion-easing-use/README.md)
 - [Theme token use](./src/rules/theme-token-use/README.md)
 - [Type token use](./src/rules/type-token-use/README.md)
 
@@ -154,7 +185,6 @@ modules.exports = {
       true,
       {
         severity: "warning",
-        acceptUndefinedVariables: true,
         acceptCarbonTypeScaleFunction: false,
       },
     ],
@@ -164,14 +194,13 @@ modules.exports = {
 };
 ```
 
-NOTE: By default rules accept SCSS and CSS variables not defined in the current file prior to their use. Set acceptUndefinedVariables to false to disable this behavior.
-
 ## Advanced options
 
 These options when omitted to accept the defaults. They are intended to support non-standard use cases and accept values that use a syntax which may well need some refining as the project moves forward.
 
 - includeProps: Array
 - acceptValues: Array
+- acceptScopes: Array
 
 Arrays of strings and/or Regex followed by a range in angled brackets.
 
@@ -181,9 +210,15 @@ The defaults for these are defined in the individual README files listed above.
 - `includeProps: ["*"]` - Indicates default, same as omitting the property
 - `includeProps: ["/^\\$my-color--/", "*"]` - SCSS variable starting "\$my-color--", plus default values specified
 
-The last option here shows how you could elect to check your own tokens refer to values acceptable to the linter.
+The acceptValues option allows you to check your own tokens refer to values acceptable to the linter.
 
 - `acceptValues: ["$/^\\$my-color--/"]` - Accept SCSS variables starting "\$my-color--"
+
+The acceptScopes option allows you to alter the scope value for all rules using regex or a string. For example you may wish to use short scope names.
+
+- `acceptScopes: ["/^la(yout)?$/", "/^mo(tion)?$/", "/^th(eme)?$/", "/^ty(pe)?$/"]` - using regex to accept abbreviations
+- `acceptScopes: ["la", "mo", "th", "ty"]` - abbreviations but not defaults
+- `acceptScopes: ["la", "mo", "th", "ty", "*"]` - abbreviations plus defaults with "*"
 
 ### includeProps Range
 
