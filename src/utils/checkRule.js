@@ -98,7 +98,8 @@ export default async function checkRule(
       itemsToCheck = [];
 
       start = parseRangeValue(start, items.length);
-      end = end !== undefined ? parseRangeValue(end, items.length) : start;
+      // missing value equates to incorrect ordering
+      end = parseRangeValue(end, items.length);
 
       if (end) {
         itemsToCheck.push(...items.slice(start, end + 1)); // +1 as slice end is not inclusive
