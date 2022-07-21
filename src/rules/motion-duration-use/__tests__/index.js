@@ -93,12 +93,14 @@ testRule(rule, {
     },
     {
       code: ".foo { transition: $duration-fast-01; }",
-      description: "Carbon motion token used in non-standard order.",
+      description:
+        "Carbon motion token used in non-standard order with transition.",
       message: messages.expected
     },
     {
       code: ".foo { animation: $duration-fast-01 test; }",
-      description: "Carbon motion token used in non-standard order.",
+      description:
+        "Carbon motion token used in non-standard order with animation.",
       message: messages.expected
     },
     {

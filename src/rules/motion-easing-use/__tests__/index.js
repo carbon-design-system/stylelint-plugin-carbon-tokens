@@ -13,10 +13,6 @@ testRule(rule, {
   customSyntax: "postcss-scss",
   accept: [
     {
-      code: ".foo {   transition: background-color $duration-slow-02; }",
-      description: "Accept no easing for transition."
-    },
-    {
       code: ".foo {   transition: background-color $duration-slow-02 $ease-in; }",
       description:
         "Carbon motion easing token settings expected for transition."
@@ -72,6 +68,14 @@ testRule(rule, {
     }
   ],
   reject: [
+    {
+      code: ".foo {   transition: $ease-in; }",
+      description: "Reject easing when other values are missing missing."
+    },
+    {
+      code: ".foo {   transition: background-color $duration-slow-02; }",
+      description: "Reject no easing for transition when value is missing."
+    },
     {
       code: ".foo { transition: width $duration-fast-01 ease-in, height 2s ease-out; }",
       description: "Reject non Carbon ease token or function",
