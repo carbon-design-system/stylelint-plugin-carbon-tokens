@@ -9,9 +9,7 @@ import { doInit } from "./initMotionEasingTokens";
 import { fixes } from "./fixes";
 
 export async function getMotionInfo(options) {
-  const { motionTokens, motionFunctions, version } = await doInit(
-    options.testOnlyVersion
-  );
+  const { motionTokens, motionFunctions, version } = await doInit(options);
 
   return {
     tokens: [

@@ -17,7 +17,7 @@ export default async function getLayoutInfo(options) {
     layoutTokens,
     spacingTokens,
     version
-  } = await doInit(options.testOnlyVersion);
+  } = await doInit(options);
 
   return {
     tokens: [

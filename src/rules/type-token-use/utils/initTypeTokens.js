@@ -10,7 +10,7 @@
 // const typeTokens = [];
 import { version } from "@carbon/type/package.json";
 
-const doInit = async (testOnlyVersion) => {
+const doInit = async ({ carbonPath }) => {
   // permitted carbon type functions
   // TODO: read this from carbon
   const _version = testOnlyVersion || version;

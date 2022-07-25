@@ -126,7 +126,7 @@ testRule(rule, {
 // v10 test
 testRule(rule, {
   ruleName,
-  config: [true, { testOnlyVersion: "10" }],
+  config: [true, { carbonPath: "../../../../node_modules/@carbon/motion-10" }],
   customSyntax: "postcss-scss",
   accept: [
     {
@@ -349,7 +349,7 @@ testRule(rule, {
   ruleName,
   customSyntax: "postcss-scss",
   fix: true,
-  config: [true, { testOnlyVersion: "10" }],
+  config: [true, { carbonPath: "../../../../node_modules/@carbon/motion-10" }],
   reject: [
     {
       code: `.foo { transition: all 70ms; }`,

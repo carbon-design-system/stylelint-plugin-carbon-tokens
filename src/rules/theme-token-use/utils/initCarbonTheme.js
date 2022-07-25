@@ -29,7 +29,7 @@ const missingButtonTokens = [
   "button-tertiary-hover"
 ];
 
-const doInitTheme = async (testOnlyVersion) => {
+const doInitTheme = async ({ carbonPath }) => {
   const _version = testOnlyVersion || version;
   const isV10 = _version.startsWith("10");
   let layoutTokens;

@@ -5,14 +5,26 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { version } from "@carbon/motion/package.json";
+import { version as installedVersion } from "@carbon/motion/package.json";
 
-const doInit = async (testOnlyVersion) => {
+const doInit = async ({ carbonPath }) => {
   const baseTokens = ["ease-in", "ease-out", "standard-easing"];
   const motionFunctions = ["motion"];
   let motionTokens;
+  let _version;
 
-  const _version = testOnlyVersion || version;
+  if (carbonPath) {
+    // eslint-disable-next-line
+    const module = await import(carbonPath);
+
+    // eslint-disable-next-line
+    const pkg = await import(`${carbonPath}/package.json`);
+
+    _version = pkg.version;
+  } else {
+    _version = installedVersion;
+  }
+
   const isV10 = _version.startsWith("10");
 
   if (isV10) {

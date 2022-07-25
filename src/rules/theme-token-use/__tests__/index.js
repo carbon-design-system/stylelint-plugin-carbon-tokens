@@ -140,7 +140,7 @@ testRule(rule, {
     true,
     {
       acceptCarbonColorTokens: true,
-      testOnlyVersion: "10"
+      carbonPath: "../../../../node_modules/@carbon/theme-10"
     }
   ],
   customSyntax: "postcss-scss",
@@ -170,7 +170,7 @@ testRule(rule, {
     true,
     {
       acceptIBMColorTokensCarbonV10Only: true,
-      testOnlyVersion: "10"
+      carbonPath: "../../../../node_modules/@carbon/theme-10"
     }
   ],
   customSyntax: "postcss-scss",
@@ -197,7 +197,7 @@ testRule(rule, {
     true,
     {
       acceptIBMColorTokensCarbonV10Only: true,
-      testOnlyVersion: "10"
+      carbonPath: "../../../../node_modules/@carbon/theme-10"
     }
   ],
   customSyntax: "postcss-scss",
