@@ -8,8 +8,8 @@
 import { formatTokenName } from "../../../utils/token-name";
 import { unstable_tokens as installedLayout } from "@carbon/layout";
 import { unstable_tokens as installedType } from "@carbon/type";
+import { version as installedVersion } from "@carbon/themes/package.json";
 import { white as installedWhite } from "@carbon/themes";
-import { version } from "@carbon/themes/package.json";
 
 const missingButtonTokens = [
   "button-danger-active",
@@ -29,28 +29,36 @@ const missingButtonTokens = [
   "button-tertiary-hover"
 ];
 
-const doInitTheme = async ({ carbonPath }) => {
-  const _version = testOnlyVersion || version;
-  const isV10 = _version.startsWith("10");
+const doInitTheme = async ({ carbonPath, carbonPackagePostfix }) => {
   let layoutTokens;
   let typeTokens;
   let tokens;
+  let _version;
 
-  if (isV10 && process.env.NODE_ENV === "test") {
-    // eslint-disable-next-line
-    const layoutModule = await import("@carbon/layout-10");
-    // eslint-disable-next-line
-    const typeModule = await import("@carbon/type-10");
-    // eslint-disable-next-line
-    const themeModule = await import("@carbon/themes-10");
+  if (carbonPath || carbonPackagePostfix) {
+    const carbonLocation = carbonPath || "/@carbon";
+    const postFix = carbonPackagePostfix || "";
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    const layoutModule = await import(`${carbonLocation}/layout${postFix}`);
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    const typeModule = await import(`${carbonLocation}/type${postFix}`);
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    const themesModule = await import(`${carbonLocation}/themes${postFix}`);
 
     layoutTokens = layoutModule.unstable_tokens;
     typeTokens = typeModule.unstable_tokens;
-    tokens = themeModule.white;
+    tokens = themesModule.white;
+
+    // eslint-disable-next-line
+    const pkg = await import(`${carbonLocation}/themes${carbonPackagePostfix || ""}/package.json`);
+
+    _version = pkg.version;
+
   } else {
     layoutTokens = installedLayout;
     typeTokens = installedType;
     tokens = installedWhite;
+    _version = installedVersion;
   }
 
   // map themes to recognizable tokens

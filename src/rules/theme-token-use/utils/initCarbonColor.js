@@ -10,25 +10,34 @@ import { colors as installedColors } from "@carbon/colors";
 // keys are color names, values are objects
 // value objects container key: intensity number, value actual color
 import { formatTokenName } from "../../../utils/token-name";
-import { version } from "@carbon/colors/package.json";
+import { version as installedVersion } from "@carbon/colors/package.json";
 
 const carbonColorPrefix = "$carbon--";
 const ibmColorPrefix = "$ibm-color__";
 
-const doInitColors = async ({ carbonPath }) => {
-  const isV10 = testOnlyVersion === "10" || version.startsWith("10");
+const doInitColors = async ({ carbonPath, carbonPackagePostfix }) => {
+  let _version;
   let colorTokens;
   const carbonColorTokens = [];
   const ibmColorTokens = []; // deprecated
 
-  if (isV10 && process.env.NODE_ENV === "test") {
-    // eslint-disable-next-line
-    const module = await import("@carbon/colors-10");
+  if (carbonPath || carbonPackagePostfix) {
+    const carbonLocation = carbonPath || "/@carbon";
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    const module = await import (`${carbonLocation}/colors${carbonPackagePostfix || ""}`);
 
     colorTokens = module.colors;
+
+    // eslint-disable-next-line
+    const pkg = await import(`${carbonLocation}/colors${carbonPackagePostfix || ""}/package.json`);
+
+    _version = pkg.version;
   } else {
+    _version = installedVersion;
     colorTokens = installedColors;
   }
+
+  const isV10 = _version.startsWith("10");
 
   for (const key in colorTokens) {
     if (Object.hasOwn(colorTokens, key)) {
