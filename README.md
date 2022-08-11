@@ -155,7 +155,7 @@ It's good practice to document any linter disables and to tidy up any that are n
 
 ### Carbon Versions supported
 
-Carbon V10 and V11 are supported, but not currently in the same repository.
+Carbon V10 and V11 are supported. If in the same repository (e.g. mono repo) each package will require it's own stylelint config and pass a `carbonPath` to each rule and optionally a `carbonModulePostfix`;
 
 ## Variables
 
