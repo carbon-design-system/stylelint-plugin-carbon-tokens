@@ -8,8 +8,9 @@
 import { formatTokenName } from "../../../utils/token-name";
 import { unstable_tokens as installedTokens } from "@carbon/motion";
 import { version as installedVersion } from "@carbon/motion/package.json";
+import loadModules from "../../../utils/loadModules";
 
-const doInit = async ({ carbonPath }) => {
+const doInit = async ({ carbonPath, carbonModulePostfix }) => {
   const motionTokens = [];
   const motionFunctions = ["motion"];
 
@@ -17,13 +18,11 @@ const doInit = async ({ carbonPath }) => {
   let _version;
 
   if (carbonPath) {
-    // eslint-disable-next-line
-    const module = await import(carbonPath);
-    // eslint-disable-next-line
-    const pkg = await import(`${carbonPath}/package.json`);
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    const { motion, pkg } = await loadModules(carbonPath, ["motion"], carbonModulePostfix);
 
     _version = pkg.version;
-    tokens = module.unstable_tokens;
+    tokens = motion.unstable_tokens;
   } else {
     tokens = installedTokens;
     _version = installedVersion;

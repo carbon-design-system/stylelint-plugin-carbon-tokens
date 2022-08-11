@@ -13,10 +13,11 @@
 import { formatTokenName } from "../../../utils/token-name";
 import { unstable_tokens as installedTokens } from "@carbon/layout";
 import { version as installedVersion } from "@carbon/layout/package.json";
+import loadModules from "../../../utils/loadModules";
 
 const carbonPrefix = "$carbon--";
 
-const doInit = async ({ carbonPath }) => {
+const doInit = async ({ carbonPath, carbonModulePostfix }) => {
   const containerTokens = [];
   const fluidSpacingTokens = [];
   const iconSizeTokens = [];
@@ -26,14 +27,12 @@ const doInit = async ({ carbonPath }) => {
   let _version;
 
   if (carbonPath) {
-    // eslint-disable-next-line
-    const module = await import(carbonPath);
-
-    // eslint-disable-next-line
-    const pkg = await import(`${carbonPath}/package.json`);
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    const { layout, pkg } = await loadModules(carbonPath, ["layout"], carbonModulePostfix);
 
     _version = pkg.version;
-    tokens = module.unstable_tokens;
+
+    tokens = layout.unstable_tokens;
   } else {
     tokens = installedTokens;
     _version = installedVersion;

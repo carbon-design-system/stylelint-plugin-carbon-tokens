@@ -120,7 +120,8 @@ testRule(rule, {
     true,
     {
       acceptCarbonTypeScaleFunction: true,
-      carbonPath: "../../../../node_modules/@carbon/type-10"
+      carbonPath: "node_modules/@carbon",
+      carbonModulePostfix: "-10"
     }
   ],
   customSyntax: "postcss-scss",
@@ -138,7 +139,7 @@ testRule(rule, {
     true,
     {
       acceptCarbonFontFamilyFunction: true,
-      carbonPath: "../../../../node_modules/@carbon/type-10"
+      carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10"
     }
   ],
   customSyntax: "postcss-scss",
@@ -156,7 +157,7 @@ testRule(rule, {
     true,
     {
       acceptCarbonFontWeightFunction: true,
-      carbonPath: "../../../../node_modules/@carbon/type-10"
+      carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10"
     }
   ],
   customSyntax: "postcss-scss",

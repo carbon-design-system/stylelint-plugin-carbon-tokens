@@ -125,7 +125,7 @@ testRule(rule, {
 
 testRule(rule, {
   ruleName,
-  config: [true, { carbonPath: "../../../../node_modules/@carbon/motion-10" }],
+  config: [true, { carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10" }],
   customSyntax: "postcss-scss",
   accept: [
     {

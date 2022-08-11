@@ -11,25 +11,22 @@ import { colors as installedColors } from "@carbon/colors";
 // value objects container key: intensity number, value actual color
 import { formatTokenName } from "../../../utils/token-name";
 import { version as installedVersion } from "@carbon/colors/package.json";
+import loadModules from "../../../utils/loadModules";
 
 const carbonColorPrefix = "$carbon--";
 const ibmColorPrefix = "$ibm-color__";
 
-const doInitColors = async ({ carbonPath, carbonPackagePostfix }) => {
+const doInitColors = async ({ carbonPath, carbonModulePostfix }) => {
   let _version;
   let colorTokens;
   const carbonColorTokens = [];
   const ibmColorTokens = []; // deprecated
 
-  if (carbonPath || carbonPackagePostfix) {
-    const carbonLocation = carbonPath || "/@carbon";
+  if (carbonPath) {
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
-    const module = await import (`${carbonLocation}/colors${carbonPackagePostfix || ""}`);
+    const { colors, pkg } = await loadModules(carbonPath, ["colors"], carbonModulePostfix);
 
-    colorTokens = module.colors;
-
-    // eslint-disable-next-line
-    const pkg = await import(`${carbonLocation}/colors${carbonPackagePostfix || ""}/package.json`);
+    colorTokens = colors.colors;
 
     _version = pkg.version;
   } else {

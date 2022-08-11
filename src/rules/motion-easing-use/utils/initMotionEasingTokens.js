@@ -6,19 +6,17 @@
  */
 
 import { version as installedVersion } from "@carbon/motion/package.json";
+import loadModules from "../../../utils/loadModules";
 
-const doInit = async ({ carbonPath }) => {
+const doInit = async ({ carbonPath, carbonModulePostfix }) => {
   const baseTokens = ["ease-in", "ease-out", "standard-easing"];
   const motionFunctions = ["motion"];
   let motionTokens;
   let _version;
 
   if (carbonPath) {
-    // eslint-disable-next-line
-    const module = await import(carbonPath);
-
-    // eslint-disable-next-line
-    const pkg = await import(`${carbonPath}/package.json`);
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    const { pkg } = await loadModules(carbonPath, ["motion"], carbonModulePostfix);
 
     _version = pkg.version;
   } else {

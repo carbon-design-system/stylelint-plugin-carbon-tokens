@@ -9,21 +9,19 @@
 // Types are applied via mixins and functions
 // const typeTokens = [];
 import { version as installedVersion } from "@carbon/type/package.json";
+import loadModules from "../../../utils/loadModules";
 
-const doInit = async ({ carbonPath }) => {
+const doInit = async ({ carbonPath, carbonModulePostfix }) => {
   // permitted carbon type functions
   // TODO: read this from carbon
   let typeFunctions;
   let _version;
 
   if (carbonPath) {
-    // eslint-disable-next-line
-        const module = await import(carbonPath);
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    const { pkg } = await loadModules(carbonPath, ["type"], carbonModulePostfix);
 
-        // eslint-disable-next-line
-        const pkg = await import(`${carbonPath}/package.json`);
-
-        _version = pkg.version;
+    _version = pkg.version;
   } else {
     _version = installedVersion;
   }

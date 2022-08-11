@@ -10,6 +10,7 @@ import { unstable_tokens as installedLayout } from "@carbon/layout";
 import { unstable_tokens as installedType } from "@carbon/type";
 import { version as installedVersion } from "@carbon/themes/package.json";
 import { white as installedWhite } from "@carbon/themes";
+import loadModules from "../../../utils/loadModules";
 
 const missingButtonTokens = [
   "button-danger-active",
@@ -29,28 +30,23 @@ const missingButtonTokens = [
   "button-tertiary-hover"
 ];
 
-const doInitTheme = async ({ carbonPath, carbonPackagePostfix }) => {
+const doInitTheme = async ({ carbonPath, carbonModulePostfix }) => {
   let layoutTokens;
   let typeTokens;
   let tokens;
   let _version;
 
-  if (carbonPath || carbonPackagePostfix) {
-    const carbonLocation = carbonPath || "/@carbon";
-    const postFix = carbonPackagePostfix || "";
-    // eslint-disable-next-line node/no-unsupported-features/es-syntax
-    const layoutModule = await import(`${carbonLocation}/layout${postFix}`);
-    // eslint-disable-next-line node/no-unsupported-features/es-syntax
-    const typeModule = await import(`${carbonLocation}/type${postFix}`);
-    // eslint-disable-next-line node/no-unsupported-features/es-syntax
-    const themesModule = await import(`${carbonLocation}/themes${postFix}`);
+  if (carbonPath) {
 
-    layoutTokens = layoutModule.unstable_tokens;
-    typeTokens = typeModule.unstable_tokens;
-    tokens = themesModule.white;
+    const { layout, type, themes, pkg } = await loadModules(carbonPath,  [
+      "themes",
+      "layout",
+      "type"
+      ], carbonModulePostfix);
 
-    // eslint-disable-next-line
-    const pkg = await import(`${carbonLocation}/themes${carbonPackagePostfix || ""}/package.json`);
+    layoutTokens = layout.unstable_tokens;
+    typeTokens = type.unstable_tokens;
+    tokens = themes.white;
 
     _version = pkg.version;
 
