@@ -178,6 +178,7 @@ const checkTokens = function (item, ruleInfo, options, knownVariables) {
         result.source = tokenSet.source;
         result.accepted = tokenSet.accept;
         result.done = true; // all tests completed
+
         break;
       }
     }

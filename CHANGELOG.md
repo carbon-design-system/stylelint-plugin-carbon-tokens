@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0-beta.14
+
+- Adds the ability to specify a Carbon path as part of each rule. This is mainly for use with multiple Carbon versions in monorepo packages.
+
 ## 2.0.0-beta.13
 
 - Fix use of carbon--motion prefix in v10.

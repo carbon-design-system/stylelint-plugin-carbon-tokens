@@ -42,7 +42,8 @@ const defaultOptions = {
   acceptUndefinedVariables: false,
   acceptScopes: ["theme"],
   // preferContextFixes: false,
-  testOnlyVersion: undefined
+  carbonPath: undefined,
+  carbonModulePostfix: undefined,
 };
 
 export default function rule(primaryOptions, secondaryOptions, context) {
@@ -67,8 +68,10 @@ export default function rule(primaryOptions, secondaryOptions, context) {
             val === undefined || typeof val === "boolean",
           acceptUndefinedVariables: (val) =>
             val === undefined || typeof val === "boolean",
-          testOnlyVersion: (val) =>
-            val === undefined || ["10", "v11"].includes(val)
+          carbonPath: (val) =>
+            val === undefined || val.indexOf("@carbon") > -1,
+          carbonModulePostfix: (val) =>
+            val === undefined || typeof val === "string"
           // preferContextFixes: (val) =>
           //   val === undefined || typeof val === "boolean"
         },

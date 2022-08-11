@@ -1,3 +1,4 @@
+/* eslint-disable  */
 /**
  * Copyright IBM Corp. 2020, 2022
  *
@@ -11,29 +12,33 @@
 // on the carbon designs system website.
 import { formatTokenName } from "../../../utils/token-name";
 import { unstable_tokens as installedTokens } from "@carbon/layout";
-import { version } from "@carbon/layout/package.json";
+import { version as installedVersion } from "@carbon/layout/package.json";
+import loadModules from "../../../utils/loadModules";
 
 const carbonPrefix = "$carbon--";
 
-const doInit = async (testOnlyVersion) => {
+const doInit = async ({ carbonPath, carbonModulePostfix }) => {
   const containerTokens = [];
   const fluidSpacingTokens = [];
   const iconSizeTokens = [];
   const layoutTokens = [];
   const spacingTokens = [];
-  const _version = testOnlyVersion || version;
-  const isV10 = _version.startsWith("10");
   let tokens;
+  let _version;
 
-  if (isV10 && process.env.NODE_ENV === "test") {
-    // eslint-disable-next-line
-    const module = await import("@carbon/layout-10");
+  if (carbonPath) {
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    const { layout, pkg } = await loadModules(carbonPath, ["layout"], carbonModulePostfix);
 
-    tokens = module.unstable_tokens;
+    _version = pkg.version;
+
+    tokens = layout.unstable_tokens;
   } else {
     tokens = installedTokens;
+    _version = installedVersion;
   }
 
+  const isV10 = _version.startsWith("10");
   const functions = isV10 ? ["carbon--mini-units", "mini-units"] : [];
 
   for (const key in tokens) {

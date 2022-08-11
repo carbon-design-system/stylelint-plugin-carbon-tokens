@@ -193,7 +193,10 @@ testRule(rule, {
   customSyntax: "postcss-scss",
   config: [
     true,
-    { acceptCarbonMiniUnitsFunction: true, testOnlyVersion: "10" }
+    {
+      acceptCarbonMiniUnitsFunction: true,
+      carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10"
+    }
   ],
 
   accept: [
@@ -212,7 +215,7 @@ testRule(rule, {
 testRule(rule, {
   ruleName,
   customSyntax: "postcss-scss",
-  config: [true, { testOnlyVersion: "10" }],
+  config: [true, { carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10" }],
   accept: [
     {
       code: `.foo { left: $carbon--spacing-04; }`,
@@ -417,7 +420,10 @@ testRule(rule, {
   customSyntax: "postcss-scss",
   config: [
     true,
-    { acceptCarbonMiniUnitsFunction: true, testOnlyVersion: "10" }
+    {
+      acceptCarbonMiniUnitsFunction: true,
+      carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10"
+    }
   ],
   accept: [
     {
@@ -434,7 +440,7 @@ testRule(rule, {
 testRule(rule, {
   ruleName,
   customSyntax: "postcss-scss",
-  config: [true, { testOnlyVersion: "10" }],
+  config: [true, { carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10" }],
   reject: [
     {
       code: `.foo { left: mini-units(4); }`,

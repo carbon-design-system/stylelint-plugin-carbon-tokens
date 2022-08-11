@@ -9,7 +9,7 @@ import { doInit } from "./initTypeTokens";
 import { fixes } from "./fixes";
 
 export default async function getTypeInfo(options) {
-  const { typeFunctions, version } = await doInit(options.testOnlyVersion);
+  const { typeFunctions, version } = await doInit(options);
 
   return {
     // There are no type tokens that are used directly

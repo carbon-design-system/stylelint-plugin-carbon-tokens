@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import rule, { messages, ruleName } from "..";
+import rule, {  messages, ruleName } from "..";
 
 testRule(rule, {
   ruleName,
@@ -126,16 +126,16 @@ testRule(rule, {
 // v10 test
 testRule(rule, {
   ruleName,
-  config: [true, { testOnlyVersion: "10" }],
+  config: [true, { carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10" }],
   customSyntax: "postcss-scss",
   accept: [
     {
       code: ".foo { transition: width $duration--fast-01 linear ease-in; }",
-      description: "Carbon motion token expected for transition."
+      description: "Carbon motion token expected for transition v10."
     },
     {
       code: ".foo { animation: test $duration--fast-01 linear ease-in myAnim; }",
-      description: "Carbon motion token expected for animation."
+      description: "Carbon motion token expected for animation v10."
     }
   ]
 });
@@ -349,37 +349,37 @@ testRule(rule, {
   ruleName,
   customSyntax: "postcss-scss",
   fix: true,
-  config: [true, { testOnlyVersion: "10" }],
+  config: [true, { carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10" }],
   reject: [
-    {
-      code: `.foo { transition: all 70ms; }`,
-      fixed: `.foo { transition: all $duration--fast-01; }`,
-      description: "v10 reject and fix literal duration matching token '70ms'"
-    },
-    {
-      code: `.foo { transition: all 110ms; }`,
-      fixed: `.foo { transition: all $duration--fast-02; }`,
-      description: "v10 reject and fix literal duration matching token '110ms'"
-    },
-    {
-      code: `.foo { transition: all 150ms; }`,
-      fixed: `.foo { transition: all $duration--moderate-01; }`,
-      description: "v10 reject and fix literal duration matching token '150ms'"
-    },
-    {
-      code: `.foo { transition: all 240ms; }`,
-      fixed: `.foo { transition: all $duration--moderate-02; }`,
-      description: "v10 reject and fix literal duration matching token '240ms'"
-    },
-    {
-      code: `.foo { transition: all 400ms; }`,
-      fixed: `.foo { transition: all $duration--slow-01; }`,
-      description: "v10 reject and fix literal duration matching token '400ms'"
-    },
-    {
-      code: `.foo { transition: all 700ms; }`,
-      fixed: `.foo { transition: all $duration--slow-02; }`,
-      description: "v10 reject and fix literal duration matching token '700ms'"
-    }
+  {
+    code: `.foo { transition: all 70ms; }`,
+    fixed: `.foo { transition: all $duration--fast-01; }`,
+    description: "v11 reject and fix literal duration matching token '70ms'"
+  },
+  {
+    code: `.foo { transition: all 110ms; }`,
+    fixed: `.foo { transition: all $duration--fast-02; }`,
+    description: "v11 reject and fix literal duration matching token '110ms'"
+  },
+  {
+    code: `.foo { transition: all 150ms; }`,
+    fixed: `.foo { transition: all $duration--moderate-01; }`,
+    description: "v11 reject and fix literal duration matching token '150ms'"
+  },
+  {
+    code: `.foo { transition: all 240ms; }`,
+    fixed: `.foo { transition: all $duration--moderate-02; }`,
+    description: "v11 reject and fix literal duration matching token '240ms'"
+  },
+  {
+    code: `.foo { transition: all 400ms; }`,
+    fixed: `.foo { transition: all $duration--slow-01; }`,
+    description: "v11 reject and fix literal duration matching token '400ms'"
+  },
+  {
+    code: `.foo { transition: all 700ms; }`,
+    fixed: `.foo { transition: all $duration--slow-02; }`,
+    description: "v11 reject and fix literal duration matching token '700ms'"
+  }
   ]
 });

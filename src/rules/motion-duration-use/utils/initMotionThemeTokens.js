@@ -7,25 +7,29 @@
 
 import { formatTokenName } from "../../../utils/token-name";
 import { unstable_tokens as installedTokens } from "@carbon/motion";
-import { version } from "@carbon/motion/package.json";
+import { version as installedVersion } from "@carbon/motion/package.json";
+import loadModules from "../../../utils/loadModules";
 
-const doInit = async (testOnlyVersion) => {
+const doInit = async ({ carbonPath, carbonModulePostfix }) => {
   const motionTokens = [];
   const motionFunctions = ["motion"];
 
-  const _version = testOnlyVersion || version;
-  const isV10 = _version.startsWith("10");
-  const durationPrefix = isV10 ? "$duration--" : "$duration-";
   let tokens;
+  let _version;
 
-  if (isV10 && process.env.NODE_ENV === "test") {
-    // eslint-disable-next-line
-    const module = await import("@carbon/motion-10");
+  if (carbonPath) {
+    // eslint-disable-next-line node/no-unsupported-features/es-syntax
+    const { motion, pkg } = await loadModules(carbonPath, ["motion"], carbonModulePostfix);
 
-    tokens = module.unstable_tokens;
+    _version = pkg.version;
+    tokens = motion.unstable_tokens;
   } else {
     tokens = installedTokens;
+    _version = installedVersion;
   }
+
+  const isV10 = _version.startsWith("10");
+  const durationPrefix = isV10 ? "$duration--" : "$duration-";
 
   for (const key in tokens) {
     if (Object.hasOwn(tokens, key)) {

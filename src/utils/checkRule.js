@@ -133,6 +133,8 @@ export default async function checkRule(
 
   const knownVariables = {}; // used to contain variable declarations
 
+  const ruleInfo = await getRuleInfo(options);
+
   await root.walkDecls(async (decl) => {
     const tokenizedValue = tokenizeValue(decl.value);
 
@@ -178,7 +180,6 @@ export default async function checkRule(
         // Some color properties have
         // variable parameters lists where color is not at a fixed position
 
-        const ruleInfo = await getRuleInfo(options);
         const itemsToCheck =
           // eslint-disable-next-line eqeqeq
           tokenizedValue.type == TOKEN_TYPES.LIST

@@ -140,7 +140,8 @@ testRule(rule, {
     true,
     {
       acceptCarbonColorTokens: true,
-      testOnlyVersion: "10"
+      carbonPath: "node_modules/@carbon",
+      carbonModulePostfix: "-10"
     }
   ],
   customSyntax: "postcss-scss",
@@ -156,7 +157,7 @@ testRule(rule, {
   ],
   reject: [
     {
-      code: ".foo { background-color: $ibm-color__blue-90; }",
+      code: ".foo { background-color: $ibm-color__blue-80; }",
       description: "Reject using a ibm color token",
       message: messages.expected
     }
@@ -170,7 +171,8 @@ testRule(rule, {
     true,
     {
       acceptIBMColorTokensCarbonV10Only: true,
-      testOnlyVersion: "10"
+      carbonPath: "node_modules/@carbon",
+      carbonModulePostfix: "-10"
     }
   ],
   customSyntax: "postcss-scss",
@@ -197,7 +199,8 @@ testRule(rule, {
     true,
     {
       acceptIBMColorTokensCarbonV10Only: true,
-      testOnlyVersion: "10"
+      carbonPath: "node_modules/@carbon",
+      carbonModulePostfix: "-10"
     }
   ],
   customSyntax: "postcss-scss",
