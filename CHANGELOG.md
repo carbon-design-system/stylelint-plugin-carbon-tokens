@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0-rc.0
+
+- Makes use of `unstable_metadata` now available in @carbon/themes version 11.
+
 ## 2.0.0-beta.14
 
 - Adds the ability to specify a Carbon path as part of each rule. This is mainly for use with multiple Carbon versions in monorepo packages.
