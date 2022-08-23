@@ -586,3 +586,24 @@ testRule(rule, {
 //     }
 //   ]
 // });
+
+testRule(rule, {
+  ruleName,
+  config: {
+    carbonPath: "node_modules/@carbon",
+    carbonModulePostfix: "-11-4"
+  },
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { color: $button-danger-primary; }`,
+      description:
+        "Accept theme token button danger primary in 11-4 pre unstable_metadata."
+    },
+    {
+      code: `.foo { color: theme.$button-danger-primary; }`,
+      description:
+        "Accept theme token button danger primary with theme. in 11-4 pre unstable_metadata."
+    }
+  ]
+});

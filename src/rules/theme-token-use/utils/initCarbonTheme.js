@@ -5,11 +5,14 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import {
+  unstable_metadata as installedMetadata,
+  white as installedWhite
+} from "@carbon/themes";
 import { formatTokenName } from "../../../utils/token-name";
 import { unstable_tokens as installedLayout } from "@carbon/layout";
 import { unstable_tokens as installedType } from "@carbon/type";
 import { version as installedVersion } from "@carbon/themes/package.json";
-import { white as installedWhite } from "@carbon/themes";
 import loadModules from "../../../utils/loadModules";
 
 const missingButtonTokens = [
@@ -35,39 +38,51 @@ const doInitTheme = async ({ carbonPath, carbonModulePostfix }) => {
   let typeTokens;
   let tokens;
   let _version;
+  let unstable_metadata;
 
   if (carbonPath) {
-
-    const { layout, type, themes, pkg } = await loadModules(carbonPath,  [
-      "themes",
-      "layout",
-      "type"
-      ], carbonModulePostfix);
+    const { layout, type, themes, pkg } = await loadModules(
+      carbonPath,
+      ["themes", "layout", "type"],
+      carbonModulePostfix
+    );
 
     layoutTokens = layout.unstable_tokens;
     typeTokens = type.unstable_tokens;
     tokens = themes.white;
+    unstable_metadata = themes.unstable_metadata;
 
     _version = pkg.version;
-
   } else {
     layoutTokens = installedLayout;
     typeTokens = installedType;
     tokens = installedWhite;
+    unstable_metadata = installedMetadata;
     _version = installedVersion;
   }
 
-  // map themes to recognizable tokens
-  const themeTokens = Object.keys(tokens)
-    .filter(
-      (token) => !layoutTokens.includes(token) && !typeTokens.includes(token)
-    )
-    .map((token) => `$${formatTokenName(token)}`);
+  let themeTokens;
 
-  // TODO remove when available in @carbon/themes
-  missingButtonTokens.forEach((token) => {
-    themeTokens.push(`$${formatTokenName(token)}`);
-  });
+  if (unstable_metadata) {
+    // prefer to installedWhite.
+    themeTokens = unstable_metadata.v11
+      .filter((token) => token.type === "color")
+      .map((token) => `$${token.name}`);
+  } else {
+    // map themes to recognizable tokens
+    themeTokens = Object.keys(tokens)
+      .filter(
+        (token) => !layoutTokens.includes(token) && !typeTokens.includes(token)
+      )
+      .map((token) => `$${formatTokenName(token)}`);
+
+    if (!_version.startsWith("10")) {
+      // TODO remove when available in @carbon/themes
+      missingButtonTokens.forEach((token) => {
+        themeTokens.push(`$${formatTokenName(token)}`);
+      });
+    }
+  }
 
   // permitted carbon theme functions
   // TODO: read this from carbon
