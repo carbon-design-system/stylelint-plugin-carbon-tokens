@@ -7,6 +7,7 @@
 
 import {
   unstable_metadata as installedMetadata,
+  tokens as installedTokens,
   white as installedWhite
 } from "@carbon/themes";
 import { formatTokenName } from "../../../utils/token-name";
@@ -37,6 +38,7 @@ const doInitTheme = async ({ carbonPath, carbonModulePostfix }) => {
   let layoutTokens;
   let typeTokens;
   let tokens;
+  let white;
   let _version;
   let unstable_metadata;
 
@@ -49,14 +51,16 @@ const doInitTheme = async ({ carbonPath, carbonModulePostfix }) => {
 
     layoutTokens = layout.unstable_tokens;
     typeTokens = type.unstable_tokens;
-    tokens = themes.white;
+    white = themes.white;
+    tokens = themes.tokens;
     unstable_metadata = themes.unstable_metadata;
 
     _version = pkg.version;
   } else {
     layoutTokens = installedLayout;
     typeTokens = installedType;
-    tokens = installedWhite;
+    white = installedWhite;
+    tokens = installedTokens;
     unstable_metadata = installedMetadata;
     _version = installedVersion;
   }
@@ -68,20 +72,22 @@ const doInitTheme = async ({ carbonPath, carbonModulePostfix }) => {
     themeTokens = unstable_metadata.v11
       .filter((token) => token.type === "color")
       .map((token) => `$${token.name}`);
+  } else if (tokens?.colors) {
+    // Carbon v10 as used in v1.0.0 of linter
+    themeTokens = tokens.colors.map((token) => `$${formatTokenName(token)}`);
   } else {
+    // Should be v11 prior to addition of `unstable_metadata` (11.4 tested)
+
     // map themes to recognizable tokens
-    themeTokens = Object.keys(tokens)
+    themeTokens = Object.keys(white)
       .filter(
         (token) => !layoutTokens.includes(token) && !typeTokens.includes(token)
       )
       .map((token) => `$${formatTokenName(token)}`);
 
-    if (!_version.startsWith("10")) {
-      // TODO remove when available in @carbon/themes
-      missingButtonTokens.forEach((token) => {
-        themeTokens.push(`$${formatTokenName(token)}`);
-      });
-    }
+    missingButtonTokens.forEach((token) => {
+      themeTokens.push(`$${formatTokenName(token)}`);
+    });
   }
 
   // permitted carbon theme functions
