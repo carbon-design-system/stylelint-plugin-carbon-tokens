@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.0
+
+- Released after testing in @carbon/ibm-products
+
 ## 2.0.0-rc.0
 
 - Makes use of `unstable_metadata` now available in @carbon/themes version 11.
