@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.1
+
+- Missing postcss dependency
+
 ## 2.0.0
 
 - Released after testing in @carbon/ibm-products
