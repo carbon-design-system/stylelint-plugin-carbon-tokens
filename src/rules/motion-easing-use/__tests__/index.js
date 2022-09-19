@@ -125,7 +125,10 @@ testRule(rule, {
 
 testRule(rule, {
   ruleName,
-  config: [true, { carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10" }],
+  config: [
+    true,
+    { carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10" }
+  ],
   customSyntax: "postcss-scss",
   accept: [
     {
@@ -156,3 +159,18 @@ testRule(rule, {
 //     }
 //   ]
 // });
+
+testRule(rule, {
+  ruleName,
+  config: true,
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `@use '@carbon/react' with (
+  $css--default-type: true,
+  $css--reset: true
+);`,
+      description: "A use statement should not generate a warning"
+    }
+  ]
+});
