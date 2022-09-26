@@ -386,7 +386,6 @@ testRule(rule, {
 `,
       description: "Should accept named scoped theme token"
     },
-    },
     {
       code: `
 @use 'carbon-components/scss/globals/scss/_vars.scss';
@@ -396,6 +395,7 @@ testRule(rule, {
 };
 `,
       description: "Should accept named scoped theme token from vars"
+    },
     {
       code: `
 @use 'carbon-components/scss/globals/scss/_vars.scss' as carbon_vars;
