@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.0.2
+
+- Adds simplistic implementation of inline @use renames including vars
+
 ## 2.0.1
 
 - Missing postcss dependency

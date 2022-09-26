@@ -135,6 +135,37 @@ export default async function checkRule(
 
   const ruleInfo = await getRuleInfo(options);
 
+  await root.walkAtRules((rule) => {
+    if (rule.name === "use") {
+      const [usedThing, usedScope] = rule.params.split(" as ");
+
+      // eslint-disable-next-line regexp/no-unused-capturing-group
+      const carbonThingRegex = /(@carbon)|(carbon-components)/;
+
+      // TODO: find more elegant way of coping with various carbon scopes
+      // perhaps a map of paths to scopes and which rules they apply to
+      if (carbonThingRegex.test(usedThing)) {
+        let scope = usedScope;
+        const indexOfVars = usedThing.indexOf("vars");
+
+        if (!scope && indexOfVars > -1) {
+          scope = "vars";
+        }
+
+        if (
+          scope &&
+          (indexOfVars > -1 ||
+            // or file matches one of hte expected scopes
+            options.acceptScopes.find(
+              (aScope) => usedThing.endsWith(aScope) > -1
+            ))
+        ) {
+          options.acceptScopes.push(scope);
+        }
+      }
+    }
+  });
+
   await root.walkDecls(async (decl) => {
     const tokenizedValue = tokenizeValue(decl.value);
 
