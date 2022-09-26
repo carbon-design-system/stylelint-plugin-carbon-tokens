@@ -137,17 +137,28 @@ export default async function checkRule(
 
   await root.walkAtRules((rule) => {
     if (rule.name === "use") {
-      const [usedThing, scope] = rule.params.split(" as ");
+      const [usedThing, usedScope] = rule.params.split(" as ");
 
       // eslint-disable-next-line regexp/no-unused-capturing-group
       const carbonThingRegex = /(@carbon)|(carbon-components)/;
 
-      if (scope && carbonThingRegex.test(usedThing)) {
+      // TODO: find more elegant way of coping with various carbon scopes
+      // perhaps a map of paths to scopes and which rules they apply to
+      if (carbonThingRegex.test(usedThing)) {
+        let scope = usedScope;
+        const indexOfVars = usedThing.indexOf("vars");
+
+        if (!scope && indexOfVars > -1) {
+          scope = "vars";
+        }
+
         if (
-          usedThing.indexOf("vars") > -1 ||
-          // or file matches one of hte expected scopes
-          // TODO: find more elegant way of doing this
-          options.acceptScopes.find((aScope) => usedThing.endsWith(aScope) > -1)
+          scope &&
+          (indexOfVars > -1 ||
+            // or file matches one of hte expected scopes
+            options.acceptScopes.find(
+              (aScope) => usedThing.endsWith(aScope) > -1
+            ))
         ) {
           options.acceptScopes.push(scope);
         }
