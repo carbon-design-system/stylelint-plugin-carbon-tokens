@@ -375,6 +375,26 @@ testRule(rule, {
 };
 `,
       description: "Should accept scoped theme token"
+    },
+    {
+      code: `
+@use '@carbon/theme' as my_scope;
+
+.foo {
+  background-color: my_scope.$layer-01;
+};
+`,
+      description: "Should accept named scoped theme my_scope.$token"
+    },
+    {
+      code: `
+@use 'carbon-components/scss/globals/scss/_vars.scss' as carbon_vars;
+
+.foo {
+  background-color: carbon_vars.$layer-01;
+};
+`,
+      description: "Should accept named scoped theme token from vars"
     }
   ],
   reject: [

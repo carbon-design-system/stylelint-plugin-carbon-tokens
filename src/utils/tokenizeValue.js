@@ -372,19 +372,23 @@ const processTokens = (tokens) => {
           } else if (/^#[0-9a-f]*$/.test(token[0])) {
             // color literal
             type = TOKEN_TYPES.COLOR_LITERAL;
-          } else if (/^-?(?:[a-z]+\.)?\$/i.test(token[0])) {
-            const parts = token[0].split(".");
+          } else {
+            const scopeCheck = /^-?(?:[a-z_-][\w-]*\.)?\$/i.exec(token[0]);
 
-            if (parts.length === 2) {
-              addInfo.scope = parts[0];
-              addInfo.value = parts[1];
+            if (scopeCheck) {
+              const dollarPos = scopeCheck[0].length - 1;
+
+              if (dollarPos > 0) {
+                addInfo.scope = scopeCheck[0].substring(0, dollarPos - 1);
+                addInfo.value = token[0].substring(dollarPos);
+              }
+
+              type = TOKEN_TYPES.SCSS_VAR;
+            } else if (/^-?\$/.test(token[0])) {
+              type = TOKEN_TYPES.SCSS_VAR;
+            } else if (/^[^0-9#]/.test(token[0])) {
+              type = TOKEN_TYPES.TEXT_LITERAL;
             }
-
-            type = TOKEN_TYPES.SCSS_VAR;
-          } else if (/^-?\$/.test(token[0])) {
-            type = TOKEN_TYPES.SCSS_VAR;
-          } else if (/^[^0-9#]/.test(token[0])) {
-            type = TOKEN_TYPES.TEXT_LITERAL;
           }
 
           item = {

@@ -53,7 +53,7 @@ const defaultOptions = {
   acceptCarbonMiniUnitsFunction: false,
   acceptScopes: ["layout"],
   carbonPath: undefined,
-  carbonModulePostfix: undefined,
+  carbonModulePostfix: undefined
 };
 
 export default function rule(primaryOptions, secondaryOptions, context) {
@@ -82,8 +82,7 @@ export default function rule(primaryOptions, secondaryOptions, context) {
             val === undefined || typeof val === "boolean",
           acceptCarbonMiniUnitsFunction: (val) =>
             val === undefined || typeof val === "boolean",
-          carbonPath: (val) =>
-          val === undefined || val.indexOf("@carbon") > -1,
+          carbonPath: (val) => val === undefined || val.indexOf("@carbon") > -1,
           carbonModulePostfix: (val) =>
             val === undefined || typeof val === "string"
         },
