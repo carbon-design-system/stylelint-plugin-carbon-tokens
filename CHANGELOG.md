@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.1.0
+
+- feat: add improved scope fixes
+
 ## 2.0.2
 
 - Adds simplistic implementation of inline @use renames including vars
