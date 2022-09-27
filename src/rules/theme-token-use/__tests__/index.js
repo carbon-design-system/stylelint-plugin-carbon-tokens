@@ -596,6 +596,26 @@ testRule(rule, {
       code: ".foo { outline: 2px $disabled-02; }",
       description: "Reject v10 theme token $disabled-02 and fix outline",
       fixed: ".foo { outline: 2px $border-disabled; }"
+    },
+    {
+      code: "@use '@carbon/theme'; .foo { color: $active-danger; }",
+      description: "Reject v10 theme token $active-danger but fix with scope",
+      fixed:
+        "@use '@carbon/theme'; .foo { color: theme.$button-danger-active; }"
+    },
+    {
+      code: "@use '@carbon/theme' as carbon_theme; .foo { color: $active-danger; }",
+      description:
+        "Reject v10 theme token $active-danger but fix with carbon_theme scope",
+      fixed:
+        "@use '@carbon/theme' as carbon_theme; .foo { color: carbon_theme.$button-danger-active; }"
+    },
+    {
+      code: "@use '@carbon/layout'; @use '@carbon/theme' as carbon_theme; .foo { color: $active-danger; }",
+      description:
+        "Reject v10 theme token $active-danger but fix with carbon_theme scope ignoring other scopes",
+      fixed:
+        "@use '@carbon/layout'; @use '@carbon/theme' as carbon_theme; .foo { color: carbon_theme.$button-danger-active; }"
     }
   ]
 });

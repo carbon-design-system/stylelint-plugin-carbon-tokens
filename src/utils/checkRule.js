@@ -135,6 +135,8 @@ export default async function checkRule(
 
   const ruleInfo = await getRuleInfo(options);
 
+  const localCarbonScopes = [];
+
   await root.walkAtRules((rule) => {
     if (rule.name === "use") {
       const [usedThing, usedScope] = rule.params.split(" as ");
@@ -148,8 +150,22 @@ export default async function checkRule(
         let scope = usedScope;
         const indexOfVars = usedThing.indexOf("vars");
 
+        // build list of local scopes
         if (!scope && indexOfVars > -1) {
           scope = "vars";
+          localCarbonScopes.push("vars");
+        } else if (scope) {
+          if (scope !== "*") {
+            localCarbonScopes.push(scope);
+          }
+        } else {
+          const knownScope = options.acceptScopes.find(
+            (aScope) => usedThing.indexOf(aScope) > -1
+          );
+
+          if (knownScope) {
+            localCarbonScopes.push(knownScope);
+          }
         }
 
         if (
@@ -157,7 +173,7 @@ export default async function checkRule(
           (indexOfVars > -1 ||
             // or file matches one of hte expected scopes
             options.acceptScopes.find(
-              (aScope) => usedThing.endsWith(aScope) > -1
+              (aScope) => usedThing.indexOf(aScope) > -1
             ))
         ) {
           options.acceptScopes.push(scope);
@@ -165,6 +181,9 @@ export default async function checkRule(
       }
     }
   });
+
+  // add no scope last.
+  localCarbonScopes.push("");
 
   await root.walkDecls(async (decl) => {
     const tokenizedValue = tokenizeValue(decl.value);
@@ -248,35 +267,43 @@ export default async function checkRule(
               });
             });
 
-            const reportsFix = [];
-
             if (workingValue !== decl.value) {
-              // test new value
-              const tokenizedValueFix = tokenizeValue(workingValue);
-              const itemsToCheckFix =
-                tokenizedValueFix.type === TOKEN_TYPES.LIST
-                  ? tokenizedValueFix.items
-                  : [tokenizedValueFix];
+              for (let si = 0; si < localCarbonScopes.length; si++) {
+                const reportsFix = [];
+                const scope = localCarbonScopes[si];
 
-              for (const itemToCheckFix of itemsToCheckFix) {
-                const newReports = checkItems(
-                  itemToCheckFix.items,
-                  decl,
-                  propSpec,
-                  ruleInfo,
-                  knownVariables
-                );
+                if (scope.length > 0) {
+                  workingValue = `${scope}.${workingValue}`;
+                }
 
-                if (newReports?.length > 0) {
-                  reportsFix.push(...newReports);
+                // test new value
+                const tokenizedValueFix = tokenizeValue(workingValue);
+                const itemsToCheckFix =
+                  tokenizedValueFix.type === TOKEN_TYPES.LIST
+                    ? tokenizedValueFix.items
+                    : [tokenizedValueFix];
+
+                for (const itemToCheckFix of itemsToCheckFix) {
+                  const newReports = checkItems(
+                    itemToCheckFix.items,
+                    decl,
+                    propSpec,
+                    ruleInfo,
+                    knownVariables
+                  );
+
+                  if (newReports?.length > 0) {
+                    reportsFix.push(...newReports);
+                  }
+                }
+
+                // If any fixes applied do not create an accepted result then do NOT update decl.value
+                if (reportsFix.length === 0) {
+                  fixed = true;
+                  decl.value = workingValue;
+                  break; // fixed no need to try next scope
                 }
               }
-            }
-
-            // If any fixes applied do not create an accepted result then do NOT update decl.value
-            if (reportsFix.length === 0) {
-              fixed = true;
-              decl.value = workingValue;
             }
           }
 
