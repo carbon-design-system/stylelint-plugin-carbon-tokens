@@ -137,6 +137,7 @@ export default async function checkRule(
 
   const localCarbonScopes = [];
 
+  // **** walk at rules to find carbon @use scopes
   await root.walkAtRules((rule) => {
     if (rule.name === "use") {
       const [usedThing, usedScope] = rule.params.split(" as ");
@@ -185,6 +186,7 @@ export default async function checkRule(
   // add no scope last.
   localCarbonScopes.push("");
 
+  // **** walk rules and check values
   await root.walkDecls(async (decl) => {
     const tokenizedValue = tokenizeValue(decl.value);
 
@@ -222,7 +224,7 @@ export default async function checkRule(
         });
       }
 
-      // read the prop spec
+      // *** Does the prop need to be checked?
       const propSpec = checkProp(decl.prop, options.includeProps);
 
       if (propSpec) {
@@ -238,6 +240,7 @@ export default async function checkRule(
 
         const reports = [];
 
+        // *** check each item found in value
         for (const itemToCheck of itemsToCheck) {
           const newReports = checkItems(
             itemToCheck.items,
@@ -252,6 +255,7 @@ export default async function checkRule(
           }
         }
 
+        // *** found issues try to fix and report if not fixed
         if (reports.length > 0) {
           let fixed = false;
 

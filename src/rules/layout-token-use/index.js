@@ -40,7 +40,7 @@ const defaultOptions = {
     // "/^border-/",
     // "/^box-shadow$/<1 -2>",
   ],
-  // Accept transparent, common reset values, 0, proportioanl values,
+  // Accept transparent, common reset values, 0, proportional values,
   acceptValues: [
     "/inherit|initial|auto|none|unset/",
     "/^0[a-z]*$/",
