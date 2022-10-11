@@ -195,7 +195,8 @@ testRule(rule, {
     true,
     {
       acceptCarbonMiniUnitsFunction: true,
-      carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10"
+      carbonPath: "node_modules/@carbon",
+      carbonModulePostfix: "-10"
     }
   ],
 
@@ -215,7 +216,10 @@ testRule(rule, {
 testRule(rule, {
   ruleName,
   customSyntax: "postcss-scss",
-  config: [true, { carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10" }],
+  config: [
+    true,
+    { carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10" }
+  ],
   accept: [
     {
       code: `.foo { left: $carbon--spacing-04; }`,
@@ -422,7 +426,8 @@ testRule(rule, {
     true,
     {
       acceptCarbonMiniUnitsFunction: true,
-      carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10"
+      carbonPath: "node_modules/@carbon",
+      carbonModulePostfix: "-10"
     }
   ],
   accept: [
@@ -440,7 +445,10 @@ testRule(rule, {
 testRule(rule, {
   ruleName,
   customSyntax: "postcss-scss",
-  config: [true, { carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10" }],
+  config: [
+    true,
+    { carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10" }
+  ],
   reject: [
     {
       code: `.foo { left: mini-units(4); }`,
@@ -546,6 +554,7 @@ testRule(rule, {
   ]
 });
 
+// Normal maths
 testRule(rule, {
   ruleName,
   config: true,

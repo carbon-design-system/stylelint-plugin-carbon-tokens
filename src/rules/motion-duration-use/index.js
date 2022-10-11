@@ -34,7 +34,7 @@ const defaultOptions = {
   acceptUndefinedVariables: false,
   acceptScopes: ["motion"],
   carbonPath: undefined,
-  carbonModulePostfix: undefined,
+  carbonModulePostfix: undefined
 };
 
 export default function rule(primaryOptions, secondaryOptions, context) {
@@ -55,8 +55,7 @@ export default function rule(primaryOptions, secondaryOptions, context) {
           acceptScopes: [isValidAcceptValues],
           acceptUndefinedVariables: (val) =>
             val === undefined || typeof val === "boolean",
-          carbonPath: (val) =>
-            val === undefined || val.indexOf("@carbon") > -1,
+          carbonPath: (val) => val === undefined || val.indexOf("@carbon") > -1,
           carbonModulePostfix: (val) =>
             val === undefined || typeof val === "string"
         },
@@ -68,7 +67,6 @@ export default function rule(primaryOptions, secondaryOptions, context) {
       /* istanbul ignore next */
       return;
     }
-
 
     await checkRule(
       root,
