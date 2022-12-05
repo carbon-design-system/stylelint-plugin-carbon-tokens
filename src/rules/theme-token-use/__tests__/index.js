@@ -526,6 +526,18 @@ testRule(rule, {
 
 testRule(rule, {
   ruleName,
+  config: [true, { acceptScopes: ["**"] }],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { color: abc.$layer-01; border-color: zyx.$layer-01; }`,
+      description: "All scopes ['**']."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
   config: true,
   customSyntax: "postcss-scss",
   accept: [

@@ -137,17 +137,18 @@ It's good practice to document any linter disables and to tidy up any that are n
 ```js
   rules: {
     // ADDED TO TEST CARBON USE
-    'carbon/layout-token-use': [true, { severity: 'warning', acceptUndefinedVariables: true  }],
-    'carbon/motion-duration-use': [true, { severity: 'warning', acceptUndefinedVariables: true  }],
-    "carbon/motion-easing-use": [true, { severity: 'warning', acceptUndefinedVariables: true }],
-    'carbon/theme-token-use': [true, { severity: 'warning', acceptUndefinedVariables: true  }],
+    'carbon/layout-token-use': [true, { severity: 'warning', acceptUndefinedVariables: true, acceptScopes: ['**']  }],
+    'carbon/motion-duration-use': [true, { severity: 'warning', acceptUndefinedVariables: true, acceptScopes: ['**']  }],
+    "carbon/motion-easing-use": [true, { severity: 'warning', acceptUndefinedVariables: true, acceptScopes: ['**'] }],
+    'carbon/theme-token-use': [true, { severity: 'warning', acceptUndefinedVariables: true, acceptScopes: ['**']  }],
     'carbon/type-token-use': [
       true,
       {
         severity: 'warning',
         acceptCarbonTypeScaleFunction: true,
         acceptCarbonFontWeightFunction: true,
-        acceptUndefinedVariables: true
+        acceptUndefinedVariables: true,
+        acceptScopes: ['**']
       },
     ],
   },
@@ -215,6 +216,8 @@ The acceptValues option allows you to check your own tokens refer to values acce
 - `acceptValues: ["$/^\\$my-color--/"]` - Accept SCSS variables starting "\$my-color--"
 
 The acceptScopes option allows you to alter the scope value for all rules using regex or a string. For example you may wish to use short scope names.
+
+- `acceptScopes: ["**"]` - accept all scopes
 
 - `acceptScopes: ["/^la(yout)?$/", "/^mo(tion)?$/", "/^th(eme)?$/", "/^ty(pe)?$/"]` - using regex to accept abbreviations
 - `acceptScopes: ["la", "mo", "th", "ty"]` - abbreviations but not defaults
