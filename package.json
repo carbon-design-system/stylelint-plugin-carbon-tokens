@@ -13,7 +13,14 @@
   "license": "MIT",
   "babel": {
     "presets": [
-      "@babel/env"
+      [
+        "@babel/env",
+        {
+          "targets": {
+            "node": "14"
+          }
+        }
+      ]
     ]
   },
   "bugs": {
