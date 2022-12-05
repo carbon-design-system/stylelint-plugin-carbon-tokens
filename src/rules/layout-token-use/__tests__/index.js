@@ -913,3 +913,15 @@ testRule(rule, {
     }
   ]
 });
+
+testRule(rule, {
+  ruleName,
+  config: [true, { acceptScopes: ["**"] }],
+  configSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { left: abcd.$spacing-05; right: zyx.$spacing-05;}`,
+      description: "All scopes ['**']."
+    }
+  ]
+});

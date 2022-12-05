@@ -142,23 +142,35 @@ testRule(rule, {
   ]
 });
 
-// testRule(rule, {
-//   ruleName,
-//   config: [true, { acceptScopes: ["mo"] }],
-//   customSyntax: "postcss-scss",
-//   accept: [
-//     {
-//       code: ".foo {   transition: background-color $duration-slow-02 mo.$ease-in; }",
-//       description:
-//         "Expected scope 'mo' motion easing token settings expected for transition."
-//     },
-//     {
-//       code: ".foo {   transition: background-color $duration-slow-02 mo.motion(exit, expressive); }",
-//       description:
-//         "Expected scope 'mo' motion easing function settings expected for transition."
-//     }
-//   ]
-// });
+testRule(rule, {
+  ruleName,
+  config: [true, { acceptScopes: ["mo"] }],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: ".foo {   transition: background-color $duration-slow-02 mo.$ease-in; }",
+      description:
+        "Expected scope 'mo' motion easing token settings expected for transition."
+    },
+    {
+      code: ".foo {   transition: background-color $duration-slow-02 mo.motion(exit, expressive); }",
+      description:
+        "Expected scope 'mo' motion easing function settings expected for transition."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [true, { acceptScopes: ["**"] }],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: ".foo {   transition: background-color $duration-slow-02 abc.$ease-in; } .bar {   transition: background-color $duration-slow-02 zyx.$ease-in; }",
+      description: "All scopes ['**']."
+    }
+  ]
+});
 
 testRule(rule, {
   ruleName,

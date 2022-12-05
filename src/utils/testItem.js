@@ -33,6 +33,11 @@ const sanitizeUnconnectedOperators = (val) => {
 };
 
 const checkScope = (item, options) => {
+  if (options.acceptScopes[0] === "**") {
+    // ** means all scopes
+    return true;
+  }
+
   return options.acceptScopes.some((acceptedScope) => {
     const testValue = parseToRegexOrString(acceptedScope);
 
