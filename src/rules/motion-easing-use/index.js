@@ -33,8 +33,9 @@ const defaultOptions = {
   acceptValues: ["/$0s?/", "/inherit|initial|none|unset/"],
   acceptUndefinedVariables: false,
   acceptScopes: ["motion"],
+  enforceScopes: false, // TODO: default in v3
   carbonPath: undefined,
-  carbonModulePostfix: undefined,
+  carbonModulePostfix: undefined
 };
 
 export default function rule(primaryOptions, secondaryOptions, context) {
@@ -55,11 +56,10 @@ export default function rule(primaryOptions, secondaryOptions, context) {
           acceptScopes: [isValidAcceptValues],
           acceptUndefinedVariables: (val) =>
             val === undefined || typeof val === "boolean",
-          carbonPath: (val) =>
-            val === undefined || val.indexOf("@carbon") > -1,
+          carbonPath: (val) => val === undefined || val.indexOf("@carbon") > -1,
           carbonModulePostfix: (val) =>
-            val === undefined || typeof val === "string"
-
+            val === undefined || typeof val === "string",
+          enforceScopes: (val) => val === undefined || typeof val === "boolean"
         },
         optional: true
       }

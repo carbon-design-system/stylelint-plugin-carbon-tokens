@@ -135,56 +135,75 @@ export default async function checkRule(
 
   const ruleInfo = await getRuleInfo(options);
 
-  const localCarbonScopes = [];
+  const localScopes = [];
 
   // **** walk at rules to find carbon @use scopes
-  await root.walkAtRules((rule) => {
-    if (rule.name === "use") {
-      const [usedThing, usedScope] = rule.params.split(" as ");
+  await root.walkAtRules(
+    /**
+     *
+     * Looks for acceptable scope usage.
+     * - If an acceptable scope is renamed or * then options.acceptScopes is updated.
+     */
+    (rule) => {
+      if (rule.name === "use") {
+        const ruleParams = rule.params
+          .replace(/'(.*)'/, "$1")
+          .replace(/"(.*)"/, "$1"); // remove quotes if needed
+        const [usedThing, usedScope] = ruleParams.split(" as ");
 
-      // eslint-disable-next-line regexp/no-unused-capturing-group
-      const carbonThingRegex = /(@carbon)|(carbon-components)/;
+        const carbonThingRegex = // eslint-disable-next-line regexp/no-unused-capturing-group
+          /((@carbon)|(carbon-components(\/([^/$]+))*))\/+_?([^.]+)(\.scss)*/;
 
-      // TODO: find more elegant way of coping with various carbon scopes
-      // perhaps a map of paths to scopes and which rules they apply to
-      if (carbonThingRegex.test(usedThing)) {
-        let scope = usedScope;
-        const indexOfVars = usedThing.indexOf("vars");
+        const carbonThing = carbonThingRegex.exec(usedThing);
+        let fileScope;
 
-        // build list of local scopes
-        if (!scope && indexOfVars > -1) {
-          scope = "vars";
-          localCarbonScopes.push("vars");
-        } else if (scope) {
-          if (scope !== "*") {
-            localCarbonScopes.push(scope);
-          }
+        if (carbonThing) {
+          fileScope = carbonThing[6].toLowerCase(); // use the last folder name if no scope
         } else {
-          const knownScope = options.acceptScopes.find(
-            (aScope) => usedThing.indexOf(aScope) > -1
-          );
+          // at this point local scopes come from a known import at least in theory
+          // other scopes we might accept are based on user
 
-          if (knownScope) {
-            localCarbonScopes.push(knownScope);
+          const nonCarbonThingRegex = // eslint-disable-next-line regexp/no-unused-capturing-group
+            /((.+)\/)*_?([^.]+)(\.scss)*/;
+
+          const nonCarbonThing = nonCarbonThingRegex(usedThing);
+
+          if (nonCarbonThing) {
+            fileScope = nonCarbonThing[4];
           }
         }
 
-        if (
-          scope &&
-          (indexOfVars > -1 ||
-            // or file matches one of hte expected scopes
-            options.acceptScopes.find(
-              (aScope) => usedThing.indexOf(aScope) > -1
-            ))
-        ) {
-          options.acceptScopes.push(scope);
+        const knownScope = options.acceptScopes.find(
+          (
+            aScope // allow known scope or file scope if *
+          ) =>
+            (usedScope && aScope === usedScope) ||
+            (!usedScope && fileScope === aScope)
+        );
+
+        if (knownScope) {
+          localScopes.push(knownScope);
+        } else if (usedScope) {
+          // These scopes have been renamed to something  not yet matched
+          const knownFileScope = options.acceptScopes.find(
+            (aScope) => aScope === fileScope
+          );
+
+          if (knownFileScope) {
+            const acceptThisScope = usedScope === "*" ? "" : usedScope;
+
+            localScopes.push(acceptThisScope);
+            options.acceptScopes.push(acceptThisScope);
+          }
         }
       }
     }
-  });
+  );
 
-  // add no scope last.
-  localCarbonScopes.push("");
+  if (!options.enforceScopes) {
+    // scopes are not being enforced allow no scope
+    localScopes.push("");
+  }
 
   // **** walk rules and check values
   await root.walkDecls(async (decl) => {
@@ -264,6 +283,7 @@ export default async function checkRule(
 
             // try to fix
             ruleInfo.fixes.forEach((fix) => {
+              // NOTE: multiple different fixes may be applied to multi part values
               workingValue = tryFix(fix, workingValue, {
                 ruleInfo,
                 options,
@@ -272,16 +292,14 @@ export default async function checkRule(
             });
 
             if (workingValue !== decl.value) {
-              for (let si = 0; si < localCarbonScopes.length; si++) {
+              for (let si = 0; si < localScopes.length; si++) {
                 const reportsFix = [];
-                const scope = localCarbonScopes[si];
-
-                if (scope.length > 0) {
-                  workingValue = `${scope}.${workingValue}`;
-                }
+                const scope = localScopes[si];
+                const scopedValue =
+                  scope.length > 0 ? `${scope}.${workingValue}` : workingValue;
 
                 // test new value
-                const tokenizedValueFix = tokenizeValue(workingValue);
+                const tokenizedValueFix = tokenizeValue(scopedValue);
                 const itemsToCheckFix =
                   tokenizedValueFix.type === TOKEN_TYPES.LIST
                     ? tokenizedValueFix.items
@@ -304,7 +322,7 @@ export default async function checkRule(
                 // If any fixes applied do not create an accepted result then do NOT update decl.value
                 if (reportsFix.length === 0) {
                   fixed = true;
-                  decl.value = workingValue;
+                  decl.value = scopedValue;
                   break; // fixed no need to try next scope
                 }
               }

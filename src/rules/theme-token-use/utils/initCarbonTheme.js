@@ -90,9 +90,11 @@ const doInitTheme = async ({ carbonPath, carbonModulePostfix }) => {
     });
   }
 
+  const isV10 = _version.startsWith("10");
+
   // permitted carbon theme functions
   // TODO: read this from carbon
-  const themeFunctions = ["get-light-value"];
+  const themeFunctions = isV10 ? ["get-light-value"] : [];
 
   return { themeTokens, themeFunctions, version: _version };
 };
