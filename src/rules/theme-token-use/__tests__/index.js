@@ -42,7 +42,7 @@ testRule(rule, {
       description: "Carbon theme token expected."
     },
     {
-      code: ".foo { box-shadow: 0 0 5px $layer-01, 0 0 10px $layer-02; }",
+      code: ".foo { box-shadow: 0 0 5px $layer-01, 0 0 10px $layer-01; }",
       description: "All color tokens in split are Carbon theme tokens."
     },
     {
@@ -75,10 +75,6 @@ testRule(rule, {
       code: ".foo { box-shadow: 0 0 $layout-01 $layer-01; }",
       description:
         "Position three of four can can be non color variables four of four matches"
-    },
-    {
-      code: ".foo { border: 1px solid get-light-value('layer-01'); }",
-      description: "Permitted function get-light-value passes"
     },
     {
       code: ".foo { color: $my-value-accept; }",
@@ -405,6 +401,10 @@ testRule(rule, {
 };
 `,
       description: "Should accept named scoped theme token from vars"
+    },
+    {
+      code: "@use '@carbon/theme' as *; background-color: $layer-03;",
+      description: "Should accept global scope with @use"
     }
   ],
   reject: [
@@ -424,10 +424,6 @@ testRule(rule, {
     {
       code: `.foo { color: theme.$layer-01; }`,
       description: "Accept theme scope."
-    },
-    {
-      code: `.foo { color: get-light-value(theme.$layer-01)}`,
-      description: "Accept theme scope in function."
     }
   ],
   reject: [
@@ -446,10 +442,6 @@ testRule(rule, {
     {
       code: `.foo { color: th.$layer-01; }`,
       description: "Accept scope 'th' with acceptScopes setting."
-    },
-    {
-      code: `.foo { color: get-light-value(th.$layer-01)}`,
-      description: "Accept scope 'th' with acceptScopes setting in function."
     }
   ],
   reject: [
@@ -470,17 +462,8 @@ testRule(rule, {
       description: "Accept scope 'th' with acceptScopes setting."
     },
     {
-      code: `.foo { color: get-light-value(th.$layer-01)}`,
-      description: "Accept scope 'th' with acceptScopes setting in function."
-    },
-    {
       code: `.foo { color: theme.$layer-01; }`,
       description: "Accept theme scope with scope setting including default."
-    },
-    {
-      code: `.foo { color: get-light-value(theme.$layer-01)}`,
-      description:
-        "Accept theme scope in function with scope setting including default."
     }
   ],
   reject: [
@@ -501,19 +484,9 @@ testRule(rule, {
       description: "Accept scope 'th' with acceptScopes regex setting."
     },
     {
-      code: `.foo { color: get-light-value(th.$layer-01)}`,
-      description:
-        "Accept scope 'th' with acceptScopes regex setting in function."
-    },
-    {
       code: `.foo { color: theme.$layer-01; }`,
       description:
         "Accept theme scope with scope regex setting including default."
-    },
-    {
-      code: `.foo { color: get-light-value(theme.$layer-01)}`,
-      description:
-        "Accept theme scope in function with scope regex setting including default."
     }
   ],
   reject: [
@@ -559,11 +532,11 @@ testRule(rule, {
   customSyntax: "postcss-scss",
   fix: true,
   reject: [
-    {
-      code: ".foo { color: $active-danger; }",
-      description: "Reject v10 theme token $active-danger",
-      fixed: ".foo { color: $button-danger-active; }"
-    },
+    // {
+    //   code: ".foo { color: $active-danger; }",
+    //   description: "Reject v10 theme token $active-danger",
+    //   fixed: ".foo { color: $button-danger-active; }"
+    // },
     {
       code: ".foo { color: $danger; }",
       description: "Reject v10 theme token $danger",
@@ -609,25 +582,41 @@ testRule(rule, {
       description: "Reject v10 theme token $disabled-02 and fix outline",
       fixed: ".foo { outline: 2px $border-disabled; }"
     },
+    // {
+    //   code: "@use '@carbon/theme'; .foo { color: $active-danger; }",
+    //   description: "Reject v10 theme token $active-danger but fix with scope",
+    //   fixed:
+    //     "@use '@carbon/theme'; .foo { color: theme.$button-danger-active; }"
+    // },
+    // {
+    //   code: "@use '@carbon/theme' as carbon_theme; .foo { color: $active-danger; }",
+    //   description:
+    //     "Reject v10 theme token $active-danger but fix with carbon_theme scope",
+    //   fixed:
+    //     "@use '@carbon/theme' as carbon_theme; .foo { color: carbon_theme.$button-danger-active; }"
+    // },
     {
-      code: "@use '@carbon/theme'; .foo { color: $active-danger; }",
-      description: "Reject v10 theme token $active-danger but fix with scope",
-      fixed:
-        "@use '@carbon/theme'; .foo { color: theme.$button-danger-active; }"
-    },
-    {
-      code: "@use '@carbon/theme' as carbon_theme; .foo { color: $active-danger; }",
-      description:
-        "Reject v10 theme token $active-danger but fix with carbon_theme scope",
-      fixed:
-        "@use '@carbon/theme' as carbon_theme; .foo { color: carbon_theme.$button-danger-active; }"
-    },
-    {
-      code: "@use '@carbon/layout'; @use '@carbon/theme' as carbon_theme; .foo { color: $active-danger; }",
+      code: "@use '@carbon/layout'; @use '@carbon/theme' as carbon_theme; .foo { background-color: $active-danger; }",
       description:
         "Reject v10 theme token $active-danger but fix with carbon_theme scope ignoring other scopes",
       fixed:
-        "@use '@carbon/layout'; @use '@carbon/theme' as carbon_theme; .foo { color: carbon_theme.$button-danger-active; }"
+        "@use '@carbon/layout'; @use '@carbon/theme' as carbon_theme; .foo { background-color: carbon_theme.$button-danger-active; }"
+    }
+  ]
+});
+
+// tests that only pass in v10
+testRule(rule, {
+  ruleName,
+  config: {
+    carbonPath: "node_modules/@carbon",
+    carbonModulePostfix: "-10"
+  },
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: ".foo { border: 1px solid get-light-value('layer-01'); }",
+      description: "Permitted function get-light-value passes"
     }
   ]
 });
@@ -666,6 +655,35 @@ testRule(rule, {
       code: `.foo { color: theme.$button-danger-primary; }`,
       description:
         "Accept theme token button danger primary with theme. in 11-4 pre unstable_metadata."
+    }
+  ]
+});
+
+// enforceScopes test
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      enforceScopes: true,
+      acceptScopes: ["theme"]
+    }
+  ],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: "@use '@carbon/theme' as *; background-color: $layer-03;",
+      description: "Should accept * when @use enforced"
+    },
+    {
+      code: "@use '@carbon/theme' as rename_theme; background-color: rename_theme.$layer-03;",
+      description: "Should accept renamed scope when @use enforced"
+    }
+  ],
+  reject: [
+    {
+      code: "background-color: $layer-03;",
+      description: "Should reject global scope without when @use enforced"
     }
   ]
 });

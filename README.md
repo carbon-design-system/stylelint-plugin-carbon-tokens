@@ -202,6 +202,7 @@ These options when omitted to accept the defaults. They are intended to support 
 - includeProps: Array
 - acceptValues: Array
 - acceptScopes: Array
+- enforceScopes: Boolean 
 
 Arrays of strings and/or Regex followed by a range in angled brackets.
 
@@ -222,6 +223,10 @@ The acceptScopes option allows you to alter the scope value for all rules using 
 - `acceptScopes: ["/^la(yout)?$/", "/^mo(tion)?$/", "/^th(eme)?$/", "/^ty(pe)?$/"]` - using regex to accept abbreviations
 - `acceptScopes: ["la", "mo", "th", "ty"]` - abbreviations but not defaults
 - `acceptScopes: ["la", "mo", "th", "ty", "*"]` - abbreviations plus defaults with "*"
+
+By default scopes are not expected, but that means
+
+- `enforceScopes: true` - An accepted `scope` or `*` is enforced for carbon tokens.
 
 ### includeProps Range
 

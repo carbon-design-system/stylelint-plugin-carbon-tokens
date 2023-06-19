@@ -1,6 +1,10 @@
 # Changelog
 
-€€ 2.2.0
+## 2.3.0
+
+- Feat: add 'enforceScopes' option preventing use of an empty scope or undeclared local scopes.
+
+## 2.2.0
 
 - Fix: issue #89 by pinning Babel to node 14. This can be updated in April when node 14 goes out of maintenance.
 - Feat Adds `acceptScopes: ["**"]` to all rules. This value permits correctly named tokens regardless of scope.

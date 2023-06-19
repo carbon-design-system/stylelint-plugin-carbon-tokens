@@ -412,6 +412,11 @@ testRule(rule, {
       description: `Reject and fix different cases.`
     },
     {
+      code: `.foo { margin: 160px $carbon--spacing-13 2rem 2rem; }`,
+      fixed: `.foo { margin: $spacing-13 $spacing-13 $spacing-07 $spacing-07; }`,
+      description: `Reject and fix different cases again.`
+    },
+    {
       code: `.foo { margin: 160px $not-a-token 4px 2rem; }`,
       fixed: `.foo { margin: 160px $not-a-token 4px 2rem; }`,
       description: `Reject partial fixes literal sizes and fix matches.`

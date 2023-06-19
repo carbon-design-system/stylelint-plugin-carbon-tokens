@@ -33,7 +33,7 @@ const sanitizeUnconnectedOperators = (val) => {
 };
 
 const checkScope = (item, options) => {
-  if (options.acceptScopes[0] === "**") {
+  if (options.acceptScopes[0] === "**" && item.scope) {
     // ** means all scopes
     return true;
   }
@@ -154,6 +154,8 @@ const checkTokens = function (item, ruleInfo, options, knownVariables) {
     if (!checkScope(item, options)) {
       return result;
     }
+  } else if (options.enforceScopes && !options.acceptScopes.includes("")) {
+    return result; // reject without scope
   }
 
   const start = valueToCheck.substr(0, 2);
