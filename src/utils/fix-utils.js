@@ -5,31 +5,38 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export const fixUsingMap = (value, target, map, config) => {
+export const fixUsingMap = (value, _target, map, config) => {
   let workingValue = value;
+  const target = _target.global ? _target : new RegExp(_target.source, "g"); // ensure not infinite loop
   let match = target.exec(workingValue);
 
+  let lastEnd = -1;
+
   while (match) {
-    let replacement = map[match[0]];
+    // ensure we are not checking already replaced items
+    if (match.index > lastEnd) {
+      let replacement = map[match[0]];
 
-    if (replacement) {
-      if (typeof replacement === "object") {
-        const keys = Object.keys(replacement).filter((key) => {
-          const rgx = new RegExp(key);
+      if (replacement) {
+        if (typeof replacement === "object") {
+          const keys = Object.keys(replacement).filter((key) => {
+            const rgx = new RegExp(key);
 
-          return rgx.test(config?.prop);
-        });
+            return rgx.test(config?.prop);
+          });
 
-        if (keys.length > 0) {
-          replacement = replacement[keys[0]];
-        } else {
-          replacement = config?.options?.preferContextFixes
-            ? replacement.context
-            : replacement.standard;
+          if (keys.length > 0) {
+            replacement = replacement[keys[0]];
+          } else {
+            replacement = config?.options?.preferContextFixes
+              ? replacement.context
+              : replacement.standard;
+          }
         }
-      }
 
-      workingValue = workingValue.replace(match[0], replacement);
+        workingValue = workingValue.replace(match[0], replacement);
+        lastEnd = match.index + replacement.length - 1;
+      }
     }
 
     match = target.exec(workingValue);
