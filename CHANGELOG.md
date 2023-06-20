@@ -1,5 +1,10 @@
 # Changelog
 
+## unreleased changes
+
+- Fix: potential infinite loop
+- Fix: missing motion function.
+
 ## 2.3.0
 
 - Feat: add 'enforceScopes' option preventing use of an empty scope or undeclared local scopes.

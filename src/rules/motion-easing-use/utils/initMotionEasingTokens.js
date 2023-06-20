@@ -16,7 +16,11 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
 
   if (carbonPath) {
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
-    const { pkg } = await loadModules(carbonPath, ["motion"], carbonModulePostfix);
+    const { pkg } = await loadModules(
+      carbonPath,
+      ["motion"],
+      carbonModulePostfix
+    );
 
     _version = pkg.version;
   } else {
@@ -29,6 +33,7 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
     motionFunctions.push("carbon--motion");
     motionTokens = baseTokens.map((token) => `$carbon--${token}`);
   } else {
+    motionFunctions.push("motion");
     motionTokens = baseTokens.map((token) => `$${token}`);
   }
 
