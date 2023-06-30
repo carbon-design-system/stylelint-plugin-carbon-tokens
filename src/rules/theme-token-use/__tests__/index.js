@@ -90,12 +90,12 @@ testRule(rule, {
     {
       code: ".foo { background-color: #f4f4f4; }",
       description: "Used #color instead of Carbon theme token expected.",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { box-shadow: 0 0 5px $layer-01, 0 0 10px #fefefe; }",
       description: "Used #color in a split property not Carbon theme tokens.",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { border: 1px solid my-value-fun($layer-01); }",
@@ -119,12 +119,12 @@ testRule(rule, {
       code: ".foo { background-color: $carbon--blue-90; }",
       description:
         "Reject using a carbon color token without v10 testOnlyVersion",
-      message: messages.expected
+      message: messages.rejectedVariable
     },
     {
       code: ".foo { background-color: $ibm-color__blue-90; }",
       description: "Reject using a ibm color token without v10 testOnlyVersion",
-      message: messages.expected
+      message: messages.rejectedVariable
     }
   ]
 });
@@ -155,7 +155,7 @@ testRule(rule, {
     {
       code: ".foo { background-color: $ibm-color__blue-80; }",
       description: "Reject using a ibm color token",
-      message: messages.expected
+      message: messages.rejectedVariable
     }
   ]
 });
@@ -183,7 +183,7 @@ testRule(rule, {
     {
       code: ".foo { background-color: $carbon--blue-90; }",
       description: "Reject using a carbon color token",
-      message: messages.expected
+      message: messages.rejectedVariable
     }
   ]
 });
@@ -211,7 +211,7 @@ testRule(rule, {
     {
       code: ".foo { background-color: $layer-01; }",
       description: "Reject v11 theme token in v10 test",
-      message: messages.expected
+      message: messages.rejectedVariable
     }
   ]
 });
@@ -240,13 +240,13 @@ testRule(rule, {
       code: ".foo { color: $my-value-reject; }",
       description:
         "Reject undeclared $variable  when acceptUndefinedVariables is false.",
-      message: messages.expected
+      message: messages.rejectedUndefinedVariable
     },
     {
       code: ".foo { color: var(--my-value-reject); }",
       description:
         "Reject undeclared --variable when acceptUndefinedVariables is false.",
-      message: messages.expected
+      message: messages.rejectedUndefinedVariable
     }
   ]
 });
@@ -260,7 +260,7 @@ testRule(rule, {
     {
       code: ".foo { background-color: rgba($layer-01, 0.5); }",
       description: "Accept using a carbon theme token with rgba()",
-      message: messages.expected
+      message: messages.rejected
     }
   ],
 
@@ -269,7 +269,7 @@ testRule(rule, {
     {
       code: ".foo { background-color: rgba(100, 100, 255, 0.5); }",
       description: "Reject using a non-carbon theme token with rgba()",
-      message: messages.expected
+      message: messages.rejected
     }
   ]
 });
@@ -283,25 +283,25 @@ testRule(rule, {
     {
       code: ".foo { fill: $layer-01; }",
       description: "Accept carbon theme token for fill property by default",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { stroke: $layer-01; }",
       description: "Accept carbon theme token for stroke property by default",
-      message: messages.expected
+      message: messages.rejected
     }
   ],
   reject: [
     {
       code: ".foo { fill: #fefefe; }",
       description: "Reject non-carbon theme token for fill property by default",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { stroke: red; }",
       description:
         "Reject non-carbon theme token for stroke property by default",
-      message: messages.expected
+      message: messages.rejected
     }
   ]
 });
@@ -315,7 +315,7 @@ testRule(rule, {
     {
       code: ".foo { fill: currentColor; }",
       description: "Accept currentColor on the assumption color is valid",
-      message: messages.expected
+      message: messages.rejected
     }
   ]
 });

@@ -33,32 +33,32 @@ testRule(rule, {
     {
       code: ".foo { font-style: italic; }",
       description: "Reject directly setting font-style",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { font-variant: small-caps; }",
       description: "Reject directly setting font-weight",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { font-weight: 5px; }",
       description: "Reject directly setting font-weight",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { font-size: 32px; }",
       description: "Reject directly setting font-size",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { line-height: 32px; }",
       description: "Reject directly setting line-height",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: `.foo { font-family: "Times New Roman", Times, serif; }`,
       description: "Reject directly setting font-family",
-      message: messages.expected
+      message: messages.rejected
     }
   ]
 });
@@ -139,7 +139,8 @@ testRule(rule, {
     true,
     {
       acceptCarbonFontFamilyFunction: true,
-      carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10"
+      carbonPath: "node_modules/@carbon",
+      carbonModulePostfix: "-10"
     }
   ],
   customSyntax: "postcss-scss",
@@ -157,7 +158,8 @@ testRule(rule, {
     true,
     {
       acceptCarbonFontWeightFunction: true,
-      carbonPath: "node_modules/@carbon", carbonModulePostfix: "-10"
+      carbonPath: "node_modules/@carbon",
+      carbonModulePostfix: "-10"
     }
   ],
   customSyntax: "postcss-scss",
@@ -178,32 +180,32 @@ testRule(rule, {
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
       description: "Reject v10 Carbon font weight function.",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
       description: "Reject v10 Carbon font weight function.",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
       description: "Reject v10 Carbon font weight function.",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { font-weight: font-weight('light'); }",
       description: "Reject Carbon font weight function.",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { font-weight: font-weight('light'); }",
       description: "Reject Carbon font weight function.",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { font-weight: font-weight('light'); }",
       description: "Reject Carbon font weight function.",
-      message: messages.expected
+      message: messages.rejected
     }
   ]
 });
@@ -226,19 +228,19 @@ testRule(rule, {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
       fixed: ".foo { font-weight: font-weight('light'); }",
       description: "Reject v10 Carbon font weight function.",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
       fixed: ".foo { font-weight: font-weight('light'); }",
       description: "Reject v10 Carbon font weight function.",
-      message: messages.expected
+      message: messages.rejected
     },
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
       fixed: ".foo { font-weight: font-weight('light'); }",
       description: "Reject v10 Carbon font weight function.",
-      message: messages.expected
+      message: messages.rejected
     }
   ]
 });

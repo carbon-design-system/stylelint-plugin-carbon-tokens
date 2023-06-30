@@ -79,24 +79,13 @@ testRule(rule, {
     {
       code: ".foo { transition: width $duration-fast-01 ease-in, height 2s ease-out; }",
       description: "Reject non Carbon ease token or function",
-      message: messages.expected
+      message: messages.rejectedTransition
     },
     {
       code: ".foo { transition: width $duration-fast-01 motion(standard, productive), height 2s ease-out; }",
       description:
         "Reject one of many non Carbon ease function non-Carbon ease token or function",
-      message: messages.expected
-    },
-    {
-      code: ".foo { transition: width $duration-fast-01 ease-in, height 2s ease-out; }",
-      description: "Reject non Carbon ease token or function",
-      message: messages.expected
-    },
-    {
-      code: ".foo { transition: width $duration-fast-01 motion(standard, productive), height 2s ease-out; }",
-      description:
-        "Reject one of many non Carbon ease function non-Carbon ease token or function",
-      message: messages.expected
+      message: messages.rejectedTransition
     },
     {
       code: ".foo {   transition: background-color $duration-slow-02 mo.$ease-in; }",
