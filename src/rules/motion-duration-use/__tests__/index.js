@@ -74,51 +74,51 @@ testRule(rule, {
     {
       code: ".foo { transition: all $my-value-accept; }",
       description: "Reject undeclared $variable by default in transition.",
-      message: messages.expected
+      message: messages.rejectedUndefinedVariable
     },
     {
-      code: ".foo { transition: all var(--my-value-accept); }",
+      code: ".foo { transition: all var(--my-value-reject); }",
       description: "Reject undeclared --variable by default.",
-      message: messages.expected
+      message: messages.rejectedVariable
     },
     {
       code: ".foo { animation: $my-value-accept myAnim; }",
       description: "Reject undeclared $variable by default in animation.",
-      message: messages.expected
+      message: messages.rejectedAnimation
     },
     {
       code: ".foo { animation: test var(--my-value-accept) myAnim; }",
-      description: "Reject undeclared --variable by default.",
-      message: messages.expected
+      description: "Reject undeclared --variable by default for animation.",
+      message: messages.rejectedVariable
     },
     {
       code: ".foo { transition: $duration-fast-01; }",
       description:
         "Carbon motion token used in non-standard order with transition.",
-      message: messages.expected
+      message: messages.rejectedUndefinedRange
     },
     {
       code: ".foo { animation: $duration-fast-01 test; }",
       description:
         "Carbon motion token used in non-standard order with animation.",
-      message: messages.expected
+      message: messages.rejectedAnimation
     },
     {
       code: ".foo { transition: all 2s; }",
       description: "Used non-token duration.",
-      message: messages.expected
+      message: messages.rejectedTransition
     },
     {
       code: ".foo { transition: width 99s linear ease-in, height $duration-fast-01 ease-out; }",
       description:
         "Used non-token in first split property not Carbon motion tokens.",
-      message: messages.expected
+      message: messages.rejectedTransition
     },
     {
       code: ".foo { transition: width $duration-fast-01 linear ease-in, height 2s ease-out; }",
       description:
         "Used non-token in non-first split property not Carbon motion tokens.",
-      message: messages.expected
+      message: messages.rejectedTransition
     }
   ]
 });
@@ -167,25 +167,25 @@ testRule(rule, {
       code: ".foo { transition: all $my-value-reject; }",
       description:
         "Reject undeclared $variable for transition when acceptUndefinedVariables is false.",
-      message: messages.expected
+      message: messages.rejectedVariable
     },
     {
       code: ".foo { animation: $my-value-reject myAnim; }",
       description:
         "Reject undeclared $variable for animation when acceptUndefinedVariables is false.",
-      message: messages.expected
+      message: messages.rejectedAnimation
     },
     {
       code: ".foo { transition-duration: var(--my-value-reject); }",
       description:
         "Reject undeclared --variable for transition-duration when acceptUndefinedVariables is false.",
-      message: messages.expected
+      message: messages.rejectedVariable
     },
     {
       code: ".foo { animation-duration: var(--my-value-reject); }",
       description:
         "Reject undeclared --variable for animation-duration when acceptUndefinedVariables is false.",
-      message: messages.expected
+      message: messages.rejectedVariable
     }
   ]
 });
@@ -193,7 +193,7 @@ testRule(rule, {
 // testConfig(rule, {
 //   ruleName,
 //   description: "Check for invalid accept values",
-//   message: messages.expected,
+//   message: messages.rejected,
 //   config: ["always", { acceptValues: ["/wibble/"] }],
 // });
 

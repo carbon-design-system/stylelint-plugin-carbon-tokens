@@ -43,20 +43,20 @@ export default async function checkRule(
           item,
           propSpec.range
         );
+      } else if (testResult.isVariable) {
+        testResult.variableValue !== undefined
+          ? (message = messages.rejectedVariable(
+              decl.prop,
+              item.raw,
+              testResult.variableValue
+            ))
+          : (message = messages.rejectedUndefinedVariable(decl.prop, item.raw));
       } else if (testResult.isCalc) {
         message = messages.rejectedMaths(decl.prop, item.raw);
       } else if (decl.prop === "transition") {
         message = messages.rejectedTransition(decl.prop, item.raw);
       } else if (decl.prop === "animation") {
         message = messages.rejectedAnimation(decl.prop, item.raw);
-      } else if (testResult.isVariable) {
-        message = messages.rejectedVariable(
-          decl.prop,
-          item.raw,
-          testResult.variableValue === undefined
-            ? "an unknown, undefined or unrecognized value"
-            : testResult.variableValue
-        );
       } else {
         message = messages.rejected(decl.prop, decl.value);
       }
@@ -200,7 +200,7 @@ export default async function checkRule(
     }
   );
 
-  if (!options.enforceScopes) {
+  if (!options.enforceScopes && !localScopes.includes("")) {
     // scopes are not being enforced allow no scope
     localScopes.push("");
   }

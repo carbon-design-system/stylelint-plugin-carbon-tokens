@@ -10,6 +10,11 @@
 import _ from "lodash";
 import stylelint from "stylelint";
 
+// The following function is as per https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Regular_Expressions
+function escapeRegExp(string) {
+  return string.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"); // $& means the whole matched string
+}
+
 global.testRule = (rule, schema) => {
   expect.extend({
     toHaveMessage(testCase) {
@@ -109,7 +114,20 @@ global.testRule = (rule, schema) => {
               // expect(testCase).toHaveMessage();
 
               if (testCase.message !== undefined) {
-                expect(_.get(warning, "text")).toBe(testCase.message);
+                const testMsg =
+                  typeof testCase.message === "function"
+                    ? testCase.message()
+                    : testCase.message;
+
+                // If matches '^/message string/ (rule name)$' then use regex
+                const match = /^\/(.+)\/( \([^()]*\))$/.exec(testMsg);
+
+                const msg = match
+                  ? new RegExp(match[1] + escapeRegExp(match[2]))
+                  : testMsg;
+
+                // string or regex
+                expect(_.get(warning, "text")).toMatch(msg);
               }
 
               if (testCase.line !== undefined) {
