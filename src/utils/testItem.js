@@ -32,19 +32,31 @@ const sanitizeUnconnectedOperators = (val) => {
   return resultVal;
 };
 
-const checkScope = (item, options) => {
+const scopeMatch = (item, acceptedScope) => {
+  const testValue = parseToRegexOrString(acceptedScope);
+
+  return (
+    (testValue.test && testValue.test(item.scope)) || testValue === item.scope
+  );
+};
+
+const checkScope = (item, options, localScopes) => {
   if (options.acceptScopes[0] === "**" && item.scope) {
     // ** means all scopes
     return true;
   }
 
-  return options.acceptScopes.some((acceptedScope) => {
-    const testValue = parseToRegexOrString(acceptedScope);
+  let result =
+    localScopes.length > 0 &&
+    localScopes.some((scope) => scopeMatch(item, scope));
 
-    return (
-      (testValue.test && testValue.test(item.scope)) || testValue === item.scope
-    );
-  });
+  if (!result && !options.enforceScopes) {
+    result =
+      options.acceptScopes &&
+      options.acceptScopes.some((scope) => scopeMatch(item, scope));
+  }
+
+  return result;
 };
 
 const checkAcceptValuesRaw = (valueToCheck, options) => {
@@ -60,7 +72,7 @@ const checkAcceptValuesRaw = (valueToCheck, options) => {
   });
 };
 
-const checkAcceptValues = (item, options) => {
+const checkAcceptValues = (item, options, localScopes) => {
   // Simply check raw values, improve later
   let result = false;
   let valueToCheck = item.raw;
@@ -69,7 +81,7 @@ const checkAcceptValues = (item, options) => {
     if (item.scope) {
       valueToCheck = item.value;
 
-      if (!checkScope(item, options)) {
+      if (!checkScope(item, options, localScopes)) {
         return result;
       }
     }
@@ -93,7 +105,7 @@ const unquoteIfNeeded = (val) => {
   return val;
 };
 
-const preProcessToken = (variable, knownVariables) => {
+const preProcessToken = (variable, localVariables) => {
   const regex = /#\{([$\w-]*)\}/g;
   const replacements = [];
   let result = variable;
@@ -104,7 +116,7 @@ const preProcessToken = (variable, knownVariables) => {
     // var(--test) --test -$test -#{$test} -var(--test) etc.
 
     // node 10 does not support matchAll
-    const replacement = knownVariables[match[1]];
+    const replacement = localVariables[match[1]];
     const isMinus = variable.match(/^-[^-]/);
 
     const replacementMatch = isMinus ? `-${match[0]}` : match[0];
@@ -137,21 +149,29 @@ const preProcessToken = (variable, knownVariables) => {
 
   result = normalizeVariableName(result);
 
-  while (knownVariables[result]) {
-    result = normalizeVariableName(knownVariables[result].raw);
+  while (localVariables[result]) {
+    result = normalizeVariableName(localVariables[result].raw);
   }
 
   return result;
 };
 
-const checkTokens = function (item, ruleInfo, options, knownVariables) {
+const checkTokens = function (
+  item,
+  ruleInfo,
+  options,
+  localScopes,
+  localVariables
+) {
   const result = { accepted: false, done: false };
   let valueToCheck = item.raw;
 
+  // if options.enforceScopes then scope must appear in localScopes
+  // otherwise can appear in localScopes or options.acceptScopes
   if (item.scope) {
     valueToCheck = item.value;
 
-    if (!checkScope(item, options)) {
+    if (!checkScope(item, options, localScopes)) {
       return result;
     }
   } else if (options.enforceScopes && !options.acceptScopes.includes("")) {
@@ -166,7 +186,7 @@ const checkTokens = function (item, ruleInfo, options, knownVariables) {
   }
 
   // cope with variables wrapped in #{}
-  let _variable = preProcessToken(valueToCheck, knownVariables);
+  let _variable = preProcessToken(valueToCheck, localVariables);
 
   if (_variable.startsWith("#")) {
     // token set does not contain #{}
@@ -198,7 +218,8 @@ const checkProportionalMath = (
   mathItems,
   ruleInfo,
   options,
-  knownVariables
+  localScopes,
+  localVariables
 ) => {
   let otherItem;
 
@@ -217,14 +238,26 @@ const checkProportionalMath = (
   if (otherItem !== undefined) {
     if (["+", "-"].indexOf(mathItems[1].value) > -1) {
       // is plus or minus
-      return checkTokens(otherItem, ruleInfo, options, knownVariables);
+      return checkTokens(
+        otherItem,
+        ruleInfo,
+        options,
+        localScopes,
+        localVariables
+      );
     }
   }
 
   return {};
 };
 
-const checkNegationMaths = (mathItems, ruleInfo, options, knownVariables) => {
+const checkNegationMaths = (
+  mathItems,
+  ruleInfo,
+  options,
+  localScopes,
+  localVariables
+) => {
   let otherItem;
   let numeric;
 
@@ -245,14 +278,26 @@ const checkNegationMaths = (mathItems, ruleInfo, options, knownVariables) => {
   if (otherItem !== undefined) {
     if (["*", "/"].indexOf(mathItems[1].value) > -1 && numeric.raw === "-1") {
       // is times or divide by -1
-      return checkTokens(otherItem, ruleInfo, options, knownVariables);
+      return checkTokens(
+        otherItem,
+        ruleInfo,
+        options,
+        localScopes,
+        localVariables
+      );
     }
   }
 
   return {};
 };
 
-const testItemInner = function (item, ruleInfo, options, knownVariables) {
+const testItemInner = function (
+  item,
+  ruleInfo,
+  options,
+  localScopes,
+  localVariables
+) {
   // Expects to be passed an item containing either a item { raw, type, value} or
   // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
   const result = {
@@ -267,7 +312,7 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
     return result;
   }
 
-  if (checkAcceptValues(item, options)) {
+  if (checkAcceptValues(item, options, localScopes)) {
     // value matches one of the acceptValues
     result.accepted = true;
     result.done = true;
@@ -288,7 +333,8 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
         bracketedItem,
         ruleInfo,
         options,
-        knownVariables
+        localScopes,
+        localVariables
       );
 
       return bracketedItemResult.accepted;
@@ -304,7 +350,7 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
       const matchesFuncSpec = funcSpecs.some((funcSpec) => {
         const parts = funcSpec.split("(");
 
-        if (_item.scope && !checkScope(_item, options)) {
+        if (_item.scope && !checkScope(_item, options, localScopes)) {
           return false;
         }
 
@@ -352,7 +398,8 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
                 mathItems,
                 ruleInfo,
                 options,
-                knownVariables
+                localScopes,
+                localVariables
               );
 
               if (!tokenResult.accepted) {
@@ -360,13 +407,15 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
                   mathItems,
                   ruleInfo,
                   options,
-                  knownVariables
+                  localScopes,
+                  localVariables
                 );
               }
             } else {
               tokenResult.accepted = checkAcceptValues(
                 paramItems[pos],
-                options
+                options,
+                localScopes
               );
 
               if (!tokenResult.accepted) {
@@ -381,14 +430,16 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
                     paramItem,
                     ruleInfo,
                     options,
-                    knownVariables
+                    localScopes,
+                    localVariables
                   );
                 } else {
                   tokenResult = checkTokens(
                     paramItem,
                     ruleInfo,
                     options,
-                    knownVariables
+                    localScopes,
+                    localVariables
                   );
                 }
               }
@@ -418,7 +469,8 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
       item.items,
       ruleInfo,
       options,
-      knownVariables
+      localScopes,
+      localVariables
     );
 
     if (!tokenResult.accepted) {
@@ -426,7 +478,8 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
         item.items,
         ruleInfo,
         options,
-        knownVariables
+        localScopes,
+        localVariables
       );
     }
 
@@ -436,7 +489,13 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
   } else {
     // test what ever is left over
 
-    const tokenResult = checkTokens(_item, ruleInfo, options, knownVariables);
+    const tokenResult = checkTokens(
+      _item,
+      ruleInfo,
+      options,
+      localScopes,
+      localVariables
+    );
 
     result.source = tokenResult.source;
     result.accepted = tokenResult.accepted;
@@ -465,7 +524,13 @@ const testItemInner = function (item, ruleInfo, options, knownVariables) {
   return result;
 };
 
-export default function testItem(item, ruleInfo, options, knownVariables) {
+export default function testItem(
+  item,
+  ruleInfo,
+  options,
+  localScopes,
+  localVariables
+) {
   // Expects to be passed an item containing either a item { raw, type, value} or
   // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
   let result = {};
@@ -477,7 +542,7 @@ export default function testItem(item, ruleInfo, options, knownVariables) {
     return result;
   }
 
-  result = testItemInner(item, ruleInfo, options, knownVariables);
+  result = testItemInner(item, ruleInfo, options, localScopes, localVariables);
 
   result.isVariable = isVariable(item); // causes different result message
 
@@ -485,7 +550,7 @@ export default function testItem(item, ruleInfo, options, knownVariables) {
     result.accepted = true;
   }
 
-  result.variableItem = testItem; // last testItem found
+  // result.variableItem = testItem; // last testItem found
 
   // if (result.isCalc) {
   //   // eslint-disable-next-line

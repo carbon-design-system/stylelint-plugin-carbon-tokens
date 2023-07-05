@@ -29,11 +29,24 @@ export default async function checkRule(
   getRuleInfo,
   context
 ) {
-  const checkItem = (decl, item, propSpec, ruleInfo, knownVariables) => {
+  const checkItem = (
+    decl,
+    item,
+    propSpec,
+    ruleInfo,
+    localScopes,
+    localVariables
+  ) => {
     // Expects to be passed an item containing either a token { raw, type, value} or
     // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
 
-    const testResult = testItem(item, ruleInfo, options, knownVariables);
+    const testResult = testItem(
+      item,
+      ruleInfo,
+      options,
+      localScopes,
+      localVariables
+    );
     let message;
 
     if (!testResult.accepted) {
@@ -78,7 +91,14 @@ export default async function checkRule(
 
   const specialItems = ["inherit", "initial", "none", "unset"];
 
-  const checkItems = (items, decl, propSpec, ruleInfo, knownVariables) => {
+  const checkItems = (
+    items,
+    decl,
+    propSpec,
+    ruleInfo,
+    localScopes,
+    localVariables
+  ) => {
     // expects to be passed an items array containing tokens
     let itemsToCheck;
     const isRange = propSpec.range !== undefined;
@@ -120,7 +140,14 @@ export default async function checkRule(
     }
 
     for (const item of itemsToCheck) {
-      const report = checkItem(decl, item, propSpec, ruleInfo, knownVariables);
+      const report = checkItem(
+        decl,
+        item,
+        propSpec,
+        ruleInfo,
+        localScopes,
+        localVariables
+      );
 
       if (report) {
         // contains report
@@ -131,7 +158,7 @@ export default async function checkRule(
     return reports;
   };
 
-  const knownVariables = {}; // used to contain variable declarations
+  const localVariables = {}; // used to contain variable declarations
 
   const ruleInfo = await getRuleInfo(options);
 
@@ -159,42 +186,36 @@ export default async function checkRule(
 
         if (carbonThing) {
           fileScope = carbonThing[6].toLowerCase(); // use the last folder name if no scope
-        } else {
+        } else if (!options.enforceScopes) {
           // at this point local scopes come from a known import at least in theory
           // other scopes we might accept are based on user
 
           const nonCarbonThingRegex = // eslint-disable-next-line regexp/no-unused-capturing-group
             /((.+)\/)*_?([^.]+)(\.scss)*/;
 
-          const nonCarbonThing = nonCarbonThingRegex(usedThing);
+          const nonCarbonThing = nonCarbonThingRegex.exec(usedThing);
 
           if (nonCarbonThing) {
-            fileScope = nonCarbonThing[4];
+            fileScope = nonCarbonThing[3];
           }
         }
 
         const knownScope = options.acceptScopes.find(
           (
             aScope // allow known scope or file scope if *
-          ) =>
-            (usedScope && aScope === usedScope) ||
-            (!usedScope && fileScope === aScope)
+          ) => (usedScope && aScope === usedScope) || fileScope === aScope
         );
 
-        if (knownScope) {
-          localScopes.push(knownScope);
-        } else if (usedScope) {
-          // These scopes have been renamed to something  not yet matched
-          const knownFileScope = options.acceptScopes.find(
-            (aScope) => aScope === fileScope
-          );
-
-          if (knownFileScope) {
+        if (usedScope) {
+          // may want to add it to accept scopes
+          if (knownScope || !options.enforceScopes) {
             const acceptThisScope = usedScope === "*" ? "" : usedScope;
 
             localScopes.push(acceptThisScope);
             options.acceptScopes.push(acceptThisScope);
           }
+        } else if (knownScope) {
+          localScopes.push(knownScope);
         }
       }
     }
@@ -225,12 +246,12 @@ export default async function checkRule(
 
         // In some decl.prop may contain an existing known value
         // Store the value as an additional key
-        Object.keys(knownVariables).forEach((key) => {
+        Object.keys(localVariables).forEach((key) => {
           const interpolatedKey = `#{${key}}`;
 
           if (decl.prop.indexOf(key) !== -1) {
             newKeys.push(
-              decl.prop.replace(interpolatedKey, knownVariables[key].value)
+              decl.prop.replace(interpolatedKey, localVariables[key].value)
             );
           }
         });
@@ -239,7 +260,7 @@ export default async function checkRule(
           // add to variable declarations
           // expects all variables to appear before use
           // expects all variables to be simple (not map or list)
-          knownVariables[normalizeVariableName(key)] = tokenizedValue.items[0];
+          localVariables[normalizeVariableName(key)] = tokenizedValue.items[0];
         });
       }
 
@@ -266,7 +287,8 @@ export default async function checkRule(
             decl,
             propSpec,
             ruleInfo,
-            knownVariables
+            localScopes,
+            localVariables
           );
 
           if (newReports?.length > 0) {
@@ -311,7 +333,8 @@ export default async function checkRule(
                     decl,
                     propSpec,
                     ruleInfo,
-                    knownVariables
+                    localScopes,
+                    localVariables
                   );
 
                   if (newReports?.length > 0) {
