@@ -687,3 +687,52 @@ testRule(rule, {
     }
   ]
 });
+
+/* tests not specific to rule */
+testRule(rule, {
+  ruleName,
+  customSyntax: "postcss-scss",
+  config: [true],
+  accept: [
+    {
+      code: "@use '@from-else-where/theme' as *; background-color: $layer-03;",
+      description:
+        "Should accept theme * scope that matches acceptScopes from elsewhere when not enforced"
+    },
+    {
+      code: "@use '@from-else-where/theme' as *; background-color: theme.$layer-03;",
+      description:
+        "Should accept theme scope that is from elsewhere when not enforced"
+    },
+    {
+      code: "@use '@from-else-where/themez' as *; background-color: $layer-03;",
+      description:
+        "Should reject themz * scope that does not match acceptScopes from elsewhere when not enforced"
+    }
+  ],
+  reject: [
+    {
+      code: "@use '@from-else-where/themz' as *; background-color: themz.$layer-03;",
+      description:
+        "Should reject themz scope that does not match acceptScopes from elsewhere when not enforced"
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  customSyntax: "postcss-scss",
+  config: [true, { enforceScopes: true }],
+  reject: [
+    {
+      code: "@use '@from-else-where/theme' as *; background-color: $layer-03;",
+      description:
+        "Should reject theme * scope that is from elsewhere when enforced"
+    },
+    {
+      code: "@use '@from-else-where/theme'; background-color: theme.$layer-03;",
+      description:
+        "Should reject theme scope that is from elsewhere when enforced"
+    }
+  ]
+});
