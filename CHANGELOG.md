@@ -1,9 +1,10 @@
 # Changelog
 
-## unreleased changes
+## 2.3.1
 
 - Fix: potential infinite loop
 - Fix: missing motion function.
+- Fix enforceScopes option.
 
 ## 2.3.0
 
