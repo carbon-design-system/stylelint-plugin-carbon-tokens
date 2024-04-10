@@ -79,7 +79,7 @@ modules.exports = {
 NOTE: Motion is shown above with a standard stylelint secondary option `severity` set to `warning` the default is
 `error`.
 
-FYI: There are few automated fixes with --fix. See [Automated fixes?](#Automated%20fixes)
+FYI: There are few automated fixes with --fix. See [Automated fixes](#Automated%20fixes)
 
 FYI: With regards to math. See [What math is OK?](#What%20math%20is%20OK?)
 
