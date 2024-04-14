@@ -62,7 +62,7 @@
     "npmpub": "^5.1.1",
     "prettier": "^2.7.1",
     "rimraf": "^3.0.2",
-    "stylelint": "^14.11.0"
+    "stylelint": "^15.10.1"
   },
   "peerDependencies": {
     "@carbon/colors": ">=10 <= 11",
