@@ -27,6 +27,7 @@
     "url": "https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/issues"
   },
   "dependencies": {
+    "@ibm/telemetry-js": "^1.5.0",
     "lodash": "^4.17.21",
     "postcss": "^8.4.16",
     "postcss-scss": "^4.0.4",
@@ -44,7 +45,6 @@
     "@carbon/motion-10": "npm:@carbon/motion@^10.29.0",
     "@carbon/themes": "^11.7.0",
     "@carbon/themes-11-4": "npm:@carbon/themes@11.4.0",
-    "@carbon/themes-10": "npm:@carbon/themes@^10.54.0",
     "@carbon/type": "^11.7.0",
     "@carbon/type-10": "npm:@carbon/type@^10.44.0",
     "babel-plugin-istanbul": "^6.1.1",
@@ -129,7 +129,8 @@
     "dist",
     "docs",
     "src/**/README.md",
-    "!**/__tests__"
+    "!**/__tests__",
+    "telemetry.yml"
   ],
   "main": "dist/index.js",
   "repository": {
@@ -175,6 +176,7 @@
     "format:diff": "prettier --list-different '**/*.{scss,css,js,md}' '!**/{dist,storybook-static,.coverage}/**'",
     "format:staged": "prettier --write '**/*.{scss,css,js,md,vue}' '!**/{dist,storybook-static,.coverage}/**'",
     "lint": "eslint src --ignore-path .gitignore",
+    "postinstall": "ibmtelemetry --config=telemetry.yml",
     "prepare": "husky install",
     "prettify": "prettier --write \"src/**/*.js\"",
     "prepublishOnly": "npm run build",
