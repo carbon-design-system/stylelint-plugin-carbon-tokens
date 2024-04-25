@@ -1,12 +1,12 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import { doInit } from "./initAll";
-import { fixes } from "./fixes";
+import { doInit } from "./initAll.js";
+import { fixes } from "./fixes.js";
 
 export default async function getLayoutInfo(options) {
   const {

@@ -1,11 +1,11 @@
 /**
- * Copyright IBM Corp. 2022, 2022
+ * Copyright IBM Corp. 2022, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import { fixUsingMap } from "../../../utils/fix-utils";
+import { fixUsingMap } from "../../../utils/fix-utils.js";
 
 // It would be really nice to be able to fix raw colors to theme tokens, however this is problematic
 // due to colors often being used by multiple tokens. In the 'White' theme the color 'white' is used
@@ -93,7 +93,7 @@ export const fixes = [
             standard: "$layer-active-01", // OR context: $layer-active?
             "^background": "$background-active"
             // "$active-ui": "$layer-accent-active-01", // OR context: $layer-accent-active?
-            // "$active-ui": "$border-subtle-selected-01", // OR context: $border-sublte-selected?
+            // "$active-ui": "$border-subtle-selected-01", // OR context: $border-subtle-selected?
           },
           "$disabled-02": {
             standard: "$text-disabled",

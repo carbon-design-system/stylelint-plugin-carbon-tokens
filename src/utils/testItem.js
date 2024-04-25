@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -10,8 +10,8 @@ import {
   normalizeVariableName,
   parseRangeValue,
   parseToRegexOrString
-} from ".";
-import { TOKEN_TYPES } from "./tokenizeValue";
+} from "./index.js";
+import { TOKEN_TYPES } from "./tokenizeValue.js";
 
 const sanitizeUnconnectedOperators = (val) => {
   // eslint-disable-next-line regexp/no-super-linear-backtracking
@@ -362,7 +362,8 @@ const testItemInner = function (
         // check parameters
         if (parts[0] === _item.value) {
           // a function will contain an items array that is either a LIST or not
-          // IF TRUE a list then _item.items[0] === list which contains LIST_ITEMS in which case LIST_ITEMS.items is what we are interested in
+          // IF TRUE a list then _item.items[0] === list which contains LIST_ITEMS in
+          // which case LIST_ITEMS.items is what we are interested in
           // IF FALSE a list contains values which could include math or brackets or function calls
           // NOTE: we do not try to deal with function calls inside function calls
 

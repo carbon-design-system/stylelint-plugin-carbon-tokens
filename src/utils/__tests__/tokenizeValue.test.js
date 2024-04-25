@@ -1,11 +1,13 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import { tokenizeValue /*, TOKEN_TYPES */ } from "..";
+import { describe, it, mock, beforeEach, afterEach } from "node:test";
+import assert from "node:assert/strict";
+import { tokenizeValue /*, TOKEN_TYPES */ } from "../index.js";
 
 describe("tokenizeValue", () => {
   let spyWarn;
@@ -14,22 +16,22 @@ describe("tokenizeValue", () => {
     // The component instantiations that follow will generate a stack of
     // console errors and warnings about required props not provided or
     // conditions not met, and for the purposes of these tests we don't care.
-    spyWarn = jest.spyOn(console, "warn").mockImplementation(() => {});
+    spyWarn = mock.method(console, "warn", () => {});
   });
 
   afterEach(() => {
-    spyWarn.mockRestore();
+    mock.restoreAll();
   });
 
   it("Handles empty input", () => {
-    expect(tokenizeValue("")).toEqual({
+    assert.deepEqual(tokenizeValue(""), {
       items: [],
       raw: ""
     });
   });
 
   it("Handles single quoted strings", () => {
-    expect(tokenizeValue("'a value'")).toEqual({
+    assert.deepEqual(tokenizeValue("'a value'"), {
       items: [
         {
           type: "Quoted literal",
@@ -42,7 +44,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles double quoted strings", () => {
-    expect(tokenizeValue('"a value"')).toEqual({
+    assert.deepEqual(tokenizeValue('"a value"'), {
       items: [
         {
           type: "Quoted literal",
@@ -55,7 +57,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles single $variable", () => {
-    expect(tokenizeValue("$test")).toEqual({
+    assert.deepEqual(tokenizeValue("$test"), {
       items: [
         {
           type: "scss variable",
@@ -68,7 +70,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles single CSS variable", () => {
-    expect(tokenizeValue("var(--test)")).toEqual({
+    assert.deepEqual(tokenizeValue("var(--test)"), {
       items: [
         {
           items: [
@@ -89,7 +91,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles a function with multiple parameters", () => {
-    expect(tokenizeValue("func('test', 'a value')")).toEqual({
+    assert.deepEqual(tokenizeValue("func('test', 'a value')"), {
       items: [
         {
           items: [
@@ -133,7 +135,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles calc", () => {
-    expect(tokenizeValue("calc(100vw - 20px)")).toEqual({
+    assert.deepEqual(tokenizeValue("calc(100vw - 20px)"), {
       items: [
         {
           items: [
@@ -172,7 +174,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles math", () => {
-    expect(tokenizeValue("100vw - 20px")).toEqual({
+    assert.deepEqual(tokenizeValue("100vw - 20px"), {
       items: [
         {
           items: [
@@ -201,25 +203,13 @@ describe("tokenizeValue", () => {
       raw: "100vw - 20px"
     });
 
-    expect(tokenizeValue("-1 * #{$test}")).toMatchObject({
+    assert.deepEqual(tokenizeValue("-1 * #{$test}"), {
       items: [
         {
           items: [
-            {
-              raw: "-1",
-              type: "Numeric literal",
-              value: "-1"
-            },
-            {
-              value: "*",
-              type: "operator",
-              raw: "*"
-            },
-            {
-              raw: "#{$test}",
-              type: "Unknown",
-              value: "#{$test}"
-            }
+            { value: "-1", type: "Numeric literal", raw: "-1", units: "" },
+            { type: "operator", value: "*", raw: "*" },
+            { value: "#{$test}", type: "Unknown", raw: "#{$test}" }
           ],
           type: "Math",
           raw: "-1 * #{$test}"
@@ -228,25 +218,13 @@ describe("tokenizeValue", () => {
       raw: "-1 * #{$test}"
     });
 
-    expect(tokenizeValue("-1 * $test")).toMatchObject({
+    assert.deepEqual(tokenizeValue("-1 * $test"), {
       items: [
         {
           items: [
-            {
-              raw: "-1",
-              type: "Numeric literal",
-              value: "-1"
-            },
-            {
-              value: "*",
-              type: "operator",
-              raw: "*"
-            },
-            {
-              raw: "$test",
-              type: "scss variable",
-              value: "$test"
-            }
+            { value: "-1", type: "Numeric literal", raw: "-1", units: "" },
+            { type: "operator", value: "*", raw: "*" },
+            { value: "$test", type: "scss variable", raw: "$test" }
           ],
           type: "Math",
           raw: "-1 * $test"
@@ -255,7 +233,7 @@ describe("tokenizeValue", () => {
       raw: "-1 * $test"
     });
 
-    expect(tokenizeValue("- 10px")).toEqual({
+    assert.deepEqual(tokenizeValue("- 10px"), {
       items: [
         {
           raw: "- 10px",
@@ -267,7 +245,7 @@ describe("tokenizeValue", () => {
       raw: "- 10px"
     });
 
-    expect(tokenizeValue("- - + - 10%")).toEqual({
+    assert.deepEqual(tokenizeValue("- - + - 10%"), {
       items: [
         {
           raw: "- - + - 10%",
@@ -279,7 +257,7 @@ describe("tokenizeValue", () => {
       raw: "- - + - 10%"
     });
 
-    expect(tokenizeValue("+ 10px")).toEqual({
+    assert.deepEqual(tokenizeValue("+ 10px"), {
       items: [
         {
           raw: "+ 10px",
@@ -291,14 +269,14 @@ describe("tokenizeValue", () => {
       raw: "+ 10px"
     });
 
-    expect(tokenizeValue("* 10px")).toEqual({
+    assert.deepEqual(tokenizeValue("* 10px"), {
       items: [],
       warning:
         "It looks like you are starting some math with '*' without anything to apply it to.",
       raw: "* 10px"
     });
 
-    expect(tokenizeValue("/ 10px")).toEqual({
+    assert.deepEqual(tokenizeValue("/ 10px"), {
       items: [],
       warning:
         "It looks like you are starting some math with '/' without anything to apply it to.",
@@ -307,7 +285,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles multiple space separated values", () => {
-    expect(tokenizeValue("$a $b $c")).toEqual({
+    assert.deepEqual(tokenizeValue("$a $b $c"), {
       items: [
         { type: "scss variable", value: "$a", raw: "$a" },
         { type: "scss variable", value: "$b", raw: "$b" },
@@ -318,7 +296,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles comma separated list", () => {
-    expect(tokenizeValue("$a, $b,$c")).toEqual({
+    assert.deepEqual(tokenizeValue("$a, $b,$c"), {
       items: [
         {
           type: "Item in list",
@@ -341,8 +319,8 @@ describe("tokenizeValue", () => {
     });
   });
 
-  it("Handles unexpected input", () => {
-    expect(tokenizeValue("'unterminated quoted literal")).toMatchObject({
+  it("Handles unterminated input", () => {
+    assert.deepEqual(tokenizeValue("'unterminated quoted literal"), {
       items: [
         {
           value: "'",
@@ -370,7 +348,7 @@ describe("tokenizeValue", () => {
   });
 
   it("Treats #{$var} as an 'Other' type", () => {
-    expect(tokenizeValue("#{$i-am-not-easily-knowable}")).toMatchObject({
+    assert.deepEqual(tokenizeValue("#{$i-am-not-easily-knowable}"), {
       items: [
         {
           raw: "#{$i-am-not-easily-knowable}",
@@ -383,15 +361,33 @@ describe("tokenizeValue", () => {
   });
 
   it("Handles content split across lines", () => {
-    expect(
+    assert.deepEqual(
       tokenizeValue(`url(
   "/graphics/settings/checkMark.svg"
-)`)
-    ).toMatchObject({});
+)`),
+      {
+        items: [
+          {
+            isCalc: false,
+            items: [
+              {
+                raw: '"/graphics/settings/checkMark.svg"',
+                type: "Quoted literal",
+                value: '"/graphics/settings/checkMark.svg"'
+              }
+            ],
+            raw: 'url("/graphics/settings/checkMark.svg")',
+            type: "function",
+            value: "url"
+          }
+        ],
+        raw: 'url(\n  "/graphics/settings/checkMark.svg"\n)'
+      }
+    );
   });
 
   it("can parse scope", () => {
-    expect(tokenizeValue("scope.$test")).toEqual({
+    assert.deepEqual(tokenizeValue("scope.$test"), {
       items: [
         {
           type: "scss variable",

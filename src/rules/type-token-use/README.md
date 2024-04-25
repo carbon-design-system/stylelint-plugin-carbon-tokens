@@ -1,10 +1,15 @@
 # Type Token Use
 
-This rule is intended enfoce use of Carbon type tokens, functions, mixins and CSS classes as defined. [https://www.carbondesignsystem.com/guidelines/typography/overview/](https://www.carbondesignsystem.com/guidelines/typography/overview/)
+This rule is intended enforce use of Carbon type tokens, functions, mixins and
+CSS classes as defined.
+[https://www.carbondesignsystem.com/guidelines/typography/overview/](https://www.carbondesignsystem.com/guidelines/typography/overview/)
 
-Often Carbon fonts are set through the use of mixins, which this linter does not check for.
+Often Carbon fonts are set through the use of mixins, which this linter does not
+check for.
 
-Carbon recommends using the mixin approach which is why these functions are optional.
+Carbon recommends using the mixin approach which is why these functions are
+optional.
+
 ## Default props
 
 ```js
@@ -27,4 +32,5 @@ const defaultOptions = {
 
 The automatic fixes for the type rule are as follows.
 
-- V11: Remove `carbon--` prefix from function names with e.g. `carbon--font-width`;
+- V11: Remove `carbon--` prefix from function names with e.g.
+  `carbon--font-width`;

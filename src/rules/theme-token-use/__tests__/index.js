@@ -1,13 +1,22 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import rule, { messages, ruleName } from "..";
+import { testRule } from "stylelint-test-rule-node";
+import plugins from "../../../../index.js";
+const plugin = plugins.find(
+  (thing) => thing.ruleName === "carbon/theme-token-use"
+);
 
-testRule(rule, {
+const {
+  rule: { messages, ruleName }
+} = plugin;
+
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -90,21 +99,26 @@ testRule(rule, {
     {
       code: ".foo { background-color: #f4f4f4; }",
       description: "Used #color instead of Carbon theme token expected.",
-      message: messages.rejected
+      message: messages.rejected("background-color", "#f4f4f4")
     },
     {
       code: ".foo { box-shadow: 0 0 5px $layer-01, 0 0 10px #fefefe; }",
       description: "Used #color in a split property not Carbon theme tokens.",
-      message: messages.rejected
+      message: messages.rejected(
+        "box-shadow",
+        "0 0 5px $layer-01, 0 0 10px #fefefe"
+      )
     },
     {
       code: ".foo { border: 1px solid my-value-fun($layer-01); }",
-      description: "Other functions should fail my-value-fn fails"
+      description: "Other functions should fail my-value-fn fails",
+      message: messages.rejected("border", "1px solid my-value-fun($layer-01)")
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -119,18 +133,27 @@ testRule(rule, {
       code: ".foo { background-color: $carbon--blue-90; }",
       description:
         "Reject using a carbon color token without v10 testOnlyVersion",
-      message: messages.rejectedVariable
+      message: messages.rejectedVariable(
+        "background-color",
+        "$carbon--blue-90",
+        "an unknown, undefined or unrecognized value"
+      )
     },
     {
       code: ".foo { background-color: $ibm-color__blue-90; }",
       description: "Reject using a ibm color token without v10 testOnlyVersion",
-      message: messages.rejectedVariable
+      message: messages.rejectedVariable(
+        "background-color",
+        "$ibm-color__blue-90",
+        "an unknown, undefined or unrecognized value"
+      )
     }
   ]
 });
 
 // // verify use of v10 carbon color tokens
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -155,13 +178,18 @@ testRule(rule, {
     {
       code: ".foo { background-color: $ibm-color__blue-80; }",
       description: "Reject using a ibm color token",
-      message: messages.rejectedVariable
+      message: messages.rejectedVariable(
+        "background-color",
+        "$ibm-color__blue-80",
+        "an unknown, undefined or unrecognized value"
+      )
     }
   ]
 });
 
 // verify use of v10 carbon color tokens
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -183,13 +211,18 @@ testRule(rule, {
     {
       code: ".foo { background-color: $carbon--blue-90; }",
       description: "Reject using a carbon color token",
-      message: messages.rejectedVariable
+      message: messages.rejectedVariable(
+        "background-color",
+        "$carbon--blue-90",
+        "an unknown, undefined or unrecognized value"
+      )
     }
   ]
 });
 
 // verify use of v10 theme tokens
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -211,13 +244,18 @@ testRule(rule, {
     {
       code: ".foo { background-color: $layer-01; }",
       description: "Reject v11 theme token in v10 test",
-      message: messages.rejectedVariable
+      message: messages.rejectedVariable(
+        "background-color",
+        "$layer-01",
+        "an unknown, undefined or unrecognized value"
+      )
     }
   ]
 });
 
 // verify rejection of undeclared variables
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true],
   customSyntax: "postcss-scss",
@@ -239,28 +277,36 @@ testRule(rule, {
     {
       code: ".foo { color: $my-value-reject; }",
       description:
-        "Reject undeclared $variable  when acceptUndefinedVariables is false.",
-      message: messages.rejectedUndefinedVariable
+        "Reject undeclared $variable when acceptUndefinedVariables is false.",
+      message: messages.rejectedUndefinedVariable(
+        "color",
+        "$my-value-reject",
+        "an unknown, undefined or unrecognized value"
+      )
     },
     {
       code: ".foo { color: var(--my-value-reject); }",
       description:
         "Reject undeclared --variable when acceptUndefinedVariables is false.",
-      message: messages.rejectedUndefinedVariable
+      message: messages.rejectedUndefinedVariable(
+        "color",
+        "var(--my-value-reject)",
+        "an unknown, undefined or unrecognized value"
+      )
     }
   ]
 });
 
 // verify use of rgba with carbon theme token
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: true,
   customSyntax: "postcss-scss",
   accept: [
     {
       code: ".foo { background-color: rgba($layer-01, 0.5); }",
-      description: "Accept using a carbon theme token with rgba()",
-      message: messages.rejected
+      description: "Accept using a carbon theme token with rgba()"
     }
   ],
 
@@ -269,58 +315,58 @@ testRule(rule, {
     {
       code: ".foo { background-color: rgba(100, 100, 255, 0.5); }",
       description: "Reject using a non-carbon theme token with rgba()",
-      message: messages.rejected
+      message: messages.rejected("background-color", "rgba(100, 100, 255, 0.5)")
     }
   ]
 });
 
 // verify use of full and stroke with carbon theme token
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: true,
   customSyntax: "postcss-scss",
   accept: [
     {
       code: ".foo { fill: $layer-01; }",
-      description: "Accept carbon theme token for fill property by default",
-      message: messages.rejected
+      description: "Accept carbon theme token for fill property by default"
     },
     {
       code: ".foo { stroke: $layer-01; }",
-      description: "Accept carbon theme token for stroke property by default",
-      message: messages.rejected
+      description: "Accept carbon theme token for stroke property by default"
     }
   ],
   reject: [
     {
       code: ".foo { fill: #fefefe; }",
       description: "Reject non-carbon theme token for fill property by default",
-      message: messages.rejected
+      message: messages.rejected("fill", "#fefefe")
     },
     {
       code: ".foo { stroke: red; }",
       description:
         "Reject non-carbon theme token for stroke property by default",
-      message: messages.rejected
+      message: messages.rejected("stroke", "red")
     }
   ]
 });
 
 // accept currentColor can be used as a value
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: true,
   customSyntax: "postcss-scss",
   accept: [
     {
       code: ".foo { fill: currentColor; }",
-      description: "Accept currentColor on the assumption color is valid",
-      message: messages.rejected
+      description: "Accept currentColor on the assumption color is valid"
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -347,12 +393,15 @@ testRule(rule, {
   reject: [
     {
       code: "$do-check-me: red;",
-      description: "Should check '$do-check-me` not using a carbon theme token'"
+      description:
+        "Should check '$do-check-me` not using a carbon theme token'",
+      message: messages.rejected("$do-check-me", "red")
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -410,13 +459,18 @@ testRule(rule, {
   reject: [
     {
       code: "background-color: other.$layer-01;",
-      description: "Should reject unrecognized scoped theme token"
+      description: "Should reject unrecognized scoped theme token",
+      message: messages.rejectedUndefinedVariable(
+        "background-color",
+        "other.$layer-01"
+      )
     }
   ]
 });
 
 // Scope tests
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: true,
   customSyntax: "postcss-scss",
@@ -429,12 +483,14 @@ testRule(rule, {
   reject: [
     {
       code: `.foo { color: th.$layer-01; }`,
-      description: "Reject scope 'th' without acceptScopes setting."
+      description: "Reject scope 'th' without acceptScopes setting.",
+      message: messages.rejectedUndefinedVariable("color", "th.$layer-01")
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true, { acceptScopes: ["th"] }],
   customSyntax: "postcss-scss",
@@ -447,12 +503,14 @@ testRule(rule, {
   reject: [
     {
       code: `.foo { color: theme.$layer-01; }`,
-      description: "Reject theme scope with scope setting."
+      description: "Reject theme scope with scope setting.",
+      message: messages.rejectedUndefinedVariable("color", "theme.$layer-01")
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true, { acceptScopes: ["th", "*"] }],
   customSyntax: "postcss-scss",
@@ -469,12 +527,14 @@ testRule(rule, {
   reject: [
     {
       code: `.foo { color: reject.$layer-01; }`,
-      description: "Reject scope not included in scope setting."
+      description: "Reject scope not included in scope setting.",
+      message: messages.rejectedUndefinedVariable("color", "reject.$layer-01")
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true, { acceptScopes: ["/^th(eme)?$/"] }],
   customSyntax: "postcss-scss",
@@ -492,12 +552,14 @@ testRule(rule, {
   reject: [
     {
       code: `.foo { color: reject.$layer-01; }`,
-      description: "Reject scope not included in scope regex setting."
+      description: "Reject scope not included in scope regex setting.",
+      message: messages.rejectedUndefinedVariable("color", "reject.$layer-01")
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true, { acceptScopes: ["**"] }],
   customSyntax: "postcss-scss",
@@ -509,7 +571,8 @@ testRule(rule, {
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: true,
   customSyntax: "postcss-scss",
@@ -526,7 +589,8 @@ testRule(rule, {
 });
 
 // test v10 to 11 updated fixes
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: true,
   customSyntax: "postcss-scss",
@@ -540,46 +604,61 @@ testRule(rule, {
     {
       code: ".foo { color: $danger; }",
       description: "Reject v10 theme token $danger",
+      message: messages.rejectedUndefinedVariable("color", "$danger"),
       fixed: ".foo { color: $button-danger-primary; }"
     },
     {
       code: ".foo { color: $hover-row; }",
       description: "Reject v10 theme token $hover-row",
+      message: messages.rejectedUndefinedVariable("color", "$hover-row"),
       fixed: ".foo { color: $layer-hover-01; }"
     },
     {
       code: ".foo { border-color: $decorative-01; }",
       description: "Reject v10 theme token $decorative-01",
+      message: messages.rejectedUndefinedVariable(
+        "border-color",
+        "$decorative-01"
+      ),
       fixed: ".foo { border-color: $border-subtle-02; }"
     },
     {
       code: ".foo { color: $active-ui; }",
       description: "Reject v10 theme token $active-ui and fix color",
+      message: messages.rejectedUndefinedVariable("color", "$active-ui"),
       fixed: ".foo { color: $layer-active-01; }"
     },
     {
       code: ".foo { background-color: $active-ui; }",
       description: "Reject v10 theme token $active-ui and fix background-color",
+      message: messages.rejectedUndefinedVariable(
+        "background-color",
+        "$active-ui"
+      ),
       fixed: ".foo { background-color: $background-active; }"
     },
     {
       code: ".foo { color: $disabled-02; }",
       description: "Reject v10 theme token $disabled-02 and fix color",
+      message: messages.rejectedUndefinedVariable("color", "$disabled-02"),
       fixed: ".foo { color: $text-disabled; }"
     },
     {
       code: ".foo { box-shadow: 2px 2px 10px 10px $disabled-02; }",
       description: "Reject v10 theme token $disabled-02 and fix box-shadow",
+      message: messages.rejectedUndefinedVariable("box-shadow", "$disabled-02"),
       fixed: ".foo { box-shadow: 2px 2px 10px 10px $border-disabled; }"
     },
     {
       code: ".foo { border: 2px 2px 10px 10px solid $disabled-02; }",
       description: "Reject v10 theme token $disabled-02 and fix border",
+      message: messages.rejectedUndefinedVariable("border", "$disabled-02"),
       fixed: ".foo { border: 2px 2px 10px 10px solid $border-disabled; }"
     },
     {
       code: ".foo { outline: 2px $disabled-02; }",
       description: "Reject v10 theme token $disabled-02 and fix outline",
+      message: messages.rejectedUndefinedVariable("outline", "$disabled-02"),
       fixed: ".foo { outline: 2px $border-disabled; }"
     },
     // {
@@ -599,6 +678,10 @@ testRule(rule, {
       code: "@use '@carbon/layout'; @use '@carbon/theme' as carbon_theme; .foo { background-color: $active-danger; }",
       description:
         "Reject v10 theme token $active-danger but fix with carbon_theme scope ignoring other scopes",
+      message: messages.rejectedUndefinedVariable(
+        "background-color",
+        "$active-danger"
+      ),
       fixed:
         "@use '@carbon/layout'; @use '@carbon/theme' as carbon_theme; .foo { background-color: carbon_theme.$button-danger-active; }"
     }
@@ -606,12 +689,16 @@ testRule(rule, {
 });
 
 // tests that only pass in v10
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
-  config: {
-    carbonPath: "node_modules/@carbon",
-    carbonModulePostfix: "-10"
-  },
+  config: [
+    true,
+    {
+      carbonPath: "node_modules/@carbon",
+      carbonModulePostfix: "-10"
+    }
+  ],
   customSyntax: "postcss-scss",
   accept: [
     {
@@ -624,8 +711,8 @@ testRule(rule, {
 // test v10 to 11 updated fixes preferring context
 // NOTE: Does not appear to currently be exported or well defined
 // ^^^^^
-// testRule(rule, {
-//   ruleName,
+// testRule({
+//   plugins: [plugin],ruleName,
 //   config: [true, { preferContextFixes: true }],
 //   customSyntax: "postcss-scss",
 //   fix: true,
@@ -638,12 +725,16 @@ testRule(rule, {
 //   ]
 // });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
-  config: {
-    carbonPath: "node_modules/@carbon",
-    carbonModulePostfix: "-11-4"
-  },
+  config: [
+    true,
+    {
+      carbonPath: "node_modules/@carbon",
+      carbonModulePostfix: "-11-4"
+    }
+  ],
   customSyntax: "postcss-scss",
   accept: [
     {
@@ -660,7 +751,8 @@ testRule(rule, {
 });
 
 // enforceScopes test
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -683,13 +775,18 @@ testRule(rule, {
   reject: [
     {
       code: "background-color: $layer-03;",
-      description: "Should reject global scope without when @use enforced"
+      description: "Should reject global scope without when @use enforced",
+      message: messages.rejectedUndefinedVariable(
+        "background-color",
+        "$layer-03"
+      )
     }
   ]
 });
 
 /* tests not specific to rule */
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   customSyntax: "postcss-scss",
   config: [true],
@@ -707,19 +804,24 @@ testRule(rule, {
     {
       code: "@use '@from-else-where/themez' as *; background-color: $layer-03;",
       description:
-        "Should reject themz * scope that does not match acceptScopes from elsewhere when not enforced"
+        "Should reject themez * scope that does not match acceptScopes from elsewhere when not enforced"
     }
   ],
   reject: [
     {
-      code: "@use '@from-else-where/themz' as *; background-color: themz.$layer-03;",
+      code: "@use '@from-else-where/themez' as *; background-color: themez.$layer-03;",
       description:
-        "Should reject themz scope that does not match acceptScopes from elsewhere when not enforced"
+        "Should reject themez scope that does not match acceptScopes from elsewhere when not enforced",
+      message: messages.rejectedUndefinedVariable(
+        "background-color",
+        "themez.$layer-03"
+      )
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   customSyntax: "postcss-scss",
   config: [true, { enforceScopes: true }],
@@ -727,12 +829,20 @@ testRule(rule, {
     {
       code: "@use '@from-else-where/theme' as *; background-color: $layer-03;",
       description:
-        "Should reject theme * scope that is from elsewhere when enforced"
+        "Should reject theme * scope that is from elsewhere when enforced",
+      message: messages.rejectedUndefinedVariable(
+        "background-color",
+        "$layer-03"
+      )
     },
     {
       code: "@use '@from-else-where/theme'; background-color: theme.$layer-03;",
       description:
-        "Should reject theme scope that is from elsewhere when enforced"
+        "Should reject theme scope that is from elsewhere when enforced",
+      message: messages.rejectedUndefinedVariable(
+        "background-color",
+        "theme.$layer-03"
+      )
     }
   ]
 });

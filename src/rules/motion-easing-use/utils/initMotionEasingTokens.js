@@ -1,12 +1,14 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import { version as installedVersion } from "@carbon/motion/package.json";
-import loadModules from "../../../utils/loadModules";
+import motionPkg from "@carbon/motion/package.json" assert { type: "json" };
+import loadModules from "../../../utils/loadModules.js";
+
+const installedVersion = motionPkg.version;
 
 const doInit = async ({ carbonPath, carbonModulePostfix }) => {
   const baseTokens = ["ease-in", "ease-out", "standard-easing"];

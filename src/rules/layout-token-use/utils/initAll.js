@@ -1,6 +1,6 @@
 /* eslint-disable  */
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -10,11 +10,12 @@
 // here we split based on the name excluding the numeric part.
 // This is to maintain the ability to separate out sizes not called out
 // on the carbon designs system website.
-import { formatTokenName } from "../../../utils/token-name";
+import { formatTokenName } from "../../../utils/token-name.js";
 import { unstable_tokens as installedTokens } from "@carbon/layout";
-import { version as installedVersion } from "@carbon/layout/package.json";
-import loadModules from "../../../utils/loadModules";
+import layoutPkg from "@carbon/layout/package.json" assert { type: "json" };
+import loadModules from "../../../utils/loadModules.js";
 
+const installedVersion = layoutPkg.version;
 const carbonPrefix = "$carbon--";
 
 const doInit = async ({ carbonPath, carbonModulePostfix }) => {
@@ -28,7 +29,11 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
 
   if (carbonPath) {
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
-    const { layout, pkg } = await loadModules(carbonPath, ["layout"], carbonModulePostfix);
+    const { layout, pkg } = await loadModules(
+      carbonPath,
+      ["layout"],
+      carbonModulePostfix
+    );
 
     _version = pkg.version;
 

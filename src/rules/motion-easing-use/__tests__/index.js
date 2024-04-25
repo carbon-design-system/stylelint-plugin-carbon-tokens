@@ -1,13 +1,22 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import rule, { messages, ruleName } from "..";
+import { testRule } from "stylelint-test-rule-node";
+import plugins from "../../../../index.js";
+const plugin = plugins.find(
+  (thing) => thing.ruleName === "carbon/motion-easing-use"
+);
 
-testRule(rule, {
+const {
+  rule: { messages, ruleName }
+} = plugin;
+
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true],
   customSyntax: "postcss-scss",
@@ -70,49 +79,67 @@ testRule(rule, {
   reject: [
     {
       code: ".foo {   transition: $ease-in; }",
-      description: "Reject easing when other values are missing missing."
+      description: "Reject easing when other values are missing missing.",
+      message: messages.rejectedUndefinedRange("transition", "undefined", 3)
     },
     {
       code: ".foo {   transition: background-color $duration-slow-02; }",
-      description: "Reject no easing for transition when value is missing."
+      description: "Reject no easing for transition when value is missing.",
+      message: messages.rejectedUndefinedRange("transition", "undefined", 3)
     },
     {
       code: ".foo { transition: width $duration-fast-01 ease-in, height 2s ease-out; }",
       description: "Reject non Carbon ease token or function",
-      message: messages.rejectedTransition
+      warnings: [
+        {
+          message: messages.rejectedTransition("transition", "ease-in")
+        },
+        {
+          message: messages.rejectedTransition("transition", "ease-out")
+        }
+      ]
     },
     {
       code: ".foo { transition: width $duration-fast-01 motion(standard, productive), height 2s ease-out; }",
       description:
         "Reject one of many non Carbon ease function non-Carbon ease token or function",
-      message: messages.rejectedTransition
+      message: messages.rejectedTransition("transition", "ease-out")
     },
     {
       code: ".foo {   transition: background-color $duration-slow-02 mo.$ease-in; }",
       description:
-        "Unexpected scope 'mo' motion easing token settings expected for transition."
+        "Unexpected scope 'mo' motion easing token settings expected for transition.",
+      message: messages.rejectedUndefinedVariable("transition", "mo.$ease-in")
     },
     {
       code: ".foo {   transition: background-color $duration-slow-02 mo.motion(exit, expressive); }",
       description:
-        "Unexpected scope 'mo' motion easing function settings expected for transition."
+        "Unexpected scope 'mo' motion easing function settings expected for transition.",
+      message: messages.rejectedTransition(
+        "transition",
+        "mo.motion(exit, expressive)"
+      )
     },
     {
       code: ".foo { transition-timing-function: ease-in; }",
-      description: "Reject non easing token for transition-timing-function."
+      description: "Reject non easing token for transition-timing-function.",
+      message: messages.rejected("transition-timing-function", "ease-in")
     },
     {
       code: ".foo { animation: wiggle  $duration-slow-02 ease-out; }",
-      description: "Reject non easing token for animation."
+      description: "Reject non easing token for animation.",
+      message: messages.rejectedTransition("animation", "ease-out")
     },
     {
       code: ".foo { animation-timing-function: ease-in-out; }",
-      description: "Reject non easing token for animation-timing-function."
+      description: "Reject non easing token for animation-timing-function.",
+      message: messages.rejected("animation-timing-function", "ease-in-out")
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -131,7 +158,8 @@ testRule(rule, {
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true, { acceptScopes: ["mo"] }],
   customSyntax: "postcss-scss",
@@ -149,7 +177,8 @@ testRule(rule, {
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true, { acceptScopes: ["**"] }],
   customSyntax: "postcss-scss",
@@ -161,7 +190,8 @@ testRule(rule, {
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: true,
   customSyntax: "postcss-scss",

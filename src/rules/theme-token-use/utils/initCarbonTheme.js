@@ -1,20 +1,23 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import {
-  unstable_metadata as installedMetadata,
-  tokens as installedTokens,
-  white as installedWhite
-} from "@carbon/themes";
-import { formatTokenName } from "../../../utils/token-name";
+import themePkg from "@carbon/themes/package.json" assert { type: "json" };
+import * as installedThemes from "@carbon/themes";
+import { formatTokenName } from "../../../utils/token-name.js";
 import { unstable_tokens as installedLayout } from "@carbon/layout";
 import { unstable_tokens as installedType } from "@carbon/type";
-import { version as installedVersion } from "@carbon/themes/package.json";
-import loadModules from "../../../utils/loadModules";
+import loadModules from "../../../utils/loadModules.js";
+
+const installedVersion = themePkg.version;
+const {
+  installedMetadata: unstable_metadata,
+  installedTokens: tokens,
+  installedWhite: white
+} = installedThemes;
 
 const missingButtonTokens = [
   "button-danger-active",
@@ -59,9 +62,9 @@ const doInitTheme = async ({ carbonPath, carbonModulePostfix }) => {
   } else {
     layoutTokens = installedLayout;
     typeTokens = installedType;
-    white = installedWhite;
-    tokens = installedTokens;
-    unstable_metadata = installedMetadata;
+    white = installedThemes.white;
+    tokens = installedThemes.tokens;
+    unstable_metadata = installedThemes.unstable_metadata;
     _version = installedVersion;
   }
 

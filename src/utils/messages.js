@@ -1,11 +1,12 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import { utils } from "stylelint";
+import stylelint from "stylelint";
+const { utils } = stylelint;
 
 const stringOrRegexMessage = (f, { label, ...options }) => {
   // strip empty values from options
@@ -39,7 +40,11 @@ const getMessages = (ruleName, label) => {
       stringOrRegexMessage(
         (o) =>
           `Expected carbon ${o.label} token, mixin or function for "${o.property}" found "${o.value}".`,
-        { label, property, value }
+        {
+          label,
+          property,
+          value
+        }
       ),
     rejectedUndefinedRange: (property, value, range) =>
       stringOrRegexMessage(
@@ -47,11 +52,11 @@ const getMessages = (ruleName, label) => {
           `Expected carbon ${o.label} token, mixin or function for "${o.property}" found "${o.value}" in position(s) "${o.range}".`,
         { label, property, value, range }
       ),
-    rejectedUndefinedVariable: (property, variable, value) =>
+    rejectedUndefinedVariable: (property, variable) =>
       stringOrRegexMessage(
         (o) =>
           `Expected carbon ${o.label} token, mixin or function to be set for variable "${o.variable}" used by "${o.property}" found "an unknown, undefined or unrecognized value".`,
-        { label, property, variable, value }
+        { label, property, variable }
       ),
     rejectedVariable: (property, variable, value) =>
       stringOrRegexMessage(

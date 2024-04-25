@@ -11,7 +11,7 @@
   ],
   "author": "Lee Chase <lee.chase@uk.ibm.com>",
   "license": "MIT",
-  "main": "index.js",
+  "main": "src/index.js",
   "type": "module",
   "bugs": {
     "url": "https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/issues"

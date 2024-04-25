@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -14,10 +14,10 @@ import {
   parseRangeValue,
   testItem,
   tokenizeValue
-} from "./";
-import { tryFix } from "./fix-utils";
-import { utils } from "stylelint";
-
+} from "./index.js";
+import { tryFix } from "./fix-utils.js";
+import stylelint from "stylelint";
+const { utils } = stylelint;
 // import valueParser from "postcss-value-parser";
 
 export default async function checkRule(
@@ -231,14 +231,12 @@ export default async function checkRule(
     const tokenizedValue = tokenizeValue(decl.value);
 
     if (tokenizedValue && tokenizedValue.error) {
-      // eslint-disable-next-line no-console
       console.warn(
         `Unexpected syntax in decl: ${JSON.stringify(
           decl
         )}. \n\n HELP. If you see this message PLEASE copy the contents of the message above and raise a github issue. Thankyou in advance for helping us to improve the tool.`
       );
     } else if (tokenizedValue && tokenizedValue.warning) {
-      // eslint-disable-next-line no-console
       console.warn(tokenizedValue.warning);
     } else {
       if (isVariable(decl.prop)) {
@@ -273,7 +271,6 @@ export default async function checkRule(
         // variable parameters lists where color is not at a fixed position
 
         const itemsToCheck =
-          // eslint-disable-next-line eqeqeq
           tokenizedValue.type == TOKEN_TYPES.LIST
             ? tokenizedValue.items
             : [tokenizedValue];
