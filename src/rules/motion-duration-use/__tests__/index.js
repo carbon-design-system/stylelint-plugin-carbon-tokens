@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 import { testRule } from "stylelint-test-rule-node";
-import plugins from "../../../../index.js";
+import plugins from "../../../../src/index.js";
 const plugin = plugins.find(
   (thing) => thing.ruleName === "carbon/motion-duration-use"
 );

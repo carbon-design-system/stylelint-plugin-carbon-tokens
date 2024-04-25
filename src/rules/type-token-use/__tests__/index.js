@@ -6,7 +6,7 @@
  */
 
 import { testRule } from "stylelint-test-rule-node";
-import plugins from "../../../../index.js";
+import plugins from "../../../../src/index.js";
 const plugin = plugins.find(
   (thing) => thing.ruleName === "carbon/type-token-use"
 );
