@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -8,8 +8,10 @@
 // There are no type tokens that are used directly
 // Types are applied via mixins and functions
 // const typeTokens = [];
-import { version as installedVersion } from "@carbon/type/package.json";
-import loadModules from "../../../utils/loadModules";
+import typePkg from "@carbon/type/package.json" assert { type: "json" };
+import loadModules from "../../../utils/loadModules.js";
+
+const installedVersion = typePkg.version;
 
 const doInit = async ({ carbonPath, carbonModulePostfix }) => {
   // permitted carbon type functions
@@ -19,7 +21,11 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
 
   if (carbonPath) {
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
-    const { pkg } = await loadModules(carbonPath, ["type"], carbonModulePostfix);
+    const { pkg } = await loadModules(
+      carbonPath,
+      ["type"],
+      carbonModulePostfix
+    );
 
     _version = pkg.version;
   } else {

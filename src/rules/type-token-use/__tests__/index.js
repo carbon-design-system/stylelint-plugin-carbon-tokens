@@ -1,13 +1,22 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import rule, { messages, ruleName } from "..";
+import { testRule } from "stylelint-test-rule-node";
+import plugins from "../../../../src/index.js";
+const plugin = plugins.find(
+  (thing) => thing.ruleName === "carbon/type-token-use"
+);
 
-testRule(rule, {
+const {
+  rule: { messages, ruleName }
+} = plugin;
+
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true],
   customSyntax: "postcss-scss",
@@ -33,37 +42,58 @@ testRule(rule, {
     {
       code: ".foo { font-style: italic; }",
       description: "Reject directly setting font-style",
-      message: messages.rejected
+      message: messages.rejected("font-style", "italic")
     },
     {
       code: ".foo { font-variant: small-caps; }",
       description: "Reject directly setting font-weight",
-      message: messages.rejected
+      message: messages.rejected("font-variant", "small-caps")
     },
     {
       code: ".foo { font-weight: 5px; }",
       description: "Reject directly setting font-weight",
-      message: messages.rejected
+      message: messages.rejected("font-weight", "5px")
     },
     {
       code: ".foo { font-size: 32px; }",
       description: "Reject directly setting font-size",
-      message: messages.rejected
+      message: messages.rejected("font-size", "32px")
     },
     {
       code: ".foo { line-height: 32px; }",
       description: "Reject directly setting line-height",
-      message: messages.rejected
+      message: messages.rejected("line-height", "32px")
     },
     {
       code: `.foo { font-family: "Times New Roman", Times, serif; }`,
       description: "Reject directly setting font-family",
-      message: messages.rejected
+      // multiple warnings look like this
+      warnings: [
+        {
+          message: messages.rejected(
+            "font-family",
+            '"Times New Roman", Times, serif'
+          )
+        },
+        {
+          message: messages.rejected(
+            "font-family",
+            '"Times New Roman", Times, serif'
+          )
+        },
+        {
+          message: messages.rejected(
+            "font-family",
+            '"Times New Roman", Times, serif'
+          )
+        }
+      ]
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -80,7 +110,8 @@ testRule(rule, {
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -97,7 +128,8 @@ testRule(rule, {
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -114,7 +146,8 @@ testRule(rule, {
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -133,7 +166,8 @@ testRule(rule, {
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -152,7 +186,8 @@ testRule(rule, {
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -171,7 +206,8 @@ testRule(rule, {
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true, {}],
   customSyntax: "postcss-scss",
@@ -180,37 +216,38 @@ testRule(rule, {
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
       description: "Reject v10 Carbon font weight function.",
-      message: messages.rejected
+      message: messages.rejected("font-weight", "carbon--font-weight('light')")
     },
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
       description: "Reject v10 Carbon font weight function.",
-      message: messages.rejected
+      message: messages.rejected("font-weight", "carbon--font-weight('light')")
     },
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
       description: "Reject v10 Carbon font weight function.",
-      message: messages.rejected
+      message: messages.rejected("font-weight", "carbon--font-weight('light')")
     },
     {
       code: ".foo { font-weight: font-weight('light'); }",
       description: "Reject Carbon font weight function.",
-      message: messages.rejected
+      message: messages.rejected("font-weight", "font-weight('light')")
     },
     {
       code: ".foo { font-weight: font-weight('light'); }",
       description: "Reject Carbon font weight function.",
-      message: messages.rejected
+      message: messages.rejected("font-weight", "font-weight('light')")
     },
     {
       code: ".foo { font-weight: font-weight('light'); }",
       description: "Reject Carbon font weight function.",
-      message: messages.rejected
+      message: messages.rejected("font-weight", "font-weight('light')")
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -228,19 +265,19 @@ testRule(rule, {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
       fixed: ".foo { font-weight: font-weight('light'); }",
       description: "Reject v10 Carbon font weight function.",
-      message: messages.rejected
+      message: messages.rejected("font-weight", "carbon--font-weight('light')")
     },
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
       fixed: ".foo { font-weight: font-weight('light'); }",
       description: "Reject v10 Carbon font weight function.",
-      message: messages.rejected
+      message: messages.rejected("font-weight", "carbon--font-weight('light')")
     },
     {
       code: ".foo { font-weight: carbon--font-weight('light'); }",
       fixed: ".foo { font-weight: font-weight('light'); }",
       description: "Reject v10 Carbon font weight function.",
-      message: messages.rejected
+      message: messages.rejected("font-weight", "carbon--font-weight('light')")
     }
   ]
 });

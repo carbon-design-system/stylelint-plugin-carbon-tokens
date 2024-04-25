@@ -1,17 +1,16 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
 
-import { doInitColors } from "./initCarbonColor";
-import { doInitTheme } from "./initCarbonTheme";
-import { fixes } from "./fixes";
-import { sassColorFunctions } from "./initSassFunctions";
+import { doInitColors } from "./initCarbonColor.js";
+import { doInitTheme } from "./initCarbonTheme.js";
+import { fixes } from "./fixes.js";
+import { sassColorFunctions } from "./initSassFunctions.js";
 
 export default async function getThemeInfo(options) {
-  // eslint-disable-next-line
   const { carbonColorTokens, ibmColorTokens } = await doInitColors(options);
   const { themeTokens, themeFunctions, version } = await doInitTheme(options);
 
