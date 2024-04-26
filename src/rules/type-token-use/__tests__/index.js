@@ -110,6 +110,39 @@ testRule(rule, {
     {
       code: ".foo { font-weight: font-weight('bold'); }",
       description: "Permit Carbon font weight function."
+    },
+    {
+      code: `@use "@carbon/type";
+.keyword,
+.function {
+  font-weight: type.font-weight("semibold");
+}`,
+      description: "Permit scoped Carbon font weight function."
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [
+    true,
+    {
+      acceptCarbonFontStyleFunction: true
+    }
+  ],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: ".foo { font-style: font-style('italic'); }",
+      description: "Permit Carbon font style function."
+    },
+    {
+      code: `@use "@carbon/type";
+.keyword,
+.function {
+  font-style: type.font-style("italic");
+}`,
+      description: "Permit scoped Carbon font style function."
     }
   ]
 });

@@ -13,6 +13,7 @@ const defaultOptions = {
   includeProps: ["font", "/^font-*/", "line-height", "letterSpacing"],
   acceptValues: ["/inherit|initial/"],
   acceptsScopes: ["type"],
+  acceptCarbonFontStyleFunction: false, // permit use of carbon font style function
   acceptCarbonFontWeightFunction: false, // permit use of carbon font weight function
   acceptCarbonTypeScaleFunction: false, // permit use of carbon type scale function
   acceptCarbonFontFamilyFunction: false, // permit use of carbon font family function

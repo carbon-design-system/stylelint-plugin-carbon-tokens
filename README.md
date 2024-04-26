@@ -46,7 +46,7 @@ Add it to your stylelint config `plugins` array.
 module.exports = {
   // stylelint.js
   // ...
-  plugins: ["stylelint-plugin-carbon-tokens"],
+  plugins: ['stylelint-plugin-carbon-tokens'],
   //...
 };
 ```
@@ -59,11 +59,11 @@ modules.exports = {
   //...
   rules: {
     //... other rules
-    "carbon/layout-token-use": true,
-    "carbon/motion-duration-use": [true, { severity: "warning" }],
-    "carbon/motion-easing-use": true,
-    "carbon/theme-token-use": true,
-    "carbon/type-token-use": true,
+    'carbon/layout-token-use': true,
+    'carbon/motion-duration-use': [true, { severity: 'warning' }],
+    'carbon/motion-easing-use': true,
+    'carbon/theme-token-use': true,
+    'carbon/type-token-use': true,
     //...other rules
   },
   //...
@@ -105,8 +105,9 @@ It's good practice to document any linter disables and to tidy up any that are n
       true,
       {
         severity: 'error',
-        acceptCarbonTypeScaleFunction: true,
-        acceptCarbonFontWeightFunction: true,
+        acceptCarbonTypeScaleFunction: false,
+        acceptCarbonFontStyleFunction: false,
+        acceptCarbonFontWeightFunction: false,
       },
     ],
   },
@@ -125,8 +126,9 @@ It's good practice to document any linter disables and to tidy up any that are n
       true,
       {
         severity: 'error',
-        acceptCarbonTypeScaleFunction: true,
-        acceptCarbonFontWeightFunction: true,
+        acceptCarbonTypeScaleFunction: false,
+        acceptCarbonFontStyleFunction: false,
+        acceptCarbonFontWeightFunction: false,
       },
     ],
   },
@@ -146,6 +148,7 @@ It's good practice to document any linter disables and to tidy up any that are n
       {
         severity: 'warning',
         acceptCarbonTypeScaleFunction: true,
+        acceptCarbonFontStyleFunction: true,
         acceptCarbonFontWeightFunction: true,
         acceptUndefinedVariables: true,
         acceptScopes: ['**']
@@ -182,10 +185,10 @@ modules.exports = {
   //...
   rules: {
     //... other rules
-    "carbon/type-token-use": [
+    'carbon/type-token-use': [
       true,
       {
-        severity: "warning",
+        severity: 'warning',
         acceptCarbonTypeScaleFunction: false,
       },
     ],
@@ -202,7 +205,7 @@ These options when omitted to accept the defaults. They are intended to support 
 - includeProps: Array
 - acceptValues: Array
 - acceptScopes: Array
-- enforceScopes: Boolean 
+- enforceScopes: Boolean
 
 Arrays of strings and/or Regex followed by a range in angled brackets.
 
@@ -222,7 +225,7 @@ The acceptScopes option allows you to alter the scope value for all rules using 
 
 - `acceptScopes: ["/^la(yout)?$/", "/^mo(tion)?$/", "/^th(eme)?$/", "/^ty(pe)?$/"]` - using regex to accept abbreviations
 - `acceptScopes: ["la", "mo", "th", "ty"]` - abbreviations but not defaults
-- `acceptScopes: ["la", "mo", "th", "ty", "*"]` - abbreviations plus defaults with "*"
+- `acceptScopes: ["la", "mo", "th", "ty", "*"]` - abbreviations plus defaults with "\*"
 
 By default scopes are not expected, but that means
 

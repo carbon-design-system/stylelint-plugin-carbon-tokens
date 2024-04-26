@@ -19,7 +19,11 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
 
   if (carbonPath) {
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
-    const { pkg } = await loadModules(carbonPath, ["type"], carbonModulePostfix);
+    const { pkg } = await loadModules(
+      carbonPath,
+      ["type"],
+      carbonModulePostfix
+    );
 
     _version = pkg.version;
   } else {
@@ -30,6 +34,10 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
 
   if (isV10) {
     typeFunctions = [
+      {
+        name: "carbon--font-style",
+        accept: "acceptCarbonFontStyleFunction"
+      },
       {
         name: "carbon--font-weight",
         accept: "acceptCarbonFontWeightFunction"
@@ -45,6 +53,10 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
     ];
   } else {
     typeFunctions = [
+      {
+        name: "font-style",
+        accept: "acceptCarbonFontStyleFunction"
+      },
       {
         name: "font-weight",
         accept: "acceptCarbonFontWeightFunction"
