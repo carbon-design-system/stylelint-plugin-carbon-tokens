@@ -21,7 +21,7 @@
     "lint-fix": "run-s -s 'lint:es --fix' 'lint:style --fix' 'lint:format'",
     "lint:format": "prettier ./**/*.{js,jsx,ts,tsx,md,mdx,scss} --write --ignore-unknown --no-error-on-unmatched-pattern --log-level warn",
     "lint:spell": "cspell lint --quiet \"**/*.{js,jsx,css,scss,md}\"",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node --test src/**/__tests__/*.js"
   },
   "dependencies": {
     "postcss-scss": "^4.0.9",
@@ -44,6 +44,7 @@
     "@carbon/type-10": "npm:@carbon/type@^10.44.0",
     "@carbon/type-11-4": "npm:@carbon/type@11.4.0",
     "cspell": "^8.6.0",
+    "npm-run-all": "^4.1.5",
     "prettier": "^3.2.5",
     "stylelint-test-rule-node": "^0.2.1"
   },
@@ -54,10 +55,10 @@
     "@carbon/themes": ">=10 <= 11",
     "@carbon/type": ">=10 <= 11"
   },
-    "engines": {
+  "engines": {
     "node": ">=18"
   },
-    "files": [
+  "files": [
     "CHANGELOG.md",
     "index.js",
     "README.md",
@@ -68,6 +69,4 @@
     "type": "git",
     "url": "git+https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens.git"
   }
-
-
 }

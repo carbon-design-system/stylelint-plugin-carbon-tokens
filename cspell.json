@@ -52,7 +52,14 @@
     "yml",
     "mdx"
   ],
-  "ignorePaths": [".yarn", "dist", "package.json", "*.snap", "*.log", "CHANGELOG.md"],
+  "ignorePaths": [
+    ".yarn",
+    "dist",
+    "package.json",
+    "*.snap",
+    "*.log",
+    "CHANGELOG.md"
+  ],
   "words": [
     "aboutmodal",
     "actionbar",
@@ -143,6 +150,8 @@
     "typeahead",
     "userprofileimage",
     "uuidv",
-    "webfonts"
+    "webfonts",
+    "descriptionless",
+    "carbondesignsystem"
   ]
 }
