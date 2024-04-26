@@ -150,6 +150,32 @@ testRule({
   config: [
     true,
     {
+      acceptCarbonFontStyleFunction: true
+    }
+  ],
+  customSyntax: "postcss-scss",
+  accept: [
+    {
+      code: ".foo { font-style: font-style('italic'); }",
+      description: "Permit Carbon font style function."
+    },
+    {
+      code: `@use "@carbon/type";
+.keyword,
+.function {
+  font-style: type.font-style("italic");
+}`,
+      description: "Permit scoped Carbon font style function."
+    }
+  ]
+});
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  config: [
+    true,
+    {
       acceptCarbonTypeScaleFunction: true,
       carbonPath: "node_modules/@carbon",
       carbonModulePostfix: "-10"

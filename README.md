@@ -133,8 +133,9 @@ switches as part of your stylelint command.
       true,
       {
         severity: 'error',
-        acceptCarbonTypeScaleFunction: true,
-        acceptCarbonFontWeightFunction: true,
+        acceptCarbonTypeScaleFunction: false,
+        acceptCarbonFontStyleFunction: false,
+        acceptCarbonFontWeightFunction: false,
       },
     ],
   },
@@ -153,8 +154,9 @@ switches as part of your stylelint command.
       true,
       {
         severity: 'error',
-        acceptCarbonTypeScaleFunction: true,
-        acceptCarbonFontWeightFunction: true,
+        acceptCarbonTypeScaleFunction: false,
+        acceptCarbonFontStyleFunction: false,
+        acceptCarbonFontWeightFunction: false,
       },
     ],
   },
@@ -174,6 +176,7 @@ switches as part of your stylelint command.
       {
         severity: 'warning',
         acceptCarbonTypeScaleFunction: true,
+        acceptCarbonFontStyleFunction: true,
         acceptCarbonFontWeightFunction: true,
         acceptUndefinedVariables: true,
         acceptScopes: ['**']

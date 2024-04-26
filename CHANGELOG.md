@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.0-rc.2
+
+- Feat: acceptCarbonFontStyleFunction to allow
+  `font-style: type.font-style('italic')` for instance.
+
 ## 3.0.0-rc.1
 
 - BREAK: carbon/layout-token-use renamed for consistency to carbon/layout-use

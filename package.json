@@ -1,6 +1,6 @@
 {
   "name": "stylelint-plugin-carbon-tokens",
-  "version": "3.0.0-rc.1",
+  "version": "3.0.0-rc.2",
   "description": "A stylelint plugin to support the use of carbon component tokens.",
   "keywords": [
     "stylelint",
@@ -21,7 +21,7 @@
     "lint-fix": "run-s -s 'lint:es --fix' 'lint:style --fix' 'lint:format'",
     "lint:format": "prettier ./**/*.{js,jsx,ts,tsx,md,mdx,scss} --write --ignore-unknown --no-error-on-unmatched-pattern --log-level warn",
     "lint:spell": "cspell lint --quiet \"**/*.{js,jsx,css,scss,md}\"",
-    "test": "node --test src/**/__tests__/*.js"
+    "test": "echo Does not process globs. Run \"'node --test src/**/__tests__/*.js'\" from the console."
   },
   "dependencies": {
     "postcss-scss": "^4.0.9",

@@ -26,7 +26,6 @@
     picocolors "^1.0.0"
 
 "@carbon/colors-10@npm:@carbon/colors@^10.37.1", "@carbon/colors@^10.37.3":
-  name "@carbon/colors-10"
   version "10.37.3"
   resolved "https://registry.yarnpkg.com/@carbon/colors/-/colors-10.37.3.tgz#5b470efa687113cf4dbae2dab683ec7bff423617"
   integrity sha512-n/0ZmaE9KAtW98wAkD9FSgCto/apYy0fYJSFWos0L90dKROYfV08mvrgKVVNV6rVm5cWhnC/HsutgeoHi12MlQ==
@@ -70,7 +69,6 @@
     "@ibm/telemetry-js" "^1.2.1"
 
 "@carbon/layout-10@npm:@carbon/layout@^10.37.1", "@carbon/layout@^10.37.3":
-  name "@carbon/layout-10"
   version "10.37.3"
   resolved "https://registry.yarnpkg.com/@carbon/layout/-/layout-10.37.3.tgz#199e1d0329f43ceded212c6d40d5dc690fb98eb7"
   integrity sha512-sd/DkPGDHVTNx+3WymMV0+Y+acQonaYJ99jbZb2kA6El4tXkK0NfAZ1qKOU1NO/zpGEPYvun3nAHfmzziQj0VA==
