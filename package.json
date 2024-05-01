@@ -21,9 +21,11 @@
     "lint-fix": "run-s -s 'lint:es --fix' 'lint:style --fix' 'lint:format'",
     "lint:format": "prettier ./**/*.{js,jsx,ts,tsx,md,mdx,scss} --write --ignore-unknown --no-error-on-unmatched-pattern --log-level warn",
     "lint:spell": "cspell lint --quiet \"**/*.{js,jsx,css,scss,md}\"",
+    "postinstall": "ibmtelemetry --config=telemetry.yml",
     "test": "echo Does not process globs. Run \"'node --test src/**/__tests__/*.js'\" from the console."
   },
   "dependencies": {
+    "@ibm/telemetry-js": "^1.5.0",
     "postcss-scss": "^4.0.9",
     "postcss-value-parser": "^4.2.0",
     "stylelint": "^16.3.1"
@@ -63,7 +65,8 @@
     "index.js",
     "README.md",
     "src/**/*.*",
-    "!**/__tests__"
+    "!**/__tests__",
+    "telemetry.yml"
   ],
   "repository": {
     "type": "git",

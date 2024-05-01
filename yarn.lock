@@ -26,6 +26,7 @@
     picocolors "^1.0.0"
 
 "@carbon/colors-10@npm:@carbon/colors@^10.37.1", "@carbon/colors@^10.37.3":
+  name "@carbon/colors-10"
   version "10.37.3"
   resolved "https://registry.yarnpkg.com/@carbon/colors/-/colors-10.37.3.tgz#5b470efa687113cf4dbae2dab683ec7bff423617"
   integrity sha512-n/0ZmaE9KAtW98wAkD9FSgCto/apYy0fYJSFWos0L90dKROYfV08mvrgKVVNV6rVm5cWhnC/HsutgeoHi12MlQ==
@@ -69,6 +70,7 @@
     "@ibm/telemetry-js" "^1.2.1"
 
 "@carbon/layout-10@npm:@carbon/layout@^10.37.1", "@carbon/layout@^10.37.3":
+  name "@carbon/layout-10"
   version "10.37.3"
   resolved "https://registry.yarnpkg.com/@carbon/layout/-/layout-10.37.3.tgz#199e1d0329f43ceded212c6d40d5dc690fb98eb7"
   integrity sha512-sd/DkPGDHVTNx+3WymMV0+Y+acQonaYJ99jbZb2kA6El4tXkK0NfAZ1qKOU1NO/zpGEPYvun3nAHfmzziQj0VA==
@@ -543,7 +545,7 @@
   resolved "https://registry.yarnpkg.com/@dual-bundle/import-meta-resolve/-/import-meta-resolve-4.0.0.tgz#df79b7ea62c55094dc129880387864cdf41eca7c"
   integrity sha512-ZKXyJeFAzcpKM2kk8ipoGIPUqx9BX52omTGnfwjJvxOCaZTM2wtDK7zN0aIgPRbT9XYAlha0HtmZ+XKteuh0Gw==
 
-"@ibm/telemetry-js@^1.2.1":
+"@ibm/telemetry-js@^1.2.1", "@ibm/telemetry-js@^1.5.0":
   version "1.5.0"
   resolved "https://registry.yarnpkg.com/@ibm/telemetry-js/-/telemetry-js-1.5.0.tgz#ab73e0988088e2cbb01a7086a31ccc3826a81ba0"
   integrity sha512-RwOohLaWw97vEEwhPnlDJlORuworVOjC2R6WzSVlG7suG08qTMLVRVpnnunUCSQHyxP1Y30V9IF5vsxVrMBOHg==
