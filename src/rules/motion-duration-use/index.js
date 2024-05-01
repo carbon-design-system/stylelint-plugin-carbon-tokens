@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -11,12 +11,17 @@ import {
   isValidOption,
   namespace,
   parseOptions
-} from "../../utils";
-import { getMotionInfo } from "./utils";
-import { utils } from "stylelint";
+} from "../../utils/index.js";
+import { getMotionInfo } from "./utils/index.js";
+import stylelint from "stylelint";
+const { utils } = stylelint;
 
 export const ruleName = namespace("motion-duration-use");
 export const messages = getMessages(ruleName, "motion");
+const meta = {
+  fixable: true,
+  url: "https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/tree/main/src/rules/motion-duration-use/README.md"
+};
 
 const isValidAcceptValues = isValidOption;
 const isValidIncludeProps = isValidOption;
@@ -38,7 +43,7 @@ const defaultOptions = {
   enforceScopes: undefined
 };
 
-export default function rule(primaryOptions, secondaryOptions, context) {
+const ruleFunction = (primaryOptions, secondaryOptions, context) => {
   const options = parseOptions(secondaryOptions, defaultOptions);
 
   return async (root, result) => {
@@ -80,4 +85,10 @@ export default function rule(primaryOptions, secondaryOptions, context) {
       context
     );
   };
-}
+};
+
+ruleFunction.ruleName = ruleName;
+ruleFunction.messages = messages;
+ruleFunction.meta = meta;
+
+export default ruleFunction;

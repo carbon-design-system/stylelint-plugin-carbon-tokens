@@ -1,11 +1,12 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
-
-import { parseOptions } from "..";
+import { describe, it } from "node:test";
+import assert from "node:assert/strict";
+import { parseOptions } from "../index.js";
 
 describe("parseOptions", () => {
   const defaults = {
@@ -19,25 +20,25 @@ describe("parseOptions", () => {
   const options1 = undefined;
 
   it("Uses default options when options undefined", () => {
-    expect(parseOptions(options1, defaults)).toEqual(defaults);
+    assert.deepEqual(parseOptions(options1, defaults), defaults);
   });
 
   const options2 = {};
 
   it("Uses default options when options {}", () => {
-    expect(parseOptions(options2, defaults)).toEqual(defaults);
+    assert.deepEqual(parseOptions(options2, defaults), defaults);
   });
 
   const options3 = { includeProps: [] };
 
   it("Uses default options when options without acceptValues", () => {
-    expect(parseOptions(options3, defaults)).toEqual(defaults);
+    assert.deepEqual(parseOptions(options3, defaults), defaults);
   });
 
   const options4 = { acceptValues: [] };
 
   it("Uses default options when options without includeProps", () => {
-    expect(parseOptions(options4, defaults)).toEqual(defaults);
+    assert.deepEqual(parseOptions(options4, defaults), defaults);
   });
 
   const options5 = {
@@ -46,7 +47,7 @@ describe("parseOptions", () => {
   };
 
   it("Uses default options when using * only", () => {
-    expect(parseOptions(options5, defaults)).toEqual(defaults);
+    assert.deepEqual(parseOptions(options5, defaults), defaults);
   });
 
   const options6 = {
@@ -63,7 +64,7 @@ describe("parseOptions", () => {
   };
 
   it("Adds default options when using *", () => {
-    expect(parseOptions(options6, defaults)).toEqual(combinedOpts1);
+    assert.deepEqual(parseOptions(options6, defaults), combinedOpts1);
   });
 
   const options7 = {
@@ -84,6 +85,6 @@ describe("parseOptions", () => {
   };
 
   it("Combines default options when using *", () => {
-    expect(parseOptions(options7, defaults)).toEqual(combinedOpts2);
+    assert.deepEqual(parseOptions(options7, defaults), combinedOpts2);
   });
 });

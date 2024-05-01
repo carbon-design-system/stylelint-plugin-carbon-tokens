@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -266,7 +266,6 @@ const processTokens = (tokens) => {
       let processedStuff;
 
       if (tokensAreList(token)) {
-        // eslint-disable-next-line no-use-before-define
         processedStuff = processList(formatParamsAsTokenList(token));
         addToItems(undefined, item, processedStuff);
       } else {

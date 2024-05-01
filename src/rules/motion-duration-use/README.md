@@ -1,6 +1,7 @@
 # Motion Token Use
 
-This rule is intended enfoce use of Carbon theme tokens, functions, mixins and CSS classes as defined.
+This rule is intended enforce use of Carbon theme tokens, functions, mixins and
+CSS classes as defined.
 
 - [https://www.carbondesignsystem.com/guidelines/motion/overview](https://www.carbondesignsystem.com/guidelines/motion/overview)
 
@@ -35,4 +36,5 @@ The automatic fixes for the motion-duration rule are as follows.
 
 - V11: Replace `$carbon--` with `$`
 - V11: Replace `$duration--` with `$duration-`
-- Replace timing literal match `$duration-0y` or `$duration--0y` token depending on version.
+- Replace timing literal match `$duration-0y` or `$duration--0y` token depending
+  on version.

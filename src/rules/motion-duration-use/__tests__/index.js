@@ -1,13 +1,21 @@
 /**
- * Copyright IBM Corp. 2020, 2022
+ * Copyright IBM Corp. 2020, 2024
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
  */
+import { testRule } from "stylelint-test-rule-node";
+import plugins from "../../../../src/index.js";
+const plugin = plugins.find(
+  (thing) => thing.ruleName === "carbon/motion-duration-use"
+);
 
-import rule, { messages, ruleName } from "..";
+const {
+  rule: { messages, ruleName }
+} = plugin;
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true],
   customSyntax: "postcss-scss",
@@ -74,57 +82,67 @@ testRule(rule, {
     {
       code: ".foo { transition: all $my-value-accept; }",
       description: "Reject undeclared $variable by default in transition.",
-      message: messages.rejectedUndefinedVariable
+      message: messages.rejectedUndefinedVariable(
+        "transition",
+        "$my-value-accept"
+      )
     },
     {
       code: ".foo { transition: all var(--my-value-reject); }",
       description: "Reject undeclared --variable by default.",
-      message: messages.rejectedVariable
+      message: messages.rejectedUndefinedVariable(
+        "transition",
+        "var(--my-value-reject)"
+      )
     },
     {
       code: ".foo { animation: $my-value-accept myAnim; }",
       description: "Reject undeclared $variable by default in animation.",
-      message: messages.rejectedAnimation
+      message: messages.rejectedAnimation("animation", "myAnim")
     },
     {
       code: ".foo { animation: test var(--my-value-accept) myAnim; }",
       description: "Reject undeclared --variable by default for animation.",
-      message: messages.rejectedVariable
+      message: messages.rejectedUndefinedVariable(
+        "animation",
+        "var(--my-value-accept)"
+      )
     },
     {
       code: ".foo { transition: $duration-fast-01; }",
       description:
         "Carbon motion token used in non-standard order with transition.",
-      message: messages.rejectedUndefinedRange
+      message: messages.rejectedUndefinedRange("transition", "undefined", "2")
     },
     {
       code: ".foo { animation: $duration-fast-01 test; }",
       description:
         "Carbon motion token used in non-standard order with animation.",
-      message: messages.rejectedAnimation
+      message: messages.rejectedAnimation("animation", "test")
     },
     {
       code: ".foo { transition: all 2s; }",
       description: "Used non-token duration.",
-      message: messages.rejectedTransition
+      message: messages.rejectedTransition("transition", "2s")
     },
     {
       code: ".foo { transition: width 99s linear ease-in, height $duration-fast-01 ease-out; }",
       description:
         "Used non-token in first split property not Carbon motion tokens.",
-      message: messages.rejectedTransition
+      message: messages.rejectedTransition("transition", "99s")
     },
     {
       code: ".foo { transition: width $duration-fast-01 linear ease-in, height 2s ease-out; }",
       description:
         "Used non-token in non-first split property not Carbon motion tokens.",
-      message: messages.rejectedTransition
+      message: messages.rejectedTransition("transition", "2s")
     }
   ]
 });
 
 // v10 test
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [
     true,
@@ -144,7 +162,8 @@ testRule(rule, {
 });
 
 // verify rejection of undeclared variables
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true],
   customSyntax: "postcss-scss",
@@ -167,38 +186,48 @@ testRule(rule, {
       code: ".foo { transition: all $my-value-reject; }",
       description:
         "Reject undeclared $variable for transition when acceptUndefinedVariables is false.",
-      message: messages.rejectedVariable
+      message: messages.rejectedUndefinedVariable(
+        "transition",
+        "$my-value-reject"
+      )
     },
     {
       code: ".foo { animation: $my-value-reject myAnim; }",
       description:
         "Reject undeclared $variable for animation when acceptUndefinedVariables is false.",
-      message: messages.rejectedAnimation
+      message: messages.rejectedAnimation("animation", "myAnim")
     },
     {
       code: ".foo { transition-duration: var(--my-value-reject); }",
       description:
         "Reject undeclared --variable for transition-duration when acceptUndefinedVariables is false.",
-      message: messages.rejectedVariable
+      message: messages.rejectedUndefinedVariable(
+        "transition-duration",
+        "var(--my-value-reject)"
+      )
     },
     {
       code: ".foo { animation-duration: var(--my-value-reject); }",
       description:
         "Reject undeclared --variable for animation-duration when acceptUndefinedVariables is false.",
-      message: messages.rejectedVariable
+      message: messages.rejectedUndefinedVariable(
+        "animation-duration",
+        "var(--my-value-reject)"
+      )
     }
   ]
 });
 
-// testConfig(rule, {
+// testConfig({plugins: [plugin],
 //   ruleName,
 //   description: "Check for invalid accept values",
 //   message: messages.rejected,
-//   config: ["always", { acceptValues: ["/wibble/"] }],
+//   config: ["always", { acceptValues: ["/wibble/"] }], // cspell:disable-line
 // });
 
 // Scope tests
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: true,
   customSyntax: "postcss-scss",
@@ -211,12 +240,17 @@ testRule(rule, {
   reject: [
     {
       code: `.foo { animation-duration: mo.$duration-fast-01; }`,
-      description: "Reject scope 'mo' without acceptScopes setting."
+      description: "Reject scope 'mo' without acceptScopes setting.",
+      message: messages.rejectedUndefinedVariable(
+        "animation-duration",
+        "mo.$duration-fast-01"
+      )
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true, { acceptScopes: ["mo"] }],
   customSyntax: "postcss-scss",
@@ -229,7 +263,8 @@ testRule(rule, {
   reject: []
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true, { acceptScopes: ["mo", "*"] }],
   customSyntax: "postcss-scss",
@@ -246,14 +281,19 @@ testRule(rule, {
   reject: [
     {
       code: `.foo { animation-duration: reject.$duration-fast-01; }`,
-      description: "Reject scope not included in scope setting."
+      description: "Reject scope not included in scope setting.",
+      message: messages.rejectedUndefinedVariable(
+        "animation-duration",
+        "reject.$duration-fast-01"
+      )
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
-  config: [true, { acceptScopes: ["/^mo(tion)?$/"] }],
+  config: [true, { acceptScopes: ["/^mo(tion)?$/"] }], // cspell:disable-line
   customSyntax: "postcss-scss",
   accept: [
     {
@@ -269,12 +309,17 @@ testRule(rule, {
   reject: [
     {
       code: `.foo { animation-duration: reject.$duration-fast-01; }`,
-      description: "Reject scope not included in scope regex setting."
+      description: "Reject scope not included in scope regex setting.",
+      message: messages.rejectedUndefinedVariable(
+        "animation-duration",
+        "reject.$duration-fast-01"
+      )
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   config: [true, { acceptScopes: ["**"] }],
   customSyntax: "postcss-scss",
@@ -286,7 +331,8 @@ testRule(rule, {
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   customSyntax: "postcss-scss",
   fix: true,
@@ -295,72 +341,107 @@ testRule(rule, {
     {
       code: `.foo { transition-duration: $duration--fast-01; }`,
       fixed: `.foo { transition-duration: $duration-fast-01; }`,
-      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p motion tokens in transition-duration'`
+      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p motion tokens in transition-duration'`,
+      message: messages.rejectedUndefinedVariable(
+        "transition-duration",
+        "$duration--fast-01"
+      )
     },
     {
       code: `.foo { transition: all $duration--fast-01; }`,
       fixed: `.foo { transition: all $duration-fast-01; }`,
-      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p fast motion tokens in transition'`
+      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p fast motion tokens in transition'`,
+      message: messages.rejectedUndefinedVariable(
+        "transition",
+        "$duration--fast-01"
+      )
     },
     {
       code: `.foo { transition: all $duration--fast-02; }`,
       fixed: `.foo { transition: all $duration-fast-02; }`,
-      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p fast motion tokens in transition'`
+      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p fast motion tokens in transition'`,
+      message: messages.rejectedUndefinedVariable(
+        "transition",
+        "$duration--fast-02"
+      )
     },
     {
       code: `.foo { transition: all $duration--moderate-01; }`,
       fixed: `.foo { transition: all $duration-moderate-01; }`,
-      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p moderate-01 motion tokens in transition'`
+      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p moderate-01 motion tokens in transition'`,
+      message: messages.rejectedUndefinedVariable(
+        "transition",
+        "$duration--moderate-01"
+      )
     },
     {
       code: `.foo { transition: all $duration--moderate-02; }`,
       fixed: `.foo { transition: all $duration-moderate-02; }`,
-      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p moderate-02 motion tokens in transition'`
+      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p moderate-02 motion tokens in transition'`,
+      message: messages.rejectedUndefinedVariable(
+        "transition",
+        "$duration--moderate-02"
+      )
     },
     {
       code: `.foo { transition: all $duration--slow-01; }`,
       fixed: `.foo { transition: all $duration-slow-01; }`,
-      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p slow-01 motion tokens in transition'`
+      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p slow-01 motion tokens in transition'`,
+      message: messages.rejectedUndefinedVariable(
+        "transition",
+        "$duration--slow-01"
+      )
     },
     {
       code: `.foo { transition: all $duration--slow-02; }`,
       fixed: `.foo { transition: all $duration-slow-02; }`,
-      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p slow-02 motion tokens in transition'`
+      description: `v11 reject and fix '$duration--' prefix and favor '$duration-' p slow-02 motion tokens in transition'`,
+      message: messages.rejectedUndefinedVariable(
+        "transition",
+        "$duration--slow-02"
+      )
     },
     {
       code: `.foo { transition: all 70ms; }`,
       fixed: `.foo { transition: all $duration-fast-01; }`,
-      description: "v11 reject and fix literal duration matching token '70ms'"
+      description: "v11 reject and fix literal duration matching token '70ms'",
+      message: messages.rejectedTransition("transition", "70ms")
     },
     {
       code: `.foo { transition: all 110ms; }`,
       fixed: `.foo { transition: all $duration-fast-02; }`,
-      description: "v11 reject and fix literal duration matching token '110ms'"
+      description: "v11 reject and fix literal duration matching token '110ms'",
+      message: messages.rejectedTransition("transition", "110ms")
     },
     {
       code: `.foo { transition: all 150ms; }`,
       fixed: `.foo { transition: all $duration-moderate-01; }`,
-      description: "v11 reject and fix literal duration matching token '150ms'"
+      description: "v11 reject and fix literal duration matching token '150ms'",
+      message: messages.rejectedTransition("transition", "150ms")
     },
     {
       code: `.foo { transition: all 240ms; }`,
       fixed: `.foo { transition: all $duration-moderate-02; }`,
-      description: "v11 reject and fix literal duration matching token '240ms'"
+      description: "v11 reject and fix literal duration matching token '240ms'",
+      message: messages.rejectedTransition("transition", "240ms")
     },
     {
       code: `.foo { transition: all 400ms; }`,
       fixed: `.foo { transition: all $duration-slow-01; }`,
-      description: "v11 reject and fix literal duration matching token '400ms'"
+      description: "v11 reject and fix literal duration matching token '400ms'",
+      message: messages.rejectedTransition("transition", "400ms")
     },
     {
       code: `.foo { transition: all 700ms; }`,
       fixed: `.foo { transition: all $duration-slow-02; }`,
-      description: "v11 reject and fix literal duration matching token '700ms'"
+      description: "v11 reject and fix literal duration matching token '700ms'",
+      message: messages.rejectedTransition("transition", "700ms")
     }
   ]
 });
 
-testRule(rule, {
+testRule({
+  plugins: [plugin],
   ruleName,
   customSyntax: "postcss-scss",
   fix: true,
@@ -372,32 +453,38 @@ testRule(rule, {
     {
       code: `.foo { transition: all 70ms; }`,
       fixed: `.foo { transition: all $duration--fast-01; }`,
-      description: "v11 reject and fix literal duration matching token '70ms'"
+      description: "v11 reject and fix literal duration matching token '70ms'",
+      message: messages.rejectedTransition("transition", "70ms")
     },
     {
       code: `.foo { transition: all 110ms; }`,
       fixed: `.foo { transition: all $duration--fast-02; }`,
-      description: "v11 reject and fix literal duration matching token '110ms'"
+      description: "v11 reject and fix literal duration matching token '110ms'",
+      message: messages.rejectedTransition("transition", "110ms")
     },
     {
       code: `.foo { transition: all 150ms; }`,
       fixed: `.foo { transition: all $duration--moderate-01; }`,
-      description: "v11 reject and fix literal duration matching token '150ms'"
+      description: "v11 reject and fix literal duration matching token '150ms'",
+      message: messages.rejectedTransition("transition", "150ms")
     },
     {
       code: `.foo { transition: all 240ms; }`,
       fixed: `.foo { transition: all $duration--moderate-02; }`,
-      description: "v11 reject and fix literal duration matching token '240ms'"
+      description: "v11 reject and fix literal duration matching token '240ms'",
+      message: messages.rejectedTransition("transition", "240ms")
     },
     {
       code: `.foo { transition: all 400ms; }`,
       fixed: `.foo { transition: all $duration--slow-01; }`,
-      description: "v11 reject and fix literal duration matching token '400ms'"
+      description: "v11 reject and fix literal duration matching token '400ms'",
+      message: messages.rejectedTransition("transition", "400ms")
     },
     {
       code: `.foo { transition: all 700ms; }`,
       fixed: `.foo { transition: all $duration--slow-02; }`,
-      description: "v11 reject and fix literal duration matching token '700ms'"
+      description: "v11 reject and fix literal duration matching token '700ms'",
+      message: messages.rejectedTransition("transition", "700ms")
     }
   ]
 });
