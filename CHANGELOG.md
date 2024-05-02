@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0-rc.4
+
+- Add Carbon telemetry package
+
 ## 3.0.0-rc.3
 
 - fix: removes direct experimental load of JSON to improve node version
