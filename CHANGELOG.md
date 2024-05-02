@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.0-rc.3
+
+- fix: removes direct experimental load of JSON to improve node version
+  compatibility
+
 ## 3.0.0-rc.2
 
 - Feat: acceptCarbonFontStyleFunction to allow
