@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0-rc.5
+
+- Add logical size properties
+
 ## 3.0.0-rc.4
 
 - Add Carbon telemetry package

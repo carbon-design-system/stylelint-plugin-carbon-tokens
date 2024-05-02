@@ -1683,3 +1683,188 @@ testRule({
     }
   ]
 });
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  config: [true],
+  configSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { inset: $spacing-01 $spacing-01 $spacing-01 $spacing-01 }`,
+      description: "inset using tokens"
+    },
+    {
+      code: `.foo { inset-block: $spacing-01 $spacing-01 }`,
+      description: "inset-block using tokens"
+    },
+    {
+      code: `.foo { inset-inline: $spacing-01 $spacing-01 }`,
+      description: "inset-inline using tokens"
+    },
+    {
+      code: `.foo { inset-inline-start: $spacing-01 }`,
+      description: "inset-inline-start using tokens"
+    },
+    {
+      code: `.foo { inset-inline-end: $spacing-01 }`,
+      description: "inset-inline-end using tokens"
+    },
+    {
+      code: `.foo { inset-block-start: $spacing-01 }`,
+      description: "inset-block-start using tokens"
+    },
+    {
+      code: `.foo { inset-block-end: $spacing-01 }`,
+      description: "inset-block-end using tokens"
+    },
+    {
+      code: `.foo { margin-block: $spacing-01 $spacing-01 }`,
+      description: "margin-block using tokens"
+    },
+    {
+      code: `.foo { margin-inline: $spacing-01 $spacing-01 }`,
+      description: "margin-inline using tokens"
+    },
+    {
+      code: `.foo { margin-inline-start: $spacing-01 }`,
+      description: "margin-inline-start using tokens"
+    },
+    {
+      code: `.foo { margin-inline-end: $spacing-01 }`,
+      description: "margin-inline-end using tokens"
+    },
+    {
+      code: `.foo { margin-block-start: $spacing-01 }`,
+      description: "margin-block-start using tokens"
+    },
+    {
+      code: `.foo { margin-block-end: $spacing-01 }`,
+      description: "margin-block-end using tokens"
+    },
+    {
+      code: `.foo { padding-block: $spacing-01 $spacing-01 }`,
+      description: "padding-block using tokens"
+    },
+    {
+      code: `.foo { padding-inline: $spacing-01 $spacing-01 }`,
+      description: "padding-inline using tokens"
+    },
+    {
+      code: `.foo { padding-inline-start: $spacing-01 }`,
+      description: "padding-inline-start using tokens"
+    },
+    {
+      code: `.foo { padding-inline-end: $spacing-01 }`,
+      description: "padding-inline-end using tokens"
+    },
+    {
+      code: `.foo { padding-block-start: $spacing-01 }`,
+      description: "padding-block-start using tokens"
+    },
+    {
+      code: `.foo { padding-block-end: $spacing-01 }`,
+      description: "padding-block-end using tokens"
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { inset: $spacing-01 10px $spacing-01 $spacing-01 }`,
+      description: "inset using tokens",
+      message: messages.rejected(
+        "inset",
+        "$spacing-01 10px $spacing-01 $spacing-01"
+      )
+    },
+    {
+      code: `.foo { inset-block: 10px $spacing-01 }`,
+      description: "inset-block using tokens",
+      message: messages.rejected("inset-block", "10px $spacing-01")
+    },
+    {
+      code: `.foo { inset-inline: $spacing-01 10px }`,
+      description: "inset-inline using tokens",
+      message: messages.rejected("inset-inline", "$spacing-01 10px")
+    },
+    {
+      code: `.foo { inset-inline-start: 10px }`,
+      description: "inset-inline-start using tokens",
+      message: messages.rejected("inset-inline-start", "10px")
+    },
+    {
+      code: `.foo { inset-inline-end: 10px }`,
+      description: "inset-inline-end using tokens",
+      message: messages.rejected("inset-inline-end", "10px")
+    },
+    {
+      code: `.foo { inset-block-start: 10px }`,
+      description: "inset-block-start using tokens",
+      message: messages.rejected("inset-block-start", "10px")
+    },
+    {
+      code: `.foo { inset-block-end: 10px }`,
+      description: "inset-block-end using tokens",
+      message: messages.rejected("inset-block-end", "10px")
+    },
+    {
+      code: `.foo { margin-block: 10px $spacing-01 }`,
+      description: "margin-block using tokens",
+      message: messages.rejected("margin-block", "10px $spacing-01")
+    },
+    {
+      code: `.foo { margin-inline: $spacing-01 10px }`,
+      description: "margin-inline using tokens",
+      message: messages.rejected("margin-inline", "$spacing-01 10px")
+    },
+    {
+      code: `.foo { margin-inline-start: 10px }`,
+      description: "margin-inline-start using tokens",
+      message: messages.rejected("margin-inline-start", "10px")
+    },
+    {
+      code: `.foo { margin-inline-end: 10px }`,
+      description: "margin-inline-end using tokens",
+      message: messages.rejected("margin-inline-end", "10px")
+    },
+    {
+      code: `.foo { margin-block-start: 10px }`,
+      description: "margin-block-start using tokens",
+      message: messages.rejected("margin-block-start", "10px")
+    },
+    {
+      code: `.foo { margin-block-end: 10px }`,
+      description: "margin-block-end using tokens",
+      message: messages.rejected("margin-block-end", "10px")
+    },
+    {
+      code: `.foo { padding-block: $spacing-01 10px }`,
+      description: "padding-block using tokens",
+      message: messages.rejected("padding-block", "$spacing-01 10px")
+    },
+    {
+      code: `.foo { padding-inline: 10px $spacing-01 }`,
+      description: "padding-inline using tokens",
+      message: messages.rejected("padding-inline", "10px $spacing-01")
+    },
+    {
+      code: `.foo { padding-inline-start: 10px }`,
+      description: "padding-inline-start using tokens",
+      message: messages.rejected("padding-inline-start", "10px")
+    },
+    {
+      code: `.foo { padding-inline-end: 10px }`,
+      description: "padding-inline-end using tokens",
+      message: messages.rejected("padding-inline-end", "10px")
+    },
+    {
+      code: `.foo { padding-block-start: 10px }`,
+      description: "padding-block-start using tokens",
+      message: messages.rejected("padding-block-start", "10px")
+    },
+    {
+      code: `.foo { padding-block-end: 10px }`,
+      description: "padding-block-end using tokens",
+      message: messages.rejected("padding-block-end", "10px")
+    }
+  ]
+});
