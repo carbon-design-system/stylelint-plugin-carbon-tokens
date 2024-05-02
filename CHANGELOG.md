@@ -1,5 +1,14 @@
 # Changelog
 
+## 2.5.0
+
+- Add logical size properties
+
+## 2.4.0
+
+- Feat: acceptCarbonFontStyleFunction to allow
+  `font-style: type.font-style('italic')` for instance.
+
 ## 2.3.2
 
 - Feat: acceptCarbonFontStyleFunction to allow

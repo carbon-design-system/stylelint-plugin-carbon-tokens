@@ -32,8 +32,17 @@ const defaultOptions = {
     "top",
     "bottom",
     "right",
-    "transform[/^translate/]"
+    "transform[/^translate/]",
+    // logical properties
+    "/^inset$/<1 4>",
+    "/^inset-(block|inline)$/<1 2>",
+    "/^inset-(block|inline)-/",
+    "/^margin-(block|inline)$/<1 2>",
+    "/^margin-(block|inline)-/",
+    "/^padding-(block|inline)$/<1 2>",
+    "/^padding-(block|inline)-/"
     // the following are not really layout or spacing
+    // // Widths, heights, borders, shadows and there logical equivalents are ignored.
     // "height",
     // "width",
     // "/^border$/<1 -2>",
