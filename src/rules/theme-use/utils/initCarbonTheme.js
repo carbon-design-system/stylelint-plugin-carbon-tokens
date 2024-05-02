@@ -5,14 +5,12 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import themePkg from "@carbon/themes/package.json" assert { type: "json" };
 import * as installedThemes from "@carbon/themes";
 import { formatTokenName } from "../../../utils/token-name.js";
 import { unstable_tokens as installedLayout } from "@carbon/layout";
 import { unstable_tokens as installedType } from "@carbon/type";
-import loadModules from "../../../utils/loadModules.js";
+import loadModules, { loadPackageJson } from "../../../utils/loadModules.js";
 
-const installedVersion = themePkg.version;
 const {
   installedMetadata: unstable_metadata,
   installedTokens: tokens,
@@ -65,7 +63,9 @@ const doInitTheme = async ({ carbonPath, carbonModulePostfix }) => {
     white = installedThemes.white;
     tokens = installedThemes.tokens;
     unstable_metadata = installedThemes.unstable_metadata;
-    _version = installedVersion;
+
+    const pkg = loadPackageJson("@carbon/themes");
+    _version = pkg.version;
   }
 
   let themeTokens;

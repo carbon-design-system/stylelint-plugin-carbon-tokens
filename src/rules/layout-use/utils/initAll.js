@@ -12,10 +12,8 @@
 // on the carbon designs system website.
 import { formatTokenName } from "../../../utils/token-name.js";
 import { unstable_tokens as installedTokens } from "@carbon/layout";
-import layoutPkg from "@carbon/layout/package.json" assert { type: "json" };
-import loadModules from "../../../utils/loadModules.js";
+import loadModules, { loadPackageJson } from "../../../utils/loadModules.js";
 
-const installedVersion = layoutPkg.version;
 const carbonPrefix = "$carbon--";
 
 const doInit = async ({ carbonPath, carbonModulePostfix }) => {
@@ -39,8 +37,9 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
 
     tokens = layout.unstable_tokens;
   } else {
+    const pkg = loadPackageJson("@carbon/layout");
+    _version = pkg.version;
     tokens = installedTokens;
-    _version = installedVersion;
   }
 
   const isV10 = _version.startsWith("10");

@@ -7,6 +7,14 @@
 
 import path from "path";
 import fs from "fs";
+import { createRequire } from "module";
+
+export const loadPackageJson = (packageName) => {
+  const require = createRequire(import.meta.url);
+  const pkg = require(path.join(packageName, "package.json"));
+
+  return pkg;
+};
 
 const loadModules = async (carbonPath, modules, carbonModulePostfix) => {
   // Late loads modules from a path with optional postfix e.g. "node_modules/@carbon", ["themes", "type"], "10"

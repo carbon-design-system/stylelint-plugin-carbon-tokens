@@ -10,10 +10,7 @@ import { colors as installedColors } from "@carbon/colors";
 // keys are color names, values are objects
 // value objects container key: intensity number, value actual color
 import { formatTokenName } from "../../../utils/token-name.js";
-import colorPkg from "@carbon/colors/package.json" assert { type: "json" };
-import loadModules from "../../../utils/loadModules.js";
-
-const installedVersion = colorPkg.version;
+import loadModules, { loadPackageJson } from "../../../utils/loadModules.js";
 
 const carbonColorPrefix = "$carbon--";
 const ibmColorPrefix = "$ibm-color__";
@@ -36,7 +33,8 @@ const doInitColors = async ({ carbonPath, carbonModulePostfix }) => {
 
     _version = pkg.version;
   } else {
-    _version = installedVersion;
+    const pkg = loadPackageJson("@carbon/colors");
+    _version = pkg.version;
     colorTokens = installedColors;
   }
 

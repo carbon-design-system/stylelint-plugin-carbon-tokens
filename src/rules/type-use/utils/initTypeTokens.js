@@ -8,10 +8,7 @@
 // There are no type tokens that are used directly
 // Types are applied via mixins and functions
 // const typeTokens = [];
-import typePkg from "@carbon/type/package.json" assert { type: "json" };
-import loadModules from "../../../utils/loadModules.js";
-
-const installedVersion = typePkg.version;
+import loadModules, { loadPackageJson } from "../../../utils/loadModules.js";
 
 const doInit = async ({ carbonPath, carbonModulePostfix }) => {
   // permitted carbon type functions
@@ -29,7 +26,9 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
 
     _version = pkg.version;
   } else {
-    _version = installedVersion;
+    const pkg = loadPackageJson("@carbon/type");
+
+    _version = pkg.version;
   }
 
   const isV10 = _version.startsWith("10");

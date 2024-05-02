@@ -7,10 +7,7 @@
 
 import { formatTokenName } from "../../../utils/token-name.js";
 import { unstable_tokens as installedTokens } from "@carbon/motion";
-import motionPkg from "@carbon/motion/package.json" assert { type: "json" };
-import loadModules from "../../../utils/loadModules.js";
-
-const installedVersion = motionPkg.version;
+import loadModules, { loadPackageJson } from "../../../utils/loadModules.js";
 
 const doInit = async ({ carbonPath, carbonModulePostfix }) => {
   const motionTokens = [];
@@ -30,9 +27,10 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
     _version = pkg.version;
     tokens = motion.unstable_tokens;
   } else {
-    tokens = installedTokens;
-    _version = installedVersion;
+    const pkg = loadPackageJson("@carbon/motion");
+    _version = pkg.version;
   }
+  tokens = installedTokens;
 
   const isV10 = _version.startsWith("10");
   const durationPrefix = isV10 ? "$duration--" : "$duration-";
