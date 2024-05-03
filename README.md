@@ -65,7 +65,7 @@ Add it to your stylelint config `plugins` array.
 module.exports = {
   // stylelint.js
   // ...
-  plugins: ["stylelint-plugin-carbon-tokens"]
+  plugins: ['stylelint-plugin-carbon-tokens'],
   //...
 };
 ```
@@ -78,13 +78,13 @@ modules.exports = {
   //...
   rules: {
     //... other rules
-    "carbon/layout-use": true,
-    "carbon/motion-duration-use": [true, { severity: "warning" }],
-    "carbon/motion-easing-use": true,
-    "carbon/theme-use": true,
-    "carbon/type-use": true
+    'carbon/layout-use': true,
+    'carbon/motion-duration-use': [true, { severity: 'warning' }],
+    'carbon/motion-easing-use': true,
+    'carbon/theme-use': true,
+    'carbon/type-use': true,
     //...other rules
-  }
+  },
   //...
 };
 ```
@@ -217,15 +217,15 @@ modules.exports = {
   //...
   rules: {
     //... other rules
-    "carbon/type-use": [
+    'carbon/type-use': [
       true,
       {
-        severity: "warning",
-        acceptCarbonTypeScaleFunction: false
-      }
-    ]
+        severity: 'warning',
+        acceptCarbonTypeScaleFunction: false,
+      },
+    ],
     //...other rules
-  }
+  },
   //...
 };
 ```

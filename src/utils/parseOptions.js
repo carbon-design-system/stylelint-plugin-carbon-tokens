@@ -12,7 +12,7 @@ const parseAddDefaults = (options, defaults) => {
   if (output.length === 0) {
     addDefaults = true;
   } else {
-    const index = output.findIndex((item) => item === "*");
+    const index = output.findIndex((item) => item === '*');
 
     if (index >= 0) {
       addDefaults = true;

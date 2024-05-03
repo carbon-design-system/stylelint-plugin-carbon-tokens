@@ -13,10 +13,10 @@ import {
   normalizeVariableName,
   parseRangeValue,
   testItem,
-  tokenizeValue
-} from "./index.js";
-import { tryFix } from "./fix-utils.js";
-import stylelint from "stylelint";
+  tokenizeValue,
+} from './index.js';
+import { tryFix } from './fix-utils.js';
+import stylelint from 'stylelint';
 const { utils } = stylelint;
 // import valueParser from "postcss-value-parser";
 
@@ -66,9 +66,9 @@ export default async function checkRule(
           : (message = messages.rejectedUndefinedVariable(decl.prop, item.raw));
       } else if (testResult.isCalc) {
         message = messages.rejectedMaths(decl.prop, item.raw);
-      } else if (decl.prop === "transition") {
+      } else if (decl.prop === 'transition') {
         message = messages.rejectedTransition(decl.prop, item.raw);
-      } else if (decl.prop === "animation") {
+      } else if (decl.prop === 'animation') {
         message = messages.rejectedAnimation(decl.prop, item.raw);
       } else {
         message = messages.rejected(decl.prop, decl.value);
@@ -82,14 +82,14 @@ export default async function checkRule(
         result,
         message,
         index: declarationValueIndex(decl) + offsetValue,
-        node: decl
+        node: decl,
       };
     }
 
     return null;
   };
 
-  const specialItems = ["inherit", "initial", "none", "unset"];
+  const specialItems = ['inherit', 'initial', 'none', 'unset'];
 
   const checkItems = (
     items,
@@ -113,7 +113,7 @@ export default async function checkRule(
     } else if (isRange) {
       // for the range select only the values to check
       // 1 = first value, -1 = last value
-      let [start, end] = propSpec.range.split(" ");
+      let [start, end] = propSpec.range.split(' ');
 
       itemsToCheck = [];
 
@@ -131,7 +131,7 @@ export default async function checkRule(
     // look at propSpec.valueCheck
     if (propSpec.valueCheck) {
       itemsToCheck = itemsToCheck.filter((item) => {
-        if (typeof propSpec.valueCheck === "object") {
+        if (typeof propSpec.valueCheck === 'object') {
           return propSpec.valueCheck.test(item.raw);
         }
 
@@ -172,11 +172,11 @@ export default async function checkRule(
      * - If an acceptable scope is renamed or * then options.acceptScopes is updated.
      */
     (rule) => {
-      if (rule.name === "use") {
+      if (rule.name === 'use') {
         const ruleParams = rule.params
-          .replace(/'(.*)'/, "$1")
-          .replace(/"(.*)"/, "$1"); // remove quotes if needed
-        const [usedThing, usedScope] = ruleParams.split(" as ");
+          .replace(/'(.*)'/, '$1')
+          .replace(/"(.*)"/, '$1'); // remove quotes if needed
+        const [usedThing, usedScope] = ruleParams.split(' as ');
 
         const carbonThingRegex = // eslint-disable-next-line regexp/no-unused-capturing-group
           /((@carbon)|(carbon-components(\/([^/$]+))*))\/+_?([^.]+)(\.scss)*/;
@@ -209,7 +209,7 @@ export default async function checkRule(
         if (usedScope) {
           // may want to add it to accept scopes
           if (knownScope || !options.enforceScopes) {
-            const acceptThisScope = usedScope === "*" ? "" : usedScope;
+            const acceptThisScope = usedScope === '*' ? '' : usedScope;
 
             localScopes.push(acceptThisScope);
             options.acceptScopes.push(acceptThisScope);
@@ -221,9 +221,9 @@ export default async function checkRule(
     }
   );
 
-  if (!options.enforceScopes && !localScopes.includes("")) {
+  if (!options.enforceScopes && !localScopes.includes('')) {
     // scopes are not being enforced allow no scope
-    localScopes.push("");
+    localScopes.push('');
   }
 
   // **** walk rules and check values
@@ -306,7 +306,7 @@ export default async function checkRule(
               workingValue = tryFix(fix, workingValue, {
                 ruleInfo,
                 options,
-                prop: decl.prop
+                prop: decl.prop,
               });
             });
 

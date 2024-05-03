@@ -9,22 +9,22 @@ import {
   isVariable,
   normalizeVariableName,
   parseRangeValue,
-  parseToRegexOrString
-} from "./index.js";
-import { TOKEN_TYPES } from "./tokenizeValue.js";
+  parseToRegexOrString,
+} from './index.js';
+import { TOKEN_TYPES } from './tokenizeValue.js';
 
 const sanitizeUnconnectedOperators = (val) => {
   // eslint-disable-next-line regexp/no-super-linear-backtracking
   const regex = /^([+ -]*)([^+-]*)$/;
   const matches = val.match(regex);
-  let sign = "";
+  let sign = '';
   let resultVal = val;
 
   if (matches && matches[1] && matches[2]) {
     // index is start of non sign part
     const signs = `${matches[1]}1`;
 
-    sign = parseInt(signs) < 0 ? "-" : "";
+    sign = parseInt(signs) < 0 ? '-' : '';
 
     resultVal = `${sign}${matches[2]}`;
   }
@@ -41,7 +41,7 @@ const scopeMatch = (item, acceptedScope) => {
 };
 
 const checkScope = (item, options, localScopes) => {
-  if (options.acceptScopes[0] === "**" && item.scope) {
+  if (options.acceptScopes[0] === '**' && item.scope) {
     // ** means all scopes
     return true;
   }
@@ -93,7 +93,7 @@ const checkAcceptValues = (item, options, localScopes) => {
 };
 
 const unquoteIfNeeded = (val) => {
-  if (typeof val === "string") {
+  if (typeof val === 'string') {
     if (
       (val.startsWith("'") && val.endsWith("'")) ||
       (val.startsWith('"') && val.endsWith('"'))
@@ -125,13 +125,13 @@ const preProcessToken = (variable, localVariables) => {
       replacements.push({
         index: match.index,
         match: replacementMatch,
-        replacement: unquoteIfNeeded(replacement.raw)
+        replacement: unquoteIfNeeded(replacement.raw),
       });
     } else {
       replacements.push({
         index: match.index,
         match: replacementMatch,
-        replacement: match[1]
+        replacement: match[1],
       });
     }
   }
@@ -174,13 +174,13 @@ const checkTokens = function (
     if (!checkScope(item, options, localScopes)) {
       return result;
     }
-  } else if (options.enforceScopes && !options.acceptScopes.includes("")) {
+  } else if (options.enforceScopes && !options.acceptScopes.includes('')) {
     return result; // reject without scope
   }
 
   const start = valueToCheck.substr(0, 2);
 
-  if (start[0] === "-" && start[1] !== "-") {
+  if (start[0] === '-' && start[1] !== '-') {
     // is negation not a variable
     valueToCheck = valueToCheck.substr(1);
   }
@@ -188,7 +188,7 @@ const checkTokens = function (
   // cope with variables wrapped in #{}
   let _variable = preProcessToken(valueToCheck, localVariables);
 
-  if (_variable.startsWith("#")) {
+  if (_variable.startsWith('#')) {
     // token set does not contain #{}
     _variable = _variable.substr(2, _variable.length - 3);
   }
@@ -225,18 +225,18 @@ const checkProportionalMath = (
 
   if (
     mathItems[0].type === TOKEN_TYPES.NUMERIC_LITERAL &&
-    ["vw", "vh", "%"].indexOf(mathItems[0].units) > -1
+    ['vw', 'vh', '%'].indexOf(mathItems[0].units) > -1
   ) {
     otherItem = mathItems[2];
   } else if (
     mathItems[2].type === TOKEN_TYPES.NUMERIC_LITERAL &&
-    ["vw", "vh", "%"].indexOf(mathItems[2].units) > -1
+    ['vw', 'vh', '%'].indexOf(mathItems[2].units) > -1
   ) {
     otherItem = mathItems[0];
   }
 
   if (otherItem !== undefined) {
-    if (["+", "-"].indexOf(mathItems[1].value) > -1) {
+    if (['+', '-'].indexOf(mathItems[1].value) > -1) {
       // is plus or minus
       return checkTokens(
         otherItem,
@@ -263,20 +263,20 @@ const checkNegationMaths = (
 
   if (
     mathItems[0].type === TOKEN_TYPES.NUMERIC_LITERAL &&
-    mathItems[0].units === ""
+    mathItems[0].units === ''
   ) {
     numeric = mathItems[0];
     otherItem = mathItems[2];
   } else if (
     mathItems[2].type === TOKEN_TYPES.NUMERIC_LITERAL &&
-    mathItems[2].units === ""
+    mathItems[2].units === ''
   ) {
     numeric = mathItems[2];
     otherItem = mathItems[0];
   }
 
   if (otherItem !== undefined) {
-    if (["*", "/"].indexOf(mathItems[1].value) > -1 && numeric.raw === "-1") {
+    if (['*', '/'].indexOf(mathItems[1].value) > -1 && numeric.raw === '-1') {
       // is times or divide by -1
       return checkTokens(
         otherItem,
@@ -302,7 +302,7 @@ const testItemInner = function (
   // one of the types with children Math, Function or Bracketed content { raw, type, items: [] }
   const result = {
     accepted: false,
-    done: false
+    done: false,
   };
 
   if (item === undefined) {
@@ -322,7 +322,7 @@ const testItemInner = function (
 
   // cope with css variables
   const _item =
-    item.type === TOKEN_TYPES.FUNCTION && item.value === "var"
+    item.type === TOKEN_TYPES.FUNCTION && item.value === 'var'
       ? item.items[0]
       : item;
 
@@ -340,7 +340,7 @@ const testItemInner = function (
       return bracketedItemResult.accepted;
     });
 
-    result.source = "Bracketed content";
+    result.source = 'Bracketed content';
     result.accepted = bracketContentsGood;
     result.done = true; // all tests completed
   } else if (_item.type === TOKEN_TYPES.FUNCTION) {
@@ -348,7 +348,7 @@ const testItemInner = function (
       const funcSpecs = funcSet.values;
 
       const matchesFuncSpec = funcSpecs.some((funcSpec) => {
-        const parts = funcSpec.split("(");
+        const parts = funcSpec.split('(');
 
         if (_item.scope && !checkScope(_item, options, localScopes)) {
           return false;
@@ -376,7 +376,7 @@ const testItemInner = function (
 
           let [start, end] = parts[1]
             .substring(0, parts[1].length - 1)
-            .split(" ");
+            .split(' ');
 
           start = parseRangeValue(start, paramItems.length);
           end = parseRangeValue(end, paramItems.length) || start; // start if end empty

@@ -8,27 +8,27 @@
 class MathsError extends Error {
   constructor(msg) {
     super(msg);
-    this.name = "MathsError";
+    this.name = 'MathsError';
     Error.captureStackTrace(this, MathsError);
   }
 }
 
 const TOKEN_TYPES = {
-  NUMERIC_LITERAL: "Numeric literal",
-  SCSS_VAR: "scss variable",
-  OPERATOR: "operator",
-  SEPARATOR: "separator",
-  FUNCTION: "function",
-  LEFT_BR: "Left bracket",
-  RIGHT_BR: "Right bracket",
-  BRACKETED_CONTENT: "Content of brackets",
-  QUOTED_LITERAL: "Quoted literal",
-  TEXT_LITERAL: "Text Literal",
-  COLOR_LITERAL: "Color Literal",
-  MATH: "Math",
-  LIST: "Comma separated list",
-  LIST_ITEM: "Item in list",
-  UNKNOWN: "Unknown"
+  NUMERIC_LITERAL: 'Numeric literal',
+  SCSS_VAR: 'scss variable',
+  OPERATOR: 'operator',
+  SEPARATOR: 'separator',
+  FUNCTION: 'function',
+  LEFT_BR: 'Left bracket',
+  RIGHT_BR: 'Right bracket',
+  BRACKETED_CONTENT: 'Content of brackets',
+  QUOTED_LITERAL: 'Quoted literal',
+  TEXT_LITERAL: 'Text Literal',
+  COLOR_LITERAL: 'Color Literal',
+  MATH: 'Math',
+  LIST: 'Comma separated list',
+  LIST_ITEM: 'Item in list',
+  UNKNOWN: 'Unknown',
 };
 
 const COMMA = 1;
@@ -103,7 +103,7 @@ const structureParse = (value) => {
           priorMatches.push(matches[index][0]);
         }
 
-        const priorMatchString = priorMatches.join("");
+        const priorMatchString = priorMatches.join('');
 
         newMatch[0] = `${priorMatchString}${match[0]}`;
         newMatch[match[DQ] ? DQ : SQ] = newMatch[0];
@@ -203,10 +203,10 @@ const processTokens = (tokens) => {
   // It may be a list e.g. such as that used by a border
   // The individual parts can be simple values, function calls or math that does not require a calc
   // Math may be surrounded by brackets inside or outside a calc
-  const result = { items: [], raw: "" };
+  const result = { items: [], raw: '' };
 
   let lastItem;
-  let unattachedOperators = ""; // "border: - 5px" is valid SCSS but not CSS. Compiles to "border: -5px" only / is prohibited
+  let unattachedOperators = ''; // "border: - 5px" is valid SCSS but not CSS. Compiles to "border: -5px" only / is prohibited
 
   for (const index in tokens) {
     const token = tokens[index];
@@ -235,18 +235,18 @@ const processTokens = (tokens) => {
           item = lastItem;
         } else {
           item = lastItem.items[lastItem.items.length - 1];
-          lastItem.raw += "(";
+          lastItem.raw += '(';
         }
 
         item.items = [];
         item.type = TOKEN_TYPES.FUNCTION;
-        item.isCalc = lastItem.value === "calc";
-        item.raw += "(";
-        result.raw += "(";
+        item.isCalc = lastItem.value === 'calc';
+        item.raw += '(';
+        result.raw += '(';
 
         if (item.type === TOKEN_TYPES.FUNCTION) {
           // last item may have scope
-          const parts = item.value.split(".");
+          const parts = item.value.split('.');
 
           if (parts.length === 2) {
             item.scope = parts[0];
@@ -257,9 +257,9 @@ const processTokens = (tokens) => {
         item = {
           type: TOKEN_TYPES.BRACKETED_CONTENT,
           raw: `${unattachedOperators}(`,
-          items: []
+          items: [],
         };
-        unattachedOperators = "";
+        unattachedOperators = '';
         addToItems(lastItem, result, item);
       }
 
@@ -281,29 +281,29 @@ const processTokens = (tokens) => {
 
       if (lastItem && lastItem.type === TOKEN_TYPES.MATH) {
         lastItem.raw += processedStuff.raw;
-        lastItem.raw += ")"; // close the brackets
+        lastItem.raw += ')'; // close the brackets
       }
 
-      item.raw += ")"; // close the brackets
-      result.raw += ")"; // close the brackets
+      item.raw += ')'; // close the brackets
+      result.raw += ')'; // close the brackets
     } else {
       const tokenValue = token[0];
       // at this point we have either math or simple tokens with some spaces
       // That is SQ, DQ or UNKNOWN
 
-      if ("+-*%/".indexOf(tokenValue) > -1 && tokenValue.length === 1) {
+      if ('+-*%/'.indexOf(tokenValue) > -1 && tokenValue.length === 1) {
         // are we continuing math or creating new math?
         if (lastItem && lastItem.type === TOKEN_TYPES.MATH) {
           // continue math
           lastItem.items.push({
             type: TOKEN_TYPES.OPERATOR,
             value: tokenValue,
-            raw: tokenValue
+            raw: tokenValue,
           });
           lastItem.raw += ` ${tokenValue}`;
         } else {
           if (result.items.length < 1) {
-            if (tokenValue !== "*" && tokenValue !== "/") {
+            if (tokenValue !== '*' && tokenValue !== '/') {
               unattachedOperators += tokenValue; // can be a whole string of minus
               continue;
             } else {
@@ -318,12 +318,12 @@ const processTokens = (tokens) => {
           item = {
             items: [lastItem],
             type: TOKEN_TYPES.MATH,
-            raw: lastItem.raw
+            raw: lastItem.raw,
           };
           item.items.push({
             type: TOKEN_TYPES.OPERATOR,
             value: tokenValue,
-            raw: tokenValue
+            raw: tokenValue,
           });
           item.raw += ` ${tokenValue}`;
           result.items.push(item);
@@ -359,9 +359,9 @@ const processTokens = (tokens) => {
             value: `${unattachedOperators}${numeric[1]}`,
             type: TOKEN_TYPES.NUMERIC_LITERAL,
             raw: `${unattachedOperators}${numeric[1]}${units}`,
-            units
+            units,
           };
-          unattachedOperators = "";
+          unattachedOperators = '';
         } else {
           let type = TOKEN_TYPES.UNKNOWN;
 
@@ -394,9 +394,9 @@ const processTokens = (tokens) => {
             value: `${unattachedOperators}${token[0]}`,
             type,
             raw: `${unattachedOperators}${token[0]}`,
-            ...addInfo
+            ...addInfo,
           };
-          unattachedOperators = "";
+          unattachedOperators = '';
         }
 
         addToItems(lastItem, result, item);
@@ -408,7 +408,7 @@ const processTokens = (tokens) => {
         );
       }
 
-      unattachedOperators = "";
+      unattachedOperators = '';
     }
   }
 
@@ -417,18 +417,18 @@ const processTokens = (tokens) => {
 
 const processListItems = (listItems) => {
   const items = [];
-  let raw = "";
+  let raw = '';
 
   for (const index in listItems) {
     // if (!listItems[index][COMMA] && !listItems[index][SPACE]) {
     // ignore space and comma in list
     const listItemValues = processTokens(listItems[index]);
-    const comma = raw.length ? ", " : "";
+    const comma = raw.length ? ', ' : '';
 
     items.push({
       type: TOKEN_TYPES.LIST_ITEM,
       items: listItemValues.items,
-      raw: listItemValues.raw
+      raw: listItemValues.raw,
     });
     raw += `${comma}${listItemValues.raw}`;
     // }
@@ -477,7 +477,7 @@ const tokenizeValue = (value) => {
         items: [],
         raw: value,
         error,
-        message: "Failed to parse value"
+        message: 'Failed to parse value',
       };
     }
   }

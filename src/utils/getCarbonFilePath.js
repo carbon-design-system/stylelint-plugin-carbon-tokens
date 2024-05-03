@@ -5,23 +5,23 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from "path";
-import { fileURLToPath } from "url";
+import path from 'path';
+import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const modulesPathIndex = __dirname.indexOf("/node_modules/");
+const modulesPathIndex = __dirname.indexOf('/node_modules/');
 const inNodeModules = modulesPathIndex > -1;
 //
 const modulesPath = inNodeModules
   ? __dirname.substr(0, modulesPathIndex + 14) // in node modules
-  : path.join(__dirname, "../../../"); //
+  : path.join(__dirname, '../../../'); //
 
 const packagesInfo = {
   layout: {
-    nodeModules: "@carbon/layout/scss/generated/",
-    srcModules: "layout/scss/generated"
-  }
+    nodeModules: '@carbon/layout/scss/generated/',
+    srcModules: 'layout/scss/generated',
+  },
 };
 
 const getCarbonFilePath = (pkg, file) => {

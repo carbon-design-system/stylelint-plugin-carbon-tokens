@@ -8,7 +8,7 @@
 // There are no type tokens that are used directly
 // Types are applied via mixins and functions
 // const typeTokens = [];
-import loadModules, { loadPackageJson } from "../../../utils/loadModules.js";
+import loadModules, { loadPackageJson } from '../../../utils/loadModules.js';
 
 const doInit = async ({ carbonPath, carbonModulePostfix }) => {
   // permitted carbon type functions
@@ -20,56 +20,56 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
     const { pkg } = await loadModules(
       carbonPath,
-      ["type"],
+      ['type'],
       carbonModulePostfix
     );
 
     _version = pkg.version;
   } else {
-    const pkg = loadPackageJson("@carbon/type");
+    const pkg = loadPackageJson('@carbon/type');
 
     _version = pkg.version;
   }
 
-  const isV10 = _version.startsWith("10");
+  const isV10 = _version.startsWith('10');
 
   if (isV10) {
     typeFunctions = [
       {
-        name: "carbon--font-style",
-        accept: "acceptCarbonFontStyleFunction"
+        name: 'carbon--font-style',
+        accept: 'acceptCarbonFontStyleFunction',
       },
       {
-        name: "carbon--font-weight",
-        accept: "acceptCarbonFontWeightFunction"
+        name: 'carbon--font-weight',
+        accept: 'acceptCarbonFontWeightFunction',
       },
       {
-        name: "carbon--type-scale",
-        accept: "acceptCarbonTypeScaleFunction"
+        name: 'carbon--type-scale',
+        accept: 'acceptCarbonTypeScaleFunction',
       },
       {
-        name: "carbon--font-family",
-        accept: "acceptCarbonFontFamilyFunction"
-      }
+        name: 'carbon--font-family',
+        accept: 'acceptCarbonFontFamilyFunction',
+      },
     ];
   } else {
     typeFunctions = [
       {
-        name: "font-style",
-        accept: "acceptCarbonFontStyleFunction"
+        name: 'font-style',
+        accept: 'acceptCarbonFontStyleFunction',
       },
       {
-        name: "font-weight",
-        accept: "acceptCarbonFontWeightFunction"
+        name: 'font-weight',
+        accept: 'acceptCarbonFontWeightFunction',
       },
       {
-        name: "type-scale",
-        accept: "acceptCarbonTypeScaleFunction"
+        name: 'type-scale',
+        accept: 'acceptCarbonTypeScaleFunction',
       },
       {
-        name: "font-family",
-        accept: "acceptCarbonFontFamilyFunction"
-      }
+        name: 'font-family',
+        accept: 'acceptCarbonFontFamilyFunction',
+      },
     ];
   }
 

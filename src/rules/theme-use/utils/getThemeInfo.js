@@ -5,10 +5,10 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { doInitColors } from "./initCarbonColor.js";
-import { doInitTheme } from "./initCarbonTheme.js";
-import { fixes } from "./fixes.js";
-import { sassColorFunctions } from "./initSassFunctions.js";
+import { doInitColors } from './initCarbonColor.js';
+import { doInitTheme } from './initCarbonTheme.js';
+import { fixes } from './fixes.js';
+import { sassColorFunctions } from './initSassFunctions.js';
 
 export default async function getThemeInfo(options) {
   const { carbonColorTokens, ibmColorTokens } = await doInitColors(options);
@@ -17,34 +17,34 @@ export default async function getThemeInfo(options) {
   return {
     tokens: [
       {
-        source: "Theme",
+        source: 'Theme',
         accept: true,
-        values: themeTokens
+        values: themeTokens,
       },
       {
-        source: "Carbon color",
+        source: 'Carbon color',
         accept: options.acceptCarbonColorTokens,
-        values: carbonColorTokens
+        values: carbonColorTokens,
       },
       {
-        source: "IBM Color",
+        source: 'IBM Color',
         accept: options.acceptIBMColorTokensCarbonV10Only,
-        values: ibmColorTokens
-      }
+        values: ibmColorTokens,
+      },
     ],
     functions: [
       {
-        source: "Theme",
+        source: 'Theme',
         accept: true,
-        values: themeFunctions
+        values: themeFunctions,
       },
       {
-        source: "SASS",
+        source: 'SASS',
         accept: true,
-        values: sassColorFunctions
-      }
+        values: sassColorFunctions,
+      },
     ],
     fixes,
-    version
+    version,
   };
 }

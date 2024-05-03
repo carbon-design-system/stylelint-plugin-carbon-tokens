@@ -10,17 +10,17 @@ import {
   getMessages,
   isValidOption,
   namespace,
-  parseOptions
-} from "../../utils/index.js";
-import { getLayoutInfo } from "./utils/index.js";
-import stylelint from "stylelint";
+  parseOptions,
+} from '../../utils/index.js';
+import { getLayoutInfo } from './utils/index.js';
+import stylelint from 'stylelint';
 const { utils } = stylelint;
 
-export const ruleName = namespace("layout-use");
-export const messages = getMessages(ruleName, "layout");
+export const ruleName = namespace('layout-use');
+export const messages = getMessages(ruleName, 'layout');
 const meta = {
   fixable: true,
-  url: "https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/tree/main/src/rules/layout-use/README.md"
+  url: 'https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/tree/main/src/rules/layout-use/README.md',
 };
 
 const isValidAcceptValues = isValidOption;
@@ -29,23 +29,23 @@ const isValidIncludeProps = isValidOption;
 const defaultOptions = {
   // include standard layout properties
   includeProps: [
-    "/^margin$/<1 4>",
-    "/^margin-/",
-    "/^padding$/<1 4>",
-    "/^padding-/",
-    "left",
-    "top",
-    "bottom",
-    "right",
-    "transform[/^translate/]",
+    '/^margin$/<1 4>',
+    '/^margin-/',
+    '/^padding$/<1 4>',
+    '/^padding-/',
+    'left',
+    'top',
+    'bottom',
+    'right',
+    'transform[/^translate/]',
     // logical properties
-    "/^inset$/<1 4>",
-    "/^inset-(block|inline)$/<1 2>",
-    "/^inset-(block|inline)-/",
-    "/^margin-(block|inline)$/<1 2>",
-    "/^margin-(block|inline)-/",
-    "/^padding-(block|inline)$/<1 2>",
-    "/^padding-(block|inline)-/"
+    '/^inset$/<1 4>',
+    '/^inset-(block|inline)$/<1 2>',
+    '/^inset-(block|inline)-/',
+    '/^margin-(block|inline)$/<1 2>',
+    '/^margin-(block|inline)-/',
+    '/^padding-(block|inline)$/<1 2>',
+    '/^padding-(block|inline)-/',
 
     // the following are not really layout or spacing
     // // Widths, heights, borders, shadows and there logical equivalents are ignored.
@@ -57,18 +57,18 @@ const defaultOptions = {
   ],
   // Accept transparent, common reset values, 0, proportional values,
   acceptValues: [
-    "/inherit|initial|auto|none|unset/",
-    "/^0[a-z]*$/",
-    "/^-{0,1}[0-9]*(%|vw|vh)$/"
+    '/inherit|initial|auto|none|unset/',
+    '/^0[a-z]*$/',
+    '/^-{0,1}[0-9]*(%|vw|vh)$/',
   ],
   acceptUndefinedVariables: false,
   acceptContainerTokens: false,
   acceptIconSizeTokens: false,
   acceptFluidSpacingTokens: false,
   acceptCarbonMiniUnitsFunction: false,
-  acceptScopes: ["layout"],
+  acceptScopes: ['layout'],
   carbonPath: undefined,
-  carbonModulePostfix: undefined
+  carbonModulePostfix: undefined,
 };
 
 const ruleFunction = (primaryOptions, secondaryOptions, context) => {
@@ -79,7 +79,7 @@ const ruleFunction = (primaryOptions, secondaryOptions, context) => {
       result,
       ruleName,
       {
-        actual: primaryOptions
+        actual: primaryOptions,
       },
       {
         actual: options,
@@ -88,21 +88,21 @@ const ruleFunction = (primaryOptions, secondaryOptions, context) => {
           acceptValues: [isValidAcceptValues],
           acceptScopes: [isValidAcceptValues],
           acceptUndefinedVariables: (val) =>
-            val === undefined || typeof val === "boolean",
+            val === undefined || typeof val === 'boolean',
           acceptContainerTokens: (val) =>
-            val === undefined || typeof val === "boolean",
+            val === undefined || typeof val === 'boolean',
           acceptIconSizeTokens: (val) =>
-            val === undefined || typeof val === "boolean",
+            val === undefined || typeof val === 'boolean',
           acceptFluidSpacingTokens: (val) =>
-            val === undefined || typeof val === "boolean",
+            val === undefined || typeof val === 'boolean',
           acceptCarbonMiniUnitsFunction: (val) =>
-            val === undefined || typeof val === "boolean",
-          carbonPath: (val) => val === undefined || val.indexOf("@carbon") > -1,
+            val === undefined || typeof val === 'boolean',
+          carbonPath: (val) => val === undefined || val.indexOf('@carbon') > -1,
           carbonModulePostfix: (val) =>
-            val === undefined || typeof val === "string",
-          enforceScopes: (val) => val === undefined || typeof val === "boolean"
+            val === undefined || typeof val === 'string',
+          enforceScopes: (val) => val === undefined || typeof val === 'boolean',
         },
-        optional: true
+        optional: true,
       }
     );
 
