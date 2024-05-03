@@ -178,7 +178,7 @@ export default async function checkRule(
           .replace(/"(.*)"/, '$1'); // remove quotes if needed
         const [usedThing, usedScope] = ruleParams.split(' as ');
 
-        const carbonThingRegex = // eslint-disable-next-line regexp/no-unused-capturing-group
+        const carbonThingRegex =
           /((@carbon)|(carbon-components(\/([^/$]+))*))\/+_?([^.]+)(\.scss)*/;
 
         const carbonThing = carbonThingRegex.exec(usedThing);
@@ -190,8 +190,7 @@ export default async function checkRule(
           // at this point local scopes come from a known import at least in theory
           // other scopes we might accept are based on user
 
-          const nonCarbonThingRegex = // eslint-disable-next-line regexp/no-unused-capturing-group
-            /((.+)\/)*_?([^.]+)(\.scss)*/;
+          const nonCarbonThingRegex = /((.+)\/)*_?([^.]+)(\.scss)*/;
 
           const nonCarbonThing = nonCarbonThingRegex.exec(usedThing);
 

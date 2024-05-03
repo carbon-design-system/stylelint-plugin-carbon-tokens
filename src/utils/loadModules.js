@@ -32,13 +32,11 @@ const loadModules = async (carbonPath, modules, carbonModulePostfix) => {
       'lib/index.js' // /es/index.js not possible as import assumes cjs
     );
 
-    // eslint-disable-next-line node/no-unsupported-features/es-syntax
     const module = await import(modulePath);
 
     result[modules[m]] = module;
   }
 
-  // eslint-disable-next-line node/no-unsupported-features/es-syntax
   const packageFile = fs.readFileSync(
     path.join(basePath, modules[0] + postFix, 'package.json')
   );

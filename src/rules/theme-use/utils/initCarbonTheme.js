@@ -11,12 +11,6 @@ import { unstable_tokens as installedLayout } from '@carbon/layout';
 import { unstable_tokens as installedType } from '@carbon/type';
 import loadModules, { loadPackageJson } from '../../../utils/loadModules.js';
 
-const {
-  installedMetadata: unstable_metadata,
-  installedTokens: tokens,
-  installedWhite: white,
-} = installedThemes;
-
 const missingButtonTokens = [
   'button-danger-active',
   'button-danger-hover',
