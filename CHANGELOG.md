@@ -3,6 +3,7 @@
 ## 2.5.0
 
 - Add logical size properties
+- Add Carbon telemetry package
 
 ## 2.4.0
 
