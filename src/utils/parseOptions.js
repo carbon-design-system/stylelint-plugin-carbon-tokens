@@ -6,8 +6,19 @@
  */
 
 const parseAddDefaults = (options, defaults) => {
-  const output = options ? options.filter((option) => option.length > 0) : [];
+  // remove empty strings
+  let output = options ? options.filter((option) => option.length > 0) : [];
   let addDefaults = false;
+
+  // put aside excludes
+  const excludes = [];
+
+  for (let i = output.length - 1; i >= 0; i--) {
+    if (output[i].startsWith("!")) {
+      excludes.push(output[i].substring(1));
+      output.splice(i, 1);
+    }
+  }
 
   if (output.length === 0) {
     addDefaults = true;
@@ -23,7 +34,12 @@ const parseAddDefaults = (options, defaults) => {
   if (addDefaults) {
     const filteredDefaults = defaults.filter((def) => !output.includes(def));
 
-    return output.concat(filteredDefaults);
+    output = output.concat(filteredDefaults);
+  }
+
+  // process excludes and return
+  if (excludes.length) {
+    output = output.filter((opt) => !excludes.includes(opt));
   }
 
   return output;

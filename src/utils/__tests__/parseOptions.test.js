@@ -83,7 +83,49 @@ describe("parseOptions", () => {
     acceptUndefinedVariables: true
   };
 
-  it("Combines default options when using *", () => {
+  it("Combines default options when using * and some overlap", () => {
     expect(parseOptions(options7, defaults)).toEqual(combinedOpts2);
+  });
+
+  const options8 = {
+    includeProps: [],
+    excludeProps: []
+  };
+
+  it("Uses defaults when nothing excluded", () => {
+    expect(parseOptions(options8, defaults)).toEqual(defaults);
+  });
+
+  const options9 = {
+    includeProps: ["!3"]
+  };
+
+  it("Excludes prop preceded by !", () => {
+    const expected = {
+      includeProps: ["1", "4"],
+      acceptValues: ["1", "5", "6"],
+      acceptCarbonColorTokens: false,
+      acceptIBMColorTokensCarbonV10Only: false,
+      acceptUndefinedVariables: true
+    };
+
+    expect(parseOptions(options9, defaults)).toEqual(expected);
+  });
+
+  const options10 = {
+    includeProps: ["*", "!3"],
+    acceptValues: ["*", "!4", "!6"]
+  };
+
+  it("Excludes prop preceded by ! with *", () => {
+    const expected = {
+      includeProps: ["1", "4"],
+      acceptValues: ["1", "5"],
+      acceptCarbonColorTokens: false,
+      acceptIBMColorTokensCarbonV10Only: false,
+      acceptUndefinedVariables: true
+    };
+
+    expect(parseOptions(options10, defaults)).toEqual(expected);
   });
 });

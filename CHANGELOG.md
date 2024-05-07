@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.6.0
+
+- Add option to exclude properties and values in options
+
 ## 2.5.0
 
 - Add logical size properties
