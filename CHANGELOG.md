@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.7.0
+
+- Add gap to spacing properties
+
 ## 2.6.0
 
 - Add option to exclude properties and values in options

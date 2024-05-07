@@ -40,7 +40,9 @@ const defaultOptions = {
     "/^margin-(block|inline)$/<1 2>",
     "/^margin-(block|inline)-/",
     "/^padding-(block|inline)$/<1 2>",
-    "/^padding-(block|inline)-/"
+    "/^padding-(block|inline)-/",
+    "/^gap$/<1 2>"
+
     // the following are not really layout or spacing
     // // Widths, heights, borders, shadows and there logical equivalents are ignored.
     // "height",

@@ -931,7 +931,6 @@ testRule(rule, {
   ]
 });
 
-
 testRule(rule, {
   ruleName,
   config: [true],
@@ -1017,79 +1016,105 @@ testRule(rule, {
   reject: [
     {
       code: `.foo { inset: $spacing-01 10px $spacing-01 $spacing-01 }`,
-      description: "inset using tokens",
+      description: "inset using tokens"
     },
     {
       code: `.foo { inset-block: 10px $spacing-01 }`,
-      description: "inset-block using tokens",
+      description: "inset-block using tokens"
     },
     {
       code: `.foo { inset-inline: $spacing-01 10px }`,
-      description: "inset-inline using tokens",
+      description: "inset-inline using tokens"
     },
     {
       code: `.foo { inset-inline-start: 10px }`,
-      description: "inset-inline-start using tokens",
+      description: "inset-inline-start using tokens"
     },
     {
       code: `.foo { inset-inline-end: 10px }`,
-      description: "inset-inline-end using tokens",
+      description: "inset-inline-end using tokens"
     },
     {
       code: `.foo { inset-block-start: 10px }`,
-      description: "inset-block-start using tokens",
+      description: "inset-block-start using tokens"
     },
     {
       code: `.foo { inset-block-end: 10px }`,
-      description: "inset-block-end using tokens",
+      description: "inset-block-end using tokens"
     },
     {
       code: `.foo { margin-block: 10px $spacing-01 }`,
-      description: "margin-block using tokens",
+      description: "margin-block using tokens"
     },
     {
       code: `.foo { margin-inline: $spacing-01 10px }`,
-      description: "margin-inline using tokens",
+      description: "margin-inline using tokens"
     },
     {
       code: `.foo { margin-inline-start: 10px }`,
-      description: "margin-inline-start using tokens",
+      description: "margin-inline-start using tokens"
     },
     {
       code: `.foo { margin-inline-end: 10px }`,
-      description: "margin-inline-end using tokens",
+      description: "margin-inline-end using tokens"
     },
     {
       code: `.foo { margin-block-start: 10px }`,
-      description: "margin-block-start using tokens",
+      description: "margin-block-start using tokens"
     },
     {
       code: `.foo { margin-block-end: 10px }`,
-      description: "margin-block-end using tokens",
+      description: "margin-block-end using tokens"
     },
     {
       code: `.foo { padding-block: $spacing-01 10px }`,
-      description: "padding-block using tokens",
+      description: "padding-block using tokens"
     },
     {
       code: `.foo { padding-inline: 10px $spacing-01 }`,
-      description: "padding-inline using tokens",
+      description: "padding-inline using tokens"
     },
     {
       code: `.foo { padding-inline-start: 10px }`,
-      description: "padding-inline-start using tokens",
+      description: "padding-inline-start using tokens"
     },
     {
       code: `.foo { padding-inline-end: 10px }`,
-      description: "padding-inline-end using tokens",
+      description: "padding-inline-end using tokens"
     },
     {
       code: `.foo { padding-block-start: 10px }`,
-      description: "padding-block-start using tokens",
+      description: "padding-block-start using tokens"
     },
     {
       code: `.foo { padding-block-end: 10px }`,
-      description: "padding-block-end using tokens",
+      description: "padding-block-end using tokens"
+    }
+  ]
+});
+
+testRule(rule, {
+  ruleName,
+  config: [true],
+  configSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { gap: $spacing-01 $spacing-01 }`,
+      description: "gap using tokens"
+    },
+    {
+      code: `.foo { gap: $spacing-01}`,
+      description: "gap using single token"
+    }
+  ],
+  reject: [
+    {
+      code: `.foo { gap: 10px $spacing-01 }`,
+      description: "gap not using token in list"
+    },
+    {
+      code: `.foo { gap: 10px }`,
+      description: "gap not using a token"
     }
   ]
 });
