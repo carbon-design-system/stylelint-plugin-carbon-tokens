@@ -50,6 +50,15 @@ yarn add stylelint-plugin-carbon-tokens
 - `carbon/theme-token-use` has been renamed to `carbon/theme-use`.
 - `carbon/type-token-use` has been renamed to `carbon/type-use`.
 
+### Version 2 documentation
+
+- [README.md](../main-v2/README.md)
+- [Layout use](../main-v2/src/rules/layout-use/README.md)
+- [Motion duration use](../main-v2/src/rules/motion-duration-use/README.md)
+- [Motion easing use](../main-v2/src/rules/motion-easing-use/README.md)
+- [Theme use](../main-v2/src/rules/theme-use/README.md)
+- [Type use](../main-v2/src/rules/type-use/README.md)
+
 ## BREAKING CHANGES from version 1
 
 - `carbon/motion-token-use` has been renamed to `carbon/motion-duration-use`.
