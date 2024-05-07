@@ -53,11 +53,11 @@ yarn add stylelint-plugin-carbon-tokens
 ### Version 2 documentation
 
 - [README.md](../main-v2/README.md)
-- [Layout use](../main-v2/src/rules/layout-use/README.md)
+- [Layout token use](../main-v2/src/rules/layout-token-use/README.md)
 - [Motion duration use](../main-v2/src/rules/motion-duration-use/README.md)
 - [Motion easing use](../main-v2/src/rules/motion-easing-use/README.md)
-- [Theme use](../main-v2/src/rules/theme-use/README.md)
-- [Type use](../main-v2/src/rules/type-use/README.md)
+- [Theme token use](../main-v2/src/rules/theme-token-use/README.md)
+- [Type token use](../main-v2/src/rules/typ-token-use/README.md)
 
 ## BREAKING CHANGES from version 1
 
