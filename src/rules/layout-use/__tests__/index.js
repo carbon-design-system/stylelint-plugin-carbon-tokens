@@ -1868,3 +1868,35 @@ testRule({
     }
   ]
 });
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  config: [true],
+  configSyntax: "postcss-scss",
+  accept: [
+    {
+      code: `.foo { gap: $spacing-01 $spacing-01 }`,
+      description: "gap using tokens"
+    },
+    {
+      code: `.foo { gap: $spacing-01}`,
+      description: "gap using single token"
+    },
+  ],
+  reject: [
+    {
+      code: `.foo { gap: 10px $spacing-01 }`,
+      description: "gap not using token in list",
+      message: messages.rejected("gap", "10px $spacing-01")
+    },
+    {
+      code: `.foo { gap: 10px }`,
+      description: "gap not using a token",
+      message: messages.rejected(
+        "gap",
+        "10px"
+      )
+    },
+  ]
+});
