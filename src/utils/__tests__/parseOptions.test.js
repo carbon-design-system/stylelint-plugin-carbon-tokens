@@ -84,7 +84,49 @@ describe("parseOptions", () => {
     acceptUndefinedVariables: true
   };
 
-  it("Combines default options when using *", () => {
+  it("Combines default options when using * and some overlap", () => {
     assert.deepEqual(parseOptions(options7, defaults), combinedOpts2);
+  });
+
+  const options8 = {
+    includeProps: [],
+    excludeProps: []
+  };
+
+  it("Uses defaults when nothing excluded", () => {
+    assert.deepEqual(parseOptions(options8, defaults), defaults);
+  });
+
+  const options9 = {
+    includeProps: ["!3"]
+  };
+
+  it("Excludes prop preceded by !", () => {
+    const expected = {
+      includeProps: ["1", "4"],
+      acceptValues: ["1", "5", "6"],
+      acceptCarbonColorTokens: false,
+      acceptIBMColorTokensCarbonV10Only: false,
+      acceptUndefinedVariables: true
+    };
+
+    assert.deepEqual(parseOptions(options9, defaults), expected);
+  });
+
+  const options10 = {
+    includeProps: ["*", "!3"],
+    acceptValues: ["*", "!4", "!6"]
+  };
+
+  it("Excludes prop preceded by ! with *", () => {
+    const expected = {
+      includeProps: ["1", "4"],
+      acceptValues: ["1", "5"],
+      acceptCarbonColorTokens: false,
+      acceptIBMColorTokensCarbonV10Only: false,
+      acceptUndefinedVariables: true
+    };
+
+    assert.deepEqual(parseOptions(options10, defaults), expected);
   });
 });

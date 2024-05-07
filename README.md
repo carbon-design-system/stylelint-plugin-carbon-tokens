@@ -272,6 +272,20 @@ By default scopes are not expected, but that means
 - `enforceScopes: true` - An accepted `scope` or `*` is enforced for carbon
   tokens.
 
+### Excluding included props and accepted values
+
+There may be occasions where your defined config or defaults do not match your
+requirements.
+
+Entries in `includeProps` and `acceptValues` can be removed by explicitly naming
+and prefixing them in your config.
+
+For example using either of the following results in `line-height` not being in
+the list of props checked.
+
+- `includeProps: ["!line-height"]`
+- `includeProps: ["$/^\\$my-height--/", "*", "!line-height"]`
+
 ### includeProps Range
 
 Can include a range value expressed inside greater than and less than signs.
