@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0-rc.8
+
+- Reversed the PR adding font style function.
+
 ## 3.0.0-rc.7
 
 - Add gap to spacing properties
@@ -23,8 +27,8 @@
 
 ## 3.0.0-rc.2
 
-- Feat: acceptCarbonFontStyleFunction to allow
-  `font-style: type.font-style('italic')` for instance.
+- ~~Feat: acceptCarbonFontStyleFunction to allow
+  `font-style: type.font-style('italic')` for instance.~~
 
 ## 3.0.0-rc.1
 

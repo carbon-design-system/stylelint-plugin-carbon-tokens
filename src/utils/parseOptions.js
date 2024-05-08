@@ -17,7 +17,6 @@ const parseAddDefaults = (options, defaults) => {
       excludes.push(output[i].substring(1));
       output.splice(i, 1);
     }
-    console.log("output", i, output);
   }
 
   if (output.length === 0) {
