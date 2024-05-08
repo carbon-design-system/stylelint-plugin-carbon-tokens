@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.8.0
+
+- fix: allow font-style option by default
+
 ## 2.7.0
 
 - Add gap to spacing properties
@@ -15,13 +19,8 @@
 
 ## 2.4.0
 
-- Feat: acceptCarbonFontStyleFunction to allow
-  `font-style: type.font-style('italic')` for instance.
-
-## 2.3.2
-
-- Feat: acceptCarbonFontStyleFunction to allow
-  `font-style: type.font-style('italic')` for instance.
+- ~~Feat: acceptCarbonFontStyleFunction to allow
+  `font-style: type.font-style('italic')` for instance.~~
 
 ## 2.3.1
 

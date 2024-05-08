@@ -27,14 +27,13 @@ testRule(rule, {
     {
       code: ".foo { font-style: unset; }",
       description: "Accept reset using unset"
-    }
-  ], // there are not type tokens used directly
-  reject: [
+    },
     {
       code: ".foo { font-style: italic; }",
-      description: "Reject directly setting font-style",
-      message: messages.rejected
+      description: "Accept directly setting font-style",
     },
+  ], // there are not type tokens used directly
+  reject: [
     {
       code: ".foo { font-variant: small-caps; }",
       description: "Reject directly setting font-weight",
@@ -118,31 +117,6 @@ testRule(rule, {
   font-weight: type.font-weight("semibold");
 }`,
       description: "Permit scoped Carbon font weight function."
-    }
-  ]
-});
-
-testRule(rule, {
-  ruleName,
-  config: [
-    true,
-    {
-      acceptCarbonFontStyleFunction: true
-    }
-  ],
-  customSyntax: "postcss-scss",
-  accept: [
-    {
-      code: ".foo { font-style: font-style('italic'); }",
-      description: "Permit Carbon font style function."
-    },
-    {
-      code: `@use "@carbon/type";
-.keyword,
-.function {
-  font-style: type.font-style("italic");
-}`,
-      description: "Permit scoped Carbon font style function."
     }
   ]
 });
