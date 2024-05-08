@@ -34,14 +34,13 @@ testRule({
     {
       code: ".foo { font-style: unset; }",
       description: "Accept reset using unset"
-    }
-  ], // there are not type tokens used directly
-  reject: [
+    },
     {
       code: ".foo { font-style: italic; }",
-      description: "Reject directly setting font-style",
-      message: messages.rejected("font-style", "italic")
+      description: "Accept directly setting font-style",
     },
+  ], // there are not type tokens used directly
+  reject: [
     {
       code: ".foo { font-variant: small-caps; }",
       description: "Reject directly setting font-weight",

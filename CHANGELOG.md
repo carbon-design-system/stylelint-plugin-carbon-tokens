@@ -2,7 +2,7 @@
 
 ## 3.0.0-rc.8
 
-- Reversed the PR adding font style function.
+- Permit font-style setting by default
 
 ## 3.0.0-rc.7
 
