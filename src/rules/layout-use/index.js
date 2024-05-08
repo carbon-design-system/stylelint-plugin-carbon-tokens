@@ -46,7 +46,7 @@ const defaultOptions = {
     "/^margin-(block|inline)-/",
     "/^padding-(block|inline)$/<1 2>",
     "/^padding-(block|inline)-/",
-    "/^gap$/<1 2>",
+    "/^gap$/<1 2>"
 
     // the following are not really layout or spacing
     // // Widths, heights, borders, shadows and there logical equivalents are ignored.
@@ -63,9 +63,6 @@ const defaultOptions = {
     "/^-{0,1}[0-9]*(%|vw|vh)$/"
   ],
   acceptUndefinedVariables: false,
-  acceptContainerTokens: false,
-  acceptIconSizeTokens: false,
-  acceptFluidSpacingTokens: false,
   acceptCarbonMiniUnitsFunction: false,
   acceptScopes: ["layout"],
   carbonPath: undefined,
@@ -89,12 +86,6 @@ const ruleFunction = (primaryOptions, secondaryOptions, context) => {
           acceptValues: [isValidAcceptValues],
           acceptScopes: [isValidAcceptValues],
           acceptUndefinedVariables: (val) =>
-            val === undefined || typeof val === "boolean",
-          acceptContainerTokens: (val) =>
-            val === undefined || typeof val === "boolean",
-          acceptIconSizeTokens: (val) =>
-            val === undefined || typeof val === "boolean",
-          acceptFluidSpacingTokens: (val) =>
             val === undefined || typeof val === "boolean",
           acceptCarbonMiniUnitsFunction: (val) =>
             val === undefined || typeof val === "boolean",

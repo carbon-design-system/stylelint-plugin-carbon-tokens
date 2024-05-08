@@ -655,20 +655,11 @@ testRule({
   plugins: [plugin],
   ruleName,
   customSyntax: "postcss-scss",
-  config: [
-    true,
-    {
-      acceptContainerTokens: true
-    }
-  ],
+  config: [true],
   accept: [
     {
       code: `.foo { left: $container-01; }`,
-      description: `Accept $container tokens with acceptContainerTokens: true.`
-    },
-    {
-      code: `.foo { left: $container-01; }`,
-      description: `Accept $container tokens with acceptContainerTokens: true.`
+      description: `Accept $container tokens`
     }
   ],
   reject: []
@@ -678,21 +669,12 @@ testRule({
   plugins: [plugin],
   ruleName,
   customSyntax: "postcss-scss",
-  config: [
-    true,
-    {
-      acceptIconSizeTokens: true
-    }
-  ],
+  config: [true],
 
   accept: [
     {
       code: `.foo { left: $icon-size-01; }`,
-      description: `Accept $icon-size tokens with acceptIconSizeTokens: true.`
-    },
-    {
-      code: `.foo { left: $icon-size-01; }`,
-      description: `Accept $icon-size tokens with acceptIconSizeTokens: true.`
+      description: `Accept $icon-size tokens`
     }
   ],
   reject: []
@@ -702,21 +684,12 @@ testRule({
   plugins: [plugin],
   ruleName,
   customSyntax: "postcss-scss",
-  config: [
-    true,
-    {
-      acceptFluidSpacingTokens: true
-    }
-  ],
+  config: [true],
 
   accept: [
     {
       code: `.foo { left: $fluid-spacing-01; }`,
-      description: `Accept $fluid-spacing tokens with acceptFluidSpacingTokens: true.`
-    },
-    {
-      code: `.foo { left: $fluid-spacing-01; }`,
-      description: `Accept $fluid-spacing tokens with acceptFluidSpacingTokens: true.`
+      description: `Accept $fluid-spacing tokens`
     }
   ],
   reject: []
@@ -789,14 +762,7 @@ testRule({
   ruleName,
   customSyntax: "postcss-scss",
   fix: true,
-  config: [
-    true,
-    {
-      acceptContainerTokens: true,
-      acceptFluidSpacingTokens: true,
-      acceptIconSizeTokens: true
-    }
-  ],
+  config: [true],
   reject: [
     {
       code: `.foo { left: $carbon--layout-04; }`,
@@ -1882,7 +1848,7 @@ testRule({
     {
       code: `.foo { gap: $spacing-01}`,
       description: "gap using single token"
-    },
+    }
   ],
   reject: [
     {
@@ -1893,10 +1859,7 @@ testRule({
     {
       code: `.foo { gap: 10px }`,
       description: "gap not using a token",
-      message: messages.rejected(
-        "gap",
-        "10px"
-      )
-    },
+      message: messages.rejected("gap", "10px")
+    }
   ]
 });

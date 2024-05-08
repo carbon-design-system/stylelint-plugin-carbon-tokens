@@ -23,17 +23,17 @@ export default async function getLayoutInfo(options) {
     tokens: [
       {
         source: "Container",
-        accept: options.acceptContainerTokens,
+        accept: true,
         values: containerTokens
       },
       {
         source: "Fluid spacing",
-        accept: options.acceptFluidSpacingTokens,
+        accept: true,
         values: fluidSpacingTokens
       },
       {
         source: "Icon size",
-        accept: options.acceptIconSizeTokens,
+        accept: true,
         values: iconSizeTokens
       },
       {
