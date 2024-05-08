@@ -142,8 +142,6 @@ switches as part of your stylelint command.
       true,
       {
         severity: 'error',
-        acceptCarbonTypeScaleFunction: false,
-        acceptCarbonFontWeightFunction: false,
       },
     ],
   },
@@ -162,8 +160,6 @@ switches as part of your stylelint command.
       true,
       {
         severity: 'error',
-        acceptCarbonTypeScaleFunction: false,
-        acceptCarbonFontWeightFunction: false,
       },
     ],
   },
@@ -182,8 +178,6 @@ switches as part of your stylelint command.
       true,
       {
         severity: 'warning',
-        acceptCarbonTypeScaleFunction: true,
-        acceptCarbonFontWeightFunction: true,
         acceptUndefinedVariables: true,
         acceptScopes: ['**']
       },
@@ -223,11 +217,11 @@ modules.exports = {
   //...
   rules: {
     //... other rules
-    "carbon/type-use": [
+    "carbon/theme-use": [
       true,
       {
         severity: "warning",
-        acceptCarbonTypeScaleFunction: false
+        acceptCarbonColorTokens: true
       }
     ]
     //...other rules

@@ -37,30 +37,30 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
     typeFunctions = [
       {
         name: "carbon--font-weight",
-        accept: "acceptCarbonFontWeightFunction"
+        accept: true
       },
       {
         name: "carbon--type-scale",
-        accept: "acceptCarbonTypeScaleFunction"
+        accept: true
       },
       {
         name: "carbon--font-family",
-        accept: "acceptCarbonFontFamilyFunction"
+        accept: true
       }
     ];
   } else {
     typeFunctions = [
       {
         name: "font-weight",
-        accept: "acceptCarbonFontWeightFunction"
+        accept: true
       },
       {
         name: "type-scale",
-        accept: "acceptCarbonTypeScaleFunction"
+        accept: true
       },
       {
         name: "font-family",
-        accept: "acceptCarbonFontFamilyFunction"
+        accept: true
       }
     ];
   }

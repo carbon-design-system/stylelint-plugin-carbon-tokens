@@ -24,7 +24,7 @@ export default async function getTypeInfo(options) {
     functions: typeFunctions.map((item) => {
       const result = {
         source: "Type",
-        accept: options[item.accept],
+        accept: item.accept,
         values: [item.name]
       };
 

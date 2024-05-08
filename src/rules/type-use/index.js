@@ -28,11 +28,8 @@ const isValidIncludeProps = isValidOption;
 
 const defaultOptions = {
   // include standard type properties
-  includeProps: ["font", "/^font-*/", "line-height", "letterSpacing"],
+  includeProps: ["font", "/^font-(?!style)/", "line-height", "letterSpacing"],
   acceptValues: ["/inherit|initial|none|unset/"],
-  acceptCarbonFontWeightFunction: false, // permit use of carbon font weight function
-  acceptCarbonTypeScaleFunction: false, // permit use of carbon type scale function
-  acceptCarbonFontFamilyFunction: false, // permit use of carbon font family function
   acceptScopes: ["type"],
   carbonPath: undefined,
   carbonModulePostfix: undefined,
@@ -55,12 +52,6 @@ const ruleFunction = (primaryOptions, secondaryOptions, context) => {
           includeProps: [isValidIncludeProps],
           acceptValues: [isValidAcceptValues],
           acceptScopes: [isValidAcceptValues],
-          acceptCarbonFontWeightFunction: (val) =>
-            val === undefined || typeof val === "boolean",
-          acceptCarbonTypeScaleFunction: (val) =>
-            val === undefined || typeof val === "boolean",
-          acceptCarbonFontFamilyFunction: (val) =>
-            val === undefined || typeof val === "boolean",
           carbonPath: (val) => val === undefined || val.indexOf("@carbon") > -1,
           carbonModulePostfix: (val) =>
             val === undefined || typeof val === "string",

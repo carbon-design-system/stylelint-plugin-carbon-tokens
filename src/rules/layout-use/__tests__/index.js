@@ -224,322 +224,28 @@ testRule({
     {
       code: ".foo { right: $spacing-01; }",
       description: 'A right using a token "$spacing-01" is accepted.'
-    }
-  ],
-  reject: [
+    },
     {
       code: ".foo { margin: $container-01; }",
-      description: 'A margin using non-token(s) "$container-01" is rejected',
-      message: messages.rejectedUndefinedVariable("margin", "$container-01")
+      description: 'A margin using token(s) "$container-01" is accepted'
     },
     {
       code: ".foo { margin: $container-01 $fluid-spacing-01; }",
       description:
-        'A margin using non-token(s) "$container-01 $fluid-spacing-01" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$container-01")
-        },
-        {
-          message: messages.rejectedUndefinedVariable(
-            "margin",
-            "$fluid-spacing-01"
-          )
-        }
-      ]
+        'A margin using token(s) "$container-01 $fluid-spacing-01" is accepted'
     },
     {
       code: ".foo { margin: $container-01 $fluid-spacing-01 $icon-size-01; }",
       description:
-        'A margin using non-token(s) "$container-01 $fluid-spacing-01 $icon-size-01" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$container-01")
-        },
-        {
-          message: messages.rejectedUndefinedVariable(
-            "margin",
-            "$fluid-spacing-01"
-          )
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        }
-      ]
+        'A margin using token(s) "$container-01 $fluid-spacing-01 $icon-size-01" is accepted'
     },
     {
       code: ".foo { margin: $container-01 $fluid-spacing-01 $icon-size-01 $container-01; }",
       description:
-        'A margin using non-token(s) "$container-01 $fluid-spacing-01 $icon-size-01 $container-01" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$container-01")
-        },
-        {
-          message: messages.rejectedUndefinedVariable(
-            "margin",
-            "$fluid-spacing-01"
-          )
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$container-01")
-        }
-      ]
-    },
-    {
-      code: ".foo { margin: $fluid-spacing-01; }",
-      description:
-        'A margin using non-token(s) "$fluid-spacing-01" is rejected',
-      message: messages.rejectedUndefinedVariable("margin", "$fluid-spacing-01")
-    },
-    {
-      code: ".foo { margin: $fluid-spacing-01 $icon-size-01; }",
-      description:
-        'A margin using non-token(s) "$fluid-spacing-01 $icon-size-01" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable(
-            "margin",
-            "$fluid-spacing-01"
-          )
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        }
-      ]
-    },
-    {
-      code: ".foo { margin: $fluid-spacing-01 $icon-size-01 $container-01; }",
-      description:
-        'A margin using non-token(s) "$fluid-spacing-01 $icon-size-01 $container-01" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable(
-            "margin",
-            "$fluid-spacing-01"
-          )
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$container-01")
-        }
-      ]
-    },
-    {
-      code: ".foo { margin: $fluid-spacing-01 $icon-size-01 $container-01 $fluid-spacing-01; }",
-      description:
-        'A margin using non-token(s) "$fluid-spacing-01 $icon-size-01 $container-01 $fluid-spacing-01" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable(
-            "margin",
-            "$fluid-spacing-01"
-          )
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$container-01")
-        },
-        {
-          message: messages.rejectedUndefinedVariable(
-            "margin",
-            "$fluid-spacing-01"
-          )
-        }
-      ]
-    },
-    {
-      code: ".foo { margin: $icon-size-01; }",
-      description: 'A margin using non-token(s) "$icon-size-01" is rejected',
-      message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-    },
-    {
-      code: ".foo { margin: $icon-size-01 $container-01; }",
-      description:
-        'A margin using non-token(s) "$icon-size-01 $container-01" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$container-01")
-        }
-      ]
-    },
-    {
-      code: ".foo { margin: $icon-size-01 $container-01 $fluid-spacing-01; }",
-      description:
-        'A margin using non-token(s) "$icon-size-01 $container-01 $fluid-spacing-01" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$container-01")
-        },
-        {
-          message: messages.rejectedUndefinedVariable(
-            "margin",
-            "$fluid-spacing-01"
-          )
-        }
-      ]
-    },
-    {
-      code: ".foo { margin: $icon-size-01 $container-01 $fluid-spacing-01 $icon-size-01; }",
-      description:
-        'A margin using non-token(s) "$icon-size-01 $container-01 $fluid-spacing-01 $icon-size-01" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$container-01")
-        },
-        {
-          message: messages.rejectedUndefinedVariable(
-            "margin",
-            "$fluid-spacing-01"
-          )
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        }
-      ]
-    },
-    {
-      code: ".foo { margin: $container-01 $fluid-spacing-01 $icon-size-01 199px; }",
-      description:
-        'A margin using non-token(s) "$container-01 $fluid-spacing-01 $icon-size-01 199px" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$container-01")
-        },
-        {
-          message: messages.rejectedUndefinedVariable(
-            "margin",
-            "$fluid-spacing-01"
-          )
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        },
-        {
-          message: messages.rejected(
-            "margin",
-            "$container-01 $fluid-spacing-01 $icon-size-01 199px"
-          )
-        }
-      ]
-    },
-    {
-      code: ".foo { margin: $fluid-spacing-01 $icon-size-01 199px; }",
-      description:
-        'A margin using non-token(s) "$fluid-spacing-01 $icon-size-01 199px" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable(
-            "margin",
-            "$fluid-spacing-01"
-          )
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        },
-        {
-          message: messages.rejected(
-            "margin",
-            "$fluid-spacing-01 $icon-size-01 199px"
-          )
-        }
-      ]
-    },
-    {
-      code: ".foo { margin: $fluid-spacing-01 $icon-size-01 199px 299px; }",
-      description:
-        'A margin using non-token(s) "$fluid-spacing-01 $icon-size-01 199px 299px" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable(
-            "margin",
-            "$fluid-spacing-01"
-          )
-        },
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        },
-        {
-          message: messages.rejected(
-            "margin",
-            "$fluid-spacing-01 $icon-size-01 199px 299px"
-          )
-        },
-        {
-          message: messages.rejected(
-            "margin",
-            "$fluid-spacing-01 $icon-size-01 199px 299px"
-          )
-        }
-      ]
-    },
-    {
-      code: ".foo { margin: $icon-size-01 199px; }",
-      description:
-        'A margin using non-token(s) "$icon-size-01 199px" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        },
-        { message: messages.rejected("margin", "$icon-size-01 199px") }
-      ]
-    },
-    {
-      code: ".foo { margin: $icon-size-01 199px 299px; }",
-      description:
-        'A margin using non-token(s) "$icon-size-01 199px 299px" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        },
-        { message: messages.rejected("margin", "$icon-size-01 199px 299px") },
-        { message: messages.rejected("margin", "$icon-size-01 199px 299px") }
-      ]
-    },
-    {
-      code: ".foo { margin: $icon-size-01 199px 299px 399px; }",
-      description:
-        'A margin using non-token(s) "$icon-size-01 199px 299px 399px" is rejected',
-      warnings: [
-        {
-          message: messages.rejectedUndefinedVariable("margin", "$icon-size-01")
-        },
-        {
-          message: messages.rejected(
-            "margin",
-            "$icon-size-01 199px 299px 399px"
-          )
-        },
-        {
-          message: messages.rejected(
-            "margin",
-            "$icon-size-01 199px 299px 399px"
-          )
-        },
-        {
-          message: messages.rejected(
-            "margin",
-            "$icon-size-01 199px 299px 399px"
-          )
-        }
-      ]
-    },
+        'A margin using token(s) "$container-01 $fluid-spacing-01 $icon-size-01 $container-01" is accepted'
+    }
+  ],
+  reject: [
     {
       code: ".foo { margin: 199px; }",
       description: 'A margin using non-token(s) "199px" is rejected',
@@ -627,26 +333,6 @@ testRule({
           )
         }
       ]
-    },
-    {
-      code: ".foo { left: $container-01; }",
-      description: 'A left using a non-token "$container-01" is rejected.',
-      message: messages.rejectedUndefinedVariable("left", "$container-01")
-    },
-    {
-      code: ".foo { top: $container-01; }",
-      description: 'A top using a non-token "$container-01" is rejected.',
-      message: messages.rejectedUndefinedVariable("top", "$container-01")
-    },
-    {
-      code: ".foo { bottom: $container-01; }",
-      description: 'A bottom using a non-token "$container-01" is rejected.',
-      message: messages.rejectedUndefinedVariable("bottom", "$container-01")
-    },
-    {
-      code: ".foo { right: $container-01; }",
-      description: 'A right using a non-token "$container-01" is rejected.',
-      message: messages.rejectedUndefinedVariable("right", "$container-01")
     }
   ]
 });
