@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.0.0-rc.9
+
+- Accept fluid, container and icon size tokens for layout-use
+- Accept type functions for weight, font family and scale.
+
 ## 3.0.0-rc.8
 
 - Permit font-style setting by default
