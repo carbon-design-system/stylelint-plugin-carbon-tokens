@@ -1,5 +1,12 @@
 # Changelog
 
+## 3.0.0-rc.10
+
+- Add example configs to be used in extends.
+  - config/light-touch.js
+  - config/recommended.js
+  - config/strict.js
+
 ## 3.0.0-rc.9
 
 - Accept fluid, container and icon size tokens for layout-use

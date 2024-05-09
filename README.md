@@ -118,7 +118,19 @@ reviewed. NOTE 2: Currently does not support partially fixing a line e.g.
 
 ## Recommended config
 
-### Stylelint switches
+- [Strict](./config/strict.js)
+- [Recommended](./config/recommended.js)
+- [Light touch](./config/light-touch.js)
+
+You can copy and paste the rules in these files, which is great for
+customization. However, the simplest way to make use of these rules is to add as
+follows to your stylelint config.
+
+```js
+  extends: ["stylelint-plugin-carbon-tokens/recommended.js"]
+```
+
+### Other Stylelint switches
 
 It's good practice to document any linter disables and to tidy up any that are
 no longer needed. As a result it is recommended that you use the following
@@ -128,62 +140,6 @@ switches as part of your stylelint command.
   [https://stylelint.io/user-guide/usage/options#reportdescriptionlessdisables]
 - --report-needless-disables
   [https://stylelint.io/user-guide/usage/options#reportneedlessdisables]
-
-### Strict
-
-```js
-  rules: {
-    // ADDED TO TEST CARBON USE
-    'carbon/layout-use': [true, { severity: 'error' }],
-    'carbon/motion-duration-use': [true, { severity: 'error' }],
-    "carbon/motion-easing-use": [true, { severity: 'error'}],
-    'carbon/theme-use': [true, { severity: 'error' }],
-    'carbon/type-use': [
-      true,
-      {
-        severity: 'error',
-      },
-    ],
-  },
-```
-
-### Default
-
-```js
-  rules: {
-    // ADDED TO TEST CARBON USE
-    'carbon/layout-use': [true, { severity: 'error' }],
-    'carbon/motion-duration-use': [true, { severity: 'error' }],
-    "carbon/motion-easing-use": [true, { severity: 'error'}],
-    'carbon/theme-use': [true, { severity: 'error' }],
-    'carbon/type-use': [
-      true,
-      {
-        severity: 'error',
-      },
-    ],
-  },
-```
-
-### Light touch
-
-```js
-  rules: {
-    // ADDED TO TEST CARBON USE
-    'carbon/layout-use': [true, { severity: 'warning', acceptUndefinedVariables: true, acceptScopes: ['**']  }],
-    'carbon/motion-duration-use': [true, { severity: 'warning', acceptUndefinedVariables: true, acceptScopes: ['**']  }],
-    "carbon/motion-easing-use": [true, { severity: 'warning', acceptUndefinedVariables: true, acceptScopes: ['**'] }],
-    'carbon/theme-use': [true, { severity: 'warning', acceptUndefinedVariables: true, acceptScopes: ['**']  }],
-    'carbon/type-use': [
-      true,
-      {
-        severity: 'warning',
-        acceptUndefinedVariables: true,
-        acceptScopes: ['**']
-      },
-    ],
-  },
-```
 
 ### Carbon Versions supported
 
