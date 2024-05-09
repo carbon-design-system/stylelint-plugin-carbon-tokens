@@ -1,5 +1,29 @@
 # Changelog
 
+## 3.0.0-rc.10
+
+- Add example configs to be used in extends.
+  - config/light-touch.js
+  - config/recommended.js
+  - config/strict.js
+
+## 3.0.0-rc.9
+
+- Accept fluid, container and icon size tokens for layout-use
+- Accept type functions for weight, font family and scale.
+
+## 3.0.0-rc.8
+
+- Permit font-style setting by default
+
+## 3.0.0-rc.7
+
+- Add gap to spacing properties
+
+## 3.0.0-rc.6
+
+- Add option to exclude properties and values in options
+
 ## 3.0.0-rc.5
 
 - Add logical size properties
@@ -15,8 +39,8 @@
 
 ## 3.0.0-rc.2
 
-- Feat: acceptCarbonFontStyleFunction to allow
-  `font-style: type.font-style('italic')` for instance.
+- ~~Feat: acceptCarbonFontStyleFunction to allow
+  `font-style: type.font-style('italic')` for instance.~~
 
 ## 3.0.0-rc.1
 

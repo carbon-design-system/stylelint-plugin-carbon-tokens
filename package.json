@@ -1,6 +1,6 @@
 {
   "name": "stylelint-plugin-carbon-tokens",
-  "version": "3.0.0-rc.5",
+  "version": "3.0.0-rc.10",
   "description": "A stylelint plugin to support the use of carbon component tokens.",
   "keywords": [
     "stylelint",
@@ -68,6 +68,7 @@
   },
   "files": [
     "CHANGELOG.md",
+    "config/*.*",
     "index.js",
     "README.md",
     "src/**/*.*",

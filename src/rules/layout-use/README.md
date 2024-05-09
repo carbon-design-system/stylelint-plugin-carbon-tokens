@@ -33,9 +33,6 @@ const defaultOptions = {
   acceptValues: ["/inherit|initial/", "/^0[a-z]*$/", "/^[0-9]*(%|vw|vh)$/"],
   acceptsScopes: ["layout"],
   acceptUndefinedVariables: false,
-  acceptContainerTokens: false,
-  acceptIconSizeTokens: false,
-  acceptFluidSpacingTokens: false,
   acceptCarbonMiniUnitsFunction: false, // V10 only
   carbonPath: undefined // allows a different path for node_modules (supports monorepo with multiple Carbon versions) e.g. packages/proj1/node_modules/@carbon
   carbonModulePostfix: undefined, // optional for use in conjunction with `carbonPath` to where a Carbon module has been renamed e.g. `-10` with a carbonPath of `node_modules/@carbon` will use `node_modules/@carbon/layout-10`

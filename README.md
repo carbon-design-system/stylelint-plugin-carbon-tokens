@@ -50,6 +50,15 @@ yarn add stylelint-plugin-carbon-tokens
 - `carbon/theme-token-use` has been renamed to `carbon/theme-use`.
 - `carbon/type-token-use` has been renamed to `carbon/type-use`.
 
+### Version 2 documentation
+
+- [README.md](../main-v2/README.md)
+- [Layout token use](../main-v2/src/rules/layout-token-use/README.md)
+- [Motion duration use](../main-v2/src/rules/motion-duration-use/README.md)
+- [Motion easing use](../main-v2/src/rules/motion-easing-use/README.md)
+- [Theme token use](../main-v2/src/rules/theme-token-use/README.md)
+- [Type token use](../main-v2/src/rules/typ-token-use/README.md)
+
 ## BREAKING CHANGES from version 1
 
 - `carbon/motion-token-use` has been renamed to `carbon/motion-duration-use`.
@@ -109,7 +118,19 @@ reviewed. NOTE 2: Currently does not support partially fixing a line e.g.
 
 ## Recommended config
 
-### Stylelint switches
+- [Strict](./config/strict.js)
+- [Recommended](./config/recommended.js)
+- [Light touch](./config/light-touch.js)
+
+You can copy and paste the rules in these files, which is great for
+customization. However, the simplest way to make use of these rules is to add as
+follows to your stylelint config.
+
+```js
+  extends: ["stylelint-plugin-carbon-tokens/config/recommended"]
+```
+
+### Other Stylelint switches
 
 It's good practice to document any linter disables and to tidy up any that are
 no longer needed. As a result it is recommended that you use the following
@@ -119,71 +140,6 @@ switches as part of your stylelint command.
   [https://stylelint.io/user-guide/usage/options#reportdescriptionlessdisables]
 - --report-needless-disables
   [https://stylelint.io/user-guide/usage/options#reportneedlessdisables]
-
-### Strict
-
-```js
-  rules: {
-    // ADDED TO TEST CARBON USE
-    'carbon/layout-use': [true, { severity: 'error' }],
-    'carbon/motion-duration-use': [true, { severity: 'error' }],
-    "carbon/motion-easing-use": [true, { severity: 'error'}],
-    'carbon/theme-use': [true, { severity: 'error' }],
-    'carbon/type-use': [
-      true,
-      {
-        severity: 'error',
-        acceptCarbonTypeScaleFunction: false,
-        acceptCarbonFontStyleFunction: false,
-        acceptCarbonFontWeightFunction: false,
-      },
-    ],
-  },
-```
-
-### Default
-
-```js
-  rules: {
-    // ADDED TO TEST CARBON USE
-    'carbon/layout-use': [true, { severity: 'error' }],
-    'carbon/motion-duration-use': [true, { severity: 'error' }],
-    "carbon/motion-easing-use": [true, { severity: 'error'}],
-    'carbon/theme-use': [true, { severity: 'error' }],
-    'carbon/type-use': [
-      true,
-      {
-        severity: 'error',
-        acceptCarbonTypeScaleFunction: false,
-        acceptCarbonFontStyleFunction: false,
-        acceptCarbonFontWeightFunction: false,
-      },
-    ],
-  },
-```
-
-### Light touch
-
-```js
-  rules: {
-    // ADDED TO TEST CARBON USE
-    'carbon/layout-use': [true, { severity: 'warning', acceptUndefinedVariables: true, acceptScopes: ['**']  }],
-    'carbon/motion-duration-use': [true, { severity: 'warning', acceptUndefinedVariables: true, acceptScopes: ['**']  }],
-    "carbon/motion-easing-use": [true, { severity: 'warning', acceptUndefinedVariables: true, acceptScopes: ['**'] }],
-    'carbon/theme-use': [true, { severity: 'warning', acceptUndefinedVariables: true, acceptScopes: ['**']  }],
-    'carbon/type-use': [
-      true,
-      {
-        severity: 'warning',
-        acceptCarbonTypeScaleFunction: true,
-        acceptCarbonFontStyleFunction: true,
-        acceptCarbonFontWeightFunction: true,
-        acceptUndefinedVariables: true,
-        acceptScopes: ['**']
-      },
-    ],
-  },
-```
 
 ### Carbon Versions supported
 
@@ -217,11 +173,11 @@ modules.exports = {
   //...
   rules: {
     //... other rules
-    "carbon/type-use": [
+    "carbon/theme-use": [
       true,
       {
         severity: "warning",
-        acceptCarbonTypeScaleFunction: false
+        acceptCarbonColorTokens: true
       }
     ]
     //...other rules
@@ -271,6 +227,20 @@ By default scopes are not expected, but that means
 
 - `enforceScopes: true` - An accepted `scope` or `*` is enforced for carbon
   tokens.
+
+### Excluding included props and accepted values
+
+There may be occasions where your defined config or defaults do not match your
+requirements.
+
+Entries in `includeProps` and `acceptValues` can be removed by explicitly naming
+and prefixing them in your config.
+
+For example using either of the following results in `line-height` not being in
+the list of props checked.
+
+- `includeProps: ["!line-height"]`
+- `includeProps: ["$/^\\$my-height--/", "*", "!line-height"]`
 
 ### includeProps Range
 

@@ -34,14 +34,13 @@ testRule({
     {
       code: ".foo { font-style: unset; }",
       description: "Accept reset using unset"
+    },
+    {
+      code: ".foo { font-style: italic; }",
+      description: "Accept directly setting font-style"
     }
   ], // there are not type tokens used directly
   reject: [
-    {
-      code: ".foo { font-style: italic; }",
-      description: "Reject directly setting font-style",
-      message: messages.rejected("font-style", "italic")
-    },
     {
       code: ".foo { font-variant: small-caps; }",
       description: "Reject directly setting font-weight",
@@ -93,12 +92,7 @@ testRule({
 testRule({
   plugins: [plugin],
   ruleName,
-  config: [
-    true,
-    {
-      acceptCarbonTypeScaleFunction: true
-    }
-  ],
+  config: [true],
   customSyntax: "postcss-scss",
   accept: [
     {
@@ -111,12 +105,7 @@ testRule({
 testRule({
   plugins: [plugin],
   ruleName,
-  config: [
-    true,
-    {
-      acceptCarbonFontFamilyFunction: true
-    }
-  ],
+  config: [true],
   customSyntax: "postcss-scss",
   accept: [
     {
@@ -129,12 +118,7 @@ testRule({
 testRule({
   plugins: [plugin],
   ruleName,
-  config: [
-    true,
-    {
-      acceptCarbonFontWeightFunction: true
-    }
-  ],
+  config: [true],
   customSyntax: "postcss-scss",
   accept: [
     {
@@ -150,33 +134,6 @@ testRule({
   config: [
     true,
     {
-      acceptCarbonFontStyleFunction: true
-    }
-  ],
-  customSyntax: "postcss-scss",
-  accept: [
-    {
-      code: ".foo { font-style: font-style('italic'); }",
-      description: "Permit Carbon font style function."
-    },
-    {
-      code: `@use "@carbon/type";
-.keyword,
-.function {
-  font-style: type.font-style("italic");
-}`,
-      description: "Permit scoped Carbon font style function."
-    }
-  ]
-});
-
-testRule({
-  plugins: [plugin],
-  ruleName,
-  config: [
-    true,
-    {
-      acceptCarbonTypeScaleFunction: true,
       carbonPath: "node_modules/@carbon",
       carbonModulePostfix: "-10"
     }
@@ -196,7 +153,6 @@ testRule({
   config: [
     true,
     {
-      acceptCarbonFontFamilyFunction: true,
       carbonPath: "node_modules/@carbon",
       carbonModulePostfix: "-10"
     }
@@ -216,7 +172,6 @@ testRule({
   config: [
     true,
     {
-      acceptCarbonFontWeightFunction: true,
       carbonPath: "node_modules/@carbon",
       carbonModulePostfix: "-10"
     }
@@ -226,82 +181,6 @@ testRule({
     {
       code: ".foo { font-weight: carbon--font-weight('bold'); }",
       description: "Permit v10 Carbon font weight function."
-    }
-  ]
-});
-
-testRule({
-  plugins: [plugin],
-  ruleName,
-  config: [true, {}],
-  customSyntax: "postcss-scss",
-  accept: [],
-  reject: [
-    {
-      code: ".foo { font-weight: carbon--font-weight('light'); }",
-      description: "Reject v10 Carbon font weight function.",
-      message: messages.rejected("font-weight", "carbon--font-weight('light')")
-    },
-    {
-      code: ".foo { font-weight: carbon--font-weight('light'); }",
-      description: "Reject v10 Carbon font weight function.",
-      message: messages.rejected("font-weight", "carbon--font-weight('light')")
-    },
-    {
-      code: ".foo { font-weight: carbon--font-weight('light'); }",
-      description: "Reject v10 Carbon font weight function.",
-      message: messages.rejected("font-weight", "carbon--font-weight('light')")
-    },
-    {
-      code: ".foo { font-weight: font-weight('light'); }",
-      description: "Reject Carbon font weight function.",
-      message: messages.rejected("font-weight", "font-weight('light')")
-    },
-    {
-      code: ".foo { font-weight: font-weight('light'); }",
-      description: "Reject Carbon font weight function.",
-      message: messages.rejected("font-weight", "font-weight('light')")
-    },
-    {
-      code: ".foo { font-weight: font-weight('light'); }",
-      description: "Reject Carbon font weight function.",
-      message: messages.rejected("font-weight", "font-weight('light')")
-    }
-  ]
-});
-
-testRule({
-  plugins: [plugin],
-  ruleName,
-  config: [
-    true,
-    {
-      acceptCarbonFontFamilyFunction: true,
-      acceptCarbonFontWeightFunction: true,
-      acceptCarbonTypeScaleFunction: true
-    }
-  ],
-  customSyntax: "postcss-scss",
-  fix: true,
-  accept: [],
-  reject: [
-    {
-      code: ".foo { font-weight: carbon--font-weight('light'); }",
-      fixed: ".foo { font-weight: font-weight('light'); }",
-      description: "Reject v10 Carbon font weight function.",
-      message: messages.rejected("font-weight", "carbon--font-weight('light')")
-    },
-    {
-      code: ".foo { font-weight: carbon--font-weight('light'); }",
-      fixed: ".foo { font-weight: font-weight('light'); }",
-      description: "Reject v10 Carbon font weight function.",
-      message: messages.rejected("font-weight", "carbon--font-weight('light')")
-    },
-    {
-      code: ".foo { font-weight: carbon--font-weight('light'); }",
-      fixed: ".foo { font-weight: font-weight('light'); }",
-      description: "Reject v10 Carbon font weight function.",
-      message: messages.rejected("font-weight", "carbon--font-weight('light')")
     }
   ]
 });
