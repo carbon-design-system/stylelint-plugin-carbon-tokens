@@ -5,7 +5,7 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import stylelint from "stylelint";
+import stylelint from 'stylelint';
 const { utils } = stylelint;
 
 const stringOrRegexMessage = (f, { label, ...options }) => {
@@ -23,13 +23,13 @@ const stringOrRegexMessage = (f, { label, ...options }) => {
   }
 
   const regexOpts = Object.keys(options).reduce((acc, key) => {
-    acc[key] = ".*";
+    acc[key] = '.*';
 
     return acc;
   }, {});
 
   // message with () escaped
-  const msg = f({ label, ...regexOpts }).replace(/([()])/g, "\\$1");
+  const msg = f({ label, ...regexOpts }).replace(/([()])/g, '\\$1');
 
   return `/${msg}/`;
 };
@@ -43,7 +43,7 @@ const getMessages = (ruleName, label) => {
         {
           label,
           property,
-          value
+          value,
         }
       ),
     rejectedUndefinedRange: (property, value, range) =>
@@ -81,7 +81,7 @@ const getMessages = (ruleName, label) => {
         (o) =>
           `Expected carbon ${o.label} token or function for duration and easing at positions 2 and 3 for "${o.property}" found "${o.value}".`,
         { label, property, value }
-      )
+      ),
   });
 };
 

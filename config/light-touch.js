@@ -1,45 +1,45 @@
 export default {
   rules: {
-    "carbon/layout-use": [
+    'carbon/layout-use': [
       true,
       {
-        severity: "warning",
+        severity: 'warning',
         acceptCarbonMiniUnitsFunction: true,
         acceptUndefinedVariables: true,
-        acceptScopes: ["**"]
-      }
+        acceptScopes: ['**'],
+      },
     ],
-    "carbon/motion-duration-use": [
+    'carbon/motion-duration-use': [
       true,
       {
-        severity: "warning",
+        severity: 'warning',
         acceptUndefinedVariables: true,
-        acceptScopes: ["**"]
-      }
+        acceptScopes: ['**'],
+      },
     ],
-    "carbon/motion-easing-use": [
+    'carbon/motion-easing-use': [
       true,
       {
-        severity: "warning",
+        severity: 'warning',
         acceptUndefinedVariables: true,
-        acceptScopes: ["**"]
-      }
+        acceptScopes: ['**'],
+      },
     ],
-    "carbon/theme-use": [
+    'carbon/theme-use': [
       true,
       {
-        severity: "warning",
+        severity: 'warning',
         acceptUndefinedVariables: true,
-        acceptScopes: ["**"]
-      }
+        acceptScopes: ['**'],
+      },
     ],
-    "carbon/type-use": [
+    'carbon/type-use': [
       true,
       {
-        severity: "warning",
+        severity: 'warning',
         acceptUndefinedVariables: true,
-        acceptScopes: ["**"]
-      }
-    ]
-  }
+        acceptScopes: ['**'],
+      },
+    ],
+  },
 };

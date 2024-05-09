@@ -5,13 +5,13 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import path from "path";
-import fs from "fs";
-import { createRequire } from "module";
+import path from 'path';
+import fs from 'fs';
+import { createRequire } from 'module';
 
 export const loadPackageJson = (packageName) => {
   const require = createRequire(import.meta.url);
-  const pkg = require(path.join(packageName, "package.json"));
+  const pkg = require(path.join(packageName, 'package.json'));
 
   return pkg;
 };
@@ -21,7 +21,7 @@ const loadModules = async (carbonPath, modules, carbonModulePostfix) => {
   // will try to load "mode_modules/@carbon/theme-10", "mode_modules/@carbon/type-10" and "mode_modules/@carbon/theme-10/package.json"
   // returning { themes, type, pkg }
 
-  const postFix = carbonModulePostfix || "";
+  const postFix = carbonModulePostfix || '';
   const basePath = path.join(process.cwd(), carbonPath);
   const result = {};
 
@@ -29,18 +29,16 @@ const loadModules = async (carbonPath, modules, carbonModulePostfix) => {
     const modulePath = path.join(
       basePath,
       modules[m] + postFix,
-      "lib/index.js" // /es/index.js not possible as import assumes cjs
+      'lib/index.js' // /es/index.js not possible as import assumes cjs
     );
 
-    // eslint-disable-next-line node/no-unsupported-features/es-syntax
     const module = await import(modulePath);
 
     result[modules[m]] = module;
   }
 
-  // eslint-disable-next-line node/no-unsupported-features/es-syntax
   const packageFile = fs.readFileSync(
-    path.join(basePath, modules[0] + postFix, "package.json")
+    path.join(basePath, modules[0] + postFix, 'package.json')
   );
   result.pkg = JSON.parse(packageFile);
 

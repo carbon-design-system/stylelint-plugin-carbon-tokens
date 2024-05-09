@@ -5,4 +5,4 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-export { default as getLayoutInfo } from "./getLayoutInfo.js";
+export { default as getLayoutInfo } from './getLayoutInfo.js';
