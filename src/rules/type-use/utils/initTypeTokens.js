@@ -8,7 +8,7 @@
 // There are no type tokens that are used directly
 // Types are applied via mixins and functions
 // const typeTokens = [];
-import loadModules, { loadPackageJson } from "../../../utils/loadModules.js";
+import loadModules, { loadPackageJson } from '../../../utils/loadModules.js';
 
 const doInit = async ({ carbonPath, carbonModulePostfix }) => {
   // permitted carbon type functions
@@ -17,51 +17,50 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
   let _version;
 
   if (carbonPath) {
-    // eslint-disable-next-line node/no-unsupported-features/es-syntax
     const { pkg } = await loadModules(
       carbonPath,
-      ["type"],
+      ['type'],
       carbonModulePostfix
     );
 
     _version = pkg.version;
   } else {
-    const pkg = loadPackageJson("@carbon/type");
+    const pkg = loadPackageJson('@carbon/type');
 
     _version = pkg.version;
   }
 
-  const isV10 = _version.startsWith("10");
+  const isV10 = _version.startsWith('10');
 
   if (isV10) {
     typeFunctions = [
       {
-        name: "carbon--font-weight",
-        accept: true
+        name: 'carbon--font-weight',
+        accept: true,
       },
       {
-        name: "carbon--type-scale",
-        accept: true
+        name: 'carbon--type-scale',
+        accept: true,
       },
       {
-        name: "carbon--font-family",
-        accept: true
-      }
+        name: 'carbon--font-family',
+        accept: true,
+      },
     ];
   } else {
     typeFunctions = [
       {
-        name: "font-weight",
-        accept: true
+        name: 'font-weight',
+        accept: true,
       },
       {
-        name: "type-scale",
-        accept: true
+        name: 'type-scale',
+        accept: true,
       },
       {
-        name: "font-family",
-        accept: true
-      }
+        name: 'font-family',
+        accept: true,
+      },
     ];
   }
 

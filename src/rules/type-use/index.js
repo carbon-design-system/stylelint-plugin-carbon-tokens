@@ -10,17 +10,17 @@ import {
   getMessages,
   isValidOption,
   namespace,
-  parseOptions
-} from "../../utils/index.js";
-import { getTypeInfo } from "./utils/index.js";
-import stylelint from "stylelint";
+  parseOptions,
+} from '../../utils/index.js';
+import { getTypeInfo } from './utils/index.js';
+import stylelint from 'stylelint';
 const { utils } = stylelint;
 
-export const ruleName = namespace("type-use");
-export const messages = getMessages(ruleName, "type");
+export const ruleName = namespace('type-use');
+export const messages = getMessages(ruleName, 'type');
 const meta = {
   fixable: true,
-  url: "https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/tree/main/src/rules/type-use/README.md"
+  url: 'https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/tree/main/src/rules/type-use/README.md',
 };
 
 const isValidAcceptValues = isValidOption;
@@ -28,12 +28,12 @@ const isValidIncludeProps = isValidOption;
 
 const defaultOptions = {
   // include standard type properties
-  includeProps: ["font", "/^font-(?!style)/", "line-height", "letterSpacing"],
-  acceptValues: ["/inherit|initial|none|unset/"],
-  acceptScopes: ["type"],
+  includeProps: ['font', '/^font-(?!style)/', 'line-height', 'letterSpacing'],
+  acceptValues: ['/inherit|initial|none|unset/'],
+  acceptScopes: ['type'],
   carbonPath: undefined,
   carbonModulePostfix: undefined,
-  enforceScopes: undefined
+  enforceScopes: undefined,
 };
 
 const ruleFunction = (primaryOptions, secondaryOptions, context) => {
@@ -44,7 +44,7 @@ const ruleFunction = (primaryOptions, secondaryOptions, context) => {
       result,
       ruleName,
       {
-        actual: primaryOptions
+        actual: primaryOptions,
       },
       {
         actual: options,
@@ -52,12 +52,12 @@ const ruleFunction = (primaryOptions, secondaryOptions, context) => {
           includeProps: [isValidIncludeProps],
           acceptValues: [isValidAcceptValues],
           acceptScopes: [isValidAcceptValues],
-          carbonPath: (val) => val === undefined || val.indexOf("@carbon") > -1,
+          carbonPath: (val) => val === undefined || val.indexOf('@carbon') > -1,
           carbonModulePostfix: (val) =>
-            val === undefined || typeof val === "string",
-          enforceScopes: (val) => val === undefined || typeof val === "boolean"
+            val === undefined || typeof val === 'string',
+          enforceScopes: (val) => val === undefined || typeof val === 'boolean',
         },
-        optional: true
+        optional: true,
       }
     );
 

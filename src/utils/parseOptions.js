@@ -13,7 +13,7 @@ const parseAddDefaults = (options, defaults) => {
   // put aside excludes
   const excludes = [];
   for (let i = output.length - 1; i >= 0; i--) {
-    if (output[i].startsWith("!")) {
+    if (output[i].startsWith('!')) {
       excludes.push(output[i].substring(1));
       output.splice(i, 1);
     }
@@ -22,7 +22,7 @@ const parseAddDefaults = (options, defaults) => {
   if (output.length === 0) {
     addDefaults = true;
   } else {
-    const index = output.findIndex((item) => item === "*");
+    const index = output.findIndex((item) => item === '*');
 
     if (index >= 0) {
       addDefaults = true;

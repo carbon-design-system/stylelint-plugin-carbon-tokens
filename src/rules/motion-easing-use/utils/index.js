@@ -5,8 +5,8 @@
  * LICENSE file in the root directory of this source tree.
  */
 
-import { doInit } from "./initMotionEasingTokens.js";
-import { fixes } from "./fixes.js";
+import { doInit } from './initMotionEasingTokens.js';
+import { fixes } from './fixes.js';
 
 export async function getMotionInfo(options) {
   const { motionTokens, motionFunctions, version } = await doInit(options);
@@ -14,19 +14,19 @@ export async function getMotionInfo(options) {
   return {
     tokens: [
       {
-        source: "Motion",
+        source: 'Motion',
         accept: true,
-        values: motionTokens
-      }
+        values: motionTokens,
+      },
     ],
     functions: [
       {
-        source: "Motion",
+        source: 'Motion',
         accept: true,
-        values: motionFunctions
-      }
+        values: motionFunctions,
+      },
     ],
     fixes,
-    version
+    version,
   };
 }
