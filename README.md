@@ -127,7 +127,7 @@ customization. However, the simplest way to make use of these rules is to add as
 follows to your stylelint config.
 
 ```js
-  extends: ["stylelint-plugin-carbon-tokens/recommended.js"]
+  extends: ["stylelint-plugin-carbon-tokens/config/recommended"]
 ```
 
 ### Other Stylelint switches
