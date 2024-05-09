@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.0.0-rc.11
+
+- Chore: address ESLint warnings and errors
+
 ## 3.0.0-rc.10
 
 - Add example configs to be used in extends.
