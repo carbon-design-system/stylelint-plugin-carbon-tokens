@@ -676,6 +676,16 @@ testRule({
     //   fixed:
     //     "@use '@carbon/theme' as carbon_theme; .foo { color: carbon_theme.$button-danger-active; }"
     // },
+  ],
+});
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  config: [true, { enforceScopes: true }],
+  customSyntax: 'postcss-scss',
+  fix: true,
+  reject: [
     {
       code: "@use '@carbon/layout'; @use '@carbon/theme' as carbon_theme; .foo { background-color: $active-danger; }",
       description:

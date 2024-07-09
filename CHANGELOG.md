@@ -1,8 +1,14 @@
 # Changelog
 
+- Partial fix for #124 (enforceScopes: false)
+
 ## 3.0.0
 
-- Released
+- V3 release (ESM for Stylelint 16)
+
+## 3.0.0-rc.11
+
+- Chore: address ESLint warnings and errors
 
 ## 3.0.0-rc.10
 
