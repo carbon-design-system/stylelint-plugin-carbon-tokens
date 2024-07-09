@@ -222,7 +222,7 @@ export default async function checkRule(
 
   if (!options.enforceScopes && !localScopes.includes('')) {
     // scopes are not being enforced allow no scope
-    localScopes.push('');
+    localScopes.unshift('');
   }
 
   // **** walk rules and check values

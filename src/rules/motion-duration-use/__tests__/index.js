@@ -453,38 +453,76 @@ testRule({
     {
       code: `.foo { transition: all 70ms; }`,
       fixed: `.foo { transition: all $duration--fast-01; }`,
-      description: "v11 reject and fix literal duration matching token '70ms'",
+      description: "v10 reject and fix literal duration matching token '70ms'",
       message: messages.rejectedTransition('transition', '70ms'),
     },
     {
       code: `.foo { transition: all 110ms; }`,
       fixed: `.foo { transition: all $duration--fast-02; }`,
-      description: "v11 reject and fix literal duration matching token '110ms'",
+      description: "v10 reject and fix literal duration matching token '110ms'",
       message: messages.rejectedTransition('transition', '110ms'),
     },
     {
       code: `.foo { transition: all 150ms; }`,
       fixed: `.foo { transition: all $duration--moderate-01; }`,
-      description: "v11 reject and fix literal duration matching token '150ms'",
+      description: "v10 reject and fix literal duration matching token '150ms'",
       message: messages.rejectedTransition('transition', '150ms'),
     },
     {
       code: `.foo { transition: all 240ms; }`,
       fixed: `.foo { transition: all $duration--moderate-02; }`,
-      description: "v11 reject and fix literal duration matching token '240ms'",
+      description: "v10 reject and fix literal duration matching token '240ms'",
       message: messages.rejectedTransition('transition', '240ms'),
     },
     {
       code: `.foo { transition: all 400ms; }`,
       fixed: `.foo { transition: all $duration--slow-01; }`,
-      description: "v11 reject and fix literal duration matching token '400ms'",
+      description: "v10 reject and fix literal duration matching token '400ms'",
       message: messages.rejectedTransition('transition', '400ms'),
     },
     {
       code: `.foo { transition: all 700ms; }`,
       fixed: `.foo { transition: all $duration--slow-02; }`,
-      description: "v11 reject and fix literal duration matching token '700ms'",
+      description: "v10 reject and fix literal duration matching token '700ms'",
       message: messages.rejectedTransition('transition', '700ms'),
     },
   ],
 });
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  customSyntax: 'postcss-scss',
+  fix: true,
+  config: true,
+  reject: [
+    {
+      code: `@use "@carbon/layout" as layout; .foo { transition: padding 400ms cubic-bezier(0.25, 0.8, 0.075, 1); }`,
+      fixed: `@use "@carbon/layout" as layout; .foo { transition: padding $duration-slow-01 cubic-bezier(0.25, 0.8, 0.075, 1); }`,
+      description: `v11 reject and fix 'motion-duration' but and add no prefix`,
+      message: messages.rejectedTransition('transition', '400ms'),
+    },
+  ],
+});
+
+// testRule({
+//   plugins: [plugin],
+//   ruleName,
+//   customSyntax: 'postcss-scss',
+//   fix: true,
+//   config: [
+//     true,
+//     {
+//       enforceScopes: true,
+//     },
+//   ],
+//   enforceScopes: true,
+//   reject: [
+//     {
+//       code: `@use "@carbon/layout" as layout; @use "@carbon/motion"; .foo { transition: padding 400ms cubic-bezier(0.25, 0.8, 0.075, 1); }`,
+//       fixed: `@use "@carbon/layout" as layout; @use "@carbon/motion"; .foo { transition: padding motion.$duration-slow-01 cubic-bezier(0.25, 0.8, 0.075, 1); }`,
+//       description: `v11 reject and fix 'motion-duration' but and add no prefix`,
+//       message: messages.rejectedTransition('transition', '400ms'),
+//     },
+//   ],
+// });
