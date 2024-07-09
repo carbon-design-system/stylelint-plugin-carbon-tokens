@@ -521,7 +521,7 @@ testRule({
 //     {
 //       code: `@use "@carbon/layout" as layout; @use "@carbon/motion"; .foo { transition: padding 400ms cubic-bezier(0.25, 0.8, 0.075, 1); }`,
 //       fixed: `@use "@carbon/layout" as layout; @use "@carbon/motion"; .foo { transition: padding motion.$duration-slow-01 cubic-bezier(0.25, 0.8, 0.075, 1); }`,
-//       description: `v11 reject and fix 'motion-duration' but and add no prefix`,
+//       description: `v11 reject and fix 'motion-duration' and enforce prefix`,
 //       message: messages.rejectedTransition('transition', '400ms'),
 //     },
 //   ],

@@ -1552,3 +1552,47 @@ testRule({
     },
   ],
 });
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  customSyntax: 'postcss-scss',
+  fix: true,
+  config: true,
+  reject: [
+    {
+      code: `@use "@carbon/type" as type; .foo { padding-left: 16px; }`,
+      fixed: `@use "@carbon/type" as type; .foo { padding-left: $spacing-05; }`,
+      description: `v11 reject and fix 'layout' but and add no prefix`,
+      message: messages.rejected('padding-left', '16px'),
+    },
+    {
+      code: `@use "@carbon/layout" as layout; .foo { padding-left: 16px; }`,
+      fixed: `@use "@carbon/layout" as layout; .foo { padding-left: $spacing-05; }`,
+      description: `v11 reject and fix 'layout' but and add no prefix`,
+      message: messages.rejected('padding-left', '16px'),
+    },
+  ],
+});
+
+// testRule({
+//   plugins: [plugin],
+//   ruleName,
+//   customSyntax: 'postcss-scss',
+//   fix: true,
+//   config: [
+//     true,
+//     {
+//       enforceScopes: true,
+//     },
+//   ],
+//   enforceScopes: true,
+//   reject: [
+// {
+//   code: `@use "@carbon/layout" as layout; .foo { padding-left: 16px; }`,
+//   fixed: `@use "@carbon/layout" as layout; .foo { padding-left: $spacing-05; }`,
+//   description: `v11 reject and fix 'layout' and enforce prefix`,
+//   message: messages.rejected('padding-left', '16px'),
+// },
+//   ],
+// });
