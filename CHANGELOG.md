@@ -1,5 +1,8 @@
 # Changelog
 
+## 3.1.0
+
+- Address some test descriptions using expect instead of accept.
 - Test added for #125 (fixed by #124)
 - Partial fix for #124 (enforceScopes: false)
 - Rework peer dependency to resolve #128

@@ -38,20 +38,20 @@ testRule({
     },
     {
       code: '.foo { transition: width $duration-fast-01 linear ease-in; }',
-      description: 'Carbon motion token expected for transition.',
+      description: 'Carbon motion token accepted for transition.',
     },
     {
       code: '.foo {   transition: background-color $duration-slow-02 motion(exit, expressive) , opacity $duration-moderate-02 motion(exit, expressive); }',
       description:
-        'Carbon multiple motion token settings expected for transition.',
+        'Carbon multiple motion token settings accepted for transition.',
     },
     {
       code: '.foo { transition-duration: $duration-moderate-01; }',
-      description: 'Carbon motion token expected for transition duration.',
+      description: 'Carbon motion token accepted for transition duration.',
     },
     {
       code: '.foo { transition: width $duration-fast-02 linear ease-in, height $duration-moderate-01 ease-out; }',
-      description: 'Carbon motion token expected for split transitions.',
+      description: 'Carbon motion token accepted for split transitions.',
     },
     {
       code: '$my-value-accept: $duration-fast-01; .foo { transition-duration: $my-value-accept; }',
@@ -60,16 +60,16 @@ testRule({
     },
     {
       code: '.foo { animation: test $duration-fast-01 linear ease-in myAnim; }',
-      description: 'Carbon motion token expected for animation.',
+      description: 'Carbon motion token accepted for animation.',
     },
     {
       code: "$test: 'test'; .foo { animation: $test $duration-fast-01 linear ease-in myAnim; }",
       description:
-        'Carbon motion token expected for animation other token used a',
+        'Carbon motion token accepted for animation other token used a',
     },
     {
       code: '.foo { animation-duration: $duration-moderate-01; }',
-      description: 'Carbon motion token expected for animation duration.',
+      description: 'Carbon motion token accepted for animation duration.',
     },
     {
       code: '--my-value-accept: $duration-moderate-01; .foo { animation-duration: var(--my-value-accept); }',
@@ -152,11 +152,11 @@ testRule({
   accept: [
     {
       code: '.foo { transition: width $duration--fast-01 linear ease-in; }',
-      description: 'Carbon motion token expected for transition v10.',
+      description: 'Carbon motion token accepted for transition v10.',
     },
     {
       code: '.foo { animation: test $duration--fast-01 linear ease-in myAnim; }',
-      description: 'Carbon motion token expected for animation v10.',
+      description: 'Carbon motion token accepted for animation v10.',
     },
   ],
 });
