@@ -2,6 +2,7 @@
 
 - Test added for #125 (fixed by #124)
 - Partial fix for #124 (enforceScopes: false)
+- Rework peer dependency to resolve #128
 
 ## 3.0.0
 

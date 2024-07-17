@@ -26,6 +26,11 @@
     "test": "echo Does not process globs. Run \"'node --test src/**/__tests__/*.js'\" from the console."
   },
   "dependencies": {
+    "@carbon/colors": ">=10 <= 11",
+    "@carbon/layout": ">=10 <= 11",
+    "@carbon/motion": ">=10 <= 11",
+    "@carbon/themes": ">=10 <= 11",
+    "@carbon/type": ">=10 <= 11",
     "@ibm/telemetry-js": "^1.5.0",
     "postcss-scss": "^4.0.9",
     "postcss-value-parser": "^4.2.0",
@@ -55,13 +60,6 @@
     "npm-run-all": "^4.1.5",
     "prettier": "^3.2.5",
     "stylelint-test-rule-node": "^0.2.1"
-  },
-  "peerDependencies": {
-    "@carbon/colors": ">=10 <= 11",
-    "@carbon/layout": ">=10 <= 11",
-    "@carbon/motion": ">=10 <= 11",
-    "@carbon/themes": ">=10 <= 11",
-    "@carbon/type": ">=10 <= 11"
   },
   "engines": {
     "node": ">=18"
