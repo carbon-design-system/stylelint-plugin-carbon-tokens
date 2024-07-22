@@ -5,7 +5,9 @@
  * LICENSE file in the root directory of this source tree.
  */
 
+import { formatTokenName } from '@carbon/themes';
 import { fixUsingMap } from '../../../utils/fix-utils.js';
+import * as installedThemes from '@carbon/themes';
 
 // It would be really nice to be able to fix raw colors to theme tokens, however this is problematic
 // due to colors often being used by multiple tokens. In the 'White' theme the color 'white' is used
@@ -141,5 +143,46 @@ export const fixes = [
         },
         config
       ),
+  },
+  {
+    // v10 to v11 split tokens from https://github.com/carbon-design-system/carbon/blob/main/docs/migration/v11.md#carbonthemes
+    // NOTE: Not all can be automated, but the ones that can are.
+    target: /#[a-f0-9]+/gi,
+    replacement: (value, target, config) => {
+      const experimentalFixTheme =
+        config?.options.experimentalFixTheme &&
+        installedThemes[config?.options.experimentalFixTheme];
+      if (experimentalFixTheme) {
+        const filteredKeys = Object.keys(experimentalFixTheme).filter(
+          (k) => experimentalFixTheme[k] === value
+        );
+        // Check component tokens
+        const componentTokenSets = {
+          ...installedThemes.buttonTokens,
+          ...installedThemes.tagTokens,
+          ...installedThemes.notificationTokens,
+        };
+
+        const themeName =
+          config?.options.experimentalFixTheme !== 'white'
+            ? config?.options.experimentalFixTheme
+            : 'whiteTheme';
+        for (let tokenSet in componentTokenSets) {
+          for (let tokenName in componentTokenSets[tokenSet]) {
+            const tokenValue =
+              componentTokenSets[tokenSet][tokenName][themeName];
+            if (tokenValue === value) {
+              filteredKeys.push(tokenName);
+            }
+          }
+        }
+
+        if (filteredKeys && filteredKeys.length > 0) {
+          const result = `$${formatTokenName(filteredKeys[0])}${filteredKeys.length > 1 ? ' /* fix: see notes */' : ''}`;
+          return result;
+        }
+      }
+      return value;
+    },
   },
 ];

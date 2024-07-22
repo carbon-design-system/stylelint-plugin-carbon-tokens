@@ -111,10 +111,15 @@ FYI: With regards to math. See [What math is OK?](#What-math-is-OK)
 Version 2 introduces the ability to auto fix some usage. See the rule README
 files for details.
 
-NOTE: Automatic fixes should be reviewed in the same way any other code is
-reviewed. NOTE 2: Currently does not support partially fixing a line e.g.
-`margin: 2px 3px 4px` will not become `margin: $spacing-01 3px $spacing-02` as
-3px.
+#### NOTES
+
+1. Automatic fixes should be reviewed in the same way any other code is
+   reviewed.
+2. Fixes may be tagged `/* fix: see notes */` in this case there may have been
+   multiple options or other criteria making the replacement unclear. The first
+   match identified will be used.
+3. Currently does not support partially fixing a line e.g. `margin: 2px 3px 4px`
+   will not become `margin: $spacing-01 3px $spacing-02` as 3px.
 
 ## Recommended config
 

@@ -29,6 +29,8 @@ const TOKEN_TYPES = {
   LIST: 'Comma separated list',
   LIST_ITEM: 'Item in list',
   UNKNOWN: 'Unknown',
+  COMMENT_OPEN: '/* a comment open',
+  COMMENT: '*/ close comment',
 };
 
 const COMMA = 1;
@@ -289,9 +291,15 @@ const processTokens = (tokens) => {
     } else {
       const tokenValue = token[0];
       // at this point we have either math or simple tokens with some spaces
+      // possibly a comment /* */
       // That is SQ, DQ or UNKNOWN
-
-      if ('+-*%/'.indexOf(tokenValue) > -1 && tokenValue.length === 1) {
+      if (lastItem?.type === TOKEN_TYPES.COMMENT_OPEN) {
+        lastItem.value += tokenValue;
+        lastItem.raw += tokenValue;
+        if (tokenValue === '*/') {
+          lastItem.type = TOKEN_TYPES.COMMENT;
+        }
+      } else if ('+-*%/'.indexOf(tokenValue) > -1 && tokenValue.length === 1) {
         // are we continuing math or creating new math?
         if (lastItem && lastItem.type === TOKEN_TYPES.MATH) {
           // continue math
@@ -365,7 +373,9 @@ const processTokens = (tokens) => {
         } else {
           let type = TOKEN_TYPES.UNKNOWN;
 
-          if (token[SQ] || token[DQ]) {
+          if (token[0] === '/*') {
+            type = TOKEN_TYPES.COMMENT_OPEN;
+          } else if (token[SQ] || token[DQ]) {
             // We have found a quoted literal
             type = TOKEN_TYPES.QUOTED_LITERAL;
           } else if (/^#[0-9a-f]*$/.test(token[0])) {

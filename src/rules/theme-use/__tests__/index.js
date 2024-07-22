@@ -46,7 +46,7 @@ testRule({
     },
     {
       code: '.foo { color: $layer-01; }',
-      description: 'Carbon theme token expected.',
+      description: 'Carbon theme token accepted.',
     },
     {
       code: '.foo { box-shadow: 0 0 5px $layer-01, 0 0 10px $layer-01; }',
@@ -855,6 +855,104 @@ testRule({
         'background-color',
         'theme.$layer-03'
       ),
+    },
+  ],
+});
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  config: [
+    true,
+    {
+      acceptValues: ['banana'],
+      experimentalFixTheme: 'g10',
+    },
+  ],
+  customSyntax: 'postcss-scss',
+  fix: true,
+  accept: [
+    {
+      code: "@use '@carbon/layout'; @use '@carbon/theme' as *; .foo { background-color: $background /* hello */ ; }",
+      description: 'Copes with closed comments',
+    },
+    {
+      code: `@use '@carbon/layout'; @use '@carbon/theme' as *; .foo { background-color: $background /* hello
+      */ ;
+    }
+      `,
+      description: 'Copes with comments not closed on the same line',
+    },
+  ],
+});
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  config: [true],
+  customSyntax: 'postcss-scss',
+  reject: [
+    {
+      code: "@use '@carbon/layout'; @use '@carbon/theme' as *; .foo { background-color: #f4f4f4; }",
+      description: 'Reject raw color value carbon background',
+      message: messages.rejected('background-color', '#f4f4f4'),
+    },
+    {
+      code: "@use '@carbon/layout'; @use '@carbon/theme' as *; .foo { background-color: #0f62fe; }",
+      description: 'Reject raw color value carbon background-brand token',
+      message: messages.rejected('background-color', '#0f62fe'),
+    },
+    {
+      code: "@use '@carbon/layout'; @use '@carbon/theme' as *; .foo { background-color: #0f62fe; }",
+      description: 'Reject raw color value carbon button token',
+      message: messages.rejected('background-color', '#0f62fe'),
+    },
+  ],
+});
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  config: [
+    true,
+    {
+      experimentalFixTheme: 'g10',
+    },
+  ],
+  customSyntax: 'postcss-scss',
+  fix: true,
+  reject: [
+    {
+      code: "@use '@carbon/layout'; @use '@carbon/theme' as *; .foo { background-color: #f4f4f4; }",
+      description:
+        'Reject to fix raw color value and try to fix with carbon token',
+      message: messages.rejected('background-color', '#f4f4f4'),
+      fixed:
+        "@use '@carbon/layout'; @use '@carbon/theme' as *; .foo { background-color: $background /* fix: see notes */; }",
+    },
+    {
+      code: "@use '@carbon/layout'; @use '@carbon/theme' as *; .foo { background-color: #0f62fe; }",
+      description:
+        'Reject to fix raw color value and try to fix with carbon background-brand token',
+      message: messages.rejected('background-color', '#0f62fe'),
+      fixed:
+        "@use '@carbon/layout'; @use '@carbon/theme' as *; .foo { background-color: $background-brand /* fix: see notes */; }",
+    },
+    {
+      code: "@use '@carbon/layout'; @use '@carbon/theme' as *; .foo { background-color: #002d9c; }",
+      description:
+        'Reject raw color value and try to fix with carbon button token',
+      message: messages.rejected('background-color', '#002d9c'),
+      fixed:
+        "@use '@carbon/layout'; @use '@carbon/theme' as *; .foo { background-color: $button-primary-active /* fix: see notes */; }",
+    },
+    {
+      code: "@use '@carbon/layout'; @use '@carbon/theme' as *; .foo { background-color: #bae6ff; }",
+      description:
+        'Reject raw color value and try to fix with carbon tag theme teal token',
+      message: messages.rejected('background-color', '#bae6ff'),
+      fixed:
+        "@use '@carbon/layout'; @use '@carbon/theme' as *; .foo { background-color: $tag-background-cyan; }",
     },
   ],
 });

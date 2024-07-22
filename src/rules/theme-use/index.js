@@ -50,6 +50,7 @@ const defaultOptions = {
   // preferContextFixes: false,
   carbonPath: undefined,
   carbonModulePostfix: undefined,
+  experimentalFixTheme: undefined,
 };
 
 const ruleFunction = (primaryOptions, secondaryOptions, context) => {
@@ -80,6 +81,10 @@ const ruleFunction = (primaryOptions, secondaryOptions, context) => {
           enforceScopes: (val) => val === undefined || typeof val === 'boolean',
           // preferContextFixes: (val) =>
           //   val === undefined || typeof val === "boolean"
+          experimentalFixTheme: (val) =>
+            val === undefined || ['white', 'g10', 'g90', 'g100'].includes(val),
+          // preferVarCustomPropertyFixes: (val) =>
+          //   val === undefined || typeof val === 'boolean',
         },
         optional: true,
       }

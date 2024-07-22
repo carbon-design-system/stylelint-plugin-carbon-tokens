@@ -140,6 +140,13 @@ export default async function checkRule(
     }
 
     for (const item of itemsToCheck) {
+      if (
+        item?.type === TOKEN_TYPES.COMMENT ||
+        item?.type === TOKEN_TYPES.COMMENT_OPEN
+      ) {
+        // do not check comments
+        continue;
+      }
       const report = checkItem(
         decl,
         item,

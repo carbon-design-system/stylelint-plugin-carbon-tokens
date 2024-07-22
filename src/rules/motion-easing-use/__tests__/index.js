@@ -79,12 +79,12 @@ testRule({
   ],
   reject: [
     {
-      code: '.foo {   transition: $ease-in; }',
+      code: '.foo { transition: $ease-in; }',
       description: 'Reject easing when other values are missing missing.',
       message: messages.rejectedUndefinedRange('transition', 'undefined', 3),
     },
     {
-      code: '.foo {   transition: background-color $duration-slow-02; }',
+      code: '.foo { transition: background-color $duration-slow-02; }',
       description: 'Reject no easing for transition when value is missing.',
       message: messages.rejectedUndefinedRange('transition', 'undefined', 3),
     },
