@@ -119,7 +119,7 @@ files for details.
    multiple options or other criteria making the replacement unclear. The first
    match identified will be used.
 3. Currently does not support partially fixing a line e.g. `margin: 2px 3px 4px`
-   will not become `margin: $spacing-01 3px $spacing-02` as 3px.
+   will not become `margin: $spacing-01 3px $spacing-02` as 3px cannot be fixed.
 
 ## Recommended config
 

@@ -83,8 +83,6 @@ const ruleFunction = (primaryOptions, secondaryOptions, context) => {
           //   val === undefined || typeof val === "boolean"
           experimentalFixTheme: (val) =>
             val === undefined || ['white', 'g10', 'g90', 'g100'].includes(val),
-          // preferVarCustomPropertyFixes: (val) =>
-          //   val === undefined || typeof val === 'boolean',
         },
         optional: true,
       }
