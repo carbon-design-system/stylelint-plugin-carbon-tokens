@@ -28,6 +28,7 @@ const defaultOptions = {
   carbonPath: undefined // allows a different path for node_modules (supports monorepo with multiple carbon versions) e.g. packages/proj1/node_modules/@carbon
   carbonModulePostfix: undefined, // optional for use in conjunction with `carbonPath` to where a Carbon module has been renamed e.g. `-10` with a carbonPath of `node_modules/@carbon` will use `node_modules/@carbon/colors-10`
   enforceScopes: false,
+  experimentalFixTheme: undefined
 };
 ```
 
@@ -42,3 +43,19 @@ The automatic fixes for the theme rule are as follows.
   declared meaning of a v10 token may also be used.
 
 Please Review all changes.
+
+### experimentalFixTheme
+
+Optional setting: undefined, `white`, `g10`, `g90` or `g100`
+
+This will attempt to replace a hard coded hex value with a theme token from the
+selected theme.
+
+NOTE: If there is more than one match then the value will be replaced with a
+value and note. For example `#f4f4f4` in `g10` will be replaced with
+`$background /* fix: see notes */`.
+
+In this case it is recommend that you review with respect the replaced value
+with color tokens also using this value for the theme selected.
+
+[https://carbondesignsystem.com/elements/color/tokens](https://carbondesignsystem.com/elements/color/tokens)
