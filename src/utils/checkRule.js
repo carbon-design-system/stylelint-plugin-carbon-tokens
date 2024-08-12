@@ -20,6 +20,14 @@ import stylelint from 'stylelint';
 const { utils } = stylelint;
 // import valueParser from "postcss-value-parser";
 
+const addLiteralVariable = (variables, token, value) => {
+  variables[token] = {
+    value: `'${value}'`,
+    type: 'Quoted literal',
+    raw: `'${value}'`,
+  };
+};
+
 export default async function checkRule(
   root,
   result,
@@ -166,6 +174,10 @@ export default async function checkRule(
   };
 
   const localVariables = {}; // used to contain variable declarations
+
+  // These
+  addLiteralVariable(localVariables, '$prefix', options.carbonPrefix);
+  addLiteralVariable(localVariables, 'config.$prefix', options.carbonPrefix);
 
   const ruleInfo = await getRuleInfo(options);
 

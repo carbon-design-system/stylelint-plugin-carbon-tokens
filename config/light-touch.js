@@ -7,6 +7,7 @@ export default {
         acceptCarbonMiniUnitsFunction: true,
         acceptUndefinedVariables: true,
         acceptScopes: ['**'],
+        acceptCarbonCustomProp: true,
       },
     ],
     'carbon/motion-duration-use': [
@@ -15,6 +16,7 @@ export default {
         severity: 'warning',
         acceptUndefinedVariables: true,
         acceptScopes: ['**'],
+        acceptCarbonCustomProp: true,
       },
     ],
     'carbon/motion-easing-use': [
@@ -31,6 +33,7 @@ export default {
         severity: 'warning',
         acceptUndefinedVariables: true,
         acceptScopes: ['**'],
+        acceptCarbonCustomProp: true,
       },
     ],
     'carbon/type-use': [

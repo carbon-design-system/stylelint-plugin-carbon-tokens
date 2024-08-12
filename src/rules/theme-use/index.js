@@ -51,6 +51,8 @@ const defaultOptions = {
   carbonPath: undefined,
   carbonModulePostfix: undefined,
   experimentalFixTheme: undefined,
+  acceptCarbonCustomProp: false,
+  carbonPrefix: 'cds',
 };
 
 const ruleFunction = (primaryOptions, secondaryOptions, context) => {
@@ -83,6 +85,9 @@ const ruleFunction = (primaryOptions, secondaryOptions, context) => {
           //   val === undefined || typeof val === "boolean"
           experimentalFixTheme: (val) =>
             val === undefined || ['white', 'g10', 'g90', 'g100'].includes(val),
+          acceptCarbonCustomProp: (val) =>
+            val === undefined || typeof val === 'boolean',
+          carbonPrefix: (val) => val === undefined || typeof val === 'string',
         },
         optional: true,
       }

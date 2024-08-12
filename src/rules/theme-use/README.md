@@ -28,7 +28,9 @@ const defaultOptions = {
   carbonPath: undefined // allows a different path for node_modules (supports monorepo with multiple carbon versions) e.g. packages/proj1/node_modules/@carbon
   carbonModulePostfix: undefined, // optional for use in conjunction with `carbonPath` to where a Carbon module has been renamed e.g. `-10` with a carbonPath of `node_modules/@carbon` will use `node_modules/@carbon/colors-10`
   enforceScopes: false,
-  experimentalFixTheme: undefined
+  experimentalFixTheme: undefined,
+  acceptCarbonCustomProp: false, // permit use of Carbon custom css properties
+  carbonPrefix: 'cds', // custom carbon prefix for when using carbon custom css properties
 };
 ```
 

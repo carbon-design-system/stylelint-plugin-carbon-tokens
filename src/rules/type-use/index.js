@@ -33,7 +33,7 @@ const defaultOptions = {
   acceptScopes: ['type'],
   carbonPath: undefined,
   carbonModulePostfix: undefined,
-  enforceScopes: undefined,
+  enforceScopes: false,
 };
 
 const ruleFunction = (primaryOptions, secondaryOptions, context) => {

@@ -105,7 +105,7 @@ const unquoteIfNeeded = (val) => {
 };
 
 const preProcessToken = (variable, localVariables) => {
-  const regex = /#\{([$\w-]*)\}/g;
+  const regex = /#\{([$.\w-]*)\}/g;
   const replacements = [];
   let result = variable;
   let match;
@@ -190,6 +190,18 @@ const checkTokens = function (
   if (_variable.startsWith('#')) {
     // token set does not contain #{}
     _variable = _variable.substr(2, _variable.length - 3);
+  }
+
+  // cope with var(--cds-spacing-04) for instance
+  if (options.acceptCarbonCustomProp && /var\(--.*\)/.test(_variable)) {
+    const prefix =
+      options.carbonPrefix === true
+        ? 'var(--cds-'
+        : `var(--${options.carbonPrefix}-`;
+
+    if (_variable.startsWith(prefix)) {
+      _variable = `$${_variable.substr(prefix.length, _variable.length - prefix.length - 1)}`;
+    }
   }
 
   if (checkAcceptValuesRaw(_variable, options)) {

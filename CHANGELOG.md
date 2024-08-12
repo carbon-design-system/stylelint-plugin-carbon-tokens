@@ -1,5 +1,17 @@
 # Changelog
 
+##
+
+- feat: Introduce experimental fix theme hex
+- fix: enforceScopes to false (instead of undefiend).
+- feat: add acceptCarbonCustomProp to layout-use, default false
+- feat: add carbonPrefix option to layout-use, default 'cds'
+- feat: add acceptCarbonCustomProp to motion-duration-use, default false
+- feat: add carbonPrefix option to motion-duration-use, default 'cds'
+- feat: add acceptCarbonCustomProp to theme-use, default false
+- feat: add carbonPrefix option to theme-use, default 'cds'
+- feat: update light-touch to include acceptCarbonCustomProp
+
 ## 3.1.0
 
 - Address some test descriptions using expect instead of accept.

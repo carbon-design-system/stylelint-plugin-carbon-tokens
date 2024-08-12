@@ -67,6 +67,9 @@ const defaultOptions = {
   acceptScopes: ['layout'],
   carbonPath: undefined,
   carbonModulePostfix: undefined,
+  enforceScopes: false,
+  acceptCarbonCustomProp: false,
+  carbonPrefix: 'cds',
 };
 
 const ruleFunction = (primaryOptions, secondaryOptions, context) => {
@@ -93,6 +96,9 @@ const ruleFunction = (primaryOptions, secondaryOptions, context) => {
           carbonModulePostfix: (val) =>
             val === undefined || typeof val === 'string',
           enforceScopes: (val) => val === undefined || typeof val === 'boolean',
+          acceptCarbonCustomProp: (val) =>
+            val === undefined || typeof val === 'boolean',
+          carbonPrefix: (val) => val === undefined || typeof val === 'string',
         },
         optional: true,
       }

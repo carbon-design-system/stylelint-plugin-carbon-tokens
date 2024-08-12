@@ -956,3 +956,45 @@ testRule({
     },
   ],
 });
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  config: [true, { acceptCarbonCustomProp: true }],
+  customSyntax: 'postcss-scss',
+  accept: [
+    {
+      code: '.test { background: var(--cds-layer-01); }',
+      description: 'Accept cds custom property',
+    },
+    {
+      code: `$my-prefix: 'cds'; .test { background: var(--#{$my-prefix}-layer-01); }`,
+      description: 'Accept cds custom property with a prefix',
+    },
+    {
+      code: `@use @carbon/config as *; .test { background: var(--#{$prefix}-layer-01); }`,
+      description: 'Accept $prefix custom property with a prefix',
+    },
+    {
+      code: `.test { background: var(--#{config.$prefix}-layer-01); }`,
+      description: 'Accept config.$prefix custom property with a prefix',
+    },
+  ],
+});
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  config: [true, { acceptCarbonCustomProp: true, carbonPrefix: 'test' }],
+  customSyntax: 'postcss-scss',
+  accept: [
+    {
+      code: `.test { background: var(--test-layer-01); }`,
+      description: 'Accept test as prefix for custom property',
+    },
+    {
+      code: `$my-prefix: 'test'; .test { background: var(--#{$my-prefix}-layer-01); }`,
+      description: 'Accept test as prefix for custom property with a prefix',
+    },
+  ],
+});
