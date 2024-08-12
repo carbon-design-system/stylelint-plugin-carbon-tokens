@@ -1596,3 +1596,45 @@ testRule({
 // },
 //   ],
 // });
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  config: [true, { acceptCarbonCustomProp: true }],
+  customSyntax: 'postcss-scss',
+  accept: [
+    {
+      code: '.test { padding: var(--cds-spacing-04); }',
+      description: 'Accept cds custom property',
+    },
+    {
+      code: `$my-prefix: 'cds'; .test { padding: var(--#{$my-prefix}-spacing-04); }`,
+      description: 'Accept cds custom property with a prefix',
+    },
+    {
+      code: `@use @carbon/config as *; .test { padding: var(--#{$prefix}-spacing-04); }`,
+      description: 'Accept $prefix custom property with a prefix',
+    },
+    {
+      code: `.test { padding: var(--#{config.$prefix}-spacing-04); }`,
+      description: 'Accept config.$prefix custom property with a prefix',
+    },
+  ],
+});
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  config: [true, { acceptCarbonCustomProp: true, carbonPrefix: 'test' }],
+  customSyntax: 'postcss-scss',
+  accept: [
+    {
+      code: `.test { padding: var(--test-spacing-04); }`,
+      description: 'Accept test as prefix for custom property',
+    },
+    {
+      code: `$my-prefix: 'test'; .test { padding: var(--#{$my-prefix}-spacing-04); }`,
+      description: 'Accept test as prefix for custom property with a prefix',
+    },
+  ],
+});

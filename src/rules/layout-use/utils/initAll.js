@@ -10,11 +10,11 @@
 // here we split based on the name excluding the numeric part.
 // This is to maintain the ability to separate out sizes not called out
 // on the carbon designs system website.
-import { formatTokenName } from "../../../utils/token-name.js";
-import { unstable_tokens as installedTokens } from "@carbon/layout";
-import loadModules, { loadPackageJson } from "../../../utils/loadModules.js";
+import { formatTokenName } from '../../../utils/token-name.js';
+import { unstable_tokens as installedTokens } from '@carbon/layout';
+import loadModules, { loadPackageJson } from '../../../utils/loadModules.js';
 
-const carbonPrefix = "$carbon--";
+const carbonPrefix = '$carbon--';
 
 const doInit = async ({ carbonPath, carbonModulePostfix }) => {
   const containerTokens = [];
@@ -29,7 +29,7 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
     // eslint-disable-next-line node/no-unsupported-features/es-syntax
     const { layout, pkg } = await loadModules(
       carbonPath,
-      ["layout"],
+      ['layout'],
       carbonModulePostfix
     );
 
@@ -37,42 +37,41 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
 
     tokens = layout.unstable_tokens;
   } else {
-    const pkg = loadPackageJson("@carbon/layout");
+    const pkg = loadPackageJson('@carbon/layout');
     _version = pkg.version;
     tokens = installedTokens;
   }
 
-  const isV10 = _version.startsWith("10");
-  const functions = isV10 ? ["carbon--mini-units", "mini-units"] : [];
+  const isV10 = _version.startsWith('10');
+  const functions = isV10 ? ['carbon--mini-units', 'mini-units'] : [];
 
   for (const key in tokens) {
     if (Object.hasOwn(tokens, key)) {
       const token = formatTokenName(tokens[key]);
 
-      const tokenWithoutNumber = token.substr(0, token.lastIndexOf("-"));
+      const tokenWithoutNumber = token.substr(0, token.lastIndexOf('-'));
       let tokenArray = undefined;
 
       switch (tokenWithoutNumber) {
-        case "container":
+        case 'container':
           tokenArray = containerTokens;
           break;
-        case "fluid-spacing":
+        case 'fluid-spacing':
           tokenArray = fluidSpacingTokens;
           break;
-        case "icon-size":
+        case 'icon-size':
           tokenArray = iconSizeTokens;
           break;
-        case "layout":
+        case 'layout':
           tokenArray = layoutTokens;
           break;
-        case "spacing":
+        case 'spacing':
           tokenArray = spacingTokens;
           break;
         default:
-          if (tokenWithoutNumber.startsWith("size")) {
+          if (tokenWithoutNumber.startsWith('size')) {
             tokenArray = containerTokens;
           } else {
-             
             console.warn(
               `Unexpected token "${token}" found in @carbon/layout - please raise an issue`
             );
@@ -96,7 +95,7 @@ const doInit = async ({ carbonPath, carbonModulePostfix }) => {
     layoutFunctions: functions,
     layoutTokens,
     spacingTokens,
-    version: _version
+    version: _version,
   };
 };
 

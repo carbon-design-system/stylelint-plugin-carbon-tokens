@@ -526,3 +526,45 @@ testRule({
 //     },
 //   ],
 // });
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  config: [true, { acceptCarbonCustomProp: true }],
+  customSyntax: 'postcss-scss',
+  accept: [
+    {
+      code: '.test { transition-duration: var(--cds-duration-slow-01); }',
+      description: 'Accept cds custom property',
+    },
+    {
+      code: `$my-prefix: 'cds'; .test { transition-duration: var(--#{$my-prefix}-duration-slow-01); }`,
+      description: 'Accept cds custom property with a prefix',
+    },
+    {
+      code: `@use @carbon/config as *; .test { transition-duration: var(--#{$prefix}-duration-slow-01); }`,
+      description: 'Accept $prefix custom property with a prefix',
+    },
+    {
+      code: `.test { transition-duration: var(--#{config.$prefix}-duration-slow-01); }`,
+      description: 'Accept config.$prefix custom property with a prefix',
+    },
+  ],
+});
+
+testRule({
+  plugins: [plugin],
+  ruleName,
+  config: [true, { acceptCarbonCustomProp: true, carbonPrefix: 'test' }],
+  customSyntax: 'postcss-scss',
+  accept: [
+    {
+      code: `.test { transition-duration: var(--test-duration-slow-01); }`,
+      description: 'Accept test as prefix for custom property',
+    },
+    {
+      code: `$my-prefix: 'test'; .test { transition-duration: var(--#{$my-prefix}-duration-slow-01); }`,
+      description: 'Accept test as prefix for custom property with a prefix',
+    },
+  ],
+});
