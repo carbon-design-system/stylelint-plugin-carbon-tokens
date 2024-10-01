@@ -312,10 +312,10 @@ export default async function checkRule(
         }
 
         // *** found issues try to fix and report if not fixed
-        if (reports.length > 0) {
+        const fixFunction = () => {
           let fixed = false;
 
-          if (context && context.fix && ruleInfo.fixes) {
+          if (context && ruleInfo.fixes) {
             let workingValue = decl.value;
 
             // try to fix
@@ -366,14 +366,12 @@ export default async function checkRule(
               }
             }
           }
+          return fixed;
+        };
 
-          if (!fixed) {
-            // always report original warnings not those based on fix
-            reports.forEach((report) => {
-              utils.report(report);
-            });
-          }
-        }
+        reports.forEach((report) => {
+          utils.report({ ...report, fix: fixFunction });
+        });
       }
     }
   });

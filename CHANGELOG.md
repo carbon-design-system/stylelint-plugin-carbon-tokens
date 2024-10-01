@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.2.1
+
+- fix: deprecation warnings caused by use of `content.fix` following
+  https://stylelint.io/changelog/#1682.
+
 ## 3.2.0
 
 - chore: bump versions
