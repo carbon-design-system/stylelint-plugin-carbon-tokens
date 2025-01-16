@@ -1204,6 +1204,10 @@ testRule({
       code: `.foo { transform: translate3d(layout.$spacing-04, layout.$spacing-04, layout.$spacing-04)}`,
       description: 'Accept layout scope in function.',
     },
+    {
+      code: `.foo { left: spacing.$spacing-05; }`,
+      description: 'Accept spacing scope.',
+    },
   ],
   reject: [
     {
