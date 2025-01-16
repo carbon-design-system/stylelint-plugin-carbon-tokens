@@ -1,5 +1,9 @@
 # Changelog
 
+## 3.2.3
+
+- fix: endIndex deprecation warning
+
 ## 3.2.2
 
 - chore: update endpoint and readme
