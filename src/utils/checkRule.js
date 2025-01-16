@@ -90,6 +90,8 @@ export default async function checkRule(
         result,
         message,
         index: declarationValueIndex(decl) + offsetValue,
+        endIndex:
+          declarationValueIndex(decl) + offsetValue + (item?.raw?.length ?? 0),
         node: decl,
       };
     }
