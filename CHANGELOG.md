@@ -1,5 +1,10 @@
 # Changelog
 
+## 3.2.2
+
+- chore: update endpoint and readme
+- fix: use of spacing namespace
+
 ## 3.2.1
 
 - fix: deprecation warnings caused by use of `content.fix` following
