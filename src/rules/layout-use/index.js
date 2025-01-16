@@ -64,7 +64,7 @@ const defaultOptions = {
   ],
   acceptUndefinedVariables: false,
   acceptCarbonMiniUnitsFunction: false,
-  acceptScopes: ['layout'],
+  acceptScopes: ['layout', 'spacing'], // the public facing token exporting part of layout is in effect now spacing
   carbonPath: undefined,
   carbonModulePostfix: undefined,
   enforceScopes: false,
