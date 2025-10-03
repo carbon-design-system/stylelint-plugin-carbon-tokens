@@ -1,5 +1,30 @@
 # Changelog
 
+## 4.0.0
+
+- BREAK: Updated Node.js version requirement from `>=18` to `>=20`
+- BREAK: Updated major dependencies:
+  - ESLint v9 (from v8.57.1)
+  - cspell v9 (from v8.14.4)
+  - eslint-config-prettier v10 (from v9.1.0)
+  - npm-check-updates v19 (from v16.14.20)
+- BREAK: Migrated from `.eslintrc` to the new `eslint.config.js` format required
+  by ESLint v9
+- Added `@eslint/js` as a dev dependency
+- Migrated ignore patterns from `.eslintignore` to the `ignores` property in
+  `eslint.config.js`
+- Fixed plugin configuration to use the correct object format for the import
+  plugin
+- Added global definitions for `console` and `process` to fix linting errors
+- Removed the old `.eslintrc` and `.eslintignore` files
+- Updated minor version dependencies:
+  - @ibm/telemetry-js (^1.6.1 → ^1.10.2)
+  - eslint-plugin-import (^2.30.0 → ^2.32.0)
+  - eslint-plugin-prettier (^5.2.1 → ^5.5.4)
+  - prettier (^3.3.3 → ^3.6.2)
+  - stylelint (^16.13.2 → ^16.25.0)
+  - stylelint-test-rule-node (^0.3.0 → ^0.4.0)
+
 ## 3.2.3
 
 - fix: endIndex deprecation warning
