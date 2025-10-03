@@ -23,7 +23,7 @@
     "lint:format": "prettier ./**/*.{js,jsx,ts,tsx,md,mdx,scss} --write --ignore-unknown --no-error-on-unmatched-pattern --log-level warn",
     "lint:spell": "cspell lint --quiet \"**/*.{js,jsx,css,scss,md}\"",
     "postinstall": "ibmtelemetry --config=telemetry.yml",
-    "test": "echo Does not process globs. Run \"'node --test src/**/__tests__/*.js'\" from the console.",
+    "test": "node --test \"src/**/__tests__/*.js\" \"src/**/__tests__/*.test.js\"",
     "upgrade": "run-p -s 'upgrade:*'",
     "upgrade:other": "npm-check-updates -u --dep dev,peer,prod --reject '/(carbon|^react$|^react-dom$|^@testing-library)/'",
     "upgrade:carbon": "npm-check-updates -u --dep dev,peer,prod --packageFile 'package.json' --filter '/carbon/' --target minor"
