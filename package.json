@@ -66,6 +66,9 @@
     "prettier": "^3.7.4",
     "stylelint-test-rule-node": "^0.4.0"
   },
+  "resolutions": {
+    "js-yaml": "^4.1.1"
+  },
   "engines": {
     "node": ">=20"
   },
