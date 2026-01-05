@@ -28,7 +28,6 @@ the latest major versions.
 ### Major Version Updates
 
 1. **ESLint v9** (from v8.57.1)
-
    - New default config format (eslint.config.js)
    - Updated "eslint:recommended" rules
    - Removed require-jsdoc and valid-jsdoc rules
@@ -36,11 +35,9 @@ the latest major versions.
      no-useless-computed-key rules
 
 2. **cspell v9** (from v8.14.4)
-
    - Requires Node.js 20+
 
 3. **eslint-config-prettier v10** (from v9.1.0)
-
    - Added support for @stylistic formatting rules
 
 4. **npm-check-updates v19** (from v16.14.20)
