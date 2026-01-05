@@ -1,5 +1,10 @@
 # Changelog
 
+## 4.0.1
+
+- f6aca05 - fix: remove package-lock, lock update, add js-yaml resolution
+- a4d63d9 - chore: add renovate config
+
 ## 4.0.0
 
 - BREAK: Updated Node.js version requirement from `>=18` to `>=20`
