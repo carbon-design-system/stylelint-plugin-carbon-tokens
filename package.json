@@ -62,7 +62,7 @@
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.4",
     "npm-check-updates": "^19.1.2",
-    "npm-run-all2": "^5.0.0",
+    "npm-run-all2": "^8.0.0",
     "prettier": "^3.7.4",
     "stylelint-test-rule-node": "^0.4.0"
   },
