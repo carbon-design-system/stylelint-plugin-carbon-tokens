@@ -34,10 +34,10 @@
     hashery "^1.2.0"
     keyv "^5.5.4"
 
-"@carbon/colors-10@npm:@carbon/colors@^10.37.5":
-  version "10.37.5"
-  resolved "https://registry.yarnpkg.com/@carbon/colors/-/colors-10.37.5.tgz#401a81dd8994069fcfc9663828e4026c902dc573"
-  integrity sha512-41z2ndh4OhOrYb2kxyrJ1CTZj2XcBIRd+WyA6W3PRrIAzN4ZWq/VXPPj2t1CAHZWNsgXxP7f1ywA5gwj8mwcEQ==
+"@carbon/colors-10@npm:@carbon/colors@^11.0.0":
+  version "11.45.0"
+  resolved "https://registry.yarnpkg.com/@carbon/colors/-/colors-11.45.0.tgz#cf995aed1c9d0e05135caa74a9d1ed933db8b3db"
+  integrity sha512-3ZHP2L77PbBytPl6jf7OcDVvEH/i1SIzGJfdA9rMZ7L8AyUpvf/zTEcN+BrOv+Xsg2idPtlz3ZyRkm5oASl6rg==
   dependencies:
     "@ibm/telemetry-js" "^1.5.0"
 
