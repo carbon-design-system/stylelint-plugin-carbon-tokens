@@ -79,6 +79,14 @@
     "@carbon/layout" "^11.44.0"
     "@ibm/telemetry-js" "^1.5.0"
 
+"@carbon/grid@^11.48.0":
+  version "11.48.0"
+  resolved "https://registry.yarnpkg.com/@carbon/grid/-/grid-11.48.0.tgz#c20633789f0f3fd6f141751b62fbf0b0f1b5c9f4"
+  integrity sha512-gh+3Ez5qMWfdjLCmnF9vjKk8X7OG4g5VLPehXecB/nrYZ2GLFPKxjASCd+5FN5c1flg+erYi0v/SiPzM+UC3xg==
+  dependencies:
+    "@carbon/layout" "^11.46.0"
+    "@ibm/telemetry-js" "^1.5.0"
+
 "@carbon/import-once@^10.7.3":
   version "10.7.3"
   resolved "https://registry.yarnpkg.com/@carbon/import-once/-/import-once-10.7.3.tgz#0b89657bd013bb4e805a02db044f7bd5165ee059"
@@ -111,6 +119,13 @@
   version "10.37.5"
   resolved "https://registry.yarnpkg.com/@carbon/layout/-/layout-10.37.5.tgz#525fda046fdb5d588549c67b271dc6e8d4d7a826"
   integrity sha512-iY+YUOywY+FA+Cu9ZKCtwrCL9FtzPKg64ukSmeMvCNVjX2H6xwYCcA9w4aD/oRqZr5te+aJoFcoi0fP2q79g6g==
+  dependencies:
+    "@ibm/telemetry-js" "^1.5.0"
+
+"@carbon/layout@^11.46.0":
+  version "11.46.0"
+  resolved "https://registry.yarnpkg.com/@carbon/layout/-/layout-11.46.0.tgz#88cf08acf50f3d6d36826173a18089f647b864dd"
+  integrity sha512-RNwumPbMAPfeJWptT7QToES0oaOsz/sS8YQMRP3NpBNy+Bk7hXrei/6tUPkx5cJwS/xOrz3qhkLeSf/87oa3pQ==
   dependencies:
     "@ibm/telemetry-js" "^1.5.0"
 
@@ -161,13 +176,13 @@
     "@ibm/telemetry-js" "^1.5.0"
     color "^4.0.0"
 
-"@carbon/type-10@npm:@carbon/type@^10.45.6":
-  version "10.45.6"
-  resolved "https://registry.yarnpkg.com/@carbon/type/-/type-10.45.6.tgz#63d85ef0a8e91982ee87ded60339a8c52878e9f8"
-  integrity sha512-0k265RauOJeueugrZRMxFQzrg03ZglZCTZAUyYp9w/QMQONU/esY3KMypzttCITVYeKwWh31iaSY0rigPaTf5g==
+"@carbon/type-10@npm:@carbon/type@^11.0.0":
+  version "11.52.0"
+  resolved "https://registry.yarnpkg.com/@carbon/type/-/type-11.52.0.tgz#de17dd907c18078a2018836da009ca0de1502560"
+  integrity sha512-6nGXKqp20fKiXxTWhPRopPfVwTA1DES3Cz59RGJGAyOpbuzowqNp1j9PWIx3D74pfXc4pbrOqFK9F88ylLM6zg==
   dependencies:
-    "@carbon/grid" "^10.43.5"
-    "@carbon/import-once" "^10.7.3"
+    "@carbon/grid" "^11.48.0"
+    "@carbon/layout" "^11.46.0"
     "@ibm/telemetry-js" "^1.5.0"
 
 "@carbon/type-11-4@npm:@carbon/type@11.50.0":
