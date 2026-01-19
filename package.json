@@ -42,7 +42,7 @@
   "devDependencies": {
     "@carbon/colors": "^11.4.0",
     "@carbon/colors-10": "npm:@carbon/colors@^10.37.5",
-    "@carbon/colors-11-4": "npm:@carbon/colors@11.43.0",
+    "@carbon/colors-11-4": "npm:@carbon/colors@11.45.0",
     "@carbon/layout": "^11.5.0",
     "@carbon/layout-10": "npm:@carbon/layout@^10.37.5",
     "@carbon/layout-11-4": "npm:@carbon/layout@11.44.0",
