@@ -1,5 +1,9 @@
 # Changelog
 
+## 4.0.2
+
+- Various minor dependency updates.
+
 ## 4.0.1
 
 - f6aca05 - fix: remove package-lock, lock update, add js-yaml resolution
