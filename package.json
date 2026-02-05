@@ -50,7 +50,7 @@
     "@carbon/motion-10": "npm:@carbon/motion@^10.29.5",
     "@carbon/themes": "^11.7.0",
     "@carbon/themes-10": "npm:@carbon/themes@^10.55.6",
-    "@carbon/themes-11-4": "npm:@carbon/themes@11.64.0",
+    "@carbon/themes-11-4": "npm:@carbon/themes@11.67.0",
     "@carbon/type": "^11.7.0",
     "@carbon/type-10": "npm:@carbon/type@^10.45.6",
     "@carbon/type-11-4": "npm:@carbon/type@11.53.0",
