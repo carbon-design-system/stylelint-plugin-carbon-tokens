@@ -3001,10 +3001,10 @@ strip-json-comments@^3.1.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-stylelint-test-rule-node@^1.0.0:
-  version "1.0.0"
-  resolved "https://registry.yarnpkg.com/stylelint-test-rule-node/-/stylelint-test-rule-node-1.0.0.tgz#fcba588193da81e809d8f43976ec5733335e119d"
-  integrity sha512-LAm8BSMdLCZy+FKlFLKj6a4Wglgrc1eqYF7lJpfwL6Li/AVCwiZweEDkUV9AwrtjPZE1xffsKXxtwKaYw7gXAw==
+stylelint-test-rule-node@^0.4.0:
+  version "0.4.0"
+  resolved "https://registry.yarnpkg.com/stylelint-test-rule-node/-/stylelint-test-rule-node-0.4.0.tgz#43b82d127efa27e88efbc318b02a797fb9aa0e4c"
+  integrity sha512-E2OC3bewFH6vtQC8OS2SJW6GY4pbHNpRwk1Nk95gwegFGbvECB6AK8MNEz5zRlCl4R1muVfE+TAl2Zjbib3mCA==
 
 stylelint@^16.26.1:
   version "16.26.1"

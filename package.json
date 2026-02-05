@@ -64,7 +64,7 @@
     "npm-check-updates": "^19.1.2",
     "npm-run-all2": "^8.0.0",
     "prettier": "^3.7.4",
-    "stylelint-test-rule-node": "^1.0.0"
+    "stylelint-test-rule-node": "^0.4.0"
   },
   "resolutions": {
     "js-yaml": "^4.1.1"
