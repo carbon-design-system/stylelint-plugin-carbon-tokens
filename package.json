@@ -37,7 +37,7 @@
     "@ibm/telemetry-js": "^1.10.2",
     "postcss-scss": "^4.0.9",
     "postcss-value-parser": "^4.2.0",
-    "stylelint": "^17.0.0"
+    "stylelint": "^16.26.1"
   },
   "devDependencies": {
     "@carbon/colors": "^11.4.0",
