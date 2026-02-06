@@ -6,7 +6,7 @@
  */
 
 import { testRule } from 'stylelint-test-rule-node';
-import plugins from '../../../../src/index.js';
+import plugins from '../../../index.js';
 const plugin = plugins.find(
   (thing) => thing.ruleName === 'carbon/motion-easing-use'
 );
