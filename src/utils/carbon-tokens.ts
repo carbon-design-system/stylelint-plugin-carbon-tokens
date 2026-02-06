@@ -1,0 +1,234 @@
+/**
+ * Copyright IBM Corp. 2020, 2024
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import { unstable_tokens as layoutTokens } from '@carbon/layout';
+import { unstable_tokens as typeTokens } from '@carbon/type';
+import { unstable_tokens as motionTokens } from '@carbon/motion';
+import * as themes from '@carbon/themes';
+import type { CarbonToken, TokenCollection } from '../types/index.js';
+
+/**
+ * Format token name to ensure consistent format
+ */
+function formatTokenName(token: string): string {
+  return token.replace(/_/g, '-');
+}
+
+/**
+ * Load theme tokens from Carbon
+ */
+export function loadThemeTokens(): CarbonToken[] {
+  const tokens: CarbonToken[] = [];
+
+  // Use unstable_metadata if available (v11.4+)
+  if (themes.unstable_metadata) {
+    const colorTokens = themes.unstable_metadata.v11.filter(
+      (token) => token.type === 'color'
+    );
+
+    for (const token of colorTokens) {
+      const name = formatTokenName(token.name);
+      // Add SCSS variable
+      tokens.push({
+        name: `$${name}`,
+        value: token.value,
+        type: 'scss',
+      });
+      // Add CSS custom property
+      tokens.push({
+        name: `--cds-${name}`,
+        value: token.value,
+        type: 'css-custom-prop',
+      });
+    }
+  } else if (themes.white) {
+    // Fallback for earlier v11 versions
+    const themeKeys = Object.keys(themes.white).filter(
+      (key) =>
+        !Object.keys(layoutTokens).includes(key) &&
+        !Object.keys(typeTokens).includes(key)
+    );
+
+    for (const key of themeKeys) {
+      const name = formatTokenName(key);
+      const value = themes.white[key as keyof typeof themes.white] as string;
+      // Add SCSS variable
+      tokens.push({
+        name: `$${name}`,
+        value,
+        type: 'scss',
+      });
+      // Add CSS custom property
+      tokens.push({
+        name: `--cds-${name}`,
+        value,
+        type: 'css-custom-prop',
+      });
+    }
+  }
+
+  return tokens;
+}
+
+/**
+ * Load layout tokens from Carbon
+ */
+export function loadLayoutTokens(): TokenCollection {
+  const spacing: CarbonToken[] = [];
+  const layout: CarbonToken[] = [];
+  const container: CarbonToken[] = [];
+  const fluidSpacing: CarbonToken[] = [];
+  const iconSize: CarbonToken[] = [];
+
+  for (const key in layoutTokens) {
+    if (Object.hasOwn(layoutTokens, key)) {
+      const token = formatTokenName(key);
+      const value = layoutTokens[key as keyof typeof layoutTokens] as string;
+      const tokenWithoutNumber = token.substring(0, token.lastIndexOf('-'));
+
+      let targetArray: CarbonToken[] | undefined;
+
+      switch (tokenWithoutNumber) {
+        case 'spacing':
+          targetArray = spacing;
+          break;
+        case 'layout':
+          targetArray = layout;
+          break;
+        case 'container':
+          targetArray = container;
+          break;
+        case 'fluid-spacing':
+          targetArray = fluidSpacing;
+          break;
+        case 'icon-size':
+          targetArray = iconSize;
+          break;
+        default:
+          if (tokenWithoutNumber.startsWith('size')) {
+            targetArray = container;
+          }
+      }
+
+      if (targetArray) {
+        // Add SCSS variable
+        targetArray.push({
+          name: `$${token}`,
+          value,
+          type: 'scss',
+        });
+        // Add CSS custom property
+        targetArray.push({
+          name: `--cds-${token}`,
+          value,
+          type: 'css-custom-prop',
+        });
+      }
+    }
+  }
+
+  return {
+    spacing,
+    layout,
+    container,
+    fluidSpacing,
+    iconSize,
+  };
+}
+
+/**
+ * Load type tokens from Carbon
+ */
+export function loadTypeTokens(): CarbonToken[] {
+  const tokens: CarbonToken[] = [];
+
+  for (const key in typeTokens) {
+    if (Object.hasOwn(typeTokens, key)) {
+      const token = formatTokenName(key);
+      const value = typeTokens[key as keyof typeof typeTokens] as string;
+
+      // Add SCSS variable
+      tokens.push({
+        name: `$${token}`,
+        value,
+        type: 'scss',
+      });
+      // Add CSS custom property
+      tokens.push({
+        name: `--cds-${token}`,
+        value,
+        type: 'css-custom-prop',
+      });
+    }
+  }
+
+  return tokens;
+}
+
+/**
+ * Load motion tokens from Carbon
+ */
+export function loadMotionTokens(): TokenCollection {
+  const duration: CarbonToken[] = [];
+  const easing: CarbonToken[] = [];
+
+  for (const key in motionTokens) {
+    if (Object.hasOwn(motionTokens, key)) {
+      const token = formatTokenName(key);
+      const value = motionTokens[key as keyof typeof motionTokens] as string;
+
+      let targetArray: CarbonToken[] | undefined;
+
+      if (token.startsWith('duration-')) {
+        targetArray = duration;
+      } else if (
+        token.startsWith('ease') ||
+        token.includes('easing') ||
+        token.includes('bezier')
+      ) {
+        targetArray = easing;
+      }
+
+      if (targetArray) {
+        // Add SCSS variable
+        targetArray.push({
+          name: `$${token}`,
+          value,
+          type: 'scss',
+        });
+        // Add CSS custom property
+        targetArray.push({
+          name: `--cds-${token}`,
+          value,
+          type: 'css-custom-prop',
+        });
+      }
+    }
+  }
+
+  return {
+    duration,
+    easing,
+  };
+}
+
+/**
+ * Get all Carbon tokens organized by category
+ */
+export function getAllTokens(): {
+  theme: CarbonToken[];
+  layout: TokenCollection;
+  type: CarbonToken[];
+  motion: TokenCollection;
+} {
+  return {
+    theme: loadThemeTokens(),
+    layout: loadLayoutTokens(),
+    type: loadTypeTokens(),
+    motion: loadMotionTokens(),
+  };
+}

@@ -2,11 +2,13 @@ import prettier from 'eslint-plugin-prettier';
 import importPlugin from 'eslint-plugin-import';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import js from '@eslint/js';
+import tseslint from '@typescript-eslint/eslint-plugin';
+import tsparser from '@typescript-eslint/parser';
 
 export default [
   // Ignore patterns (migrated from .eslintignore)
   {
-    ignores: ['node_modules/', 'dist/'],
+    ignores: ['node_modules/', 'dist/', '.v4-src/'],
   },
   // Base configurations
   // Note: ESLint v9 changes to recommended rules:
@@ -42,13 +44,13 @@ export default [
       'import/resolver': {
         alias: {
           map: [
-            ['', './public'], // <-- this line
+            ['', './public'],
           ],
-          extensions: ['.js'],
+          extensions: ['.js', '.ts'],
         },
         node: {
           paths: ['src'],
-          extensions: ['.js'],
+          extensions: ['.js', '.ts'],
         },
       },
     },
@@ -120,8 +122,32 @@ export default [
       ],
     },
   },
+  // TypeScript configuration
+  {
+    files: ['**/*.ts'],
+    languageOptions: {
+      parser: tsparser,
+      parserOptions: {
+        project: './tsconfig.json',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
+    },
+    rules: {
+      ...tseslint.configs.recommended.rules,
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
+        },
+      ],
+    },
+  },
   // Prettier config (must be last to override other rules)
   eslintConfigPrettier,
 ];
 
-// Made with Bob
