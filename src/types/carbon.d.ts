@@ -6,15 +6,15 @@
  */
 
 declare module '@carbon/layout' {
-  export const unstable_tokens: Record<string, string>;
+  export const unstable_tokens: string[];
 }
 
 declare module '@carbon/type' {
-  export const unstable_tokens: Record<string, string>;
+  export const unstable_tokens: string[];
 }
 
 declare module '@carbon/motion' {
-  export const unstable_tokens: Record<string, string>;
+  export const unstable_tokens: string[];
 }
 
 declare module '@carbon/themes' {

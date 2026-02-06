@@ -75,7 +75,10 @@ This document tracks the implementation status of stylelint-plugin-carbon-tokens
 
 ### Testing
 
-- [ ] **Unit Tests** - Validation logic tests
+- [x] **Unit Tests** - 27 tests passing ✅
+  - Carbon token loading tests at [`src/utils/__tests__/carbon-tokens.test.ts`](src/utils/__tests__/carbon-tokens.test.ts:1)
+  - Validation logic tests at [`src/utils/__tests__/validators.test.ts`](src/utils/__tests__/validators.test.ts:1)
+  - Test utilities at [`src/__tests__/test-utils.ts`](src/__tests__/test-utils.ts:1)
 - [ ] **Integration Tests** - Rule behavior tests
 - [ ] **Fixture Tests** - Real-world CSS/SCSS file tests
 
@@ -174,7 +177,7 @@ npx stylelint "**/*.{css,scss}"
 1. **Value Parsing** - Simple space-based splitting (doesn't handle complex functions)
 2. **Token Suggestions** - Basic matching (could use fuzzy matching)
 3. **Multi-Value Properties** - Limited support for shorthand properties
-4. **Test Coverage** - No automated tests yet
+4. **Integration Tests** - No rule integration tests yet
 5. **Three Rules Missing** - Type, motion-duration, motion-easing not implemented
 
 ## Performance Considerations

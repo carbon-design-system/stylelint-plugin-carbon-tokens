@@ -29,7 +29,8 @@
     "lint:spell": "cspell lint --quiet \"**/*.{js,jsx,ts,css,scss,md}\"",
     "postinstall": "ibmtelemetry --config=telemetry.yml",
     "prepublishOnly": "npm run build",
-    "test": "node --test \"src/**/__tests__/*.js\" \"src/**/__tests__/*.test.js\"",
+    "test": "npm run build && node --test \"dist/**/__tests__/*.test.js\"",
+    "test:watch": "npm run build && node --test --watch \"dist/**/__tests__/*.test.js\"",
     "upgrade": "run-p -s 'upgrade:*'",
     "upgrade:other": "npm-check-updates -u --dep dev,peer,prod --reject '/(carbon|^react$|^react-dom$|^@testing-library)/'",
     "upgrade:carbon": "npm-check-updates -u --dep dev,peer,prod --packageFile 'package.json' --filter '/carbon/' --target minor"

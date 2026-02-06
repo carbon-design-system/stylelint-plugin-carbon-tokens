@@ -84,50 +84,40 @@ export function loadLayoutTokens(): TokenCollection {
   const fluidSpacing: CarbonToken[] = [];
   const iconSize: CarbonToken[] = [];
 
-  for (const key in layoutTokens) {
-    if (Object.hasOwn(layoutTokens, key)) {
-      const token = formatTokenName(key);
-      const value = layoutTokens[key as keyof typeof layoutTokens] as string;
-      const tokenWithoutNumber = token.substring(0, token.lastIndexOf('-'));
+  // layoutTokens is an array of token names
+  for (const tokenName of layoutTokens) {
+    const token = formatTokenName(tokenName);
 
-      let targetArray: CarbonToken[] | undefined;
+    // Determine which category this token belongs to
+    let targetArray: CarbonToken[] | undefined;
 
-      switch (tokenWithoutNumber) {
-        case 'spacing':
-          targetArray = spacing;
-          break;
-        case 'layout':
-          targetArray = layout;
-          break;
-        case 'container':
-          targetArray = container;
-          break;
-        case 'fluid-spacing':
-          targetArray = fluidSpacing;
-          break;
-        case 'icon-size':
-          targetArray = iconSize;
-          break;
-        default:
-          if (tokenWithoutNumber.startsWith('size')) {
-            targetArray = container;
-          }
-      }
+    if (token.startsWith('spacing')) {
+      targetArray = spacing;
+    } else if (token.startsWith('layout')) {
+      targetArray = layout;
+    } else if (token.startsWith('container')) {
+      targetArray = container;
+    } else if (token.startsWith('fluid-spacing') || token.startsWith('fluidSpacing')) {
+      targetArray = fluidSpacing;
+    } else if (token.startsWith('icon-size') || token.startsWith('iconSize')) {
+      targetArray = iconSize;
+    } else if (token.startsWith('size')) {
+      targetArray = container;
+    }
 
-      if (targetArray) {
-        // Add SCSS variable
-        targetArray.push({
-          name: `$${token}`,
-          value,
-          type: 'scss',
-        });
-        // Add CSS custom property
-        targetArray.push({
-          name: `--cds-${token}`,
-          value,
-          type: 'css-custom-prop',
-        });
-      }
+    if (targetArray) {
+      // Add SCSS variable
+      targetArray.push({
+        name: `$${token}`,
+        value: tokenName, // Use original token name as value
+        type: 'scss',
+      });
+      // Add CSS custom property
+      targetArray.push({
+        name: `--cds-${token}`,
+        value: tokenName,
+        type: 'css-custom-prop',
+      });
     }
   }
 
@@ -146,24 +136,22 @@ export function loadLayoutTokens(): TokenCollection {
 export function loadTypeTokens(): CarbonToken[] {
   const tokens: CarbonToken[] = [];
 
-  for (const key in typeTokens) {
-    if (Object.hasOwn(typeTokens, key)) {
-      const token = formatTokenName(key);
-      const value = typeTokens[key as keyof typeof typeTokens] as string;
+  // typeTokens is an array of token names
+  for (const tokenName of typeTokens) {
+    const token = formatTokenName(tokenName);
 
-      // Add SCSS variable
-      tokens.push({
-        name: `$${token}`,
-        value,
-        type: 'scss',
-      });
-      // Add CSS custom property
-      tokens.push({
-        name: `--cds-${token}`,
-        value,
-        type: 'css-custom-prop',
-      });
-    }
+    // Add SCSS variable
+    tokens.push({
+      name: `$${token}`,
+      value: tokenName, // Use original token name as value
+      type: 'scss',
+    });
+    // Add CSS custom property
+    tokens.push({
+      name: `--cds-${token}`,
+      value: tokenName,
+      type: 'css-custom-prop',
+    });
   }
 
   return tokens;
@@ -176,37 +164,33 @@ export function loadMotionTokens(): TokenCollection {
   const duration: CarbonToken[] = [];
   const easing: CarbonToken[] = [];
 
-  for (const key in motionTokens) {
-    if (Object.hasOwn(motionTokens, key)) {
-      const token = formatTokenName(key);
-      const value = motionTokens[key as keyof typeof motionTokens] as string;
+  // motionTokens is an array of token names
+  for (const tokenName of motionTokens) {
+    const token = formatTokenName(tokenName);
 
-      let targetArray: CarbonToken[] | undefined;
+    let targetArray: CarbonToken[] | undefined;
 
-      if (token.startsWith('duration-')) {
-        targetArray = duration;
-      } else if (
-        token.startsWith('ease') ||
-        token.includes('easing') ||
-        token.includes('bezier')
-      ) {
-        targetArray = easing;
-      }
+    // Duration tokens start with 'duration' or are named like 'fast01', 'moderate01', 'slow01'
+    if (token.startsWith('duration')) {
+      targetArray = duration;
+    } else if (token.startsWith('fast') || token.startsWith('moderate') || token.startsWith('slow')) {
+      // These are easing function names (fast01, fast02, moderate01, etc.)
+      targetArray = easing;
+    }
 
-      if (targetArray) {
-        // Add SCSS variable
-        targetArray.push({
-          name: `$${token}`,
-          value,
-          type: 'scss',
-        });
-        // Add CSS custom property
-        targetArray.push({
-          name: `--cds-${token}`,
-          value,
-          type: 'css-custom-prop',
-        });
-      }
+    if (targetArray) {
+      // Add SCSS variable
+      targetArray.push({
+        name: `$${token}`,
+        value: tokenName, // Use original token name as value
+        type: 'scss',
+      });
+      // Add CSS custom property
+      targetArray.push({
+        name: `--cds-${token}`,
+        value: tokenName,
+        type: 'css-custom-prop',
+      });
     }
   }
 
