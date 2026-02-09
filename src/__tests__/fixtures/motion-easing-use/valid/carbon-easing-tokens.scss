@@ -1,0 +1,25 @@
+/**
+ * Valid: Using Carbon SCSS motion easing tokens and standard easing functions
+ */
+
+.foo {
+  transition-timing-function: $standard-productive;
+  animation-timing-function: $standard-expressive;
+}
+
+.bar {
+  /* Standard CSS easing keywords */
+  transition-timing-function: ease-in-out;
+  animation-timing-function: linear;
+}
+
+.baz {
+  /* cubic-bezier and steps functions are allowed */
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  animation-timing-function: steps(4, end);
+}
+
+.reset {
+  transition-timing-function: inherit;
+  animation-timing-function: initial;
+}

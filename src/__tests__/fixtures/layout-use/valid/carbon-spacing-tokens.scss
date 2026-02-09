@@ -1,0 +1,32 @@
+/**
+ * Valid: Using Carbon SCSS spacing tokens
+ */
+
+.foo {
+  margin: $spacing-01;
+  padding: $spacing-05;
+  gap: $spacing-03;
+}
+
+.bar {
+  margin: $spacing-01 $spacing-02;
+  padding: $spacing-03 $spacing-04 $spacing-05;
+}
+
+.baz {
+  /* Negative values are allowed */
+  margin: -$spacing-01;
+  margin-top: -$spacing-02;
+}
+
+.qux {
+  /* Percentages are allowed */
+  margin: 100%;
+  padding: 50% 25%;
+}
+
+.reset {
+  margin: 0;
+  padding: auto;
+  width: inherit;
+}

@@ -13,6 +13,7 @@ export const ruleName = 'carbon/layout-use';
 
 const defaultOptions: LayoutRuleOptions = {
   includeProps: [
+    // Standard box model spacing
     'margin',
     'margin-top',
     'margin-right',
@@ -23,15 +24,45 @@ const defaultOptions: LayoutRuleOptions = {
     'padding-right',
     'padding-bottom',
     'padding-left',
+
+    // Positioning
+    'top',
+    'right',
+    'bottom',
+    'left',
+
+    // Logical properties - inset
+    'inset',
+    'inset-block',
+    'inset-block-start',
+    'inset-block-end',
+    'inset-inline',
+    'inset-inline-start',
+    'inset-inline-end',
+
+    // Logical properties - margin
+    'margin-block',
+    'margin-block-start',
+    'margin-block-end',
+    'margin-inline',
+    'margin-inline-start',
+    'margin-inline-end',
+
+    // Logical properties - padding
+    'padding-block',
+    'padding-block-start',
+    'padding-block-end',
+    'padding-inline',
+    'padding-inline-start',
+    'padding-inline-end',
+
+    // Gap properties
     'gap',
     'row-gap',
     'column-gap',
-    'width',
-    'height',
-    'min-width',
-    'min-height',
-    'max-width',
-    'max-height',
+
+    // direct translate property
+    'translate',
   ],
   acceptValues: [
     '/inherit|initial|none|unset|auto/',

@@ -1,0 +1,9 @@
+/**
+ * Invalid: Using non-standard easing values
+ * Expected errors on custom easing values
+ */
+
+.foo {
+  transition-timing-function: ease-in-out-back;
+  animation-timing-function: custom-ease;
+}

@@ -1,0 +1,11 @@
+/**
+ * Valid: Using CSS reset values
+ */
+
+.foo {
+  color: none;
+  background-color: inherit;
+  border-color: initial;
+  outline-color: unset;
+  fill: transparent;
+}

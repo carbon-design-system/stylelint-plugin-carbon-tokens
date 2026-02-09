@@ -1,0 +1,28 @@
+/**
+ * Valid: Using Carbon tokens for positioning properties
+ */
+
+.absolute {
+  position: absolute;
+  top: $spacing-05;
+  right: $spacing-03;
+  bottom: $spacing-04;
+  left: $spacing-02;
+}
+
+.relative {
+  position: relative;
+  top: -$spacing-01;
+  left: $spacing-06;
+}
+
+.fixed {
+  position: fixed;
+  inset: $spacing-05;
+}
+
+.sticky {
+  position: sticky;
+  top: 0;
+  left: auto;
+}

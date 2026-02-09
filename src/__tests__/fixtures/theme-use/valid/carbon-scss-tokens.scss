@@ -1,0 +1,13 @@
+/**
+ * Valid: Using Carbon SCSS theme tokens
+ */
+
+.foo {
+  color: $layer-01;
+  background-color: $layer-02;
+  border-color: $border-subtle;
+}
+
+.bar {
+  box-shadow: 0 0 5px $layer-01, 0 0 10px $layer-01;
+}

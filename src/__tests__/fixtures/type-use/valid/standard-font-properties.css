@@ -1,0 +1,11 @@
+/**
+ * Valid: Using standard font property values
+ */
+
+
+.foo {
+  /* Reset values */
+  font-style: inherit;
+  font-weight: initial;
+  font-size: unset;
+}
