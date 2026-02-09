@@ -13,9 +13,7 @@ export const ruleName = 'carbon/type-use';
 
 const defaultOptions: TypeRuleOptions = {
   includeProps: [
-    'font-family',
-    'font-size',
-    'font-weight',
+    '/^font-/',
     'line-height',
     'letter-spacing',
   ],

@@ -13,8 +13,7 @@ export const ruleName = 'carbon/motion-duration-use';
 
 const defaultOptions: MotionDurationRuleOptions = {
   includeProps: [
-    'transition-duration',
-    'animation-duration',
+    '/duration$/',
   ],
   acceptValues: [
     '/inherit|initial|none|unset/',
