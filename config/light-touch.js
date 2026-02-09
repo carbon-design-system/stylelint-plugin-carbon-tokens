@@ -16,28 +16,29 @@ export default {
         acceptCarbonCustomProp: true,
       },
     ],
-    // Coming soon in v5:
-    // 'carbon/motion-duration-use': [
-    //   true,
-    //   {
-    //     severity: 'warning',
-    //     acceptUndefinedVariables: true,
-    //     acceptCarbonCustomProp: true,
-    //   },
-    // ],
-    // 'carbon/motion-easing-use': [
-    //   true,
-    //   {
-    //     severity: 'warning',
-    //     acceptUndefinedVariables: true,
-    //   },
-    // ],
-    // 'carbon/type-use': [
-    //   true,
-    //   {
-    //     severity: 'warning',
-    //     acceptUndefinedVariables: true,
-    //   },
-    // ],
+    'carbon/type-use': [
+      true,
+      {
+        severity: 'warning',
+        acceptUndefinedVariables: true,
+        acceptCarbonCustomProp: true,
+      },
+    ],
+    'carbon/motion-duration-use': [
+      true,
+      {
+        severity: 'warning',
+        acceptUndefinedVariables: true,
+        acceptCarbonCustomProp: true,
+      },
+    ],
+    'carbon/motion-easing-use': [
+      true,
+      {
+        severity: 'warning',
+        acceptUndefinedVariables: true,
+        acceptCarbonCustomProp: true,
+      },
+    ],
   },
 };

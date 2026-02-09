@@ -7,10 +7,19 @@
 
 import themeUse from './rules/theme-use.js';
 import layoutUse from './rules/layout-use.js';
+import typeUse from './rules/type-use.js';
+import motionDurationUse from './rules/motion-duration-use.js';
+import motionEasingUse from './rules/motion-easing-use.js';
 
-const plugins = [themeUse, layoutUse];
+const plugins = [
+  themeUse,
+  layoutUse,
+  typeUse,
+  motionDurationUse,
+  motionEasingUse,
+];
 
 export default plugins;
 
 // Export individual rules for direct access
-export { themeUse, layoutUse };
+export { themeUse, layoutUse, typeUse, motionDurationUse, motionEasingUse };
