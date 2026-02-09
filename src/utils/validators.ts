@@ -1,5 +1,5 @@
 /**
- * Copyright IBM Corp. 2020, 2024
+ * Copyright IBM Corp. 2026
  *
  * This source code is licensed under the Apache-2.0 license found in the
  * LICENSE file in the root directory of this source tree.
@@ -193,7 +193,32 @@ function findClosestToken(
  * Parse a CSS value into individual values
  */
 export function parseValue(value: string): string[] {
-  // Simple space-based split for now
-  // TODO: Handle more complex cases like calc(), rgba(), etc.
-  return value.split(/\s+/).filter((v) => v.length > 0);
+  const values: string[] = [];
+  let current = '';
+  let depth = 0;
+
+  for (let i = 0; i < value.length; i++) {
+    const char = value[i];
+
+    if (char === '(') {
+      depth++;
+      current += char;
+    } else if (char === ')') {
+      depth--;
+      current += char;
+    } else if (char === ' ' && depth === 0) {
+      if (current.trim()) {
+        values.push(current.trim());
+        current = '';
+      }
+    } else {
+      current += char;
+    }
+  }
+
+  if (current.trim()) {
+    values.push(current.trim());
+  }
+
+  return values.filter((v) => v.length > 0);
 }
