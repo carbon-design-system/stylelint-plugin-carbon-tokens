@@ -1,0 +1,49 @@
+/**
+ * Valid rgba() function usage with Carbon theme tokens
+ */
+
+.valid-rgba-scss {
+  /* Carbon SCSS variable with alpha */
+  background-color: rgba($layer-01, 0.5);
+  color: rgba($text-primary, 0.8);
+  border-color: rgba($background, 0.3);
+}
+
+.valid-rgba-css {
+  /* Carbon CSS custom property with alpha */
+  background-color: rgba(var(--cds-layer-01), 0.5);
+  color: rgba(var(--cds-text-primary), 0.8);
+  border-color: rgba(var(--cds-background), 0.3);
+}
+
+.valid-rgba-alpha-values {
+  /* Different alpha value formats */
+  background-color: rgba($layer-01, 0);
+  color: rgba($text-primary, 0.25);
+  border-color: rgba($background, 0.5);
+  box-shadow: 0 0 10px rgba($layer-01, 0.75);
+  outline-color: rgba($text-primary, 1);
+}
+
+.valid-rgba-percentage-alpha {
+  /* Percentage alpha values */
+  background-color: rgba($layer-01, 50%);
+  color: rgba($text-primary, 80%);
+  border-color: rgba($background, 100%);
+}
+
+.valid-rgba-in-gradients {
+  /* rgba() in gradient functions */
+  background: linear-gradient(
+    to bottom,
+    rgba($layer-01, 0.8),
+    rgba($layer-01, 0)
+  );
+}
+
+.valid-rgba-in-shadows {
+  /* rgba() in box-shadow */
+  box-shadow:
+    0 2px 4px rgba($layer-01, 0.1),
+    0 4px 8px rgba($layer-01, 0.2);
+}

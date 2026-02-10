@@ -14,6 +14,8 @@ import {
   validateCalcExpression,
   isTransformFunction,
   validateTransformFunction,
+  isRgbaFunction,
+  validateRgbaFunction,
 } from './validators.js';
 import type { CarbonToken, TokenCollection, BaseRuleOptions } from '../types/index.js';
 
@@ -111,9 +113,10 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
             continue;
           }
 
-          // Check if this is a calc() or transform function (only for layout-use rule)
+          // Check for special function validation based on rule
           let validation;
           if (ruleName === 'carbon/layout-use') {
+            // Layout rule: validate calc() and transform functions
             if (isCalcExpression(value)) {
               validation = validateCalcExpression(value, tokens);
             } else if (isTransformFunction(value)) {
@@ -126,7 +129,20 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
                 carbonPrefix: options.carbonPrefix,
               });
             }
+          } else if (ruleName === 'carbon/theme-use') {
+            // Theme rule: validate rgba() function
+            if (isRgbaFunction(value)) {
+              validation = validateRgbaFunction(value, tokens);
+            } else {
+              validation = validateValue(value, tokens, {
+                acceptUndefinedVariables: options.acceptUndefinedVariables,
+                acceptCarbonCustomProp: options.acceptCarbonCustomProp,
+                acceptValues: options.acceptValues,
+                carbonPrefix: options.carbonPrefix,
+              });
+            }
           } else {
+            // Other rules: standard validation
             validation = validateValue(value, tokens, {
               acceptUndefinedVariables: options.acceptUndefinedVariables,
               acceptCarbonCustomProp: options.acceptCarbonCustomProp,

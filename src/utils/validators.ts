@@ -558,3 +558,87 @@ export function validateTransformFunction(
       };
   }
 }
+
+
+/**
+ * Check if value is an rgba() function
+ */
+export function isRgbaFunction(value: string): boolean {
+  return /^rgba\s*\(/.test(value.trim());
+}
+
+/**
+ * Validate rgba() function according to V4 rules
+ * Only validates the first parameter (color) - must be a Carbon theme token
+ * Alpha and other parameters are not validated
+ */
+export function validateRgbaFunction(
+  value: string,
+  tokens: CarbonToken[]
+): ValidationResult {
+  if (!isRgbaFunction(value)) {
+    return { isValid: false, message: 'Not an rgba() function' };
+  }
+
+  const parsed = extractFunctionParams(value);
+  if (!parsed) {
+    return { isValid: false, message: 'Invalid rgba() syntax' };
+  }
+
+  const { params } = parsed;
+
+  // rgba() requires at least 2 parameters (color, alpha)
+  // Can have 4 parameters (r, g, b, alpha) but we reject that form
+  if (params.length < 2) {
+    return {
+      isValid: false,
+      message: `rgba() requires at least 2 parameters, found ${params.length}`,
+    };
+  }
+
+  // Only validate the first parameter (color)
+  const colorParam = params[0];
+
+  // Check if it's a Carbon SCSS variable
+  if (isScssVariable(colorParam)) {
+    const isValidToken = tokens.some(
+      (token) => token.type === 'scss' && token.name === colorParam
+    );
+    if (isValidToken) {
+      return { isValid: true };
+    }
+    return {
+      isValid: false,
+      message: `rgba() color parameter must be a Carbon theme token. Found "${colorParam}"`,
+    };
+  }
+
+  // Check if it's a Carbon CSS custom property
+  if (isCssCustomProperty(colorParam)) {
+    const varName = extractCssVarName(colorParam);
+    const isValidToken = tokens.some(
+      (token) => token.type === 'css-custom-prop' && token.name === varName
+    );
+    if (isValidToken) {
+      return { isValid: true };
+    }
+    return {
+      isValid: false,
+      message: `rgba() color parameter must be a Carbon theme token. Found "${colorParam}"`,
+    };
+  }
+
+  // If it's a number, it's the old rgba(r, g, b, a) format - reject
+  if (/^\d+$/.test(colorParam.trim())) {
+    return {
+      isValid: false,
+      message: `rgba() color parameter must be a Carbon theme token, not RGB values. Use rgba($token, alpha) format instead of rgba(r, g, b, alpha)`,
+    };
+  }
+
+  // Any other format is invalid
+  return {
+    isValid: false,
+    message: `rgba() color parameter must be a Carbon theme token. Found "${colorParam}"`,
+  };
+}
