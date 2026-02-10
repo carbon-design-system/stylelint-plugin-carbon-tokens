@@ -15,7 +15,7 @@ import type {
 export const ruleName = 'carbon/motion-easing-use';
 
 const defaultOptions: MotionEasingRuleOptions = {
-  includeProps: ['/timing-function$/'],
+  includeProps: ['/timing-function$/', 'transition', 'animation'],
   acceptValues: [
     '/inherit|initial|none|unset/',
     '/linear|ease|ease-in|ease-out|ease-in-out/',

@@ -21,11 +21,242 @@ import {
   isCarbonMotionFunction,
   validateCarbonMotionFunction,
 } from './validators.js';
+import {
+  parseTransition,
+  parseAnimation,
+  parseFont,
+  parseBorder,
+  parseOutline,
+  splitByComma,
+} from './parse-shorthand.js';
 import type {
   CarbonToken,
   TokenCollection,
   BaseRuleOptions,
 } from '../types/index.js';
+
+/**
+ * Check if a property is a shorthand property
+ */
+function isShorthandProperty(prop: string): boolean {
+  return ['transition', 'animation', 'font', 'border', 'outline'].includes(
+    prop
+  );
+}
+
+/**
+ * Validate shorthand property values based on the rule
+ */
+function validateShorthandProperty(
+  prop: string,
+  value: string,
+  ruleName: string,
+  tokens: CarbonToken[],
+  options: BaseRuleOptions
+): Array<{ isValid: boolean; message?: string; component?: string }> {
+  const results: Array<{
+    isValid: boolean;
+    message?: string;
+    component?: string;
+  }> = [];
+
+  // Handle multiple comma-separated values (e.g., multiple transitions)
+  const values = splitByComma(value);
+
+  for (const singleValue of values) {
+    if (prop === 'transition') {
+      const parsed = parseTransition(singleValue);
+
+      // Validate duration for motion-duration-use rule
+      if (
+        ruleName === 'carbon/motion-duration-use' &&
+        parsed.duration &&
+        parsed.duration !== '0' &&
+        parsed.duration !== '0s'
+      ) {
+        const validation = validateValue(parsed.duration, tokens, {
+          acceptUndefinedVariables: options.acceptUndefinedVariables,
+          acceptCarbonCustomProp: options.acceptCarbonCustomProp,
+          acceptValues: options.acceptValues,
+          carbonPrefix: options.carbonPrefix,
+        });
+        if (!validation.isValid) {
+          results.push({
+            isValid: false,
+            message: `transition duration ${validation.message || 'is invalid'}`,
+            component: 'duration',
+          });
+        }
+      }
+
+      // Validate timing function for motion-easing-use rule
+      if (
+        ruleName === 'carbon/motion-easing-use' &&
+        parsed.timingFunction
+      ) {
+        let validation;
+        if (isCarbonMotionFunction(parsed.timingFunction)) {
+          validation = validateCarbonMotionFunction(parsed.timingFunction);
+        } else {
+          validation = validateValue(parsed.timingFunction, tokens, {
+            acceptUndefinedVariables: options.acceptUndefinedVariables,
+            acceptCarbonCustomProp: options.acceptCarbonCustomProp,
+            acceptValues: options.acceptValues,
+            carbonPrefix: options.carbonPrefix,
+          });
+        }
+        if (!validation.isValid) {
+          results.push({
+            isValid: false,
+            message: `transition timing-function ${validation.message || 'is invalid'}`,
+            component: 'timing-function',
+          });
+        }
+      }
+    } else if (prop === 'animation') {
+      const parsed = parseAnimation(singleValue);
+
+      // Validate duration for motion-duration-use rule
+      if (
+        ruleName === 'carbon/motion-duration-use' &&
+        parsed.duration &&
+        parsed.duration !== '0' &&
+        parsed.duration !== '0s'
+      ) {
+        const validation = validateValue(parsed.duration, tokens, {
+          acceptUndefinedVariables: options.acceptUndefinedVariables,
+          acceptCarbonCustomProp: options.acceptCarbonCustomProp,
+          acceptValues: options.acceptValues,
+          carbonPrefix: options.carbonPrefix,
+        });
+        if (!validation.isValid) {
+          results.push({
+            isValid: false,
+            message: `animation duration ${validation.message || 'is invalid'}`,
+            component: 'duration',
+          });
+        }
+      }
+
+      // Validate timing function for motion-easing-use rule
+      if (
+        ruleName === 'carbon/motion-easing-use' &&
+        parsed.timingFunction
+      ) {
+        let validation;
+        if (isCarbonMotionFunction(parsed.timingFunction)) {
+          validation = validateCarbonMotionFunction(parsed.timingFunction);
+        } else {
+          validation = validateValue(parsed.timingFunction, tokens, {
+            acceptUndefinedVariables: options.acceptUndefinedVariables,
+            acceptCarbonCustomProp: options.acceptCarbonCustomProp,
+            acceptValues: options.acceptValues,
+            carbonPrefix: options.carbonPrefix,
+          });
+        }
+        if (!validation.isValid) {
+          results.push({
+            isValid: false,
+            message: `animation timing-function ${validation.message || 'is invalid'}`,
+            component: 'timing-function',
+          });
+        }
+      }
+    } else if (prop === 'font') {
+      const parsed = parseFont(singleValue);
+
+      // Validate font properties for type-use rule
+      if (ruleName === 'carbon/type-use') {
+        // Validate font-size
+        if (parsed.size) {
+          let validation;
+          if (isCarbonTypeFunction(parsed.size)) {
+            validation = validateCarbonTypeFunction(parsed.size);
+          } else {
+            validation = validateValue(parsed.size, tokens, {
+              acceptUndefinedVariables: options.acceptUndefinedVariables,
+              acceptCarbonCustomProp: options.acceptCarbonCustomProp,
+              acceptValues: options.acceptValues,
+              carbonPrefix: options.carbonPrefix,
+            });
+          }
+          if (!validation.isValid) {
+            results.push({
+              isValid: false,
+              message: `font-size ${validation.message || 'is invalid'}`,
+              component: 'size',
+            });
+          }
+        }
+
+        // Validate font-family
+        if (parsed.family) {
+          let validation;
+          if (isCarbonTypeFunction(parsed.family)) {
+            validation = validateCarbonTypeFunction(parsed.family);
+          } else {
+            validation = validateValue(parsed.family, tokens, {
+              acceptUndefinedVariables: options.acceptUndefinedVariables,
+              acceptCarbonCustomProp: options.acceptCarbonCustomProp,
+              acceptValues: options.acceptValues,
+              carbonPrefix: options.carbonPrefix,
+            });
+          }
+          if (!validation.isValid) {
+            results.push({
+              isValid: false,
+              message: `font-family ${validation.message || 'is invalid'}`,
+              component: 'family',
+            });
+          }
+        }
+
+        // Validate line-height
+        if (parsed.lineHeight) {
+          const validation = validateValue(parsed.lineHeight, tokens, {
+            acceptUndefinedVariables: options.acceptUndefinedVariables,
+            acceptCarbonCustomProp: options.acceptCarbonCustomProp,
+            acceptValues: options.acceptValues,
+            carbonPrefix: options.carbonPrefix,
+          });
+          if (!validation.isValid) {
+            results.push({
+              isValid: false,
+              message: `line-height ${validation.message || 'is invalid'}`,
+              component: 'line-height',
+            });
+          }
+        }
+      }
+    } else if (prop === 'border' || prop === 'outline') {
+      const parsed = prop === 'border' ? parseBorder(singleValue) : parseOutline(singleValue);
+
+      // Validate color for theme-use rule
+      if (ruleName === 'carbon/theme-use' && parsed.color) {
+        let validation;
+        if (isRgbaFunction(parsed.color)) {
+          validation = validateRgbaFunction(parsed.color, tokens);
+        } else {
+          validation = validateValue(parsed.color, tokens, {
+            acceptUndefinedVariables: options.acceptUndefinedVariables,
+            acceptCarbonCustomProp: options.acceptCarbonCustomProp,
+            acceptValues: options.acceptValues,
+            carbonPrefix: options.carbonPrefix,
+          });
+        }
+        if (!validation.isValid) {
+          results.push({
+            isValid: false,
+            message: `${prop}-color ${validation.message || 'is invalid'}`,
+            component: 'color',
+          });
+        }
+      }
+    }
+  }
+
+  return results;
+}
 
 const { createPlugin, utils } = stylelint;
 
@@ -118,6 +349,33 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
 
         // Check if this property should be validated
         if (!shouldValidateProperty(prop, options.includeProps || [])) {
+          return;
+        }
+
+        // Handle shorthand properties
+        if (isShorthandProperty(prop)) {
+          const validations = validateShorthandProperty(
+            prop,
+            decl.value,
+            ruleName,
+            tokens,
+            options
+          );
+
+          for (const validation of validations) {
+            if (!validation.isValid) {
+              utils.report({
+                message: messages.rejected(
+                  prop,
+                  decl.value,
+                  validation.message || 'Invalid value'
+                ),
+                node: decl,
+                result,
+                ruleName,
+              });
+            }
+          }
           return;
         }
 

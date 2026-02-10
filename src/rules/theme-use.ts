@@ -21,6 +21,8 @@ const defaultOptions: ThemeRuleOptions = {
     'fill',
     'stroke',
     '/shadow$/',
+    'border',
+    'outline',
   ],
   acceptValues: [
     '/inherit|initial|none|unset/',

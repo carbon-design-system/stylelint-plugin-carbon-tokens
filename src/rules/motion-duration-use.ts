@@ -15,7 +15,7 @@ import type {
 export const ruleName = 'carbon/motion-duration-use';
 
 const defaultOptions: MotionDurationRuleOptions = {
-  includeProps: ['/duration$/'],
+  includeProps: ['/duration$/', 'transition', 'animation'],
   acceptValues: [
     '/inherit|initial|none|unset/',
     '/^0s?$/', // 0 or 0s
