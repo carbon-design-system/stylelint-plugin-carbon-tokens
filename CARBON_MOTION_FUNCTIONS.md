@@ -102,17 +102,19 @@ V4 supported the `motion()` function in both:
 
 ### Current Status
 
-V5 currently:
-- ✅ Accepts `cubic-bezier()` functions (via `shouldSkipValue`)
-- ✅ Accepts `steps()` functions (via `shouldSkipValue`)
+V5 implementation status:
+- ✅ Validates `motion()` function calls with parameter checking
 - ✅ Validates standard CSS easing keywords (linear, ease, ease-in, etc.)
-- ❌ Does NOT validate `motion()` function calls
+- ❌ Does NOT accept raw `cubic-bezier()` functions (policy decision)
+- ❌ Does NOT accept `steps()` functions (policy decision)
 
-### Implementation Approach
+**Policy Decision:** V5 requires users to use Carbon tokens, the `motion()` function, or standard CSS keywords. Raw cubic-bezier and steps functions are not supported to ensure consistency with Carbon Design System patterns.
 
-Similar to Carbon type functions (type-scale, font-family, font-weight), we should:
+### Implementation Approach (COMPLETED)
 
-1. **Detect `motion()` function calls** in property values
+Similar to Carbon type functions (type-scale, font-family, font-weight), we implemented:
+
+1. **Detect `motion()` function calls** in property values ✅
 2. **Validate parameters**:
    - First parameter must be: `standard`, `entrance`, or `exit`
    - Second parameter must be: `productive` or `expressive`

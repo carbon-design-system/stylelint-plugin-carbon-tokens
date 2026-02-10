@@ -38,8 +38,33 @@ The plugin will maintain the existing five rule names:
 Each rule will validate:
 - **SCSS variables**: `$spacing-05`, `$background`
 - **CSS custom properties**: `var(--cds-spacing-05)`, `var(--cds-background)`
-- **Carbon functions**: `theme()`, `layout()` (where applicable)
+- **Carbon functions**: `type-scale()`, `font-family()`, `font-weight()`, `motion()`
+- **CSS/SCSS functions**: `calc()`, `rgba()`, `translate()`, `translateX()`, `translateY()`, `translate3d()`
 - **Hard-coded values**: For auto-fix suggestions
+
+### Function Support
+
+V5 implements comprehensive validation for 11 functions across all rules:
+
+**Carbon v11 Functions (5):**
+- `type-scale(index)` - Typography scale values (type-use)
+- `font-family(name)` - Font family selection (type-use)
+- `font-weight(name)` - Font weight selection (type-use)
+- `motion(easing_type, motion_style)` - Motion easing curves (motion-duration-use, motion-easing-use)
+
+**CSS/SCSS Functions (6):**
+- `calc()` - Proportional math and token negation (layout-use)
+- `rgba(color, alpha)` - Color with transparency, validates first parameter (theme-use)
+- `translate(x, y)` - 2D translation (layout-use)
+- `translateX(x)` - Horizontal translation (layout-use)
+- `translateY(y)` - Vertical translation (layout-use)
+- `translate3d(x, y, z)` - 3D translation, validates first 2 parameters (layout-use)
+
+**Validation Approaches:**
+- **Complex validation**: calc(), translate family, rgba(), motion() - validates parameters
+- **Simple validation**: type-scale(), font-family(), font-weight() - detects function only
+
+See V4_FUNCTIONS_BY_RULE.md for complete function documentation.
 
 ### Property Sets
 
@@ -207,10 +232,11 @@ Specific validation for icon size tokens deferred to future release.
 ### Fluid Spacing Tokens
 Fluid spacing token validation (vw-based) not included in initial scope.
 
-### Limited Math/calc() Support
-V5 supports the same limited math patterns as V4 for layout-use rule only:
+### Advanced calc() Patterns
+V5 supports enhanced calc() validation for layout-use rule:
 - **Proportional math**: `calc(100vw - #{$spacing-01})` - viewport/percentage units with +/- operators
 - **Token negation**: `calc(-1 * #{$spacing-01})` or `calc(#{$spacing-01} / -1)` - multiply/divide by -1 only
+- **Modern viewport units**: svw, lvw, dvw, svh, lvh, dvh, vi, vb, vmin, vmax
 
 All other math patterns are rejected to prevent arbitrary spacing values. See V4_MATH_CALC_SUPPORT.md for complete details.
 
@@ -237,5 +263,6 @@ Validation of Carbon utility classes not included in initial scope.
 ### Customizing Properties
 User-defined property lists beyond the fixed defaults not yet supported in initial release.
 
-### CSS and SCSS Function Validation
-Validation of values within CSS/SCSS functions (e.g., `rgba()`, `linear-gradient()`, `darken()`) not included in initial scope.
+### Raw cubic-bezier() and steps() Functions
+**Policy Decision**: V5 does NOT support raw `cubic-bezier()` or `steps()` functions in motion-easing-use rule. Users must use Carbon motion tokens, the `motion()` function, or standard CSS easing keywords (ease, ease-in, ease-out, linear). This ensures consistency with Carbon Design System motion principles.
+
