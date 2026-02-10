@@ -377,3 +377,184 @@ export function validateCalcExpression(
     message: `Expected calc() of the form calc(P O token) or calc(-1 * token) where P is a viewport/percentage unit (vw, vh, svw, lvw, dvw, svh, lvh, dvh, vi, vb, vmin, vmax, %), O is +/-, and token is a Carbon spacing token. Found "${value}"`,
   };
 }
+
+
+/**
+ * Check if value is a transform function (translate, translateX, translateY, translate3d)
+ */
+export function isTransformFunction(value: string): boolean {
+  return /^translate(X|Y|3d)?\s*\(/.test(value.trim());
+}
+
+/**
+ * Extract function name and parameters from a function call
+ * Returns null if not a valid function
+ */
+export function extractFunctionParams(value: string): {
+  name: string;
+  params: string[];
+} | null {
+  const match = value.match(/^([a-zA-Z0-9-]+)\((.*)\)$/);
+  if (!match) return null;
+
+  const [, name, paramsStr] = match;
+
+  // Split by comma, but respect nested parentheses (for calc() inside transform)
+  const params: string[] = [];
+  let current = '';
+  let depth = 0;
+
+  for (let i = 0; i < paramsStr.length; i++) {
+    const char = paramsStr[i];
+
+    if (char === '(') {
+      depth++;
+      current += char;
+    } else if (char === ')') {
+      depth--;
+      current += char;
+    } else if (char === ',' && depth === 0) {
+      params.push(current.trim());
+      current = '';
+    } else {
+      current += char;
+    }
+  }
+
+  if (current.trim()) {
+    params.push(current.trim());
+  }
+
+  return { name, params };
+}
+
+/**
+ * Check if a value is valid for spacing (layout) properties
+ * Valid values:
+ * - Carbon tokens (SCSS variables or CSS custom properties)
+ * - Relative units: %, vw, vh, svw, lvw, dvw, svh, lvh, dvh, vi, vb, vmin, vmax
+ * - calc() expressions
+ * - 0 (unitless zero)
+ */
+export function isValidSpacingValue(
+  value: string,
+  tokens: CarbonToken[]
+): boolean {
+  const trimmed = value.trim();
+
+  // Check for unitless zero
+  if (trimmed === '0') return true;
+
+  // Check for calc() expression
+  if (isCalcExpression(trimmed)) {
+    const result = validateCalcExpression(trimmed, tokens);
+    return result.isValid;
+  }
+
+  // Check for relative units
+  const relativeUnitPattern =
+    /^-?\d*\.?\d+(vw|vh|svw|lvw|dvw|svh|lvh|dvh|vi|vb|vmin|vmax|%)$/;
+  if (relativeUnitPattern.test(trimmed)) return true;
+
+  // Check for Carbon SCSS variable
+  if (isScssVariable(trimmed)) {
+    return tokens.some(
+      (token) => token.type === 'scss' && token.name === trimmed
+    );
+  }
+
+  // Check for Carbon CSS custom property
+  if (isCssCustomProperty(trimmed)) {
+    const varName = extractCssVarName(trimmed);
+    return tokens.some(
+      (token) => token.type === 'css-custom-prop' && token.name === varName
+    );
+  }
+
+  return false;
+}
+
+/**
+ * Validate transform function according to V4 rules
+ * Supports:
+ * - translate(x, y) - validates both parameters
+ * - translateX(x) - validates single parameter
+ * - translateY(y) - validates single parameter
+ * - translate3d(x, y, z) - validates only first 2 parameters (z-axis not validated)
+ */
+export function validateTransformFunction(
+  value: string,
+  tokens: CarbonToken[]
+): ValidationResult {
+  if (!isTransformFunction(value)) {
+    return { isValid: false, message: 'Not a transform function' };
+  }
+
+  const parsed = extractFunctionParams(value);
+  if (!parsed) {
+    return { isValid: false, message: 'Invalid function syntax' };
+  }
+
+  const { name, params } = parsed;
+
+  // Validate based on function type
+  switch (name) {
+    case 'translateX':
+    case 'translateY':
+      if (params.length !== 1) {
+        return {
+          isValid: false,
+          message: `${name}() requires exactly 1 parameter, found ${params.length}`,
+        };
+      }
+      if (!isValidSpacingValue(params[0], tokens)) {
+        return {
+          isValid: false,
+          message: `${name}() parameter must be a Carbon spacing token, relative unit (%, vw, vh, etc.), calc() expression, or 0. Found "${params[0]}"`,
+        };
+      }
+      return { isValid: true };
+
+    case 'translate':
+      if (params.length !== 2) {
+        return {
+          isValid: false,
+          message: `translate() requires exactly 2 parameters, found ${params.length}`,
+        };
+      }
+      // Validate both parameters
+      for (let i = 0; i < 2; i++) {
+        if (!isValidSpacingValue(params[i], tokens)) {
+          return {
+            isValid: false,
+            message: `translate() parameter ${i + 1} must be a Carbon spacing token, relative unit (%, vw, vh, etc.), calc() expression, or 0. Found "${params[i]}"`,
+          };
+        }
+      }
+      return { isValid: true };
+
+    case 'translate3d':
+      if (params.length !== 3) {
+        return {
+          isValid: false,
+          message: `translate3d() requires exactly 3 parameters, found ${params.length}`,
+        };
+      }
+      // Only validate first 2 parameters (x and y), z-axis is not validated
+      for (let i = 0; i < 2; i++) {
+        if (!isValidSpacingValue(params[i], tokens)) {
+          return {
+            isValid: false,
+            message: `translate3d() parameter ${i + 1} must be a Carbon spacing token, relative unit (%, vw, vh, etc.), calc() expression, or 0. Found "${params[i]}"`,
+          };
+        }
+      }
+      return { isValid: true };
+
+    default:
+      return {
+        isValid: false,
+        message: `Unsupported transform function: ${name}()`,
+      };
+  }
+}

@@ -29,8 +29,9 @@ const defaultOptions: LayoutRuleOptions = {
     // Gap properties
     '/gap$/',
 
-    // Direct translate property
+    // Transform properties
     'translate',
+    'transform',
   ],
   acceptValues: [
     '/inherit|initial|none|unset|auto/',
