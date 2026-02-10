@@ -2,12 +2,14 @@
 
 This document lists features that are planned for V5 but not yet implemented.
 
-## Shorthand Properties
+## ~~Shorthand Properties~~ ✅ IMPLEMENTED
 
-The following CSS shorthand properties are not yet supported in V5. When these properties are used, the plugin will not validate their individual component values.
+**Status: COMPLETED** - Shorthand properties are now fully supported as of the current version.
 
-### 1. `transition` (shorthand)
-- **Status**: Not yet supported
+The following CSS shorthand properties are now validated in V5:
+
+### 1. `transition` (shorthand) ✅
+- **Status**: ✅ Supported
 - **Longhand alternatives**: Use individual properties that ARE supported:
   - `transition-property` ✅ Supported
   - `transition-duration` ✅ Supported (validated by `motion-duration-use`)
@@ -24,8 +26,8 @@ The following CSS shorthand properties are not yet supported in V5. When these p
   transition-timing-function: motion(standard, productive);
   ```
 
-### 2. `animation` (shorthand)
-- **Status**: Not yet supported
+### 2. `animation` (shorthand) ✅
+- **Status**: ✅ Supported
 - **Longhand alternatives**: Use individual properties that ARE supported:
   - `animation-name` ✅ Supported
   - `animation-duration` ✅ Supported (validated by `motion-duration-use`)
@@ -47,8 +49,8 @@ The following CSS shorthand properties are not yet supported in V5. When these p
   animation-delay: $duration-fast-01;
   ```
 
-### 3. `font` (shorthand)
-- **Status**: Not yet supported
+### 3. `font` (shorthand) ✅
+- **Status**: ✅ Supported
 - **Longhand alternatives**: Use individual properties that ARE supported:
   - `font-family` ✅ Supported (validated by `type-use`)
   - `font-size` ✅ Supported (validated by `type-use`)
@@ -67,8 +69,8 @@ The following CSS shorthand properties are not yet supported in V5. When these p
   line-height: $line-height-01;
   ```
 
-### 4. `border` and `outline` (shorthands)
-- **Status**: Not yet supported
+### 4. `border` and `outline` (shorthands) ✅
+- **Status**: ✅ Supported
 - **Longhand alternatives**: Use individual properties that ARE supported:
   - `border-color` / `outline-color` ✅ Supported (validated by `theme-use`)
   - `border-width` / `outline-width` ✅ Supported (validated by `layout-use`)
@@ -86,11 +88,29 @@ The following CSS shorthand properties are not yet supported in V5. When these p
 
 ## Implementation Status
 
-Shorthand property support is planned for a future V5 release. The implementation strategy is documented in [`V5_SHORTHAND_IMPLEMENTATION_STRATEGY.md`](./V5_SHORTHAND_IMPLEMENTATION_STRATEGY.md).
+✅ **Shorthand property support is now fully implemented!**
 
-### Workaround
+The implementation includes:
+- Shorthand parsing utilities in [`src/utils/parse-shorthand.ts`](src/utils/parse-shorthand.ts:1)
+- Validation logic integrated into [`src/utils/create-rule.ts`](src/utils/create-rule.ts:354)
+- Support for all four shorthand property types
+- Comprehensive test coverage (44 parser tests)
 
-Until shorthand properties are supported, use the longhand property alternatives listed above. All longhand properties are fully validated by the appropriate rules.
+For implementation details, see [`V5_SHORTHAND_IMPLEMENTATION_STRATEGY.md`](./V5_SHORTHAND_IMPLEMENTATION_STRATEGY.md).
+
+### Usage
+
+You can now use shorthand properties and they will be validated:
+
+```scss
+// ✅ Now validated
+transition: opacity $duration-fast-01 motion(standard, productive);
+animation: slide $duration-moderate-01 ease-in-out;
+font: $font-size-01/$line-height-01 $font-family-sans;
+border: 1px solid $border-subtle-01;
+```
+
+Longhand properties continue to work as before and are still recommended when you need fine-grained control.
 
 ## Tracking
 

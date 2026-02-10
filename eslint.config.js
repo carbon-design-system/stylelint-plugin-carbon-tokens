@@ -46,10 +46,12 @@ export default [
           alwaysTryTypes: true,
           project: './tsconfig.json',
         },
-        node: {
-          paths: ['src'],
-          extensions: ['.js', '.ts'],
-        },
+        // The node resolver can sometimes conflict with the TS resolver in IDEs
+        // Try setting this to true to use default node resolution alongside TS
+        node: true,
+      },
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.tsx'],
       },
     },
   },

@@ -90,10 +90,7 @@ function validateShorthandProperty(
       }
 
       // Validate timing function for motion-easing-use rule
-      if (
-        ruleName === 'carbon/motion-easing-use' &&
-        parsed.timingFunction
-      ) {
+      if (ruleName === 'carbon/motion-easing-use' && parsed.timingFunction) {
         let validation;
         if (isCarbonMotionFunction(parsed.timingFunction)) {
           validation = validateCarbonMotionFunction(parsed.timingFunction);
@@ -139,10 +136,7 @@ function validateShorthandProperty(
       }
 
       // Validate timing function for motion-easing-use rule
-      if (
-        ruleName === 'carbon/motion-easing-use' &&
-        parsed.timingFunction
-      ) {
+      if (ruleName === 'carbon/motion-easing-use' && parsed.timingFunction) {
         let validation;
         if (isCarbonMotionFunction(parsed.timingFunction)) {
           validation = validateCarbonMotionFunction(parsed.timingFunction);
@@ -229,7 +223,10 @@ function validateShorthandProperty(
         }
       }
     } else if (prop === 'border' || prop === 'outline') {
-      const parsed = prop === 'border' ? parseBorder(singleValue) : parseOutline(singleValue);
+      const parsed =
+        prop === 'border'
+          ? parseBorder(singleValue)
+          : parseOutline(singleValue);
 
       // Validate color for theme-use rule
       if (ruleName === 'carbon/theme-use' && parsed.color) {
