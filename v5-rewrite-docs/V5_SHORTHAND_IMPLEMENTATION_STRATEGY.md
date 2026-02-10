@@ -220,23 +220,31 @@ Comprehensive test coverage:
 - Tests handle edge cases (quoted values, functions, multiple values)
 - All 213 tests passing
 
-### Phase 5: Integration Test Fixtures
+### Phase 5: Integration Test Fixtures ✅
 
-**Status:** ⏳ Pending
+**Status:** ✅ Complete
 
-Plan to add fixture files demonstrating shorthand validation:
-- Valid shorthand usage examples
-- Invalid shorthand usage examples
-- Mixed longhand/shorthand examples
+Added fixture files demonstrating shorthand validation:
+- Valid shorthand usage examples in [`src/__tests__/fixtures/*/valid/`](src/__tests__/fixtures/)
+- Invalid shorthand usage examples in [`src/__tests__/fixtures/*/invalid/`](src/__tests__/fixtures/)
+- Coverage for all shorthand types (transition, animation, font, border, outline)
+- 8 new fixture files created
 
-### Phase 6: Auto-fix Support
+### Phase 6: Auto-fix Support ✅
 
-**Status:** ⏳ Pending
+**Status:** ✅ Complete
 
-Plan to implement auto-fix for shorthand properties:
-- Reconstruct shorthand with fixed component values
-- Preserve other components unchanged
-- Handle multiple comma-separated values
+Implemented auto-fix for shorthand properties:
+- Reconstruction functions at [`src/utils/parse-shorthand.ts`](src/utils/parse-shorthand.ts:360)
+  - `reconstructTransition()` - Rebuilds transition shorthand
+  - `reconstructAnimation()` - Rebuilds animation shorthand
+  - `reconstructFont()` - Rebuilds font shorthand
+  - `reconstructBorder()` - Rebuilds border shorthand
+  - `reconstructOutline()` - Rebuilds outline shorthand
+- Auto-fix integration at [`src/utils/create-rule.ts`](src/utils/create-rule.ts:420)
+- Preserves valid components while replacing invalid ones
+- Handles multiple comma-separated values
+- Full test coverage with all 213 tests passing
 
 ---
 

@@ -28,6 +28,11 @@ import {
   parseBorder,
   parseOutline,
   splitByComma,
+  reconstructTransition,
+  reconstructAnimation,
+  reconstructFont,
+  reconstructBorder,
+  reconstructOutline,
 } from './parse-shorthand.js';
 import type {
   CarbonToken,
@@ -53,11 +58,19 @@ function validateShorthandProperty(
   ruleName: string,
   tokens: CarbonToken[],
   options: BaseRuleOptions
-): Array<{ isValid: boolean; message?: string; component?: string }> {
+): Array<{
+  isValid: boolean;
+  message?: string;
+  component?: string;
+  suggestedFix?: string;
+  originalValue?: string;
+}> {
   const results: Array<{
     isValid: boolean;
     message?: string;
     component?: string;
+    suggestedFix?: string;
+    originalValue?: string;
   }> = [];
 
   // Handle multiple comma-separated values (e.g., multiple transitions)
@@ -81,10 +94,19 @@ function validateShorthandProperty(
           carbonPrefix: options.carbonPrefix,
         });
         if (!validation.isValid) {
+          // Generate suggested fix if available
+          let suggestedFix: string | undefined;
+          if (validation.suggestedFix) {
+            const fixedParsed = { ...parsed, duration: validation.suggestedFix };
+            suggestedFix = reconstructTransition(fixedParsed);
+          }
+
           results.push({
             isValid: false,
             message: `transition duration ${validation.message || 'is invalid'}`,
             component: 'duration',
+            suggestedFix,
+            originalValue: singleValue,
           });
         }
       }
@@ -103,10 +125,22 @@ function validateShorthandProperty(
           });
         }
         if (!validation.isValid) {
+          // Generate suggested fix if available
+          let suggestedFix: string | undefined;
+          if (validation.suggestedFix) {
+            const fixedParsed = {
+              ...parsed,
+              timingFunction: validation.suggestedFix,
+            };
+            suggestedFix = reconstructTransition(fixedParsed);
+          }
+
           results.push({
             isValid: false,
             message: `transition timing-function ${validation.message || 'is invalid'}`,
             component: 'timing-function',
+            suggestedFix,
+            originalValue: singleValue,
           });
         }
       }
@@ -127,10 +161,19 @@ function validateShorthandProperty(
           carbonPrefix: options.carbonPrefix,
         });
         if (!validation.isValid) {
+          // Generate suggested fix if available
+          let suggestedFix: string | undefined;
+          if (validation.suggestedFix) {
+            const fixedParsed = { ...parsed, duration: validation.suggestedFix };
+            suggestedFix = reconstructAnimation(fixedParsed);
+          }
+
           results.push({
             isValid: false,
             message: `animation duration ${validation.message || 'is invalid'}`,
             component: 'duration',
+            suggestedFix,
+            originalValue: singleValue,
           });
         }
       }
@@ -149,10 +192,22 @@ function validateShorthandProperty(
           });
         }
         if (!validation.isValid) {
+          // Generate suggested fix if available
+          let suggestedFix: string | undefined;
+          if (validation.suggestedFix) {
+            const fixedParsed = {
+              ...parsed,
+              timingFunction: validation.suggestedFix,
+            };
+            suggestedFix = reconstructAnimation(fixedParsed);
+          }
+
           results.push({
             isValid: false,
             message: `animation timing-function ${validation.message || 'is invalid'}`,
             component: 'timing-function',
+            suggestedFix,
+            originalValue: singleValue,
           });
         }
       }
@@ -175,10 +230,19 @@ function validateShorthandProperty(
             });
           }
           if (!validation.isValid) {
+            // Generate suggested fix if available
+            let suggestedFix: string | undefined;
+            if (validation.suggestedFix) {
+              const fixedParsed = { ...parsed, size: validation.suggestedFix };
+              suggestedFix = reconstructFont(fixedParsed);
+            }
+
             results.push({
               isValid: false,
               message: `font-size ${validation.message || 'is invalid'}`,
               component: 'size',
+              suggestedFix,
+              originalValue: singleValue,
             });
           }
         }
@@ -197,10 +261,19 @@ function validateShorthandProperty(
             });
           }
           if (!validation.isValid) {
+            // Generate suggested fix if available
+            let suggestedFix: string | undefined;
+            if (validation.suggestedFix) {
+              const fixedParsed = { ...parsed, family: validation.suggestedFix };
+              suggestedFix = reconstructFont(fixedParsed);
+            }
+
             results.push({
               isValid: false,
               message: `font-family ${validation.message || 'is invalid'}`,
               component: 'family',
+              suggestedFix,
+              originalValue: singleValue,
             });
           }
         }
@@ -214,10 +287,22 @@ function validateShorthandProperty(
             carbonPrefix: options.carbonPrefix,
           });
           if (!validation.isValid) {
+            // Generate suggested fix if available
+            let suggestedFix: string | undefined;
+            if (validation.suggestedFix) {
+              const fixedParsed = {
+                ...parsed,
+                lineHeight: validation.suggestedFix,
+              };
+              suggestedFix = reconstructFont(fixedParsed);
+            }
+
             results.push({
               isValid: false,
               message: `line-height ${validation.message || 'is invalid'}`,
               component: 'line-height',
+              suggestedFix,
+              originalValue: singleValue,
             });
           }
         }
@@ -242,10 +327,22 @@ function validateShorthandProperty(
           });
         }
         if (!validation.isValid) {
+          // Generate suggested fix if available
+          let suggestedFix: string | undefined;
+          if (validation.suggestedFix) {
+            const fixedParsed = { ...parsed, color: validation.suggestedFix };
+            suggestedFix =
+              prop === 'border'
+                ? reconstructBorder(fixedParsed)
+                : reconstructOutline(fixedParsed);
+          }
+
           results.push({
             isValid: false,
             message: `${prop}-color ${validation.message || 'is invalid'}`,
             component: 'color',
+            suggestedFix,
+            originalValue: singleValue,
           });
         }
       }
@@ -361,15 +458,36 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
 
           for (const validation of validations) {
             if (!validation.isValid) {
+              const message = validation.suggestedFix
+                ? messages.expected(
+                    prop,
+                    validation.originalValue || decl.value,
+                    validation.suggestedFix
+                  )
+                : messages.rejected(
+                    prop,
+                    decl.value,
+                    validation.message || 'Invalid value'
+                  );
+
               utils.report({
-                message: messages.rejected(
-                  prop,
-                  decl.value,
-                  validation.message || 'Invalid value'
-                ),
+                message,
                 node: decl,
                 result,
                 ruleName,
+                fix:
+                  validation.suggestedFix &&
+                  validation.originalValue &&
+                  context.fix
+                    ? () => {
+                        // Replace the specific shorthand value with the fixed version
+                        const newValue = decl.value.replace(
+                          validation.originalValue!,
+                          validation.suggestedFix!
+                        );
+                        decl.value = newValue;
+                      }
+                    : undefined,
               });
             }
           }

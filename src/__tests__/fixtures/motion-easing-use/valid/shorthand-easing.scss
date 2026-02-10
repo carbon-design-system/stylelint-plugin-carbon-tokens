@@ -1,0 +1,41 @@
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@use '@carbon/styles/scss/motion' as *;
+
+// Valid: Carbon easing tokens in transition shorthand
+.element {
+  transition: opacity 200ms $easing-standard-productive;
+}
+
+.element-multiple {
+  transition: opacity $duration-fast-01 $easing-standard-productive,
+              transform $duration-moderate-01 $easing-standard-expressive;
+}
+
+// Valid: Standard easing keywords in transition
+.element-keywords {
+  transition: opacity 200ms ease-in;
+  transition: transform 300ms ease-out;
+  transition: color 150ms ease-in-out;
+  transition: all 200ms linear;
+}
+
+// Valid: Carbon easing tokens in animation shorthand
+.animated {
+  animation: slide 500ms $easing-entrance-productive;
+}
+
+.animated-multiple {
+  animation: fadeIn $duration-fast-01 $easing-entrance-productive,
+             slideUp $duration-moderate-01 $easing-exit-expressive;
+}
+
+// Valid: Standard easing keywords in animation
+.animated-keywords {
+  animation: pulse 1s ease-in-out infinite;
+}

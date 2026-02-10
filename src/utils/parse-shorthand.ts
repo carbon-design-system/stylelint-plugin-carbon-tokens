@@ -351,3 +351,108 @@ export function splitByComma(value: string): string[] {
 
   return results;
 }
+
+/**
+ * Reconstruct transition shorthand from components
+ */
+export function reconstructTransition(parsed: {
+  property?: string;
+  duration?: string;
+  timingFunction?: string;
+  delay?: string;
+}): string {
+  const parts: string[] = [];
+
+  if (parsed.property) parts.push(parsed.property);
+  if (parsed.duration) parts.push(parsed.duration);
+  if (parsed.timingFunction) parts.push(parsed.timingFunction);
+  if (parsed.delay) parts.push(parsed.delay);
+
+  return parts.join(' ');
+}
+
+/**
+ * Reconstruct animation shorthand from components
+ */
+export function reconstructAnimation(parsed: {
+  name?: string;
+  duration?: string;
+  timingFunction?: string;
+  delay?: string;
+  iterationCount?: string;
+  direction?: string;
+  fillMode?: string;
+  playState?: string;
+}): string {
+  const parts: string[] = [];
+
+  if (parsed.name) parts.push(parsed.name);
+  if (parsed.duration) parts.push(parsed.duration);
+  if (parsed.timingFunction) parts.push(parsed.timingFunction);
+  if (parsed.delay) parts.push(parsed.delay);
+  if (parsed.iterationCount) parts.push(parsed.iterationCount);
+  if (parsed.direction) parts.push(parsed.direction);
+  if (parsed.fillMode) parts.push(parsed.fillMode);
+  if (parsed.playState) parts.push(parsed.playState);
+
+  return parts.join(' ');
+}
+
+/**
+ * Reconstruct font shorthand from components
+ */
+export function reconstructFont(parsed: {
+  style?: string;
+  variant?: string;
+  weight?: string;
+  size?: string;
+  lineHeight?: string;
+  family?: string;
+}): string {
+  const parts: string[] = [];
+
+  if (parsed.style) parts.push(parsed.style);
+  if (parsed.variant) parts.push(parsed.variant);
+  if (parsed.weight) parts.push(parsed.weight);
+
+  // Size and line-height are combined
+  if (parsed.size) {
+    if (parsed.lineHeight) {
+      parts.push(`${parsed.size}/${parsed.lineHeight}`);
+    } else {
+      parts.push(parsed.size);
+    }
+  }
+
+  if (parsed.family) parts.push(parsed.family);
+
+  return parts.join(' ');
+}
+
+/**
+ * Reconstruct border shorthand from components
+ */
+export function reconstructBorder(parsed: {
+  width?: string;
+  style?: string;
+  color?: string;
+}): string {
+  const parts: string[] = [];
+
+  if (parsed.width) parts.push(parsed.width);
+  if (parsed.style) parts.push(parsed.style);
+  if (parsed.color) parts.push(parsed.color);
+
+  return parts.join(' ');
+}
+
+/**
+ * Reconstruct outline shorthand from components
+ */
+export function reconstructOutline(parsed: {
+  width?: string;
+  style?: string;
+  color?: string;
+}): string {
+  return reconstructBorder(parsed);
+}

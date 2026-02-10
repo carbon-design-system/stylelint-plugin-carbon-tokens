@@ -1,0 +1,34 @@
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@use '@carbon/styles/scss/type' as *;
+
+// Valid: Carbon type tokens in font shorthand
+.element {
+  font: $font-size-01/$line-height-01 $font-family-sans;
+}
+
+.element-with-style {
+  font: italic $font-size-02/$line-height-02 $font-family-sans;
+}
+
+.element-with-weight {
+  font: bold $font-size-03/$line-height-03 $font-family-serif;
+}
+
+// Valid: Standard font-weight values
+.element-weight-keywords {
+  font: normal 16px/1.5 $font-family-sans;
+  font: bold 16px/1.5 $font-family-sans;
+  font: lighter 16px/1.5 $font-family-sans;
+  font: bolder 16px/1.5 $font-family-sans;
+}
+
+// Valid: Carbon type functions
+.element-functions {
+  font: type-scale(2)/1.5 font-family('sans');
+}

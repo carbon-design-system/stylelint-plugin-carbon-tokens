@@ -130,7 +130,7 @@ All 5 Carbon token validation rules are now complete:
   - Easing and motion style parameters
   - Comprehensive test coverage
 
-### Shorthand Properties ✅ NEW
+### Shorthand Properties ✅ FULLY IMPLEMENTED
 
 - [x] **Shorthand Parser Utility** - Implementation at [`src/utils/parse-shorthand.ts`](src/utils/parse-shorthand.ts:1)
   - `parseTransition()` - Parses transition shorthand
@@ -140,6 +140,12 @@ All 5 Carbon token validation rules are now complete:
   - `parseOutline()` - Parses outline shorthand
   - `splitByComma()` - Handles comma-separated values
   - 44 comprehensive tests
+- [x] **Shorthand Reconstruction** - Implementation at [`src/utils/parse-shorthand.ts`](src/utils/parse-shorthand.ts:360)
+  - `reconstructTransition()` - Rebuilds transition shorthand
+  - `reconstructAnimation()` - Rebuilds animation shorthand
+  - `reconstructFont()` - Rebuilds font shorthand
+  - `reconstructBorder()` - Rebuilds border shorthand
+  - `reconstructOutline()` - Rebuilds outline shorthand
 - [x] **Shorthand Validation** - Integrated at [`src/utils/create-rule.ts`](src/utils/create-rule.ts:354)
   - Validates `transition` (duration, timing-function)
   - Validates `animation` (duration, timing-function)
@@ -147,6 +153,11 @@ All 5 Carbon token validation rules are now complete:
   - Validates `border`/`outline` (color)
   - Supports multiple comma-separated values
   - Rule-specific component validation
+- [x] **Shorthand Auto-Fix** - Integrated at [`src/utils/create-rule.ts`](src/utils/create-rule.ts:420)
+  - Generates suggested fixes for invalid shorthand components
+  - Reconstructs entire shorthand with corrected values
+  - Preserves all valid components while replacing invalid ones
+  - Supports all shorthand properties (transition, animation, font, border, outline)
 
 ## 🚧 Remaining Work
 

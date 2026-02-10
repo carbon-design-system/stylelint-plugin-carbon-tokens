@@ -88,13 +88,15 @@ The following CSS shorthand properties are now validated in V5:
 
 ## Implementation Status
 
-✅ **Shorthand property support is now fully implemented!**
+✅ **Shorthand property support is now fully implemented with auto-fix!**
 
 The implementation includes:
 - Shorthand parsing utilities in [`src/utils/parse-shorthand.ts`](src/utils/parse-shorthand.ts:1)
+- Shorthand reconstruction functions for auto-fix in [`src/utils/parse-shorthand.ts`](src/utils/parse-shorthand.ts:360)
 - Validation logic integrated into [`src/utils/create-rule.ts`](src/utils/create-rule.ts:354)
-- Support for all four shorthand property types
-- Comprehensive test coverage (44 parser tests)
+- Auto-fix support integrated into [`src/utils/create-rule.ts`](src/utils/create-rule.ts:420)
+- Support for all five shorthand property types (transition, animation, font, border, outline)
+- Comprehensive test coverage (44 parser tests + integration fixtures)
 
 For implementation details, see [`V5_SHORTHAND_IMPLEMENTATION_STRATEGY.md`](./V5_SHORTHAND_IMPLEMENTATION_STRATEGY.md).
 
