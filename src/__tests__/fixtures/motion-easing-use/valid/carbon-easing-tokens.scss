@@ -1,0 +1,35 @@
+/**
+ * Valid: Using Carbon SCSS motion easing tokens, motion() function, and standard easing keywords
+ */
+
+.foo {
+  transition-timing-function: $standard-productive;
+  animation-timing-function: $standard-expressive;
+}
+
+.bar {
+  /* Standard CSS easing keywords */
+  transition-timing-function: ease-in-out;
+  animation-timing-function: linear;
+}
+
+.motion-function {
+  /* Carbon motion() function with all valid combinations */
+  transition-timing-function: motion(standard, productive);
+  animation-timing-function: motion(entrance, expressive);
+}
+
+.motion-exit {
+  transition-timing-function: motion(exit, productive);
+  animation-timing-function: motion(exit, expressive);
+}
+
+.motion-with-quotes {
+  transition-timing-function: motion('standard', 'productive');
+  animation-timing-function: motion('entrance', 'expressive');
+}
+
+.reset {
+  transition-timing-function: inherit;
+  animation-timing-function: initial;
+}

@@ -1,0 +1,53 @@
+/**
+ * Valid transform function usage with Carbon tokens
+ */
+
+.valid-translateX {
+  /* Carbon SCSS variable */
+  transform: translateX($spacing-05);
+}
+
+.valid-translateY {
+  /* Carbon CSS custom property */
+  transform: translateY(var(--cds-spacing-03));
+}
+
+.valid-translate {
+  /* Two Carbon tokens */
+  transform: translate($spacing-02, $spacing-04);
+}
+
+.valid-translate-mixed {
+  /* Mix of token and relative unit */
+  transform: translate($spacing-05, 50%);
+}
+
+.valid-translate3d {
+  /* First two params validated, z-axis not validated */
+  transform: translate3d($spacing-01, var(--cds-spacing-02), 100px);
+}
+
+.valid-relative-units {
+  /* Relative units are allowed */
+  transform: translateX(50%);
+  transform: translateY(100vh);
+  transform: translate(25vw, 50%);
+}
+
+.valid-zero {
+  /* Zero is always allowed */
+  transform: translateX(0);
+  transform: translate(0, 0);
+}
+
+.valid-calc {
+  /* calc() expressions are allowed */
+  transform: translateX(calc(100vw - #{$spacing-05}));
+  transform: translate(calc(50% - #{$spacing-01}), $spacing-03);
+}
+
+.valid-complex {
+  /* Transform functions with other transforms (only translate validated) */
+  transform: translateX($spacing-05) rotate(45deg);
+  transform: translate(var(--cds-spacing-03), var(--cds-spacing-04)) scale(1.2);
+}

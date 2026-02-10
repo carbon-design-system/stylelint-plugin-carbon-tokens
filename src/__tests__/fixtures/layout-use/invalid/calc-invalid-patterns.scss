@@ -1,0 +1,35 @@
+/**
+ * Invalid calc() expressions
+ *
+ * These calc() expressions violate V4 rules and should be rejected
+ */
+
+.invalid-fixed-unit-math {
+  /* Rejected: px + token (not proportional) */
+  right: calc(100px - #{$spacing-01});
+
+  /* Rejected: px + px (no token) */
+  margin: calc(100px + 100px);
+
+  /* Rejected: % + px (px is not a token) */
+  padding: calc(50% - 8px);
+}
+
+.invalid-token-math {
+  /* Rejected: token + token */
+  margin: calc(#{$spacing-01} + #{$spacing-05});
+
+  /* Rejected: token * number (not -1) */
+  padding: calc(#{$spacing-01} * 1.5);
+
+  /* Rejected: token / number (not -1) */
+  top: calc(#{$spacing-05} / 2);
+}
+
+.invalid-non-carbon-tokens {
+  /* Rejected: unknown variable */
+  margin: calc(100vw - #{$unknown-token});
+
+  /* Rejected: non-Carbon custom property */
+  padding: calc(100% + var(--my-spacing));
+}

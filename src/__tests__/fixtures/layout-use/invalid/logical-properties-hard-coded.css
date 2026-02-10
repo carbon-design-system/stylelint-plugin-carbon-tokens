@@ -1,0 +1,20 @@
+/**
+ * Invalid: Using hard-coded values with logical properties
+ * Expected errors on all properties with pixel/rem values
+ */
+
+.foo {
+  /* Should use Carbon tokens */
+  inset: 16px;
+  inset-block: 24px;
+  inset-block-start: 8px;
+  inset-inline-end: 32px;
+}
+
+.bar {
+  /* Should use Carbon tokens */
+  margin-block: 1rem;
+  margin-inline-start: 2rem;
+  padding-block-end: 0.5rem;
+  padding-inline: 1.5rem;
+}

@@ -1,0 +1,72 @@
+/**
+ * Invalid rgba() function usage - non-Carbon tokens
+ */
+
+.invalid-rgba-rgb-values {
+  /* Hard-coded RGB values - REJECTED */
+  background-color: rgba(100, 100, 255, 0.5);
+  /*                     ^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+  color: rgba(255, 0, 0, 0.8);
+  /*          ^^^^^^^^^^^^^^^^ carbon/theme-use */
+}
+
+.invalid-rgba-hex {
+  /* Hex color values - REJECTED */
+  background-color: rgba(#ffffff, 0.5);
+  /*                     ^^^^^^^^^^^^^^ carbon/theme-use */
+  color: rgba(#000000, 0.8);
+  /*          ^^^^^^^^^^^^^^ carbon/theme-use */
+}
+
+.invalid-rgba-color-keywords {
+  /* Color keywords - REJECTED */
+  background-color: rgba(white, 0.5);
+  /*                     ^^^^^^^^^^^^ carbon/theme-use */
+  color: rgba(black, 0.8);
+  /*          ^^^^^^^^^^^^ carbon/theme-use */
+  border-color: rgba(red, 0.3);
+  /*                 ^^^^^^^^^^ carbon/theme-use */
+}
+
+.invalid-rgba-unknown-token {
+  /* Unknown SCSS variable - REJECTED */
+  background-color: rgba($custom-color, 0.5);
+  /*                     ^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+  color: rgba($my-theme-color, 0.8);
+  /*          ^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+}
+
+.invalid-rgba-unknown-css-var {
+  /* Unknown CSS custom property - REJECTED */
+  background-color: rgba(var(--custom-color), 0.5);
+  /*                     ^^^^^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+  color: rgba(var(--my-theme), 0.8);
+  /*          ^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+}
+
+.invalid-rgba-in-gradients {
+  /* Invalid rgba() in gradients */
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.8),
+    /*   ^^^^^^^^^^^^^^^^^^^^ carbon/theme-use */ rgba(0, 0, 0, 0)
+      /*   ^^^^^^^^^^^ carbon/theme-use */
+  );
+}
+
+.invalid-rgba-in-shadows {
+  /* Invalid rgba() in box-shadow */
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    /*         ^^^^^^^^^^^^^^^^^^^ carbon/theme-use */ 0 4px 8px
+      rgba(100, 100, 100, 0.2);
+  /*         ^^^^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+}
+
+.invalid-rgba-mixed {
+  /* Mix of valid and invalid - both should be caught */
+  background: linear-gradient(
+    rgba($layer-01, 0.8),
+    rgba(255, 255, 255, 0) /*   ^^^^^^^^^^^^^^^^^ carbon/theme-use */
+  );
+}

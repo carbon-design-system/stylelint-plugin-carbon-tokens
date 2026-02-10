@@ -1,0 +1,21 @@
+/**
+ * Invalid: Using hard-coded spacing values instead of Carbon tokens
+ * Expected errors on lines with pixel values
+ */
+
+.foo {
+  margin: 16px;
+  padding: 24px;
+  gap: 8px;
+}
+
+.bar {
+  margin: 1rem 2rem;
+  padding: 0.5em 1em;
+}
+
+.baz {
+  top: 10px;
+  left: 20px;
+  bottom: 15px;
+}

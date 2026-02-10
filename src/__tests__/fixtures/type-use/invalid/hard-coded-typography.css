@@ -1,0 +1,23 @@
+/**
+ * Invalid: Using hard-coded typography values instead of Carbon tokens
+ * Expected errors on lines with pixel/custom values
+ */
+
+.foo {
+  font-size: 32px;
+  line-height: 40px;
+  font-family: "Times New Roman", Times, serif;
+  font-weight: 400;
+  font-style: italic;
+}
+
+.bar {
+  font-weight: 5px;
+  font-variant: small-caps;
+    font-weight: bold;
+}
+
+.baz {
+    font-style: normal;
+}
+

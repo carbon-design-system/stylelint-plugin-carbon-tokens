@@ -1,0 +1,352 @@
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+import { describe, it } from 'node:test';
+import assert from 'node:assert';
+import stylelint from 'stylelint';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+const configPath = join(__dirname, '../../../dist/index.js');
+
+describe('Configuration Options', () => {
+  describe('acceptValues option', () => {
+    it('should accept custom values in theme-use', async () => {
+      const result = await stylelint.lint({
+        code: '.test { color: red; background: blue; }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/theme-use': [true, { acceptValues: ['red', 'blue'] }],
+          },
+        },
+      });
+
+      assert.strictEqual(result.errored, false);
+    });
+
+    it('should accept custom values in layout-use', async () => {
+      const result = await stylelint.lint({
+        code: '.test { margin: 8px; padding: 16px; }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/layout-use': [true, { acceptValues: ['8px', '16px'] }],
+          },
+        },
+      });
+
+      assert.strictEqual(result.errored, false);
+    });
+
+    it('should accept custom values in type-use', async () => {
+      const result = await stylelint.lint({
+        code: '.test { font-size: 14px; line-height: 1.5; }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/type-use': [
+              true,
+              { acceptValues: ['14px', '1.5', 'inherit'] },
+            ],
+          },
+        },
+      });
+
+      assert.strictEqual(result.errored, false);
+    });
+
+    it('should accept custom values in motion-duration-use', async () => {
+      const result = await stylelint.lint({
+        code: '.test { transition-duration: 150ms; }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/motion-duration-use': [true, { acceptValues: ['150ms'] }],
+          },
+        },
+      });
+
+      assert.strictEqual(result.errored, false);
+    });
+
+    it('should accept custom values in motion-easing-use', async () => {
+      const result = await stylelint.lint({
+        code: '.test { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/motion-easing-use': [
+              true,
+              { acceptValues: ['/^cubic-bezier/'] },
+            ],
+          },
+        },
+      });
+
+      assert.strictEqual(result.errored, false);
+    });
+  });
+
+  describe('acceptUndefinedVariables option', () => {
+    it('should accept undefined SCSS variables when enabled', async () => {
+      const result = await stylelint.lint({
+        code: '.test { color: $custom-color; }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/theme-use': [true, { acceptUndefinedVariables: true }],
+          },
+        },
+      });
+
+      assert.strictEqual(result.errored, false);
+    });
+
+    it('should reject undefined SCSS variables when disabled', async () => {
+      const result = await stylelint.lint({
+        code: '.test { color: $custom-color; }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/theme-use': [true, { acceptUndefinedVariables: false }],
+          },
+        },
+      });
+
+      assert.strictEqual(result.errored, true);
+    });
+
+    it('should work with layout-use rule', async () => {
+      const result = await stylelint.lint({
+        code: '.test { margin: $custom-spacing; }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/layout-use': [true, { acceptUndefinedVariables: true }],
+          },
+        },
+      });
+
+      assert.strictEqual(result.errored, false);
+    });
+  });
+
+  describe('acceptCarbonCustomProp option', () => {
+    it('should accept Carbon custom properties when enabled', async () => {
+      const result = await stylelint.lint({
+        code: '.test { color: var(--cds-custom-color); }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/theme-use': [true, { acceptCarbonCustomProp: true }],
+          },
+        },
+      });
+
+      assert.strictEqual(result.errored, false);
+    });
+
+    it('should reject non-Carbon custom properties when enabled', async () => {
+      const result = await stylelint.lint({
+        code: '.test { color: var(--my-color); }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/theme-use': [true, { acceptCarbonCustomProp: true }],
+          },
+        },
+      });
+
+      assert.strictEqual(result.errored, true);
+    });
+
+    it('should work with layout-use rule', async () => {
+      const result = await stylelint.lint({
+        code: '.test { margin: var(--cds-custom-spacing); }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/layout-use': [true, { acceptCarbonCustomProp: true }],
+          },
+        },
+      });
+
+      assert.strictEqual(result.errored, false);
+    });
+  });
+
+  describe('carbonPrefix option', () => {
+    it('should accept custom Carbon prefix for CSS custom properties', async () => {
+      const result = await stylelint.lint({
+        code: '.test { color: var(--custom-my-color); }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/theme-use': [
+              true,
+              { carbonPrefix: 'custom', acceptCarbonCustomProp: true },
+            ],
+          },
+        },
+      });
+
+      assert.strictEqual(result.errored, false);
+    });
+
+    it('should reject CSS custom properties with wrong prefix', async () => {
+      const result = await stylelint.lint({
+        code: '.test { color: var(--cds-my-color); }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/theme-use': [
+              true,
+              { carbonPrefix: 'custom', acceptCarbonCustomProp: true },
+            ],
+          },
+        },
+      });
+
+      assert.strictEqual(result.errored, true);
+    });
+
+    it('should accept standard Carbon tokens regardless of prefix setting', async () => {
+      const result = await stylelint.lint({
+        code: '.test { color: $background; margin: var(--cds-spacing-05); }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/theme-use': [true, { carbonPrefix: 'custom' }],
+          },
+        },
+      });
+
+      // Real Carbon tokens are always accepted regardless of carbonPrefix
+      assert.strictEqual(result.errored, false);
+    });
+  });
+
+  describe('includeProps option', () => {
+    it('should validate only specified properties', async () => {
+      const result = await stylelint.lint({
+        code: '.test { color: #fff; background: #000; }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/theme-use': [true, { includeProps: ['color'] }],
+          },
+        },
+      });
+
+      // Should error on color but not background
+      assert.strictEqual(result.errored, true);
+      assert.strictEqual(result.results[0].warnings.length, 1);
+      assert.ok(result.results[0].warnings[0].text.includes('color'));
+    });
+
+    it('should support regex patterns', async () => {
+      const result = await stylelint.lint({
+        code: '.test { border-color: #fff; border-width: 1px; }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/theme-use': [true, { includeProps: ['/^border-color/'] }],
+          },
+        },
+      });
+
+      // Should only validate border-color
+      assert.strictEqual(result.errored, true);
+      assert.strictEqual(result.results[0].warnings.length, 1);
+      assert.ok(result.results[0].warnings[0].text.includes('border-color'));
+    });
+
+    it('should support negative lookahead regex', async () => {
+      const result = await stylelint.lint({
+        code: '.test { font-size: 16px; font-style: italic; }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/type-use': [true, { includeProps: ['/^font-(?!style)/'] }],
+          },
+        },
+      });
+
+      // Should validate font-size but not font-style
+      assert.strictEqual(result.errored, true);
+      assert.strictEqual(result.results[0].warnings.length, 1);
+      assert.ok(result.results[0].warnings[0].text.includes('font-size'));
+    });
+
+    it('should support multiple patterns', async () => {
+      const result = await stylelint.lint({
+        code: '.test { margin: 10px; padding: 10px; gap: 10px; }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/layout-use': [
+              true,
+              { includeProps: ['margin', '/^padding/'] },
+            ],
+          },
+        },
+      });
+
+      // Should validate margin and padding but not gap
+      assert.strictEqual(result.errored, true);
+      assert.strictEqual(result.results[0].warnings.length, 2);
+    });
+  });
+
+  describe('Combined options', () => {
+    it('should work with multiple options together', async () => {
+      const result = await stylelint.lint({
+        code: '.test { color: red; background: var(--custom-bg); border-color: $custom-border; }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/theme-use': [
+              true,
+              {
+                acceptValues: ['red'],
+                acceptUndefinedVariables: true,
+                acceptCarbonCustomProp: true,
+                carbonPrefix: 'custom',
+                includeProps: ['color', 'background', 'border-color'],
+              },
+            ],
+          },
+        },
+      });
+
+      assert.strictEqual(result.errored, false);
+    });
+
+    it('should validate shorthand properties with custom includeProps', async () => {
+      const result = await stylelint.lint({
+        code: '.test { transition: opacity 200ms ease-in; animation: slide 300ms; }',
+        config: {
+          plugins: [configPath],
+          rules: {
+            'carbon/motion-duration-use': [
+              true,
+              { includeProps: ['transition'] },
+            ],
+          },
+        },
+      });
+
+      // Should validate transition but not animation
+      assert.strictEqual(result.errored, true);
+      assert.strictEqual(result.results[0].warnings.length, 1);
+      assert.ok(result.results[0].warnings[0].text.includes('transition'));
+    });
+  });
+});

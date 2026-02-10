@@ -1,0 +1,24 @@
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+// Invalid: Non-standard easing in transition shorthand
+.element {
+  transition: opacity 200ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.element-steps {
+  transition: transform 300ms steps(4, end);
+}
+
+// Invalid: Non-standard easing in animation shorthand
+.animated {
+  animation: slide 500ms cubic-bezier(0.25, 0.1, 0.25, 1);
+}
+
+.animated-steps {
+  animation: fadeIn 250ms steps(10);
+}

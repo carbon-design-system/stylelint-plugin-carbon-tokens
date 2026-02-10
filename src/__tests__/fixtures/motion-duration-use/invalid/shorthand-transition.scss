@@ -1,0 +1,28 @@
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+// Invalid: Hard-coded duration in transition shorthand
+.element {
+  transition: opacity 200ms ease-in;
+}
+
+.element-multiple {
+  transition:
+    opacity 200ms ease-in,
+    transform 300ms ease-out;
+}
+
+// Invalid: Hard-coded duration in animation shorthand
+.animated {
+  animation: slide 500ms ease-in-out;
+}
+
+.animated-multiple {
+  animation:
+    fadeIn 250ms ease-in,
+    slideUp 350ms ease-out;
+}

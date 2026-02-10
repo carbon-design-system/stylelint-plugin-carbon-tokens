@@ -1,0 +1,14 @@
+/**
+ * Invalid: Using hard-coded duration values instead of Carbon tokens
+ * Expected errors on lines with ms/s values
+ */
+
+.foo {
+  transition: width 300ms linear;
+  transition-duration: 0.5s;
+}
+
+.bar {
+  animation: test 200ms linear ease-in myAnim;
+  animation-duration: 1s;
+}

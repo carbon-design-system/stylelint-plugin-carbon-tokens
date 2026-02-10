@@ -1,0 +1,18 @@
+/**
+ * Invalid: Using hard-coded values for positioning
+ * Expected errors on all properties with pixel values
+ */
+
+.absolute {
+  position: absolute;
+  top: 16px;
+  right: 24px;
+  bottom: 8px;
+  left: 32px;
+}
+
+.relative {
+  position: relative;
+  top: 1rem;
+  left: 2rem;
+}
