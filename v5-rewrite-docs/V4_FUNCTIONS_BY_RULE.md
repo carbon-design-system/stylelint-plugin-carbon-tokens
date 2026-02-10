@@ -1,30 +1,34 @@
 # Function Support in V4 (Relevant for V5)
 
-This document lists all functions supported in V4, organized by rule. Includes both Carbon-specific functions and standard CSS/SCSS functions that receive special handling.
+This document lists all functions supported in V4, organized by rule. Includes
+both Carbon-specific functions and standard CSS/SCSS functions that receive
+special handling.
 
 ---
 
 ## Summary
 
-| Rule | Carbon v11 Functions | CSS/SCSS Functions | Total | V4 Support | V5 Support |
-|------|---------------------|-------------------|-------|------------|------------|
-| theme-use | 0 | 1 | 1 | ✅ Yes | ✅ Yes |
-| layout-use | 0 | 5 | 5 | ✅ Yes | ✅ Yes |
-| type-use | 3 | 0 | 3 | ✅ Yes | ✅ Yes |
-| motion-duration-use | 1 | 0 | 1 | ✅ Yes | ✅ Yes |
-| motion-easing-use | 1 | 0 | 1 | ✅ Yes | ✅ Yes |
-| **Total** | **5** | **6** | **11** | **11** | **11** |
+| Rule                | Carbon v11 Functions | CSS/SCSS Functions | Total  | V4 Support | V5 Support |
+| ------------------- | -------------------- | ------------------ | ------ | ---------- | ---------- |
+| theme-use           | 0                    | 1                  | 1      | ✅ Yes     | ✅ Yes     |
+| layout-use          | 0                    | 5                  | 5      | ✅ Yes     | ✅ Yes     |
+| type-use            | 3                    | 0                  | 3      | ✅ Yes     | ✅ Yes     |
+| motion-duration-use | 1                    | 0                  | 1      | ✅ Yes     | ✅ Yes     |
+| motion-easing-use   | 1                    | 0                  | 1      | ✅ Yes     | ✅ Yes     |
+| **Total**           | **5**                | **6**              | **11** | **11**     | **11**     |
 
 ---
 
 ## 1. theme-use (Color/Theme Functions)
 
 ### Carbon v11 Functions
+
 **None** - Theme values are accessed via tokens only
 
 ### CSS/SCSS Functions
 
 #### 1. `rgba()`
+
 - **Type**: SCSS/CSS color function
 - **Purpose**: Create colors with alpha transparency
 - **Validation**: Accepts if first parameter is a Carbon token
@@ -36,6 +40,7 @@ This document lists all functions supported in V4, organized by rule. Includes b
 **Source:** `.v4-src/rules/theme-use/utils/initSassFunctions.js:8`
 
 **V4 Behavior:**
+
 - ✅ Accepts: `rgba($layer-01, 0.5)` - Carbon token with alpha
 - ❌ Rejects: `rgba(100, 100, 255, 0.5)` - Hard-coded RGB values
 
@@ -44,19 +49,23 @@ This document lists all functions supported in V4, organized by rule. Includes b
 ## 2. layout-use (Spacing/Layout Functions)
 
 ### Carbon v11 Functions
+
 **None** - Layout values are accessed via tokens only
 
 ### CSS/SCSS Functions
 
 #### 1. `calc()`
+
 - **Type**: CSS math function
 - **Purpose**: Perform calculations with mixed units
 - **Validation**: Special rules for Carbon token usage
 - **V4 Support**: ✅ Yes - validates specific patterns
-- **V5 Support**: ✅ Yes - validates specific patterns with modern viewport units
+- **V5 Support**: ✅ Yes - validates specific patterns with modern viewport
+  units
 - **Common Usage**: Responsive spacing, viewport-relative positioning
 
 **Accepted Patterns:**
+
 ```scss
 // Viewport/percentage with token
 calc(100vw - #{$spacing-01})
@@ -71,6 +80,7 @@ calc($spacing-01 / -1)
 ```
 
 **Rejected Patterns:**
+
 ```scss
 // Pixel values with tokens
 calc(100px - #{$spacing-01})  // ❌
@@ -88,6 +98,7 @@ calc(50% - 8px)  // ❌
 **Source:** `.v4-src/rules/layout-use/utils/getLayoutInfo.js:66`
 
 #### 2. `translate()`
+
 - **Type**: CSS transform function
 - **Purpose**: 2D translation
 - **Validation**: Parameters must be Carbon tokens or relative units (%, vw, vh)
@@ -97,6 +108,7 @@ calc(50% - 8px)  // ❌
 - **Common Usage**: Positioning, centering
 
 #### 3. `translateX()`
+
 - **Type**: CSS transform function
 - **Purpose**: Horizontal translation
 - **Validation**: Parameter must be Carbon token or relative unit
@@ -106,6 +118,7 @@ calc(50% - 8px)  // ❌
 - **Common Usage**: Horizontal positioning
 
 #### 4. `translateY()`
+
 - **Type**: CSS transform function
 - **Purpose**: Vertical translation
 - **Validation**: Parameter must be Carbon token or relative unit
@@ -115,6 +128,7 @@ calc(50% - 8px)  // ❌
 - **Common Usage**: Vertical positioning
 
 #### 5. `translate3d()`
+
 - **Type**: CSS transform function
 - **Purpose**: 3D translation
 - **Validation**: First two parameters must be Carbon tokens or relative units
@@ -127,6 +141,7 @@ calc(50% - 8px)  // ❌
 **Source:** `.v4-src/rules/layout-use/utils/getLayoutInfo.js:59-64`
 
 **V4 Behavior:**
+
 - ✅ Accepts: `translate(49%, 49%)` - Relative values
 - ✅ Accepts: `translate($spacing-06, -20vh)` - Token + relative
 - ✅ Accepts: `translateX(calc(-1 * $spacing-05))` - Token in calc
@@ -140,6 +155,7 @@ calc(50% - 8px)  // ❌
 ### Carbon v11 Functions
 
 #### 1. `type-scale()`
+
 - **Type**: Carbon typography function
 - **Purpose**: Get type scale value by index
 - **Parameters**: `(index: number)`
@@ -149,6 +165,7 @@ calc(50% - 8px)  // ❌
 - **Common Usage**: Responsive typography, dynamic font sizing
 
 #### 2. `font-family()`
+
 - **Type**: Carbon typography function
 - **Purpose**: Get font family by index or name
 - **Parameters**: `(index: number | name: string)`
@@ -158,6 +175,7 @@ calc(50% - 8px)  // ❌
 - **Common Usage**: Font family management, theme switching
 
 #### 3. `font-weight()`
+
 - **Type**: Carbon typography function
 - **Purpose**: Get font weight by name
 - **Parameters**: `(name: string)`
@@ -169,6 +187,7 @@ calc(50% - 8px)  // ❌
 **Source:** `.v4-src/rules/type-use/utils/initTypeTokens.js:51-64`
 
 ### CSS/SCSS Functions
+
 **None** - No special CSS function handling for type-use
 
 ---
@@ -178,6 +197,7 @@ calc(50% - 8px)  // ❌
 ### Carbon v11 Functions
 
 #### 1. `motion()`
+
 - **Type**: Carbon motion function
 - **Purpose**: Get motion duration value by name
 - **Parameters**: `(name: string)`
@@ -187,9 +207,11 @@ calc(50% - 8px)  // ❌
 - **Common Usage**: Consistent animation timing
 - **Note**: Same function name used for both duration and easing
 
-**Source:** `.v4-src/rules/motion-duration-use/utils/initMotionThemeTokens.js:14`
+**Source:**
+`.v4-src/rules/motion-duration-use/utils/initMotionThemeTokens.js:14`
 
 ### CSS/SCSS Functions
+
 **None** - No special CSS function handling for motion-duration-use
 
 ---
@@ -199,6 +221,7 @@ calc(50% - 8px)  // ❌
 ### Carbon v11 Functions
 
 #### 1. `motion()`
+
 - **Type**: Carbon motion function
 - **Purpose**: Get motion easing curve
 - **Parameters**: `(curve: string, mode?: string)`
@@ -208,17 +231,22 @@ calc(50% - 8px)  // ❌
 - **Common Usage**: Consistent easing curves
 - **Note**: Same function name used for both duration and easing
 
-**Source:** `.v4-src/rules/motion-easing-use/utils/initMotionEasingTokens.js:12-35`
+**Source:**
+`.v4-src/rules/motion-easing-use/utils/initMotionEasingTokens.js:12-35`
 
 ### CSS/SCSS Functions
 
-**Note:** V4 explicitly skips validation for `cubic-bezier()` and `steps()` as they are standard CSS easing functions. **V5 does NOT support these** - users must use Carbon tokens, motion() function, or standard CSS keywords (policy decision).
+**Note:** V4 explicitly skips validation for `cubic-bezier()` and `steps()` as
+they are standard CSS easing functions. **V5 does NOT support these** - users
+must use Carbon tokens, motion() function, or standard CSS keywords (policy
+decision).
 
 ---
 
 ## Usage Examples
 
 ### theme-use: rgba()
+
 ```scss
 // Valid - Carbon token with alpha
 .overlay {
@@ -227,11 +255,12 @@ calc(50% - 8px)  // ❌
 
 // Invalid - Hard-coded RGB
 .overlay {
-  background-color: rgba(100, 100, 255, 0.5);  // ❌
+  background-color: rgba(100, 100, 255, 0.5); // ❌
 }
 ```
 
 ### layout-use: calc()
+
 ```scss
 // Valid patterns
 .sidebar {
@@ -242,12 +271,13 @@ calc(50% - 8px)  // ❌
 
 // Invalid patterns
 .sidebar {
-  right: calc(100px - #{$spacing-01});  // ❌ px with token
-  left: calc(#{$spacing-01} * 1.5);  // ❌ token multiplication
+  right: calc(100px - #{$spacing-01}); // ❌ px with token
+  left: calc(#{$spacing-01} * 1.5); // ❌ token multiplication
 }
 ```
 
 ### layout-use: translate functions
+
 ```scss
 // Valid
 .centered {
@@ -258,12 +288,13 @@ calc(50% - 8px)  // ❌
 
 // Invalid
 .positioned {
-  transform: translate(-20px, -1em);  // ❌ hard-coded units
-  transform: translateX(-20px);  // ❌ hard-coded pixels
+  transform: translate(-20px, -1em); // ❌ hard-coded units
+  transform: translateX(-20px); // ❌ hard-coded pixels
 }
 ```
 
 ### type-use: Carbon functions
+
 ```scss
 .heading {
   font-size: type-scale(5);
@@ -273,6 +304,7 @@ calc(50% - 8px)  // ❌
 ```
 
 ### motion: Carbon functions
+
 ```scss
 .button {
   transition-duration: motion('fast-01');
@@ -287,6 +319,7 @@ calc(50% - 8px)  // ❌
 ### ✅ Fully Implemented (11 functions)
 
 **Carbon Functions (5):**
+
 1. ✅ `type-scale()` - Simple detection, accepts any parameters
 2. ✅ `font-family()` - Simple detection, accepts any parameters
 3. ✅ `font-weight()` - Simple detection, accepts any parameters
@@ -294,9 +327,11 @@ calc(50% - 8px)  // ❌
 5. ✅ `motion()` for easing - Full parameter validation
 
 **CSS/SCSS Functions (6):**
+
 1. ✅ `rgba()` - Validates first parameter must be Carbon token
 2. ✅ `calc()` - Validates proportional math and token negation patterns
-3. ✅ `translate()` - Validates both parameters must be Carbon tokens or relative units
+3. ✅ `translate()` - Validates both parameters must be Carbon tokens or
+   relative units
 4. ✅ `translateX()` - Validates parameter must be Carbon token or relative unit
 5. ✅ `translateY()` - Validates parameter must be Carbon token or relative unit
 6. ✅ `translate3d()` - Validates first 2 parameters (z-axis not validated)
@@ -304,21 +339,29 @@ calc(50% - 8px)  // ❌
 ### V5 Implementation Details
 
 **Complex Validation (parameter checking):**
-- `calc()` - Validates proportional math (vw/vh/%) + token, token negation patterns
-- `translate()` family - Validates parameters are Carbon tokens or relative units
+
+- `calc()` - Validates proportional math (vw/vh/%) + token, token negation
+  patterns
+- `translate()` family - Validates parameters are Carbon tokens or relative
+  units
 - `rgba()` - Validates first parameter is a Carbon token
-- `motion()` - Validates easing_type (standard/entrance/exit) and motion_style (productive/expressive)
+- `motion()` - Validates easing_type (standard/entrance/exit) and motion_style
+  (productive/expressive)
 
 **Simple Validation (function detection only):**
+
 - `type-scale()` - Detects function, accepts any parameters
 - `font-family()` - Detects function, accepts any parameters
 - `font-weight()` - Detects function, accepts any parameters
 
 **Modern Enhancements:**
-- `calc()` supports modern viewport units (svw, lvw, dvw, svh, lvh, dvh, vi, vb, vmin, vmax)
+
+- `calc()` supports modern viewport units (svw, lvw, dvw, svh, lvh, dvh, vi, vb,
+  vmin, vmax)
 - All functions use TypeScript with strict typing
 
 **Policy Decisions:**
+
 - ❌ `cubic-bezier()` and `steps()` are NOT supported in motion-easing-use
 - Users must use Carbon tokens, motion() function, or standard CSS keywords
 
@@ -327,6 +370,7 @@ calc(50% - 8px)  // ❌
 ## Implementation Priority
 
 ### High Priority (Commonly Used)
+
 1. **`calc()`** - Essential for responsive layouts
 2. **`translate()` family** - Common for positioning
 3. **`type-scale()`** - Very common for responsive typography
@@ -334,6 +378,7 @@ calc(50% - 8px)  // ❌
 5. **`motion()`** - Used for animations
 
 ### Medium Priority (Less Common)
+
 6. **`rgba()`** - Useful for transparency
 7. **`font-weight()`** - Less common, usually use tokens
 8. **`translate3d()`** - Less common than 2D transforms
@@ -345,12 +390,14 @@ calc(50% - 8px)  // ❌
 ### V4 Function Validation Approach
 
 **For CSS Functions (calc, translate, rgba):**
+
 - Defined as "CSS" source functions
 - Always accepted (`accept: true`)
 - Parameters validated to contain Carbon tokens
 - Special rules for calc() patterns
 
 **For Carbon Functions:**
+
 - Defined with function name
 - Parameters not deeply validated
 - Function call itself validates as Carbon usage
@@ -384,14 +431,18 @@ To support these functions in V5:
 ## Conclusion
 
 Both V4 and V5 support **11 total functions**:
+
 - **5 Carbon v11 functions** (type, motion)
 - **6 CSS/SCSS functions** (rgba, calc, translate family)
 
 **V5 Improvements over V4:**
-1. ✅ Modern viewport units in calc() (svw, lvw, dvw, svh, lvh, dvh, vi, vb, vmin, vmax)
+
+1. ✅ Modern viewport units in calc() (svw, lvw, dvw, svh, lvh, dvh, vi, vb,
+   vmin, vmax)
 2. ✅ Full parameter validation for motion() function
 3. ✅ TypeScript implementation with strict typing
 4. ✅ Comprehensive test coverage (169 tests)
 5. ✅ Policy decision: No raw cubic-bezier() or steps() support
 
-**Feature Parity:** V5 achieves full feature parity with V4 for all 11 functions, with enhanced validation and modern CSS support.
+**Feature Parity:** V5 achieves full feature parity with V4 for all 11
+functions, with enhanced validation and modern CSS support.

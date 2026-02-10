@@ -2,12 +2,13 @@
 
 ## Overview
 
-Carbon provides a `motion()` function in the `@carbon/motion` package that generates easing curves for animations and transitions.
+Carbon provides a `motion()` function in the `@carbon/motion` package that
+generates easing curves for animations and transitions.
 
 ## Function Signature
 
 ```javascript
-motion(easing_type, motion_style)
+motion(easing_type, motion_style);
 ```
 
 ### Parameters
@@ -27,11 +28,11 @@ Returns a `cubic-bezier()` string that can be used directly in CSS.
 
 ## Easing Curve Values
 
-| Easing Type | Productive | Expressive |
-|-------------|-----------|------------|
-| Standard | `cubic-bezier(0.2, 0, 0.38, 0.9)` | `cubic-bezier(0.4, 0.14, 0.3, 1)` |
-| Entrance | `cubic-bezier(0, 0, 0.38, 0.9)` | `cubic-bezier(0, 0, 0.3, 1)` |
-| Exit | `cubic-bezier(0.2, 0, 1, 0.9)` | `cubic-bezier(0.4, 0.14, 1, 1)` |
+| Easing Type | Productive                        | Expressive                        |
+| ----------- | --------------------------------- | --------------------------------- |
+| Standard    | `cubic-bezier(0.2, 0, 0.38, 0.9)` | `cubic-bezier(0.4, 0.14, 0.3, 1)` |
+| Entrance    | `cubic-bezier(0, 0, 0.38, 0.9)`   | `cubic-bezier(0, 0, 0.3, 1)`      |
+| Exit        | `cubic-bezier(0.2, 0, 1, 0.9)`    | `cubic-bezier(0.4, 0.14, 1, 1)`   |
 
 ## Usage Examples
 
@@ -46,7 +47,7 @@ Returns a `cubic-bezier()` string that can be used directly in CSS.
 
 // Using with multiple transitions
 .multi {
-  transition: 
+  transition:
     background-color $duration-slow-02 motion(exit, expressive),
     opacity $duration-moderate-02 motion(exit, expressive);
 }
@@ -70,7 +71,9 @@ const exitEasing = motion('exit', 'productive');
 ## V4 Support
 
 V4 supported the `motion()` function in both:
-- **motion-duration-use**: Validated in transition/animation shorthand properties
+
+- **motion-duration-use**: Validated in transition/animation shorthand
+  properties
 - **motion-easing-use**: Validated in timing-function properties
 
 ### V4 Examples from Tests
@@ -82,7 +85,7 @@ V4 supported the `motion()` function in both:
 }
 
 .bar {
-  transition: 
+  transition:
     background-color $duration-slow-02 motion(exit, expressive),
     opacity $duration-moderate-02 motion(exit, expressive);
 }
@@ -94,7 +97,8 @@ V4 supported the `motion()` function in both:
 
 // V10 prefix
 .qux {
-  transition: background-color $duration-slow-02 carbon--motion(standard, productive);
+  transition: background-color $duration-slow-02
+    carbon--motion(standard, productive);
 }
 ```
 
@@ -103,16 +107,20 @@ V4 supported the `motion()` function in both:
 ### Current Status
 
 V5 implementation status:
+
 - ✅ Validates `motion()` function calls with parameter checking
 - ✅ Validates standard CSS easing keywords (linear, ease, ease-in, etc.)
 - ❌ Does NOT accept raw `cubic-bezier()` functions (policy decision)
 - ❌ Does NOT accept `steps()` functions (policy decision)
 
-**Policy Decision:** V5 requires users to use Carbon tokens, the `motion()` function, or standard CSS keywords. Raw cubic-bezier and steps functions are not supported to ensure consistency with Carbon Design System patterns.
+**Policy Decision:** V5 requires users to use Carbon tokens, the `motion()`
+function, or standard CSS keywords. Raw cubic-bezier and steps functions are not
+supported to ensure consistency with Carbon Design System patterns.
 
 ### Implementation Approach (COMPLETED)
 
-Similar to Carbon type functions (type-scale, font-family, font-weight), we implemented:
+Similar to Carbon type functions (type-scale, font-family, font-weight), we
+implemented:
 
 1. **Detect `motion()` function calls** in property values ✅
 2. **Validate parameters**:
@@ -130,7 +138,9 @@ function isCarbonMotionFunction(value: string): boolean {
 }
 
 function validateCarbonMotionFunction(value: string): boolean {
-  const match = value.match(/\bmotion\s*\(\s*['"]?(standard|entrance|exit)['"]?\s*,\s*['"]?(productive|expressive)['"]?\s*\)/);
+  const match = value.match(
+    /\bmotion\s*\(\s*['"]?(standard|entrance|exit)['"]?\s*,\s*['"]?(productive|expressive)['"]?\s*\)/
+  );
   return match !== null;
 }
 ```
@@ -138,6 +148,7 @@ function validateCarbonMotionFunction(value: string): boolean {
 ### Test Cases
 
 **Valid:**
+
 ```scss
 transition-timing-function: motion(standard, productive);
 transition-timing-function: motion(entrance, expressive);
@@ -146,6 +157,7 @@ animation-timing-function: motion(standard, expressive);
 ```
 
 **Invalid:**
+
 ```scss
 transition-timing-function: motion(invalid, productive);
 transition-timing-function: motion(standard, invalid);

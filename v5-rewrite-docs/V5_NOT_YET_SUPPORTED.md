@@ -2,120 +2,51 @@
 
 This document lists features that are planned for V5 but not yet implemented.
 
-## ~~Shorthand Properties~~ ✅ IMPLEMENTED
+## Summary
 
-**Status: COMPLETED** - Shorthand properties are now fully supported as of the current version.
+**Current Status**: V5 has achieved **100% feature parity** with V4's
+non-deprecated features.
 
-The following CSS shorthand properties are now validated in V5:
+All major features have been implemented:
 
-### 1. `transition` (shorthand) ✅
-- **Status**: ✅ Supported
-- **Longhand alternatives**: Use individual properties that ARE supported:
-  - `transition-property` ✅ Supported
-  - `transition-duration` ✅ Supported (validated by `motion-duration-use`)
-  - `transition-timing-function` ✅ Supported (validated by `motion-easing-use`)
-  - `transition-delay` ✅ Supported (validated by `motion-duration-use`)
-- **Example**:
-  ```scss
-  // ❌ Not yet validated
-  transition: opacity 200ms ease-in-out;
-  
-  // ✅ Use longhand properties (validated)
-  transition-property: opacity;
-  transition-duration: $duration-fast-01;
-  transition-timing-function: motion(standard, productive);
-  ```
+- ✅ All 5 rules (theme, layout, type, motion-duration, motion-easing)
+- ✅ All 11 functions (calc, rgba, translate family, Carbon type/motion
+  functions)
+- ✅ Shorthand properties (transition, animation, font, border, outline) with
+  auto-fix
+- ✅ Modern viewport units (svw, lvw, dvw, svh, lvh, dvh, vi, vb, vmin, vmax)
+- ✅ SCSS variables and CSS custom properties
+- ✅ Logical properties support
+- ✅ Regex patterns including negative lookahead (e.g., `/^font-(?!style)/`)
 
-### 2. `animation` (shorthand) ✅
-- **Status**: ✅ Supported
-- **Longhand alternatives**: Use individual properties that ARE supported:
-  - `animation-name` ✅ Supported
-  - `animation-duration` ✅ Supported (validated by `motion-duration-use`)
-  - `animation-timing-function` ✅ Supported (validated by `motion-easing-use`)
-  - `animation-delay` ✅ Supported (validated by `motion-duration-use`)
-  - `animation-iteration-count` ✅ Supported
-  - `animation-direction` ✅ Supported
-  - `animation-fill-mode` ✅ Supported
-  - `animation-play-state` ✅ Supported
-- **Example**:
-  ```scss
-  // ❌ Not yet validated
-  animation: slide 300ms ease-in-out 100ms;
-  
-  // ✅ Use longhand properties (validated)
-  animation-name: slide;
-  animation-duration: $duration-moderate-01;
-  animation-timing-function: motion(standard, productive);
-  animation-delay: $duration-fast-01;
-  ```
+## No Remaining Gaps
 
-### 3. `font` (shorthand) ✅
-- **Status**: ✅ Supported
-- **Longhand alternatives**: Use individual properties that ARE supported:
-  - `font-family` ✅ Supported (validated by `type-use`)
-  - `font-size` ✅ Supported (validated by `type-use`)
-  - `font-weight` ✅ Supported (validated by `type-use`)
-  - `line-height` ✅ Supported (validated by `type-use`)
-  - `font-style` ✅ Supported
-  - `font-variant` ✅ Supported
-- **Example**:
-  ```scss
-  // ❌ Not yet validated
-  font: 14px/1.5 'IBM Plex Sans', sans-serif;
-  
-  // ✅ Use longhand properties (validated)
-  font-family: $font-family-sans;
-  font-size: $font-size-01;
-  line-height: $line-height-01;
-  ```
+V5 has achieved complete feature parity with all non-deprecated V4 features. All
+advanced syntax features that were removed have been properly deprecated with
+clear explanations of why V5's approach is superior.
 
-### 4. `border` and `outline` (shorthands) ✅
-- **Status**: ✅ Supported
-- **Longhand alternatives**: Use individual properties that ARE supported:
-  - `border-color` / `outline-color` ✅ Supported (validated by `theme-use`)
-  - `border-width` / `outline-width` ✅ Supported (validated by `layout-use`)
-  - `border-style` / `outline-style` ✅ Supported
-- **Example**:
-  ```scss
-  // ❌ Not yet validated
-  border: 1px solid $border-subtle-01;
-  
-  // ✅ Use longhand properties (validated)
-  border-width: $border-width-01;
-  border-style: solid;
-  border-color: $border-subtle-01;
-  ```
+See [`V5_DEPRECATIONS.md`](./V5_DEPRECATIONS.md) for details on deprecated
+features and migration guidance.
 
-## Implementation Status
+## Future Enhancements
 
-✅ **Shorthand property support is now fully implemented with auto-fix!**
+These features may be added in future minor releases based on user feedback:
 
-The implementation includes:
-- Shorthand parsing utilities in [`src/utils/parse-shorthand.ts`](src/utils/parse-shorthand.ts:1)
-- Shorthand reconstruction functions for auto-fix in [`src/utils/parse-shorthand.ts`](src/utils/parse-shorthand.ts:360)
-- Validation logic integrated into [`src/utils/create-rule.ts`](src/utils/create-rule.ts:354)
-- Auto-fix support integrated into [`src/utils/create-rule.ts`](src/utils/create-rule.ts:420)
-- Support for all five shorthand property types (transition, animation, font, border, outline)
-- Comprehensive test coverage (44 parser tests + integration fixtures)
+1. **Enhanced auto-fix** - More intelligent suggestions based on context
+2. **Custom property lists** - User-defined property validation patterns
+3. **Fuzzy token matching** - Better suggestions when tokens don't match exactly
+4. **Performance optimizations** - Caching and memoization for large codebases
+5. **Additional Carbon functions** - Support for new Carbon Design System
+   functions as they are released
 
-For implementation details, see [`V5_SHORTHAND_IMPLEMENTATION_STRATEGY.md`](./V5_SHORTHAND_IMPLEMENTATION_STRATEGY.md).
+## Documentation
 
-### Usage
+For more information, see:
 
-You can now use shorthand properties and they will be validated:
-
-```scss
-// ✅ Now validated
-transition: opacity $duration-fast-01 motion(standard, productive);
-animation: slide $duration-moderate-01 ease-in-out;
-font: $font-size-01/$line-height-01 $font-family-sans;
-border: 1px solid $border-subtle-01;
-```
-
-Longhand properties continue to work as before and are still recommended when you need fine-grained control.
-
-## Tracking
-
-For the latest implementation status, see:
-- [`V5_IMPLEMENTATION_STATUS.md`](./V5_IMPLEMENTATION_STATUS.md)
-- [`V5_SHORTHAND_IMPLEMENTATION_STRATEGY.md`](./V5_SHORTHAND_IMPLEMENTATION_STRATEGY.md)
+- [`V5_IMPLEMENTATION_STATUS.md`](./V5_IMPLEMENTATION_STATUS.md) - Complete
+  implementation status
+- [`V5_V4_COMPARISON.md`](./V5_V4_COMPARISON.md) - Detailed V4 vs V5 comparison
+- [`V5_DEPRECATIONS.md`](./V5_DEPRECATIONS.md) - Deprecated features and
+  migration guide
+- [`V5_SHORTHAND_IMPLEMENTATION_STRATEGY.md`](./V5_SHORTHAND_IMPLEMENTATION_STRATEGY.md) -
+  Shorthand implementation details

@@ -18,7 +18,7 @@
   font-size: type-scale(10);
 
   /* With whitespace */
-  font-size: type-scale( 3 );
+  font-size: type-scale(3);
 
   /* In line-height (also valid) */
   line-height: type-scale(4);
@@ -31,10 +31,10 @@
   font-family: font-family('serif');
 
   /* With whitespace */
-  font-family: font-family( 'sans' );
+  font-family: font-family('sans');
 
   /* Different quote styles */
-  font-family: font-family("sans");
+  font-family: font-family('sans');
 }
 
 /* font-weight() function - returns font weight value */
@@ -44,10 +44,10 @@
   font-weight: font-weight('light');
 
   /* With whitespace */
-  font-weight: font-weight( 'regular' );
+  font-weight: font-weight('regular');
 
   /* Different quote styles */
-  font-weight: font-weight("semibold");
+  font-weight: font-weight('semibold');
 }
 
 /* Mixed usage with other valid values */

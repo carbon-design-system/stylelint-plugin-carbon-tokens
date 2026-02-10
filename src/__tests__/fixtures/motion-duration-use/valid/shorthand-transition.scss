@@ -13,7 +13,9 @@
 }
 
 .element-multiple {
-  transition: opacity $duration-fast-01 ease-in, transform $duration-moderate-01 ease-out;
+  transition:
+    opacity $duration-fast-01 ease-in,
+    transform $duration-moderate-01 ease-out;
 }
 
 // Valid: Carbon duration tokens in animation shorthand
@@ -22,7 +24,9 @@
 }
 
 .animated-multiple {
-  animation: fadeIn $duration-fast-01 ease-in, slideUp $duration-moderate-01 ease-out;
+  animation:
+    fadeIn $duration-fast-01 ease-in,
+    slideUp $duration-moderate-01 ease-out;
 }
 
 // Valid: Zero duration (allowed)

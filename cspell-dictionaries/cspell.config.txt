@@ -1,0 +1,6 @@
+automerge
+disttag
+disttags
+includeprops
+preid
+premajor

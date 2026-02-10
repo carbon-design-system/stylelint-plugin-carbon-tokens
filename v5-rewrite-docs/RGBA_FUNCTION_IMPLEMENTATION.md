@@ -2,7 +2,8 @@
 
 ## Overview
 
-Successfully implemented validation for CSS `rgba()` function in the V5 stylelint plugin for the theme-use rule.
+Successfully implemented validation for CSS `rgba()` function in the V5
+stylelint plugin for the theme-use rule.
 
 ## Implementation Details
 
@@ -10,7 +11,8 @@ Successfully implemented validation for CSS `rgba()` function in the V5 stylelin
 
 1. **src/utils/validators.ts** - Added 2 new validation functions:
    - `isRgbaFunction()` - Detects rgba() function calls
-   - `validateRgbaFunction()` - Validates first parameter is a Carbon theme token
+   - `validateRgbaFunction()` - Validates first parameter is a Carbon theme
+     token
 
 2. **src/utils/create-rule.ts** - Updated to:
    - Import rgba validation functions
@@ -21,7 +23,7 @@ Successfully implemented validation for CSS `rgba()` function in the V5 stylelin
 
 Created comprehensive test suite with **19 new tests**:
 
-- **src/utils/__tests__/rgba-validation.test.ts**
+- **src/utils/**tests**/rgba-validation.test.ts**
   - 3 tests for `isRgbaFunction()`
   - 16 tests for `validateRgbaFunction()` covering:
     - Valid usage (5 tests)
@@ -30,13 +32,13 @@ Created comprehensive test suite with **19 new tests**:
 
 ### Fixture Files
 
-1. **src/__tests__/fixtures/theme-use/valid/rgba-functions.scss**
+1. **src/**tests**/fixtures/theme-use/valid/rgba-functions.scss**
    - Valid Carbon SCSS variables with alpha
    - Valid Carbon CSS custom properties with alpha
    - Different alpha value formats (0, 0.25, 0.5, 1, percentages)
    - rgba() in gradients and shadows
 
-2. **src/__tests__/fixtures/theme-use/invalid/rgba-functions.scss**
+2. **src/**tests**/fixtures/theme-use/invalid/rgba-functions.scss**
    - Hard-coded RGB values (rejected)
    - Hex colors (rejected)
    - Color keywords (rejected)
@@ -46,10 +48,12 @@ Created comprehensive test suite with **19 new tests**:
 ## Validation Rules
 
 ### Function Detection
+
 - Detects `rgba()` function calls in color properties
 - Only validates when used in theme-use rule
 
 ### Parameter Validation
+
 - **First parameter (color)**: MUST be a Carbon theme token
   - ✅ Accepts: SCSS variables like `$layer-01`, `$background`, `$text-primary`
   - ✅ Accepts: CSS custom properties like `var(--cds-layer-01)`
@@ -118,21 +122,23 @@ background-color: rgba(var(--custom-color), 0.5);
 ## Documentation
 
 Created supporting documentation:
+
 - **V4_RGBA_FUNCTION.md** - Research notes on V4 implementation patterns
 - **RGBA_FUNCTION_IMPLEMENTATION.md** - This summary document
 
 ## Key Differences from Transform Functions
 
-| Aspect | Transform Functions | rgba() Function |
-|--------|-------------------|-----------------|
-| Parameters validated | All (or first N) | First only (color) |
-| Token type | Spacing tokens | Theme/color tokens |
-| Rule | layout-use | theme-use |
-| Use case | Positioning/spacing | Color with transparency |
+| Aspect               | Transform Functions | rgba() Function         |
+| -------------------- | ------------------- | ----------------------- |
+| Parameters validated | All (or first N)    | First only (color)      |
+| Token type           | Spacing tokens      | Theme/color tokens      |
+| Rule                 | layout-use          | theme-use               |
+| Use case             | Positioning/spacing | Color with transparency |
 
 ## Next Steps
 
 Remaining function implementations:
+
 1. `type-scale()`, `font-family()`, `font-weight()` - type-use rule
 2. `motion()` - motion-duration-use and motion-easing-use rules
 
@@ -149,10 +155,12 @@ Remaining function implementations:
 **V5 Function Support: 3/11 (27%)**
 
 ✅ Implemented:
+
 - calc() - layout-use
 - translate(), translateX(), translateY(), translate3d() - layout-use
 - rgba() - theme-use
 
 ⏳ Remaining:
+
 - type-scale(), font-family(), font-weight() - type-use
 - motion() - motion-duration-use, motion-easing-use

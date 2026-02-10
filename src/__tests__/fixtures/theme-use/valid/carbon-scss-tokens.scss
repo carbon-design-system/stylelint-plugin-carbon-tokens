@@ -9,5 +9,7 @@
 }
 
 .bar {
-  box-shadow: 0 0 5px $layer-01, 0 0 10px $layer-01;
+  box-shadow:
+    0 0 5px $layer-01,
+    0 0 10px $layer-01;
 }

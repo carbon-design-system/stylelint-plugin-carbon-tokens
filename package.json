@@ -30,6 +30,7 @@
     "postinstall": "ibmtelemetry --config=telemetry.yml",
     "prepublishOnly": "npm run build",
     "test": "npm run build && node --test \"dist/**/__tests__/*.test.js\"",
+    "test:coverage": "npm run build && node --test --experimental-test-coverage \"dist/**/__tests__/*.test.js\"",
     "test:watch": "npm run build && node --test --watch \"dist/**/__tests__/*.test.js\"",
     "upgrade": "run-p -s 'upgrade:*'",
     "upgrade:other": "npm-check-updates -u --dep dev,peer,prod --reject '/(carbon|^react$|^react-dom$|^@testing-library)/'",

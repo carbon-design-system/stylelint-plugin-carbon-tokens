@@ -4,28 +4,31 @@
 
 **Status:** All phases completed successfully!
 
-This document outlined the strategy for implementing shorthand property validation in V5. The implementation is now complete and functional.
+This document outlined the strategy for implementing shorthand property
+validation in V5. The implementation is now complete and functional.
 
 ## Implementation Results
 
 **Before:**
+
 ```css
 /* V5 previously IGNORED these shorthands */
-transition: opacity 200ms ease-in;        /* ❌ Not validated */
-animation: slide 300ms ease-out;          /* ❌ Not validated */
-font: 16px/1.5 Arial;                     /* ❌ Not validated */
-border: 1px solid #000000;                /* ❌ Not validated */
-outline: 2px solid #ff0000;               /* ❌ Not validated */
+transition: opacity 200ms ease-in; /* ❌ Not validated */
+animation: slide 300ms ease-out; /* ❌ Not validated */
+font: 16px/1.5 Arial; /* ❌ Not validated */
+border: 1px solid #000000; /* ❌ Not validated */
+outline: 2px solid #ff0000; /* ❌ Not validated */
 ```
 
 **After:**
+
 ```css
 /* V5 now VALIDATES these shorthands */
-transition: opacity 200ms ease-in;        /* ✅ Validated */
-animation: slide 300ms ease-out;          /* ✅ Validated */
-font: 16px/1.5 Arial;                     /* ✅ Validated */
-border: 1px solid #000000;                /* ✅ Validated */
-outline: 2px solid #ff0000;               /* ✅ Validated */
+transition: opacity 200ms ease-in; /* ✅ Validated */
+animation: slide 300ms ease-out; /* ✅ Validated */
+font: 16px/1.5 Arial; /* ✅ Validated */
+border: 1px solid #000000; /* ✅ Validated */
+outline: 2px solid #ff0000; /* ✅ Validated */
 ```
 
 ---
@@ -36,14 +39,17 @@ outline: 2px solid #ff0000;               /* ✅ Validated */
 
 **Status:** ✅ Complete
 
-Created utility file at [`src/utils/parse-shorthand.ts`](src/utils/parse-shorthand.ts:1) with:
+Created utility file at
+[`src/utils/parse-shorthand.ts`](src/utils/parse-shorthand.ts:1) with:
+
 - `parseTransition()` - Parses transition shorthand
 - `parseAnimation()` - Parses animation shorthand
 - `parseFont()` - Parses font shorthand
 - `parseBorder()` - Parses border shorthand
 - `parseOutline()` - Parses outline shorthand
 - `splitByComma()` - Handles comma-separated values
-- 44 comprehensive unit tests at [`src/utils/__tests__/parse-shorthand.test.ts`](src/utils/__tests__/parse-shorthand.test.ts:1)
+- 44 comprehensive unit tests at
+  [`src/utils/__tests__/parse-shorthand.test.ts`](src/utils/__tests__/parse-shorthand.test.ts:1)
 
 **Original Strategy:** `src/utils/parse-shorthand.ts`
 
@@ -127,18 +133,23 @@ export function parseOutline(value: string): {
 
 **Status:** ✅ Complete
 
-Updated all rule configurations to include shorthand properties in `includeProps`:
+Updated all rule configurations to include shorthand properties in
+`includeProps`:
 
-- [`src/rules/motion-duration-use.ts`](src/rules/motion-duration-use.ts:18) - Added `transition`, `animation`
-- [`src/rules/motion-easing-use.ts`](src/rules/motion-easing-use.ts:18) - Added `transition`, `animation`
+- [`src/rules/motion-duration-use.ts`](src/rules/motion-duration-use.ts:18) -
+  Added `transition`, `animation`
+- [`src/rules/motion-easing-use.ts`](src/rules/motion-easing-use.ts:18) - Added
+  `transition`, `animation`
 - [`src/rules/type-use.ts`](src/rules/type-use.ts:15) - Added `font`
-- [`src/rules/theme-use.ts`](src/rules/theme-use.ts:14) - Added `border`, `outline`
+- [`src/rules/theme-use.ts`](src/rules/theme-use.ts:14) - Added `border`,
+  `outline`
 
 ### Phase 3: Update Rule Creation Logic ✅
 
 **Status:** ✅ Complete
 
-Modified [`src/utils/create-rule.ts`](src/utils/create-rule.ts:354) to handle shorthand properties:
+Modified [`src/utils/create-rule.ts`](src/utils/create-rule.ts:354) to handle
+shorthand properties:
 
 **File:** `src/utils/create-rule.ts`
 
@@ -154,8 +165,14 @@ root.walkDecls((decl) => {
 
   // NEW: Handle shorthand properties
   if (isShorthandProperty(prop)) {
-    const validations = validateShorthand(prop, decl.value, ruleName, tokens, options);
-    
+    const validations = validateShorthand(
+      prop,
+      decl.value,
+      ruleName,
+      tokens,
+      options
+    );
+
     for (const validation of validations) {
       if (!validation.isValid) {
         utils.report({
@@ -178,7 +195,7 @@ root.walkDecls((decl) => {
 
 Add helper functions:
 
-```typescript
+````typescript
 /**
  * Check if a property is a shorthand
  */
@@ -263,9 +280,9 @@ export function parseTransition(value: string): {
 } {
   // Split by spaces, respecting function parentheses
   const parts = parseValue(value);
-  
+
   const result: any = {};
-  
+
   for (const part of parts) {
     // Duration/delay: ends with 's' or 'ms'
     if (/^\d+\.?\d*(m?s)$/.test(part)) {
@@ -284,18 +301,18 @@ export function parseTransition(value: string): {
       result.property = part;
     }
   }
-  
+
   return result;
 }
 
 function isTimingFunction(value: string): boolean {
   const keywords = ['linear', 'ease', 'ease-in', 'ease-out', 'ease-in-out', 'step-start', 'step-end'];
-  return keywords.includes(value) || 
-         value.startsWith('cubic-bezier(') || 
+  return keywords.includes(value) ||
+         value.startsWith('cubic-bezier(') ||
          value.startsWith('steps(') ||
          value.startsWith('motion(');
 }
-```
+````
 
 #### Animation Parser
 
@@ -312,7 +329,7 @@ export function parseAnimation(value: string): {
 } {
   const parts = parseValue(value);
   const result: any = {};
-  
+
   for (const part of parts) {
     // Duration/delay
     if (/^\d+\.?\d*(m?s)$/.test(part)) {
@@ -331,7 +348,9 @@ export function parseAnimation(value: string): {
       result.iterationCount = part;
     }
     // Direction
-    else if (['normal', 'reverse', 'alternate', 'alternate-reverse'].includes(part)) {
+    else if (
+      ['normal', 'reverse', 'alternate', 'alternate-reverse'].includes(part)
+    ) {
       result.direction = part;
     }
     // Fill mode
@@ -347,7 +366,7 @@ export function parseAnimation(value: string): {
       result.name = part;
     }
   }
-  
+
   return result;
 }
 ```
@@ -364,28 +383,31 @@ export function parseFont(value: string): {
   family?: string;
 } {
   const result: any = {};
-  
+
   // Font is complex: style variant weight size/line-height family
   // Example: italic small-caps bold 16px/1.5 Arial, sans-serif
-  
+
   const parts = value.split(/\s+/);
   let i = 0;
-  
+
   // Optional: font-style
   if (['italic', 'oblique', 'normal'].includes(parts[i])) {
     result.style = parts[i++];
   }
-  
+
   // Optional: font-variant
   if (['small-caps', 'normal'].includes(parts[i])) {
     result.variant = parts[i++];
   }
-  
+
   // Optional: font-weight
-  if (['bold', 'bolder', 'lighter', 'normal'].includes(parts[i]) || /^\d{3}$/.test(parts[i])) {
+  if (
+    ['bold', 'bolder', 'lighter', 'normal'].includes(parts[i]) ||
+    /^\d{3}$/.test(parts[i])
+  ) {
     result.weight = parts[i++];
   }
-  
+
   // Required: font-size (and optional line-height)
   if (parts[i]) {
     const sizeHeight = parts[i++].split('/');
@@ -394,12 +416,12 @@ export function parseFont(value: string): {
       result.lineHeight = sizeHeight[1];
     }
   }
-  
+
   // Required: font-family (rest of the string)
   if (i < parts.length) {
     result.family = parts.slice(i).join(' ');
   }
-  
+
   return result;
 }
 ```
@@ -414,14 +436,30 @@ export function parseBorder(value: string): {
 } {
   const parts = parseValue(value);
   const result: any = {};
-  
+
   for (const part of parts) {
     // Width: ends with length unit
-    if (/^\d+\.?\d*(px|em|rem|%)$/.test(part) || ['thin', 'medium', 'thick'].includes(part)) {
+    if (
+      /^\d+\.?\d*(px|em|rem|%)$/.test(part) ||
+      ['thin', 'medium', 'thick'].includes(part)
+    ) {
       result.width = part;
     }
     // Style: border style keywords
-    else if (['none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset'].includes(part)) {
+    else if (
+      [
+        'none',
+        'hidden',
+        'dotted',
+        'dashed',
+        'solid',
+        'double',
+        'groove',
+        'ridge',
+        'inset',
+        'outset',
+      ].includes(part)
+    ) {
       result.style = part;
     }
     // Color: everything else (hex, rgb, named colors, etc.)
@@ -429,7 +467,7 @@ export function parseBorder(value: string): {
       result.color = part;
     }
   }
-  
+
   return result;
 }
 
@@ -461,7 +499,9 @@ describe('parseTransition', () => {
   });
 
   it('should parse transition with motion() function', () => {
-    const result = parseTransition('opacity 200ms motion(standard, productive)');
+    const result = parseTransition(
+      'opacity 200ms motion(standard, productive)'
+    );
     expect(result.timingFunction).toBe('motion(standard, productive)');
   });
 
@@ -500,7 +540,9 @@ describe('parseFont', () => {
   });
 
   it('should parse font with all properties', () => {
-    const result = parseFont('italic small-caps bold 16px/1.5 Arial, sans-serif');
+    const result = parseFont(
+      'italic small-caps bold 16px/1.5 Arial, sans-serif'
+    );
     expect(result.style).toBe('italic');
     expect(result.variant).toBe('small-caps');
     expect(result.weight).toBe('bold');
@@ -529,7 +571,8 @@ describe('parseBorder', () => {
 
 Add fixture files for each shorthand:
 
-**File:** `src/__tests__/fixtures/motion-duration-use/valid/transition-shorthand.css`
+**File:**
+`src/__tests__/fixtures/motion-duration-use/valid/transition-shorthand.css`
 
 ```css
 .test {
@@ -539,7 +582,8 @@ Add fixture files for each shorthand:
 }
 ```
 
-**File:** `src/__tests__/fixtures/motion-duration-use/invalid/transition-shorthand.css`
+**File:**
+`src/__tests__/fixtures/motion-duration-use/invalid/transition-shorthand.css`
 
 ```css
 .test {
@@ -550,28 +594,36 @@ Add fixture files for each shorthand:
 ```
 
 Similar fixtures for:
+
 - `motion-easing-use` (timing functions in shorthands)
 - `type-use` (font shorthand)
 - `theme-use` (border/outline shorthands)
 
 ### Phase 6: Auto-fix Support
 
-Shorthand auto-fix is complex because we need to reconstruct the entire shorthand value:
+Shorthand auto-fix is complex because we need to reconstruct the entire
+shorthand value:
 
 ```typescript
 // In validateShorthand function
 if (!validation.isValid && validation.suggestedFix) {
   // Reconstruct shorthand with fix
-  const fixedValue = reconstructShorthand(prop, parsed, validation.suggestedFix);
-  
+  const fixedValue = reconstructShorthand(
+    prop,
+    parsed,
+    validation.suggestedFix
+  );
+
   utils.report({
     message: validation.message,
     node: decl,
     result,
     ruleName,
-    fix: context.fix ? () => {
-      decl.value = fixedValue;
-    } : undefined,
+    fix: context.fix
+      ? () => {
+          decl.value = fixedValue;
+        }
+      : undefined,
   });
 }
 ```
@@ -581,6 +633,7 @@ if (!validation.isValid && validation.suggestedFix) {
 ## Implementation Order
 
 ### Priority 1: Motion Shorthands (High Impact)
+
 1. Implement `parseTransition()` and `parseAnimation()`
 2. Update motion-duration-use and motion-easing-use rules
 3. Add shorthand validation logic to create-rule.ts
@@ -589,6 +642,7 @@ if (!validation.isValid && validation.suggestedFix) {
 6. Test with real-world examples
 
 ### Priority 2: Font Shorthand (Medium Impact)
+
 1. Implement `parseFont()`
 2. Update type-use rule
 3. Add font shorthand validation logic
@@ -596,6 +650,7 @@ if (!validation.isValid && validation.suggestedFix) {
 5. Test with real-world examples
 
 ### Priority 3: Border/Outline Shorthands (Lower Impact)
+
 1. Implement `parseBorder()` and `parseOutline()`
 2. Update theme-use rule
 3. Add border/outline validation logic
@@ -607,30 +662,45 @@ if (!validation.isValid && validation.suggestedFix) {
 ## Edge Cases to Handle
 
 ### Multiple Transitions/Animations
+
 ```css
-transition: opacity 200ms ease-in, transform 300ms ease-out;
-animation: slide 300ms ease-out, fade 200ms ease-in;
+transition:
+  opacity 200ms ease-in,
+  transform 300ms ease-out;
+animation:
+  slide 300ms ease-out,
+  fade 200ms ease-in;
 ```
+
 Need to split by comma and validate each separately.
 
 ### Complex Font Families
+
 ```css
-font: 16px "Times New Roman", Times, serif;
+font:
+  16px 'Times New Roman',
+  Times,
+  serif;
 ```
+
 Need to handle quoted strings and comma-separated fallbacks.
 
 ### CSS Variables in Shorthands
+
 ```css
 transition: opacity var(--duration) ease-in;
 border: 1px solid var(--color);
 ```
+
 Should accept CSS custom properties if configured.
 
 ### Motion Function in Shorthands
+
 ```css
 transition: opacity 200ms motion(standard, productive);
 animation: slide 300ms motion(entrance, expressive);
 ```
+
 Parser must recognize and preserve function calls.
 
 ---

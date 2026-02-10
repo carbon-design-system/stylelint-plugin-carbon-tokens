@@ -97,7 +97,10 @@ function validateShorthandProperty(
           // Generate suggested fix if available
           let suggestedFix: string | undefined;
           if (validation.suggestedFix) {
-            const fixedParsed = { ...parsed, duration: validation.suggestedFix };
+            const fixedParsed = {
+              ...parsed,
+              duration: validation.suggestedFix,
+            };
             suggestedFix = reconstructTransition(fixedParsed);
           }
 
@@ -164,7 +167,10 @@ function validateShorthandProperty(
           // Generate suggested fix if available
           let suggestedFix: string | undefined;
           if (validation.suggestedFix) {
-            const fixedParsed = { ...parsed, duration: validation.suggestedFix };
+            const fixedParsed = {
+              ...parsed,
+              duration: validation.suggestedFix,
+            };
             suggestedFix = reconstructAnimation(fixedParsed);
           }
 
@@ -264,7 +270,10 @@ function validateShorthandProperty(
             // Generate suggested fix if available
             let suggestedFix: string | undefined;
             if (validation.suggestedFix) {
-              const fixedParsed = { ...parsed, family: validation.suggestedFix };
+              const fixedParsed = {
+                ...parsed,
+                family: validation.suggestedFix,
+              };
               suggestedFix = reconstructFont(fixedParsed);
             }
 

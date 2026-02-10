@@ -7,18 +7,26 @@
 
 // Invalid: Hard-coded font-size in font shorthand
 .element {
-  font: 16px/1.5 Arial, sans-serif;
+  font:
+    16px/1.5 Arial,
+    sans-serif;
 }
 
 .element-with-style {
-  font: italic 14px/1.4 'Helvetica Neue', sans-serif;
+  font:
+    italic 14px/1.4 'Helvetica Neue',
+    sans-serif;
 }
 
 .element-with-weight {
-  font: bold 18px/1.6 Georgia, serif;
+  font:
+    bold 18px/1.6 Georgia,
+    serif;
 }
 
 // Invalid: Hard-coded font-family
 .element-family {
-  font: 16px/1.5 'Custom Font', sans-serif;
+  font:
+    16px/1.5 'Custom Font',
+    sans-serif;
 }

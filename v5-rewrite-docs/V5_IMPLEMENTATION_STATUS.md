@@ -2,21 +2,25 @@
 
 ## Overview
 
-This document tracks the implementation status of stylelint-plugin-carbon-tokens V5 proof of concept.
+This document tracks the implementation status of stylelint-plugin-carbon-tokens
+V5 proof of concept.
 
-**Version:** 5.0.0-alpha.1
-**Status:** Feature Complete / Alpha
-**Last Updated:** 2026-02-09
+**Version:** 5.0.0-alpha.1 **Status:** Feature Complete / Alpha **Last
+Updated:** 2026-02-09
 
 ## ✅ Completed
 
 ### Phase 1: Foundation
 
 - [x] **V5 Plan Document** - Comprehensive plan at [`V5_PLAN.md`](V5_PLAN.md:1)
-- [x] **V4 Documentation Preserved** - Original docs at [`V4-README.md`](V4-README.md:1)
-- [x] **TypeScript Configuration** - Full TS setup at [`tsconfig.json`](tsconfig.json:1)
-- [x] **ESLint for TypeScript** - Updated config at [`eslint.config.js`](eslint.config.js:1)
-- [x] **Package.json Updates** - Dependencies and scripts at [`package.json`](package.json:1)
+- [x] **V4 Documentation Preserved** - Original docs at
+      [`V4-README.md`](V4-README.md:1)
+- [x] **TypeScript Configuration** - Full TS setup at
+      [`tsconfig.json`](tsconfig.json:1)
+- [x] **ESLint for TypeScript** - Updated config at
+      [`eslint.config.js`](eslint.config.js:1)
+- [x] **Package.json Updates** - Dependencies and scripts at
+      [`package.json`](package.json:1)
   - Version: 5.0.0-alpha.1
   - TypeScript dependencies added
   - Build scripts configured
@@ -24,37 +28,46 @@ This document tracks the implementation status of stylelint-plugin-carbon-tokens
 
 ### Phase 2: Core Implementation
 
-- [x] **Type Definitions** - TypeScript types at [`src/types/index.ts`](src/types/index.ts:1)
-- [x] **Carbon Module Declarations** - Type declarations at [`src/types/carbon.d.ts`](src/types/carbon.d.ts:1)
-- [x] **Carbon Token Loading** - Token utilities at [`src/utils/carbon-tokens.ts`](src/utils/carbon-tokens.ts:1)
+- [x] **Type Definitions** - TypeScript types at
+      [`src/types/index.ts`](src/types/index.ts:1)
+- [x] **Carbon Module Declarations** - Type declarations at
+      [`src/types/carbon.d.ts`](src/types/carbon.d.ts:1)
+- [x] **Carbon Token Loading** - Token utilities at
+      [`src/utils/carbon-tokens.ts`](src/utils/carbon-tokens.ts:1)
   - `loadThemeTokens()` - Loads color/theme tokens
   - `loadLayoutTokens()` - Loads spacing/layout tokens
   - `loadTypeTokens()` - Loads typography tokens
   - `loadMotionTokens()` - Loads motion tokens
   - Supports both SCSS variables and CSS custom properties
-- [x] **Validation Logic** - Core validators at [`src/utils/validators.ts`](src/utils/validators.ts:1)
+- [x] **Validation Logic** - Core validators at
+      [`src/utils/validators.ts`](src/utils/validators.ts:1)
   - SCSS variable detection
   - CSS custom property detection
   - Pattern matching for accepted values
   - Property validation
   - Token suggestion for fixes
-- [x] **Theme Rule** - Implementation at [`src/rules/theme-use.ts`](src/rules/theme-use.ts:1)
+- [x] **Theme Rule** - Implementation at
+      [`src/rules/theme-use.ts`](src/rules/theme-use.ts:1)
   - Validates color and theme tokens
   - Auto-fix support
   - Configurable options
-- [x] **Layout Rule** - Implementation at [`src/rules/layout-use.ts`](src/rules/layout-use.ts:1)
+- [x] **Layout Rule** - Implementation at
+      [`src/rules/layout-use.ts`](src/rules/layout-use.ts:1)
   - Validates spacing and layout tokens
   - Auto-fix support
   - Configurable options
-- [x] **Type Rule** - Implementation at [`src/rules/type-use.ts`](src/rules/type-use.ts:1)
+- [x] **Type Rule** - Implementation at
+      [`src/rules/type-use.ts`](src/rules/type-use.ts:1)
   - Validates typography tokens
   - Auto-fix support
   - Configurable options
-- [x] **Motion Duration Rule** - Implementation at [`src/rules/motion-duration-use.ts`](src/rules/motion-duration-use.ts:1)
+- [x] **Motion Duration Rule** - Implementation at
+      [`src/rules/motion-duration-use.ts`](src/rules/motion-duration-use.ts:1)
   - Validates animation/transition duration tokens
   - Auto-fix support
   - Configurable options
-- [x] **Motion Easing Rule** - Implementation at [`src/rules/motion-easing-use.ts`](src/rules/motion-easing-use.ts:1)
+- [x] **Motion Easing Rule** - Implementation at
+      [`src/rules/motion-easing-use.ts`](src/rules/motion-easing-use.ts:1)
   - Validates easing function tokens
   - Auto-fix support
   - Configurable options
@@ -63,11 +76,14 @@ This document tracks the implementation status of stylelint-plugin-carbon-tokens
 
 ### Phase 3: Configuration & Documentation
 
-- [x] **Recommended Config** - Updated at [`config/recommended.js`](config/recommended.js:1)
+- [x] **Recommended Config** - Updated at
+      [`config/recommended.js`](config/recommended.js:1)
 - [x] **Strict Config** - Updated at [`config/strict.js`](config/strict.js:1)
-- [x] **Light Touch Config** - Updated at [`config/light-touch.js`](config/light-touch.js:1)
+- [x] **Light Touch Config** - Updated at
+      [`config/light-touch.js`](config/light-touch.js:1)
 - [x] **V5 README** - User documentation at [`README.md`](README.md:1)
-- [x] **Migration Guide** - V4 to V5 guide at [`MIGRATION_V4_TO_V5.md`](MIGRATION_V4_TO_V5.md:1)
+- [x] **Migration Guide** - V4 to V5 guide at
+      [`MIGRATION_V4_TO_V5.md`](MIGRATION_V4_TO_V5.md:1)
 
 ### Build System
 
@@ -88,51 +104,73 @@ All 5 Carbon token validation rules are now complete:
 ### Testing
 
 - [x] **Unit Tests** - 213 tests passing ✅
-  - Carbon token loading tests at [`src/utils/__tests__/carbon-tokens.test.ts`](src/utils/__tests__/carbon-tokens.test.ts:1)
-  - Validation logic tests at [`src/utils/__tests__/validators.test.ts`](src/utils/__tests__/validators.test.ts:1)
-  - Calc validation tests at [`src/utils/__tests__/calc-validation.test.ts`](src/utils/__tests__/calc-validation.test.ts:1)
-  - RGBA validation tests at [`src/utils/__tests__/rgba-validation.test.ts`](src/utils/__tests__/rgba-validation.test.ts:1)
-  - Transform validation tests at [`src/utils/__tests__/transform-validation.test.ts`](src/utils/__tests__/transform-validation.test.ts:1)
-  - Carbon type validation tests at [`src/utils/__tests__/carbon-type-validation.test.ts`](src/utils/__tests__/carbon-type-validation.test.ts:1)
-  - Carbon motion validation tests at [`src/utils/__tests__/carbon-motion-validation.test.ts`](src/utils/__tests__/carbon-motion-validation.test.ts:1)
-  - **Shorthand parser tests** at [`src/utils/__tests__/parse-shorthand.test.ts`](src/utils/__tests__/parse-shorthand.test.ts:1) ✅
-  - Test utilities at [`src/__tests__/test-utils.ts`](src/__tests__/test-utils.ts:1)
+  - Carbon token loading tests at
+    [`src/utils/__tests__/carbon-tokens.test.ts`](src/utils/__tests__/carbon-tokens.test.ts:1)
+  - Validation logic tests at
+    [`src/utils/__tests__/validators.test.ts`](src/utils/__tests__/validators.test.ts:1)
+  - Calc validation tests at
+    [`src/utils/__tests__/calc-validation.test.ts`](src/utils/__tests__/calc-validation.test.ts:1)
+  - RGBA validation tests at
+    [`src/utils/__tests__/rgba-validation.test.ts`](src/utils/__tests__/rgba-validation.test.ts:1)
+  - Transform validation tests at
+    [`src/utils/__tests__/transform-validation.test.ts`](src/utils/__tests__/transform-validation.test.ts:1)
+  - Carbon type validation tests at
+    [`src/utils/__tests__/carbon-type-validation.test.ts`](src/utils/__tests__/carbon-type-validation.test.ts:1)
+  - Carbon motion validation tests at
+    [`src/utils/__tests__/carbon-motion-validation.test.ts`](src/utils/__tests__/carbon-motion-validation.test.ts:1)
+  - **Shorthand parser tests** at
+    [`src/utils/__tests__/parse-shorthand.test.ts`](src/utils/__tests__/parse-shorthand.test.ts:1)
+    ✅
+  - Test utilities at
+    [`src/__tests__/test-utils.ts`](src/__tests__/test-utils.ts:1)
 - [x] **Integration Tests** - Rule behavior tests created ✅
-  - Theme rule tests at [`src/rules/__tests__/theme-use.test.ts`](src/rules/__tests__/theme-use.test.ts:1)
-  - Layout rule tests at [`src/rules/__tests__/layout-use.test.ts`](src/rules/__tests__/layout-use.test.ts:1)
-  - Type rule tests at [`src/rules/__tests__/type-use.test.ts`](src/rules/__tests__/type-use.test.ts:1)
-  - Motion duration tests at [`src/rules/__tests__/motion-duration-use.test.ts`](src/rules/__tests__/motion-duration-use.test.ts:1)
-  - Motion easing tests at [`src/rules/__tests__/motion-easing-use.test.ts`](src/rules/__tests__/motion-easing-use.test.ts:1)
-- [x] **Fixture Tests** - Real-world CSS/SCSS file tests at [`src/__tests__/fixtures.test.ts`](src/__tests__/fixtures.test.ts:1) ✅
+  - Theme rule tests at
+    [`src/rules/__tests__/theme-use.test.ts`](src/rules/__tests__/theme-use.test.ts:1)
+  - Layout rule tests at
+    [`src/rules/__tests__/layout-use.test.ts`](src/rules/__tests__/layout-use.test.ts:1)
+  - Type rule tests at
+    [`src/rules/__tests__/type-use.test.ts`](src/rules/__tests__/type-use.test.ts:1)
+  - Motion duration tests at
+    [`src/rules/__tests__/motion-duration-use.test.ts`](src/rules/__tests__/motion-duration-use.test.ts:1)
+  - Motion easing tests at
+    [`src/rules/__tests__/motion-easing-use.test.ts`](src/rules/__tests__/motion-easing-use.test.ts:1)
+- [x] **Fixture Tests** - Real-world CSS/SCSS file tests at
+      [`src/__tests__/fixtures.test.ts`](src/__tests__/fixtures.test.ts:1) ✅
 
 ## ✅ Advanced Features Implemented
 
 ### Complex Value Parsing
 
-- [x] **calc() Expressions** - Full support at [`src/utils/validators.ts`](src/utils/validators.ts:240)
+- [x] **calc() Expressions** - Full support at
+      [`src/utils/validators.ts`](src/utils/validators.ts:240)
   - Proportional math validation (vw, vh, % + tokens)
-  - Token negation patterns (calc(-1 * token))
+  - Token negation patterns (calc(-1 \* token))
   - Comprehensive test coverage
-- [x] **rgba() Functions** - Full support at [`src/utils/validators.ts`](src/utils/validators.ts:320)
+- [x] **rgba() Functions** - Full support at
+      [`src/utils/validators.ts`](src/utils/validators.ts:320)
   - Carbon token validation for color parameter
   - Alpha channel support
   - Comprehensive test coverage
-- [x] **transform Functions** - Full support at [`src/utils/validators.ts`](src/utils/validators.ts:450)
+- [x] **transform Functions** - Full support at
+      [`src/utils/validators.ts`](src/utils/validators.ts:450)
   - translate(), translateX(), translateY(), translate3d()
   - Carbon spacing token validation
   - Comprehensive test coverage
-- [x] **Carbon Type Functions** - Full support at [`src/utils/validators.ts`](src/utils/validators.ts:280)
+- [x] **Carbon Type Functions** - Full support at
+      [`src/utils/validators.ts`](src/utils/validators.ts:280)
   - type-scale(), font-family(), font-weight()
   - V11 function validation
   - Comprehensive test coverage
-- [x] **Carbon Motion Functions** - Full support at [`src/utils/validators.ts`](src/utils/validators.ts:200)
+- [x] **Carbon Motion Functions** - Full support at
+      [`src/utils/validators.ts`](src/utils/validators.ts:200)
   - motion() function validation
   - Easing and motion style parameters
   - Comprehensive test coverage
 
 ### Shorthand Properties ✅ FULLY IMPLEMENTED
 
-- [x] **Shorthand Parser Utility** - Implementation at [`src/utils/parse-shorthand.ts`](src/utils/parse-shorthand.ts:1)
+- [x] **Shorthand Parser Utility** - Implementation at
+      [`src/utils/parse-shorthand.ts`](src/utils/parse-shorthand.ts:1)
   - `parseTransition()` - Parses transition shorthand
   - `parseAnimation()` - Parses animation shorthand
   - `parseFont()` - Parses font shorthand
@@ -140,24 +178,28 @@ All 5 Carbon token validation rules are now complete:
   - `parseOutline()` - Parses outline shorthand
   - `splitByComma()` - Handles comma-separated values
   - 44 comprehensive tests
-- [x] **Shorthand Reconstruction** - Implementation at [`src/utils/parse-shorthand.ts`](src/utils/parse-shorthand.ts:360)
+- [x] **Shorthand Reconstruction** - Implementation at
+      [`src/utils/parse-shorthand.ts`](src/utils/parse-shorthand.ts:360)
   - `reconstructTransition()` - Rebuilds transition shorthand
   - `reconstructAnimation()` - Rebuilds animation shorthand
   - `reconstructFont()` - Rebuilds font shorthand
   - `reconstructBorder()` - Rebuilds border shorthand
   - `reconstructOutline()` - Rebuilds outline shorthand
-- [x] **Shorthand Validation** - Integrated at [`src/utils/create-rule.ts`](src/utils/create-rule.ts:354)
+- [x] **Shorthand Validation** - Integrated at
+      [`src/utils/create-rule.ts`](src/utils/create-rule.ts:354)
   - Validates `transition` (duration, timing-function)
   - Validates `animation` (duration, timing-function)
   - Validates `font` (size, family, line-height)
   - Validates `border`/`outline` (color)
   - Supports multiple comma-separated values
   - Rule-specific component validation
-- [x] **Shorthand Auto-Fix** - Integrated at [`src/utils/create-rule.ts`](src/utils/create-rule.ts:420)
+- [x] **Shorthand Auto-Fix** - Integrated at
+      [`src/utils/create-rule.ts`](src/utils/create-rule.ts:420)
   - Generates suggested fixes for invalid shorthand components
   - Reconstructs entire shorthand with corrected values
   - Preserves all valid components while replacing invalid ones
-  - Supports all shorthand properties (transition, animation, font, border, outline)
+  - Supports all shorthand properties (transition, animation, font, border,
+    outline)
 
 ## 🚧 Remaining Work
 
@@ -197,6 +239,7 @@ All 5 Carbon token validation rules are now complete:
 ### Dual Format Support
 
 Both SCSS and CSS custom properties are validated:
+
 - SCSS: `$spacing-05`, `$background`
 - CSS: `var(--cds-spacing-05)`, `var(--cds-background)`
 
@@ -251,13 +294,16 @@ npx stylelint "**/*.{css,scss}"
 
 ## Known Limitations
 
-1. ~~**Value Parsing** - Simple space-based splitting (doesn't handle complex functions)~~ ✅ RESOLVED
+1. ~~**Value Parsing** - Simple space-based splitting (doesn't handle complex
+   functions)~~ ✅ RESOLVED
    - Now supports calc(), rgba(), transform functions, and shorthand properties
 2. **Token Suggestions** - Basic matching (could use fuzzy matching)
 3. **Shorthand Auto-fix** - Not yet implemented (Phase 6)
-3. **Multi-Value Properties** - Limited support for shorthand properties
-4. **Integration Test Refinement** - Some integration tests need adjustment for actual rule behavior
-5. **Stylelint Deprecation Warning** - Using deprecated `context.fix` API (will be updated in future release)
+4. **Multi-Value Properties** - Limited support for shorthand properties
+5. **Integration Test Refinement** - Some integration tests need adjustment for
+   actual rule behavior
+6. **Stylelint Deprecation Warning** - Using deprecated `context.fix` API (will
+   be updated in future release)
 
 ## Performance Considerations
 
@@ -268,6 +314,7 @@ npx stylelint "**/*.{css,scss}"
 ## Feedback Welcome
 
 This is an alpha release. Please provide feedback on:
+
 - Architecture and design decisions
 - API and configuration options
 - Performance and usability

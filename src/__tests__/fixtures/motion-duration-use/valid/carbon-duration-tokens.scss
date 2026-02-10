@@ -14,7 +14,9 @@
 
 .baz {
   /* Multiple transitions */
-  transition: width $duration-fast-02 linear ease-in, height $duration-moderate-01 ease-out;
+  transition:
+    width $duration-fast-02 linear ease-in,
+    height $duration-moderate-01 ease-out;
 }
 
 .reset {

@@ -13,8 +13,9 @@
 }
 
 .element-multiple {
-  transition: opacity $duration-fast-01 $easing-standard-productive,
-              transform $duration-moderate-01 $easing-standard-expressive;
+  transition:
+    opacity $duration-fast-01 $easing-standard-productive,
+    transform $duration-moderate-01 $easing-standard-expressive;
 }
 
 // Valid: Standard easing keywords in transition
@@ -31,8 +32,9 @@
 }
 
 .animated-multiple {
-  animation: fadeIn $duration-fast-01 $easing-entrance-productive,
-             slideUp $duration-moderate-01 $easing-exit-expressive;
+  animation:
+    fadeIn $duration-fast-01 $easing-entrance-productive,
+    slideUp $duration-moderate-01 $easing-exit-expressive;
 }
 
 // Valid: Standard easing keywords in animation

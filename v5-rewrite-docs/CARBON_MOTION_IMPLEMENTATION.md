@@ -2,7 +2,8 @@
 
 ## Overview
 
-Successfully implemented validation for the Carbon `motion()` function in V5, which generates easing curves for animations and transitions.
+Successfully implemented validation for the Carbon `motion()` function in V5,
+which generates easing curves for animations and transitions.
 
 ## Implementation Details
 
@@ -13,6 +14,7 @@ motion(easing_type, motion_style)
 ```
 
 **Parameters:**
+
 - `easing_type`: `'standard'` | `'entrance'` | `'exit'`
 - `motion_style`: `'productive'` | `'expressive'`
 
@@ -20,16 +22,23 @@ motion(easing_type, motion_style)
 
 ## Policy Decision: No Raw cubic-bezier() Support
 
-**V5 does NOT support raw `cubic-bezier()` or `steps()` functions in the motion-easing-use rule.**
+**V5 does NOT support raw `cubic-bezier()` or `steps()` functions in the
+motion-easing-use rule.**
 
 Users must use one of these approved approaches:
+
 - Carbon motion tokens (e.g., `$duration-fast-01`, `--cds-duration-fast-01`)
 - The Carbon `motion()` function (e.g., `motion(standard, productive)`)
 - Standard CSS easing keywords (e.g., `ease`, `ease-in`, `ease-out`, `linear`)
 
-**Rationale:** This decision ensures consistency with Carbon Design System patterns and prevents arbitrary timing functions that may not align with Carbon's motion principles. While the `motion()` function generates `cubic-bezier()` values internally, users should not bypass Carbon's motion system by using raw cubic-bezier values.
+**Rationale:** This decision ensures consistency with Carbon Design System
+patterns and prevents arbitrary timing functions that may not align with
+Carbon's motion principles. While the `motion()` function generates
+`cubic-bezier()` values internally, users should not bypass Carbon's motion
+system by using raw cubic-bezier values.
 
-**Test Coverage:** [`src/__tests__/fixtures/motion-easing-use/invalid/cubic-bezier-not-supported.scss`](src/__tests__/fixtures/motion-easing-use/invalid/cubic-bezier-not-supported.scss)
+**Test Coverage:**
+[`src/__tests__/fixtures/motion-easing-use/invalid/cubic-bezier-not-supported.scss`](src/__tests__/fixtures/motion-easing-use/invalid/cubic-bezier-not-supported.scss)
 
 ### Validation Logic
 
@@ -50,19 +59,23 @@ Two new functions were added:
 
 ### Integration
 
-**Location:** [`src/utils/create-rule.ts`](src/utils/create-rule.ts:8-23, 158-177)
+**Location:** [`src/utils/create-rule.ts`](src/utils/create-rule.ts:8-23,
+158-177)
 
 The motion function validation was integrated into both motion rules:
+
 - `carbon/motion-duration-use`
 - `carbon/motion-easing-use`
 
-The validation is applied before standard token validation, allowing the function to be recognized and validated with proper parameter checking.
+The validation is applied before standard token validation, allowing the
+function to be recognized and validated with proper parameter checking.
 
 ## Test Coverage
 
 ### Unit Tests
 
-**Location:** [`src/utils/__tests__/carbon-motion-validation.test.ts`](src/utils/__tests__/carbon-motion-validation.test.ts)
+**Location:**
+[`src/utils/__tests__/carbon-motion-validation.test.ts`](src/utils/__tests__/carbon-motion-validation.test.ts)
 
 **18 tests covering:**
 
@@ -85,9 +98,11 @@ The validation is applied before standard token validation, allowing the functio
 
 ### Integration Tests
 
-**Valid Fixtures:** [`src/__tests__/fixtures/motion-easing-use/valid/carbon-easing-tokens.scss`](src/__tests__/fixtures/motion-easing-use/valid/carbon-easing-tokens.scss)
+**Valid Fixtures:**
+[`src/__tests__/fixtures/motion-easing-use/valid/carbon-easing-tokens.scss`](src/__tests__/fixtures/motion-easing-use/valid/carbon-easing-tokens.scss)
 
 Examples:
+
 ```scss
 .motion-function {
   transition-timing-function: motion(standard, productive);
@@ -101,13 +116,15 @@ Examples:
 
 .motion-with-quotes {
   transition-timing-function: motion('standard', 'productive');
-  animation-timing-function: motion("entrance", "expressive");
+  animation-timing-function: motion('entrance', 'expressive');
 }
 ```
 
-**Invalid Fixtures:** [`src/__tests__/fixtures/motion-easing-use/invalid/carbon-motion-functions.scss`](src/__tests__/fixtures/motion-easing-use/invalid/carbon-motion-functions.scss)
+**Invalid Fixtures:**
+[`src/__tests__/fixtures/motion-easing-use/invalid/carbon-motion-functions.scss`](src/__tests__/fixtures/motion-easing-use/invalid/carbon-motion-functions.scss)
 
 Examples:
+
 ```scss
 .invalid-easing-type {
   transition-timing-function: motion(invalid, productive);
@@ -176,40 +193,46 @@ Examples:
 
 The `motion()` function returns these cubic-bezier values:
 
-| Easing Type | Productive | Expressive |
-|-------------|-----------|------------|
+| Easing Type  | Productive                        | Expressive                        |
+| ------------ | --------------------------------- | --------------------------------- |
 | **standard** | `cubic-bezier(0.2, 0, 0.38, 0.9)` | `cubic-bezier(0.4, 0.14, 0.3, 1)` |
-| **entrance** | `cubic-bezier(0, 0, 0.38, 0.9)` | `cubic-bezier(0, 0, 0.3, 1)` |
-| **exit** | `cubic-bezier(0.2, 0, 1, 0.9)` | `cubic-bezier(0.4, 0.14, 1, 1)` |
+| **entrance** | `cubic-bezier(0, 0, 0.38, 0.9)`   | `cubic-bezier(0, 0, 0.3, 1)`      |
+| **exit**     | `cubic-bezier(0.2, 0, 1, 0.9)`    | `cubic-bezier(0.4, 0.14, 1, 1)`   |
 
 ## V4 Compatibility
 
 V5 maintains compatibility with V4's motion() function support:
 
 ### V4 Features Supported
+
 - ✅ Basic `motion(easing, style)` syntax
 - ✅ All 6 valid parameter combinations
 - ✅ Quoted and unquoted parameters
 - ✅ Whitespace tolerance
 
 ### V4 Features Not Supported
+
 - ❌ Namespace syntax (e.g., `motion.motion()`)
 - ❌ V10 prefix (e.g., `carbon--motion()`)
 
-These were intentionally excluded from V5 as they are legacy Carbon v10 features.
+These were intentionally excluded from V5 as they are legacy Carbon v10
+features.
 
 ## Test Results
 
 All tests passing:
+
 - **Unit tests:** 18/18 ✅
 - **Integration tests:** All motion-easing-use fixtures passing ✅
 - **Total test suite:** 169/169 tests passing ✅
 
 ## Documentation
 
-- **Research Document:** [`CARBON_MOTION_FUNCTIONS.md`](CARBON_MOTION_FUNCTIONS.md)
+- **Research Document:**
+  [`CARBON_MOTION_FUNCTIONS.md`](CARBON_MOTION_FUNCTIONS.md)
 - **Implementation Summary:** This document
-- **Carbon Documentation:** [Motion Overview](https://carbondesignsystem.com/elements/motion/overview/)
+- **Carbon Documentation:**
+  [Motion Overview](https://carbondesignsystem.com/elements/motion/overview/)
 
 ## Related Functions
 
@@ -217,7 +240,8 @@ The motion() function is part of a broader set of Carbon function validations:
 
 1. **Layout Functions**
    - `calc()` - Proportional math and token negation
-   - `translate()`, `translateX()`, `translateY()`, `translate3d()` - Transform functions
+   - `translate()`, `translateX()`, `translateY()`, `translate3d()` - Transform
+     functions
 
 2. **Theme Functions**
    - `rgba()` - Color manipulation with Carbon tokens
@@ -233,6 +257,7 @@ The motion() function is part of a broader set of Carbon function validations:
 ## Summary
 
 The Carbon motion() function implementation provides:
+
 - ✅ Complete parameter validation
 - ✅ Clear error messages
 - ✅ Comprehensive test coverage

@@ -2,15 +2,18 @@
 
 ## Overview
 
-The V4 implementation validates `rgba()` function usage in the theme-use rule to ensure the first parameter (color) is a Carbon theme token.
+The V4 implementation validates `rgba()` function usage in the theme-use rule to
+ensure the first parameter (color) is a Carbon theme token.
 
 ## Validation Rules
 
 ### Function Detection
+
 - Detects `rgba()` function calls
 - Registered as a Sass color function: `sassColorFunctions = ['rgba(1)']`
 
 ### Parameter Validation
+
 - **First parameter (color)**: MUST be a Carbon theme token
   - Accepts: SCSS variables like `$layer-01`, `$background`, `$text-primary`
   - Accepts: CSS custom properties like `var(--cds-layer-01)`
@@ -24,6 +27,7 @@ The V4 implementation validates `rgba()` function usage in the theme-use rule to
 ## Test Cases from V4
 
 ### Valid Usage
+
 ```scss
 // Carbon SCSS variable with alpha
 background-color: rgba($layer-01, 0.5);
@@ -33,6 +37,7 @@ background-color: rgba(var(--cds-layer-01), 0.5);
 ```
 
 ### Invalid Usage
+
 ```scss
 // Hard-coded RGB values - REJECTED
 background-color: rgba(100, 100, 255, 0.5);
@@ -43,10 +48,12 @@ background-color: rgba($custom-color, 0.5);
 
 ## Implementation Notes
 
-1. **Only first parameter validated**: The color parameter must be a Carbon token
+1. **Only first parameter validated**: The color parameter must be a Carbon
+   token
 2. **Alpha parameter ignored**: Any valid alpha value is accepted
 3. **Applies to theme-use rule only**: Only validates color properties
-4. **SCSS and CSS support**: Works with both SCSS variables and CSS custom properties
+4. **SCSS and CSS support**: Works with both SCSS variables and CSS custom
+   properties
 
 ## V5 Implementation Strategy
 

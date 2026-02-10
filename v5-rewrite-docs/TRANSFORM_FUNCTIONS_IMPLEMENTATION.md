@@ -2,7 +2,8 @@
 
 ## Overview
 
-Successfully implemented validation for CSS transform functions (`translate()`, `translateX()`, `translateY()`, `translate3d()`) in the V5 stylelint plugin.
+Successfully implemented validation for CSS transform functions (`translate()`,
+`translateX()`, `translateY()`, `translate3d()`) in the V5 stylelint plugin.
 
 ## Implementation Details
 
@@ -10,7 +11,8 @@ Successfully implemented validation for CSS transform functions (`translate()`, 
 
 1. **src/utils/validators.ts** - Added 4 new validation functions:
    - `isTransformFunction()` - Detects translate family functions
-   - `extractFunctionParams()` - Parses function parameters (handles nested calc())
+   - `extractFunctionParams()` - Parses function parameters (handles nested
+     calc())
    - `isValidSpacingValue()` - Validates individual parameter values
    - `validateTransformFunction()` - Main validation orchestrator
 
@@ -25,7 +27,7 @@ Successfully implemented validation for CSS transform functions (`translate()`, 
 
 Created comprehensive test suite with **30 new tests**:
 
-- **src/utils/__tests__/transform-validation.test.ts**
+- **src/utils/**tests**/transform-validation.test.ts**
   - 6 tests for `isTransformFunction()`
   - 6 tests for `extractFunctionParams()`
   - 7 tests for `isValidSpacingValue()`
@@ -33,13 +35,13 @@ Created comprehensive test suite with **30 new tests**:
 
 ### Fixture Files
 
-1. **src/__tests__/fixtures/layout-use/valid/transform-functions.css**
+1. **src/**tests**/fixtures/layout-use/valid/transform-functions.css**
    - Valid Carbon token usage
    - Relative units (%, vw, vh, etc.)
    - calc() expressions
    - Complex transforms with multiple functions
 
-2. **src/__tests__/fixtures/layout-use/invalid/transform-functions.css**
+2. **src/**tests**/fixtures/layout-use/invalid/transform-functions.css**
    - Hard-coded pixel values
    - Hard-coded rem/em values
    - Unknown tokens
@@ -53,15 +55,18 @@ Created comprehensive test suite with **30 new tests**:
 ### Supported Functions
 
 1. **translateX(x)** - Validates 1 parameter
-2. **translateY(y)** - Validates 1 parameter  
+2. **translateY(y)** - Validates 1 parameter
 3. **translate(x, y)** - Validates 2 parameters
-4. **translate3d(x, y, z)** - Validates first 2 parameters only (z-axis not validated)
+4. **translate3d(x, y, z)** - Validates first 2 parameters only (z-axis not
+   validated)
 
 ### Accepted Values
 
 Parameters must be one of:
+
 - Carbon spacing tokens (SCSS variables or CSS custom properties)
-- Relative units: `%`, `vw`, `vh`, `svw`, `lvw`, `dvw`, `svh`, `lvh`, `dvh`, `vi`, `vb`, `vmin`, `vmax`
+- Relative units: `%`, `vw`, `vh`, `svw`, `lvw`, `dvw`, `svh`, `lvh`, `dvh`,
+  `vi`, `vb`, `vmin`, `vmax`
 - `calc()` expressions (validated recursively)
 - Unitless `0`
 
@@ -121,12 +126,14 @@ transform: translate($spacing-01);
 ## Documentation
 
 Created supporting documentation:
+
 - **V4_TRANSFORM_FUNCTIONS.md** - Research notes on V4 implementation patterns
 - **TRANSFORM_FUNCTIONS_IMPLEMENTATION.md** - This summary document
 
 ## Next Steps
 
 Remaining function implementations:
+
 1. `rgba()` - theme-use rule (validate first parameter is Carbon token)
 2. `type-scale()`, `font-family()`, `font-weight()` - type-use rule
 3. `motion()` - motion-duration-use and motion-easing-use rules

@@ -11,7 +11,9 @@
 }
 
 .element-multiple {
-  transition: opacity 200ms ease-in, transform 300ms ease-out;
+  transition:
+    opacity 200ms ease-in,
+    transform 300ms ease-out;
 }
 
 // Invalid: Hard-coded duration in animation shorthand
@@ -20,5 +22,7 @@
 }
 
 .animated-multiple {
-  animation: fadeIn 250ms ease-in, slideUp 350ms ease-out;
+  animation:
+    fadeIn 250ms ease-in,
+    slideUp 350ms ease-out;
 }

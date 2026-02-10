@@ -26,7 +26,7 @@
 
 .motion-with-quotes {
   transition-timing-function: motion('standard', 'productive');
-  animation-timing-function: motion("entrance", "expressive");
+  animation-timing-function: motion('entrance', 'expressive');
 }
 
 .reset {
