@@ -51,7 +51,10 @@ describe('isCarbonTypeFunction', () => {
     it('should not detect V10 functions (not supported in V5)', () => {
       assert.strictEqual(isCarbonTypeFunction('carbon--type-scale(1)'), false);
       assert.strictEqual(isCarbonTypeFunction('carbon--font-family(1)'), false);
-      assert.strictEqual(isCarbonTypeFunction('carbon--font-weight("bold")'), false);
+      assert.strictEqual(
+        isCarbonTypeFunction('carbon--font-weight("bold")'),
+        false
+      );
     });
 
     it('should not detect non-Carbon functions', () => {
@@ -78,32 +81,68 @@ describe('validateCarbonTypeFunction', () => {
 
     it('should accept type-scale with any parameter (no validation)', () => {
       // Parameters are not validated - Sass will handle that
-      assert.strictEqual(validateCarbonTypeFunction('type-scale(1)').isValid, true);
-      assert.strictEqual(validateCarbonTypeFunction('type-scale(5)').isValid, true);
-      assert.strictEqual(validateCarbonTypeFunction('type-scale(999)').isValid, true);
-      assert.strictEqual(validateCarbonTypeFunction('type-scale("invalid")').isValid, true);
+      assert.strictEqual(
+        validateCarbonTypeFunction('type-scale(1)').isValid,
+        true
+      );
+      assert.strictEqual(
+        validateCarbonTypeFunction('type-scale(5)').isValid,
+        true
+      );
+      assert.strictEqual(
+        validateCarbonTypeFunction('type-scale(999)').isValid,
+        true
+      );
+      assert.strictEqual(
+        validateCarbonTypeFunction('type-scale("invalid")').isValid,
+        true
+      );
     });
   });
 
   describe('font-family()', () => {
     it('should accept font-family with any parameter', () => {
-      assert.strictEqual(validateCarbonTypeFunction('font-family(1)').isValid, true);
-      assert.strictEqual(validateCarbonTypeFunction('font-family("sans")').isValid, true);
-      assert.strictEqual(validateCarbonTypeFunction('font-family("mono")').isValid, true);
+      assert.strictEqual(
+        validateCarbonTypeFunction('font-family(1)').isValid,
+        true
+      );
+      assert.strictEqual(
+        validateCarbonTypeFunction('font-family("sans")').isValid,
+        true
+      );
+      assert.strictEqual(
+        validateCarbonTypeFunction('font-family("mono")').isValid,
+        true
+      );
     });
   });
 
   describe('font-weight()', () => {
     it('should accept font-weight with string parameter', () => {
-      assert.strictEqual(validateCarbonTypeFunction('font-weight("bold")').isValid, true);
-      assert.strictEqual(validateCarbonTypeFunction("font-weight('regular')").isValid, true);
-      assert.strictEqual(validateCarbonTypeFunction("font-weight('light')").isValid, true);
+      assert.strictEqual(
+        validateCarbonTypeFunction('font-weight("bold")').isValid,
+        true
+      );
+      assert.strictEqual(
+        validateCarbonTypeFunction("font-weight('regular')").isValid,
+        true
+      );
+      assert.strictEqual(
+        validateCarbonTypeFunction("font-weight('light')").isValid,
+        true
+      );
     });
 
     it('should accept font-weight with any parameter', () => {
       // Parameters are not validated
-      assert.strictEqual(validateCarbonTypeFunction('font-weight(400)').isValid, true);
-      assert.strictEqual(validateCarbonTypeFunction('font-weight("invalid")').isValid, true);
+      assert.strictEqual(
+        validateCarbonTypeFunction('font-weight(400)').isValid,
+        true
+      );
+      assert.strictEqual(
+        validateCarbonTypeFunction('font-weight("invalid")').isValid,
+        true
+      );
     });
   });
 
@@ -115,27 +154,48 @@ describe('validateCarbonTypeFunction', () => {
     });
 
     it('should reject non-Carbon functions', () => {
-      assert.strictEqual(validateCarbonTypeFunction('rgba(255, 0, 0, 0.5)').isValid, false);
-      assert.strictEqual(validateCarbonTypeFunction('calc(100% - 10px)').isValid, false);
+      assert.strictEqual(
+        validateCarbonTypeFunction('rgba(255, 0, 0, 0.5)').isValid,
+        false
+      );
+      assert.strictEqual(
+        validateCarbonTypeFunction('calc(100% - 10px)').isValid,
+        false
+      );
     });
 
     it('should reject plain values', () => {
       assert.strictEqual(validateCarbonTypeFunction('16px').isValid, false);
-      assert.strictEqual(validateCarbonTypeFunction('$font-size-01').isValid, false);
+      assert.strictEqual(
+        validateCarbonTypeFunction('$font-size-01').isValid,
+        false
+      );
       assert.strictEqual(validateCarbonTypeFunction('Arial').isValid, false);
     });
   });
 
   describe('edge cases', () => {
     it('should handle whitespace', () => {
-      assert.strictEqual(validateCarbonTypeFunction('  type-scale(1)  ').isValid, true);
-      assert.strictEqual(validateCarbonTypeFunction('font-family( 1 )').isValid, true);
+      assert.strictEqual(
+        validateCarbonTypeFunction('  type-scale(1)  ').isValid,
+        true
+      );
+      assert.strictEqual(
+        validateCarbonTypeFunction('font-family( 1 )').isValid,
+        true
+      );
     });
 
     it('should handle complex parameters', () => {
       // Complex parameters are accepted - Sass will validate
-      assert.strictEqual(validateCarbonTypeFunction('type-scale($var)').isValid, true);
-      assert.strictEqual(validateCarbonTypeFunction('font-family(map-get($map, key))').isValid, true);
+      assert.strictEqual(
+        validateCarbonTypeFunction('type-scale($var)').isValid,
+        true
+      );
+      assert.strictEqual(
+        validateCarbonTypeFunction('font-family(map-get($map, key))').isValid,
+        true
+      );
     });
   });
 });

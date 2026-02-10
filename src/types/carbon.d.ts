@@ -25,13 +25,15 @@ declare module '@carbon/themes' {
   export const tokens: {
     colors?: string[];
   };
-  export const unstable_metadata: {
-    v11: Array<{
-      name: string;
-      value: string;
-      type: string;
-    }>;
-  } | undefined;
+  export const unstable_metadata:
+    | {
+        v11: Array<{
+          name: string;
+          value: string;
+          type: string;
+        }>;
+      }
+    | undefined;
 }
 
 declare module '@carbon/colors' {

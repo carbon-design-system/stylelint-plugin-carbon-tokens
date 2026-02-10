@@ -97,7 +97,10 @@ export function loadLayoutTokens(): TokenCollection {
       targetArray = layout;
     } else if (token.startsWith('container')) {
       targetArray = container;
-    } else if (token.startsWith('fluid-spacing') || token.startsWith('fluidSpacing')) {
+    } else if (
+      token.startsWith('fluid-spacing') ||
+      token.startsWith('fluidSpacing')
+    ) {
       targetArray = fluidSpacing;
     } else if (token.startsWith('icon-size') || token.startsWith('iconSize')) {
       targetArray = iconSize;
@@ -173,7 +176,11 @@ export function loadMotionTokens(): TokenCollection {
     // Duration tokens start with 'duration' or are named like 'fast01', 'moderate01', 'slow01'
     if (token.startsWith('duration')) {
       targetArray = duration;
-    } else if (token.startsWith('fast') || token.startsWith('moderate') || token.startsWith('slow')) {
+    } else if (
+      token.startsWith('fast') ||
+      token.startsWith('moderate') ||
+      token.startsWith('slow')
+    ) {
       // These are easing function names (fast01, fast02, moderate01, etc.)
       targetArray = easing;
     }

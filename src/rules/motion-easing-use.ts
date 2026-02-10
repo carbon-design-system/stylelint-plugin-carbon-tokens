@@ -7,14 +7,15 @@
 
 import { loadMotionTokens } from '../utils/carbon-tokens.js';
 import { createCarbonRule } from '../utils/create-rule.js';
-import type { MotionEasingRuleOptions, TokenCollection } from '../types/index.js';
+import type {
+  MotionEasingRuleOptions,
+  TokenCollection,
+} from '../types/index.js';
 
 export const ruleName = 'carbon/motion-easing-use';
 
 const defaultOptions: MotionEasingRuleOptions = {
-  includeProps: [
-    '/timing-function$/',
-  ],
+  includeProps: ['/timing-function$/'],
   acceptValues: [
     '/inherit|initial|none|unset/',
     '/linear|ease|ease-in|ease-out|ease-in-out/',

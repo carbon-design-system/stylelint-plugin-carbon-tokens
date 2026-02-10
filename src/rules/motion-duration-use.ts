@@ -7,14 +7,15 @@
 
 import { loadMotionTokens } from '../utils/carbon-tokens.js';
 import { createCarbonRule } from '../utils/create-rule.js';
-import type { MotionDurationRuleOptions, TokenCollection } from '../types/index.js';
+import type {
+  MotionDurationRuleOptions,
+  TokenCollection,
+} from '../types/index.js';
 
 export const ruleName = 'carbon/motion-duration-use';
 
 const defaultOptions: MotionDurationRuleOptions = {
-  includeProps: [
-    '/duration$/',
-  ],
+  includeProps: ['/duration$/'],
   acceptValues: [
     '/inherit|initial|none|unset/',
     '/^0s?$/', // 0 or 0s

@@ -46,10 +46,7 @@ describe('validators', () => {
         isCarbonCustomProperty('var(--cds-background)', 'cds'),
         true
       );
-      assert.strictEqual(
-        isCarbonCustomProperty('var(--my-var)', 'cds'),
-        false
-      );
+      assert.strictEqual(isCarbonCustomProperty('var(--my-var)', 'cds'), false);
       assert.strictEqual(isCarbonCustomProperty('$spacing-05', 'cds'), false);
     });
 
@@ -79,8 +76,14 @@ describe('validators', () => {
 
   describe('matchesAcceptedValue', () => {
     it('should match exact values', () => {
-      assert.strictEqual(matchesAcceptedValue('transparent', ['transparent']), true);
-      assert.strictEqual(matchesAcceptedValue('inherit', ['inherit', 'initial']), true);
+      assert.strictEqual(
+        matchesAcceptedValue('transparent', ['transparent']),
+        true
+      );
+      assert.strictEqual(
+        matchesAcceptedValue('inherit', ['inherit', 'initial']),
+        true
+      );
       assert.strictEqual(matchesAcceptedValue('16px', ['transparent']), false);
     });
 

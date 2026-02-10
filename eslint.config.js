@@ -42,11 +42,9 @@ export default [
     // Import plugin settings
     settings: {
       'import/resolver': {
-        alias: {
-          map: [
-            ['', './public'],
-          ],
-          extensions: ['.js', '.ts'],
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json',
         },
         node: {
           paths: ['src'],
@@ -150,4 +148,3 @@ export default [
   // Prettier config (must be last to override other rules)
   eslintConfigPrettier,
 ];
-

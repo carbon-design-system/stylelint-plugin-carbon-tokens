@@ -33,11 +33,7 @@ const defaultOptions: LayoutRuleOptions = {
     'translate',
     'transform',
   ],
-  acceptValues: [
-    '/inherit|initial|none|unset|auto/',
-    '/^0$/',
-    '/^100%$/',
-  ],
+  acceptValues: ['/inherit|initial|none|unset|auto/', '/^0$/', '/^100%$/'],
   acceptUndefinedVariables: false,
   acceptCarbonCustomProp: false,
   carbonPrefix: 'cds',

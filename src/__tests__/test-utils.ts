@@ -78,9 +78,7 @@ export function assertHasWarnings(
     throw new Error('Expected warnings but got none');
   }
   if (count !== undefined && warningCount !== count) {
-    throw new Error(
-      `Expected ${count} warnings but got ${warningCount}`
-    );
+    throw new Error(`Expected ${count} warnings but got ${warningCount}`);
   }
 }
 

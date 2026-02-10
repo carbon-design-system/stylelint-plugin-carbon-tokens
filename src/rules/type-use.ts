@@ -12,11 +12,7 @@ import type { TypeRuleOptions } from '../types/index.js';
 export const ruleName = 'carbon/type-use';
 
 const defaultOptions: TypeRuleOptions = {
-  includeProps: [
-    '/^font-/',
-    'line-height',
-    'letter-spacing',
-  ],
+  includeProps: ['/^font-/', 'line-height', 'letter-spacing'],
   acceptValues: [
     '/inherit|initial|none|unset/',
     '/^0$/',

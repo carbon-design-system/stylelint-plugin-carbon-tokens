@@ -29,7 +29,9 @@ describe('motion-duration-use rule', () => {
 
     assert.strictEqual(result.errored, true);
     assert.ok(result.results[0].warnings.length > 0);
-    assert.ok(result.results[0].warnings[0].text.includes('transition-duration'));
+    assert.ok(
+      result.results[0].warnings[0].text.includes('transition-duration')
+    );
   });
 
   it('should accept Carbon SCSS duration variables', async () => {

@@ -42,37 +42,27 @@ export interface BaseRuleOptions {
 /**
  * Theme rule specific options
  */
-export interface ThemeRuleOptions extends BaseRuleOptions {
-  // Theme-specific options can be added here
-}
+export type ThemeRuleOptions = BaseRuleOptions;
 
 /**
  * Layout rule specific options
  */
-export interface LayoutRuleOptions extends BaseRuleOptions {
-  // Layout-specific options can be added here
-}
+export type LayoutRuleOptions = BaseRuleOptions;
 
 /**
  * Type rule specific options
  */
-export interface TypeRuleOptions extends BaseRuleOptions {
-  // Type-specific options can be added here
-}
+export type TypeRuleOptions = BaseRuleOptions;
 
 /**
  * Motion duration rule specific options
  */
-export interface MotionDurationRuleOptions extends BaseRuleOptions {
-  // Motion duration-specific options can be added here
-}
+export type MotionDurationRuleOptions = BaseRuleOptions;
 
 /**
  * Motion easing rule specific options
  */
-export interface MotionEasingRuleOptions extends BaseRuleOptions {
-  // Motion easing-specific options can be added here
-}
+export type MotionEasingRuleOptions = BaseRuleOptions;
 
 /**
  * Validation result

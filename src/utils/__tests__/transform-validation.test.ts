@@ -37,7 +37,10 @@ describe('isTransformFunction', () => {
   });
 
   it('should detect translate3d function', () => {
-    assert.strictEqual(isTransformFunction('translate3d(10px, 20px, 30px)'), true);
+    assert.strictEqual(
+      isTransformFunction('translate3d(10px, 20px, 30px)'),
+      true
+    );
   });
 
   it('should not detect non-transform functions', () => {
@@ -110,8 +113,14 @@ describe('isValidSpacingValue', () => {
   });
 
   it('should accept Carbon CSS custom properties', () => {
-    assert.strictEqual(isValidSpacingValue('var(--cds-spacing-01)', mockTokens), true);
-    assert.strictEqual(isValidSpacingValue('var(--cds-spacing-05)', mockTokens), true);
+    assert.strictEqual(
+      isValidSpacingValue('var(--cds-spacing-01)', mockTokens),
+      true
+    );
+    assert.strictEqual(
+      isValidSpacingValue('var(--cds-spacing-05)', mockTokens),
+      true
+    );
   });
 
   it('should accept relative units', () => {
@@ -124,8 +133,14 @@ describe('isValidSpacingValue', () => {
   });
 
   it('should accept valid calc() expressions', () => {
-    assert.strictEqual(isValidSpacingValue('calc(100vw - #{$spacing-01})', mockTokens), true);
-    assert.strictEqual(isValidSpacingValue('calc(-1 * #{$spacing-05})', mockTokens), true);
+    assert.strictEqual(
+      isValidSpacingValue('calc(100vw - #{$spacing-01})', mockTokens),
+      true
+    );
+    assert.strictEqual(
+      isValidSpacingValue('calc(-1 * #{$spacing-05})', mockTokens),
+      true
+    );
   });
 
   it('should reject hard-coded pixel values', () => {
@@ -135,15 +150,24 @@ describe('isValidSpacingValue', () => {
   });
 
   it('should reject unknown tokens', () => {
-    assert.strictEqual(isValidSpacingValue('$unknown-token', mockTokens), false);
-    assert.strictEqual(isValidSpacingValue('var(--unknown-token)', mockTokens), false);
+    assert.strictEqual(
+      isValidSpacingValue('$unknown-token', mockTokens),
+      false
+    );
+    assert.strictEqual(
+      isValidSpacingValue('var(--unknown-token)', mockTokens),
+      false
+    );
   });
 });
 
 describe('validateTransformFunction', () => {
   describe('translateX', () => {
     it('should accept valid Carbon token', () => {
-      const result = validateTransformFunction('translateX($spacing-01)', mockTokens);
+      const result = validateTransformFunction(
+        'translateX($spacing-01)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, true);
     });
 
@@ -172,7 +196,10 @@ describe('validateTransformFunction', () => {
     });
 
     it('should reject wrong number of parameters', () => {
-      const result = validateTransformFunction('translateX(10px, 20px)', mockTokens);
+      const result = validateTransformFunction(
+        'translateX(10px, 20px)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, false);
       assert.ok(result.message?.includes('requires exactly 1 parameter'));
     });
@@ -180,7 +207,10 @@ describe('validateTransformFunction', () => {
 
   describe('translateY', () => {
     it('should accept valid Carbon token', () => {
-      const result = validateTransformFunction('translateY($spacing-05)', mockTokens);
+      const result = validateTransformFunction(
+        'translateY($spacing-05)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, true);
     });
 
@@ -200,7 +230,10 @@ describe('validateTransformFunction', () => {
     });
 
     it('should accept mix of token and relative unit', () => {
-      const result = validateTransformFunction('translate($spacing-01, 50%)', mockTokens);
+      const result = validateTransformFunction(
+        'translate($spacing-01, 50%)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, true);
     });
 
@@ -213,19 +246,28 @@ describe('validateTransformFunction', () => {
     });
 
     it('should reject if first parameter is invalid', () => {
-      const result = validateTransformFunction('translate(10px, $spacing-05)', mockTokens);
+      const result = validateTransformFunction(
+        'translate(10px, $spacing-05)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, false);
       assert.ok(result.message?.includes('parameter 1'));
     });
 
     it('should reject if second parameter is invalid', () => {
-      const result = validateTransformFunction('translate($spacing-01, 20px)', mockTokens);
+      const result = validateTransformFunction(
+        'translate($spacing-01, 20px)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, false);
       assert.ok(result.message?.includes('parameter 2'));
     });
 
     it('should reject wrong number of parameters', () => {
-      const result = validateTransformFunction('translate($spacing-01)', mockTokens);
+      const result = validateTransformFunction(
+        'translate($spacing-01)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, false);
       assert.ok(result.message?.includes('requires exactly 2 parameters'));
     });
@@ -241,7 +283,10 @@ describe('validateTransformFunction', () => {
     });
 
     it('should accept relative units for x and y', () => {
-      const result = validateTransformFunction('translate3d(50%, 25vh, 0)', mockTokens);
+      const result = validateTransformFunction(
+        'translate3d(50%, 25vh, 0)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, true);
     });
 
@@ -264,7 +309,10 @@ describe('validateTransformFunction', () => {
     });
 
     it('should reject wrong number of parameters', () => {
-      const result = validateTransformFunction('translate3d($spacing-01, $spacing-05)', mockTokens);
+      const result = validateTransformFunction(
+        'translate3d($spacing-01, $spacing-05)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, false);
       assert.ok(result.message?.includes('requires exactly 3 parameters'));
     });

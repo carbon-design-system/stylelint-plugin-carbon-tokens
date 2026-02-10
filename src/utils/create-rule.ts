@@ -21,7 +21,11 @@ import {
   isCarbonMotionFunction,
   validateCarbonMotionFunction,
 } from './validators.js';
-import type { CarbonToken, TokenCollection, BaseRuleOptions } from '../types/index.js';
+import type {
+  CarbonToken,
+  TokenCollection,
+  BaseRuleOptions,
+} from '../types/index.js';
 
 const { createPlugin, utils } = stylelint;
 
@@ -48,10 +52,17 @@ export interface RuleConfig<T extends BaseRuleOptions = BaseRuleOptions> {
 export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
   config: RuleConfig<T>
 ): stylelint.Plugin {
-  const { ruleName, defaultOptions, tokenLoader, shouldSkipValue, extractTokens } = config;
+  const {
+    ruleName,
+    defaultOptions,
+    tokenLoader,
+    shouldSkipValue,
+    extractTokens,
+  } = config;
 
   const messages = utils.ruleMessages(ruleName, {
-    rejected: (prop: string, value: string, message: string) => `${prop}: ${message}: "${value}"`,
+    rejected: (prop: string, value: string, message: string) =>
+      `${prop}: ${message}: "${value}"`,
     expected: (prop: string, value: string, suggestion: string) =>
       `${prop}: Expected Carbon token instead of "${value}". Consider using: ${suggestion}`,
   });
@@ -98,7 +109,9 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
 
       // Load tokens
       const loadedTokens = tokenLoader();
-      const tokens = extractTokens ? extractTokens(loadedTokens) : (loadedTokens as CarbonToken[]);
+      const tokens = extractTokens
+        ? extractTokens(loadedTokens)
+        : (loadedTokens as CarbonToken[]);
 
       root.walkDecls((decl) => {
         const prop = decl.prop;
@@ -157,7 +170,10 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
                 carbonPrefix: options.carbonPrefix,
               });
             }
-          } else if (ruleName === 'carbon/motion-duration-use' || ruleName === 'carbon/motion-easing-use') {
+          } else if (
+            ruleName === 'carbon/motion-duration-use' ||
+            ruleName === 'carbon/motion-easing-use'
+          ) {
             // Motion rules: validate Carbon motion() function
             if (isCarbonMotionFunction(value)) {
               validation = validateCarbonMotionFunction(value);
@@ -183,19 +199,27 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
             // Report error with fix callback
             const message = validation.suggestedFix
               ? messages.expected(prop, value, validation.suggestedFix)
-              : messages.rejected(prop, value, validation.message || 'Invalid value');
+              : messages.rejected(
+                  prop,
+                  value,
+                  validation.message || 'Invalid value'
+                );
 
             utils.report({
               message,
               node: decl,
               result,
               ruleName,
-              fix: validation.suggestedFix && context.fix
-                ? () => {
-                    const newValue = decl.value.replace(value, validation.suggestedFix!);
-                    decl.value = newValue;
-                  }
-                : undefined,
+              fix:
+                validation.suggestedFix && context.fix
+                  ? () => {
+                      const newValue = decl.value.replace(
+                        value,
+                        validation.suggestedFix!
+                      );
+                      decl.value = newValue;
+                    }
+                  : undefined,
             });
           }
         }

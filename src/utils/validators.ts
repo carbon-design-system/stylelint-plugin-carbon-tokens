@@ -250,7 +250,7 @@ function validateProportionalCalc(
   // Match: 100vw - #{$spacing-01} or 100% + $spacing-01
   // Supports all viewport units: vw, vh, svw, lvw, dvw, svh, lvh, dvh, vi, vb, vmin, vmax, %
   const proportionalPattern =
-    /^(\d+(?:\.\d+)?)(vw|vh|svw|lvw|dvw|svh|lvh|dvh|vi|vb|vmin|vmax|%)\s*([+\-])\s*(.+)$/;
+    /^(\d+(?:\.\d+)?)(vw|vh|svw|lvw|dvw|svh|lvh|dvh|vi|vb|vmin|vmax|%)\s*([+-])\s*(.+)$/;
   const match = contents.match(proportionalPattern);
 
   if (!match) return { isValid: false };
@@ -295,8 +295,8 @@ function validateNegationCalc(
   tokens: CarbonToken[]
 ): ValidationResult {
   // Match: -1 * #{$token} or #{$token} / -1 or #{$token} * -1
-  const negationPattern1 = /^(-1)\s*([*\/])\s*(.+)$/;
-  const negationPattern2 = /^(.+?)\s*([*\/])\s*(-1)$/;
+  const negationPattern1 = /^(-1)\s*([*/])\s*(.+)$/;
+  const negationPattern2 = /^(.+?)\s*([*/])\s*(-1)$/;
 
   let match = contents.match(negationPattern1);
   let tokenPart: string;
@@ -377,7 +377,6 @@ export function validateCalcExpression(
     message: `Expected calc() of the form calc(P O token) or calc(-1 * token) where P is a viewport/percentage unit (vw, vh, svw, lvw, dvw, svh, lvh, dvh, vi, vb, vmin, vmax, %), O is +/-, and token is a Carbon spacing token. Found "${value}"`,
   };
 }
-
 
 /**
  * Check if value is a transform function (translate, translateX, translateY, translate3d)
@@ -559,7 +558,6 @@ export function validateTransformFunction(
   }
 }
 
-
 /**
  * Check if value is an rgba() function
  */
@@ -642,7 +640,6 @@ export function validateRgbaFunction(
     message: `rgba() color parameter must be a Carbon theme token. Found "${colorParam}"`,
   };
 }
-
 
 /**
  * Check if value is a Carbon type function (type-scale, font-family, font-weight)

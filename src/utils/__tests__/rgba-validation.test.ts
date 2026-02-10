@@ -7,10 +7,7 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
-import {
-  isRgbaFunction,
-  validateRgbaFunction,
-} from '../validators.js';
+import { isRgbaFunction, validateRgbaFunction } from '../validators.js';
 import type { CarbonToken } from '../../types/index.js';
 
 // Mock Carbon theme tokens for testing
@@ -50,44 +47,74 @@ describe('validateRgbaFunction', () => {
     });
 
     it('should accept Carbon CSS custom property as color', () => {
-      const result = validateRgbaFunction('rgba(var(--cds-layer-01), 0.5)', mockTokens);
+      const result = validateRgbaFunction(
+        'rgba(var(--cds-layer-01), 0.5)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, true);
     });
 
     it('should accept different alpha values', () => {
-      assert.strictEqual(validateRgbaFunction('rgba($background, 0)', mockTokens).isValid, true);
-      assert.strictEqual(validateRgbaFunction('rgba($background, 0.25)', mockTokens).isValid, true);
-      assert.strictEqual(validateRgbaFunction('rgba($background, 0.5)', mockTokens).isValid, true);
-      assert.strictEqual(validateRgbaFunction('rgba($background, 1)', mockTokens).isValid, true);
+      assert.strictEqual(
+        validateRgbaFunction('rgba($background, 0)', mockTokens).isValid,
+        true
+      );
+      assert.strictEqual(
+        validateRgbaFunction('rgba($background, 0.25)', mockTokens).isValid,
+        true
+      );
+      assert.strictEqual(
+        validateRgbaFunction('rgba($background, 0.5)', mockTokens).isValid,
+        true
+      );
+      assert.strictEqual(
+        validateRgbaFunction('rgba($background, 1)', mockTokens).isValid,
+        true
+      );
     });
 
     it('should accept percentage alpha values', () => {
-      const result = validateRgbaFunction('rgba($text-primary, 50%)', mockTokens);
+      const result = validateRgbaFunction(
+        'rgba($text-primary, 50%)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, true);
     });
 
     it('should not validate alpha parameter', () => {
       // Any alpha value is accepted - we only validate the color parameter
-      const result = validateRgbaFunction('rgba($layer-01, invalid-alpha)', mockTokens);
+      const result = validateRgbaFunction(
+        'rgba($layer-01, invalid-alpha)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, true);
     });
   });
 
   describe('invalid usage', () => {
     it('should reject RGB numeric values', () => {
-      const result = validateRgbaFunction('rgba(100, 100, 255, 0.5)', mockTokens);
+      const result = validateRgbaFunction(
+        'rgba(100, 100, 255, 0.5)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, false);
       assert.ok(result.message?.includes('Use rgba($token, alpha) format'));
     });
 
     it('should reject unknown SCSS variable', () => {
-      const result = validateRgbaFunction('rgba($custom-color, 0.5)', mockTokens);
+      const result = validateRgbaFunction(
+        'rgba($custom-color, 0.5)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, false);
       assert.ok(result.message?.includes('must be a Carbon theme token'));
     });
 
     it('should reject unknown CSS custom property', () => {
-      const result = validateRgbaFunction('rgba(var(--custom-color), 0.5)', mockTokens);
+      const result = validateRgbaFunction(
+        'rgba(var(--custom-color), 0.5)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, false);
       assert.ok(result.message?.includes('must be a Carbon theme token'));
     });
@@ -125,18 +152,27 @@ describe('validateRgbaFunction', () => {
 
   describe('edge cases', () => {
     it('should handle whitespace in parameters', () => {
-      const result = validateRgbaFunction('rgba( $layer-01 , 0.5 )', mockTokens);
+      const result = validateRgbaFunction(
+        'rgba( $layer-01 , 0.5 )',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, true);
     });
 
     it('should handle extra parameters (only validates first)', () => {
       // rgba() with more than 2 parameters - we only validate the first (color)
-      const result = validateRgbaFunction('rgba($layer-01, 0.5, extra)', mockTokens);
+      const result = validateRgbaFunction(
+        'rgba($layer-01, 0.5, extra)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, true);
     });
 
     it('should handle nested var() in CSS custom property', () => {
-      const result = validateRgbaFunction('rgba(var(--cds-background), 0.8)', mockTokens);
+      const result = validateRgbaFunction(
+        'rgba(var(--cds-background), 0.8)',
+        mockTokens
+      );
       assert.strictEqual(result.isValid, true);
     });
   });

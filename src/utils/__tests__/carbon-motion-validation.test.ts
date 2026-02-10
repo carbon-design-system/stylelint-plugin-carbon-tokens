@@ -7,28 +7,52 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert/strict';
-import { isCarbonMotionFunction, validateCarbonMotionFunction } from '../validators.js';
+import {
+  isCarbonMotionFunction,
+  validateCarbonMotionFunction,
+} from '../validators.js';
 
 describe('Carbon motion() function validation', () => {
   describe('isCarbonMotionFunction', () => {
     it('should detect motion() function', () => {
-      assert.equal(isCarbonMotionFunction('motion(standard, productive)'), true);
-      assert.equal(isCarbonMotionFunction('motion(entrance, expressive)'), true);
+      assert.equal(
+        isCarbonMotionFunction('motion(standard, productive)'),
+        true
+      );
+      assert.equal(
+        isCarbonMotionFunction('motion(entrance, expressive)'),
+        true
+      );
       assert.equal(isCarbonMotionFunction('motion(exit, productive)'), true);
     });
 
     it('should detect motion() with quotes', () => {
-      assert.equal(isCarbonMotionFunction("motion('standard', 'productive')"), true);
-      assert.equal(isCarbonMotionFunction('motion("entrance", "expressive")'), true);
+      assert.equal(
+        isCarbonMotionFunction("motion('standard', 'productive')"),
+        true
+      );
+      assert.equal(
+        isCarbonMotionFunction('motion("entrance", "expressive")'),
+        true
+      );
     });
 
     it('should detect motion() with whitespace', () => {
-      assert.equal(isCarbonMotionFunction('motion( standard , productive )'), true);
-      assert.equal(isCarbonMotionFunction('motion(  entrance  ,  expressive  )'), true);
+      assert.equal(
+        isCarbonMotionFunction('motion( standard , productive )'),
+        true
+      );
+      assert.equal(
+        isCarbonMotionFunction('motion(  entrance  ,  expressive  )'),
+        true
+      );
     });
 
     it('should not detect non-motion functions', () => {
-      assert.equal(isCarbonMotionFunction('cubic-bezier(0.4, 0, 0.2, 1)'), false);
+      assert.equal(
+        isCarbonMotionFunction('cubic-bezier(0.4, 0, 0.2, 1)'),
+        false
+      );
       assert.equal(isCarbonMotionFunction('ease-in-out'), false);
       assert.equal(isCarbonMotionFunction('$standard-productive'), false);
     });
@@ -37,50 +61,72 @@ describe('Carbon motion() function validation', () => {
   describe('validateCarbonMotionFunction', () => {
     describe('valid motion() calls', () => {
       it('should validate standard easing types', () => {
-        const result1 = validateCarbonMotionFunction('motion(standard, productive)');
+        const result1 = validateCarbonMotionFunction(
+          'motion(standard, productive)'
+        );
         assert.equal(result1.isValid, true);
 
-        const result2 = validateCarbonMotionFunction('motion(entrance, productive)');
+        const result2 = validateCarbonMotionFunction(
+          'motion(entrance, productive)'
+        );
         assert.equal(result2.isValid, true);
 
-        const result3 = validateCarbonMotionFunction('motion(exit, productive)');
+        const result3 = validateCarbonMotionFunction(
+          'motion(exit, productive)'
+        );
         assert.equal(result3.isValid, true);
       });
 
       it('should validate expressive motion style', () => {
-        const result1 = validateCarbonMotionFunction('motion(standard, expressive)');
+        const result1 = validateCarbonMotionFunction(
+          'motion(standard, expressive)'
+        );
         assert.equal(result1.isValid, true);
 
-        const result2 = validateCarbonMotionFunction('motion(entrance, expressive)');
+        const result2 = validateCarbonMotionFunction(
+          'motion(entrance, expressive)'
+        );
         assert.equal(result2.isValid, true);
 
-        const result3 = validateCarbonMotionFunction('motion(exit, expressive)');
+        const result3 = validateCarbonMotionFunction(
+          'motion(exit, expressive)'
+        );
         assert.equal(result3.isValid, true);
       });
 
       it('should validate with quotes', () => {
-        const result1 = validateCarbonMotionFunction("motion('standard', 'productive')");
+        const result1 = validateCarbonMotionFunction(
+          "motion('standard', 'productive')"
+        );
         assert.equal(result1.isValid, true);
 
-        const result2 = validateCarbonMotionFunction('motion("entrance", "expressive")');
+        const result2 = validateCarbonMotionFunction(
+          'motion("entrance", "expressive")'
+        );
         assert.equal(result2.isValid, true);
       });
 
       it('should validate with whitespace', () => {
-        const result = validateCarbonMotionFunction('motion( standard , productive )');
+        const result = validateCarbonMotionFunction(
+          'motion( standard , productive )'
+        );
         assert.equal(result.isValid, true);
       });
     });
 
     describe('invalid motion() calls', () => {
       it('should reject invalid easing types', () => {
-        const result = validateCarbonMotionFunction('motion(invalid, productive)');
+        const result = validateCarbonMotionFunction(
+          'motion(invalid, productive)'
+        );
         assert.equal(result.isValid, false);
         assert.ok(result.message?.includes('Invalid motion() parameters'));
       });
 
       it('should reject invalid motion styles', () => {
-        const result = validateCarbonMotionFunction('motion(standard, invalid)');
+        const result = validateCarbonMotionFunction(
+          'motion(standard, invalid)'
+        );
         assert.equal(result.isValid, false);
         assert.ok(result.message?.includes('Invalid motion() parameters'));
       });
@@ -94,7 +140,9 @@ describe('Carbon motion() function validation', () => {
       });
 
       it('should reject non-motion functions', () => {
-        const result = validateCarbonMotionFunction('cubic-bezier(0.4, 0, 0.2, 1)');
+        const result = validateCarbonMotionFunction(
+          'cubic-bezier(0.4, 0, 0.2, 1)'
+        );
         assert.equal(result.isValid, false);
         assert.equal(result.message, 'Not a Carbon motion function');
       });
