@@ -66,9 +66,9 @@ npx tsc --noEmit
 ```
 
 ### 2. Version Verification
-- [ ] Confirm version in package.json: `5.0.0-alpha.1`
-- [ ] Confirm version in CHANGELOG.md matches
-- [ ] Confirm README.md mentions alpha status
+- [x] Confirm version in package.json: `5.0.0-alpha.1`
+- [x] Confirm version in CHANGELOG.md matches
+- [x] Confirm README.md mentions alpha status
 
 ### 3. Git Preparation
 ```bash

@@ -123,7 +123,6 @@ files for details.
 
 ## Recommended config
 
-- [Strict](./config/strict.js)
 - [Recommended](./config/recommended.js)
 - [Light touch](./config/light-touch.js)
 

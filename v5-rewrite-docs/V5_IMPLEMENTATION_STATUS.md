@@ -78,7 +78,6 @@ Updated:** 2026-02-09
 
 - [x] **Recommended Config** - Updated at
       [`config/recommended.js`](config/recommended.js:1)
-- [x] **Strict Config** - Updated at [`config/strict.js`](config/strict.js:1)
 - [x] **Light Touch Config** - Updated at
       [`config/light-touch.js`](config/light-touch.js:1)
 - [x] **V5 README** - User documentation at [`README.md`](README.md:1)
