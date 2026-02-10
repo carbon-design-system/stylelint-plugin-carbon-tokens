@@ -642,3 +642,62 @@ export function validateRgbaFunction(
     message: `rgba() color parameter must be a Carbon theme token. Found "${colorParam}"`,
   };
 }
+
+
+/**
+ * Check if value is a Carbon type function (type-scale, font-family, font-weight)
+ * These are SCSS functions that return Carbon typography values
+ */
+export function isCarbonTypeFunction(value: string): boolean {
+  return /^(type-scale|font-family|font-weight)\s*\(/.test(value.trim());
+}
+
+/**
+ * Validate Carbon type function
+ * These functions are accepted as-is without parameter validation
+ * Parameter correctness is validated by Sass at compile time
+ */
+export function validateCarbonTypeFunction(value: string): ValidationResult {
+  if (!isCarbonTypeFunction(value)) {
+    return { isValid: false, message: 'Not a Carbon type function' };
+  }
+
+  // Carbon type functions are always valid - no parameter validation needed
+  // The Sass compiler will validate parameters at compile time
+  return { isValid: true };
+}
+
+/**
+ * Check if value is a Carbon motion function
+ * motion(easing_type, motion_style) returns a cubic-bezier() easing curve
+ */
+export function isCarbonMotionFunction(value: string): boolean {
+  return /\bmotion\s*\(/.test(value);
+}
+
+/**
+ * Validate Carbon motion function parameters
+ * Signature: motion(easing_type, motion_style)
+ * - easing_type: 'standard' | 'entrance' | 'exit'
+ * - motion_style: 'productive' | 'expressive'
+ */
+export function validateCarbonMotionFunction(value: string): ValidationResult {
+  if (!isCarbonMotionFunction(value)) {
+    return { isValid: false, message: 'Not a Carbon motion function' };
+  }
+
+  // Match motion(easing_type, motion_style) with optional quotes
+  const match = value.match(
+    /\bmotion\s*\(\s*['"]?(standard|entrance|exit)['"]?\s*,\s*['"]?(productive|expressive)['"]?\s*\)/
+  );
+
+  if (!match) {
+    return {
+      isValid: false,
+      message:
+        "Invalid motion() parameters. Expected: motion('standard'|'entrance'|'exit', 'productive'|'expressive')",
+    };
+  }
+
+  return { isValid: true };
+}

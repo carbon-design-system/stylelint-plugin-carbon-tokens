@@ -1,0 +1,97 @@
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * Invalid: Hard-coded values instead of Carbon type functions or tokens
+ * These should trigger errors from the type-use rule
+ */
+
+/* Hard-coded font-size values (should use type-scale() or tokens) */
+.invalid-font-size {
+  font-size: 14px;
+  /* expected carbon/type-use */
+
+  font-size: 1rem;
+  /* expected carbon/type-use */
+
+  font-size: 1.5em;
+  /* expected carbon/type-use */
+}
+
+/* Hard-coded font-family values (should use font-family() or tokens) */
+.invalid-font-family {
+  font-family: 'IBM Plex Sans', sans-serif;
+  /* expected carbon/type-use */
+
+  font-family: Arial, Helvetica, sans-serif;
+  /* expected carbon/type-use */
+
+  font-family: monospace;
+  /* expected carbon/type-use */
+}
+
+/* Hard-coded font-weight values (should use font-weight() or tokens) */
+.invalid-font-weight {
+  font-weight: 400;
+  /* expected carbon/type-use */
+
+  font-weight: 600;
+  /* expected carbon/type-use */
+
+  font-weight: bold;
+  /* expected carbon/type-use */
+
+  font-weight: 300;
+  /* expected carbon/type-use */
+}
+
+/* Hard-coded line-height values (should use tokens) */
+.invalid-line-height {
+  line-height: 1.5;
+  /* expected carbon/type-use */
+
+  line-height: 24px;
+  /* expected carbon/type-use */
+}
+
+/* Hard-coded letter-spacing values (should use tokens) */
+.invalid-letter-spacing {
+  letter-spacing: 0.5px;
+  /* expected carbon/type-use */
+
+  letter-spacing: 0.02em;
+  /* expected carbon/type-use */
+}
+
+/* V10 functions are NOT supported in V5 */
+.v10-functions-not-supported {
+  font-size: carbon--type-scale(1);
+  /* expected carbon/type-use */
+
+  font-family: carbon--font-family('sans');
+  /* expected carbon/type-use */
+
+  font-weight: carbon--font-weight('regular');
+  /* expected carbon/type-use */
+}
+
+/* Mixed valid and invalid */
+.mixed-invalid {
+  /* Valid */
+  font-size: type-scale(3);
+
+  /* Invalid - hard-coded */
+  line-height: 1.5;
+  /* expected carbon/type-use */
+
+  /* Valid */
+  font-family: font-family('sans');
+
+  /* Invalid - hard-coded */
+  letter-spacing: 0.5px;
+  /* expected carbon/type-use */
+}

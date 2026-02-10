@@ -16,6 +16,10 @@ import {
   validateTransformFunction,
   isRgbaFunction,
   validateRgbaFunction,
+  isCarbonTypeFunction,
+  validateCarbonTypeFunction,
+  isCarbonMotionFunction,
+  validateCarbonMotionFunction,
 } from './validators.js';
 import type { CarbonToken, TokenCollection, BaseRuleOptions } from '../types/index.js';
 
@@ -133,6 +137,30 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
             // Theme rule: validate rgba() function
             if (isRgbaFunction(value)) {
               validation = validateRgbaFunction(value, tokens);
+            } else {
+              validation = validateValue(value, tokens, {
+                acceptUndefinedVariables: options.acceptUndefinedVariables,
+                acceptCarbonCustomProp: options.acceptCarbonCustomProp,
+                acceptValues: options.acceptValues,
+                carbonPrefix: options.carbonPrefix,
+              });
+            }
+          } else if (ruleName === 'carbon/type-use') {
+            // Type rule: validate Carbon type functions
+            if (isCarbonTypeFunction(value)) {
+              validation = validateCarbonTypeFunction(value);
+            } else {
+              validation = validateValue(value, tokens, {
+                acceptUndefinedVariables: options.acceptUndefinedVariables,
+                acceptCarbonCustomProp: options.acceptCarbonCustomProp,
+                acceptValues: options.acceptValues,
+                carbonPrefix: options.carbonPrefix,
+              });
+            }
+          } else if (ruleName === 'carbon/motion-duration-use' || ruleName === 'carbon/motion-easing-use') {
+            // Motion rules: validate Carbon motion() function
+            if (isCarbonMotionFunction(value)) {
+              validation = validateCarbonMotionFunction(value);
             } else {
               validation = validateValue(value, tokens, {
                 acceptUndefinedVariables: options.acceptUndefinedVariables,

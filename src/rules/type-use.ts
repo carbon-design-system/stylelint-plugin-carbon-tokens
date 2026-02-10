@@ -21,7 +21,6 @@ const defaultOptions: TypeRuleOptions = {
     '/inherit|initial|none|unset/',
     '/^0$/',
     '/normal|bold|bolder|lighter/',
-    '/^[1-9]00$/', // font-weight values like 100, 200, etc.
   ],
   acceptUndefinedVariables: false,
   acceptCarbonCustomProp: false,

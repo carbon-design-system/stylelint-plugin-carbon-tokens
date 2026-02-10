@@ -27,8 +27,9 @@ describe('motion-easing-use rule', () => {
       },
     });
 
-    // cubic-bezier is allowed, so this should pass
-    assert.strictEqual(result.errored, false);
+    // cubic-bezier is NOT allowed - use motion() function or Carbon tokens instead
+    assert.strictEqual(result.errored, true);
+    assert.ok(result.results[0].warnings[0].text.includes('cubic-bezier'));
   });
 
   it('should accept Carbon SCSS easing variables', async () => {
@@ -73,7 +74,7 @@ describe('motion-easing-use rule', () => {
     assert.strictEqual(result.errored, false);
   });
 
-  it('should accept cubic-bezier functions', async () => {
+  it('should reject cubic-bezier functions', async () => {
     const result = await stylelint.lint({
       code: '.test { transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); }',
       config: {
@@ -84,10 +85,11 @@ describe('motion-easing-use rule', () => {
       },
     });
 
-    assert.strictEqual(result.errored, false);
+    assert.strictEqual(result.errored, true);
+    assert.ok(result.results[0].warnings[0].text.includes('cubic-bezier'));
   });
 
-  it('should accept steps functions', async () => {
+  it('should reject steps functions', async () => {
     const result = await stylelint.lint({
       code: '.test { animation-timing-function: steps(4, end); }',
       config: {
@@ -98,6 +100,7 @@ describe('motion-easing-use rule', () => {
       },
     });
 
-    assert.strictEqual(result.errored, false);
+    assert.strictEqual(result.errored, true);
+    assert.ok(result.results[0].warnings[0].text.includes('steps'));
   });
 });

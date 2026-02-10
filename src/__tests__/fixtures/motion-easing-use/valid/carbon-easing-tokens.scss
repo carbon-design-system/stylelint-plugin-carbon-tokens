@@ -1,5 +1,5 @@
 /**
- * Valid: Using Carbon SCSS motion easing tokens and standard easing functions
+ * Valid: Using Carbon SCSS motion easing tokens, motion() function, and standard easing keywords
  */
 
 .foo {
@@ -13,10 +13,20 @@
   animation-timing-function: linear;
 }
 
-.baz {
-  /* cubic-bezier and steps functions are allowed */
-  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
-  animation-timing-function: steps(4, end);
+.motion-function {
+  /* Carbon motion() function with all valid combinations */
+  transition-timing-function: motion(standard, productive);
+  animation-timing-function: motion(entrance, expressive);
+}
+
+.motion-exit {
+  transition-timing-function: motion(exit, productive);
+  animation-timing-function: motion(exit, expressive);
+}
+
+.motion-with-quotes {
+  transition-timing-function: motion('standard', 'productive');
+  animation-timing-function: motion("entrance", "expressive");
 }
 
 .reset {

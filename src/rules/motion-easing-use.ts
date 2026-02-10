@@ -34,8 +34,4 @@ export default createCarbonRule({
     const collection = tokens as TokenCollection;
     return collection.easing;
   },
-  // Skip cubic-bezier() and steps() functions - they're valid easing functions
-  shouldSkipValue: (value) => {
-    return value.startsWith('cubic-bezier(') || value.startsWith('steps(');
-  },
 });

@@ -1,0 +1,38 @@
+/**
+ * Invalid: Using motion() function with invalid parameters
+ */
+
+.invalid-easing-type {
+  /* Invalid easing type */
+  transition-timing-function: motion(invalid, productive);
+}
+
+.invalid-motion-style {
+  /* Invalid motion style */
+  animation-timing-function: motion(standard, invalid);
+}
+
+.missing-second-param {
+  /* Missing second parameter */
+  transition-timing-function: motion(standard);
+}
+
+.missing-both-params {
+  /* Missing both parameters */
+  animation-timing-function: motion();
+}
+
+.wrong-order {
+  /* Parameters in wrong order */
+  transition-timing-function: motion(productive, standard);
+}
+
+.typo-in-easing {
+  /* Typo in easing type */
+  animation-timing-function: motion(standart, productive);
+}
+
+.typo-in-style {
+  /* Typo in motion style */
+  transition-timing-function: motion(standard, productiv);
+}

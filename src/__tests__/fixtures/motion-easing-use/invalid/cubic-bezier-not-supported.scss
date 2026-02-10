@@ -1,0 +1,19 @@
+/**
+ * Invalid: cubic-bezier() and steps() functions are not supported
+ * Use Carbon motion() function or easing tokens instead
+ */
+
+.cubic-bezier-not-allowed {
+  /* cubic-bezier is not supported - use motion() instead */
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.steps-not-allowed {
+  /* steps is not supported - use motion() instead */
+  animation-timing-function: steps(4, end);
+}
+
+.cubic-bezier-in-transition {
+  /* cubic-bezier in shorthand transition is not supported */
+  transition: opacity 300ms cubic-bezier(0.4, 0.14, 0.3, 1);
+}

@@ -1,0 +1,82 @@
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * Valid: Carbon type functions
+ * These functions are provided by Carbon Sass and are valid alternatives to tokens
+ */
+
+/* type-scale() function - returns font-size from type scale */
+.type-scale-examples {
+  font-size: type-scale(1);
+  font-size: type-scale(2);
+  font-size: type-scale(5);
+  font-size: type-scale(10);
+
+  /* With whitespace */
+  font-size: type-scale( 3 );
+
+  /* In line-height (also valid) */
+  line-height: type-scale(4);
+}
+
+/* font-family() function - returns font family stack */
+.font-family-examples {
+  font-family: font-family('sans');
+  font-family: font-family('mono');
+  font-family: font-family('serif');
+
+  /* With whitespace */
+  font-family: font-family( 'sans' );
+
+  /* Different quote styles */
+  font-family: font-family("sans");
+}
+
+/* font-weight() function - returns font weight value */
+.font-weight-examples {
+  font-weight: font-weight('regular');
+  font-weight: font-weight('semibold');
+  font-weight: font-weight('light');
+
+  /* With whitespace */
+  font-weight: font-weight( 'regular' );
+
+  /* Different quote styles */
+  font-weight: font-weight("semibold");
+}
+
+/* Mixed usage with other valid values */
+.mixed-examples {
+  /* type-scale() with Carbon tokens */
+  font-size: type-scale(3);
+  line-height: $spacing-05;
+
+  /* font-family() with Carbon function */
+  font-family: font-family('sans');
+  font-weight: font-weight('regular');
+
+  /* All Carbon functions together */
+  font-size: type-scale(2);
+  font-family: font-family('mono');
+  font-weight: font-weight('semibold');
+  line-height: $spacing-06;
+}
+
+/* Complex selectors */
+.complex-selector {
+  h1 {
+    font-size: type-scale(8);
+    font-family: font-family('sans');
+    font-weight: font-weight('semibold');
+  }
+
+  code {
+    font-family: font-family('mono');
+    font-size: type-scale(1);
+  }
+}
