@@ -10,6 +10,8 @@ import {
   shouldValidateProperty,
   validateValue,
   parseValue,
+  isCalcExpression,
+  validateCalcExpression,
 } from './validators.js';
 import type { CarbonToken, TokenCollection, BaseRuleOptions } from '../types/index.js';
 
@@ -107,12 +109,18 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
             continue;
           }
 
-          const validation = validateValue(value, tokens, {
-            acceptUndefinedVariables: options.acceptUndefinedVariables,
-            acceptCarbonCustomProp: options.acceptCarbonCustomProp,
-            acceptValues: options.acceptValues,
-            carbonPrefix: options.carbonPrefix,
-          });
+          // Check if this is a calc() expression (only for layout-use rule)
+          let validation;
+          if (isCalcExpression(value) && ruleName === 'carbon/layout-use') {
+            validation = validateCalcExpression(value, tokens);
+          } else {
+            validation = validateValue(value, tokens, {
+              acceptUndefinedVariables: options.acceptUndefinedVariables,
+              acceptCarbonCustomProp: options.acceptCarbonCustomProp,
+              acceptValues: options.acceptValues,
+              carbonPrefix: options.carbonPrefix,
+            });
+          }
 
           if (!validation.isValid) {
             // Report error with fix callback

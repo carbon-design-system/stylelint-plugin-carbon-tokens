@@ -1,0 +1,54 @@
+/**
+ * Valid calc() expressions - Proportional Math
+ *
+ * These calc() expressions follow V4 rules:
+ * - Proportional unit (viewport/percentage) with +/- operator and Carbon token
+ * - Supports: vw, vh, %, svw, lvw, dvw, svh, lvh, dvh, vi, vb, vmin, vmax
+ */
+
+.proportional-math {
+  /* vw with subtraction */
+  right: calc(100vw - #{$spacing-01});
+  left: calc(100vw - $spacing-05);
+
+  /* vh with subtraction */
+  top: calc(100vh - #{$spacing-03});
+  bottom: calc(100vh - $spacing-02);
+
+  /* percentage with addition */
+  margin-left: calc(100% + #{$spacing-04});
+  margin-right: calc(50% + $spacing-01);
+
+  /* percentage with subtraction */
+  padding-top: calc(100% - #{$spacing-05});
+  padding-bottom: calc(75% - $spacing-03);
+}
+
+.modern-viewport-units {
+  /* Small viewport units */
+  margin: calc(100svw - #{$spacing-01});
+  padding: calc(100svh - $spacing-02);
+
+  /* Large viewport units */
+  top: calc(100lvw - #{$spacing-03});
+  left: calc(100lvh - $spacing-04);
+
+  /* Dynamic viewport units */
+  right: calc(100dvw - #{$spacing-05});
+  bottom: calc(100dvh - $spacing-01);
+
+  /* Inline/block viewport units */
+  margin-inline: calc(100vi - #{$spacing-02});
+  margin-block: calc(100vb - $spacing-03);
+
+  /* Min/max viewport units */
+  padding-left: calc(100vmin - #{$spacing-04});
+  padding-right: calc(100vmax - $spacing-05);
+}
+
+.proportional-with-css-vars {
+  /* CSS custom properties */
+  right: calc(100vw - var(--cds-spacing-01));
+  top: calc(100vh - var(--cds-spacing-05));
+  margin: calc(100% + var(--cds-spacing-03));
+}

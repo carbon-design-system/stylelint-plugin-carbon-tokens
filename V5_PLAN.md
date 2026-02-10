@@ -207,8 +207,14 @@ Specific validation for icon size tokens deferred to future release.
 ### Fluid Spacing Tokens
 Fluid spacing token validation (vw-based) not included in initial scope.
 
-### Advanced Math Validation
-Complex `calc()` expression validation beyond simple token usage deferred.
+### Limited Math/calc() Support
+V5 supports the same limited math patterns as V4 for layout-use rule only:
+- **Proportional math**: `calc(100vw - #{$spacing-01})` - viewport/percentage units with +/- operators
+- **Token negation**: `calc(-1 * #{$spacing-01})` or `calc(#{$spacing-01} / -1)` - multiply/divide by -1 only
+
+All other math patterns are rejected to prevent arbitrary spacing values. See V4_MATH_CALC_SUPPORT.md for complete details.
+
+**Note**: V5 uses PostCSS and cannot validate SCSS math outside calc() (e.g., `$spacing-01 / -1`). Only calc() expressions are validated.
 
 ### Multi-Value Property Ranges
 Advanced range syntax for multi-value properties (e.g., `box-shadow<-1>`) simplified or deferred.

@@ -222,3 +222,158 @@ export function parseValue(value: string): string[] {
 
   return values.filter((v) => v.length > 0);
 }
+
+/**
+ * Check if a value contains a calc() function
+ */
+export function isCalcExpression(value: string): boolean {
+  return value.trim().startsWith('calc(');
+}
+
+/**
+ * Extract the contents of a calc() expression
+ */
+export function extractCalcContents(value: string): string | null {
+  const match = value.match(/^calc\((.*)\)$/);
+  return match ? match[1].trim() : null;
+}
+
+/**
+ * Validate calc() expression for proportional math
+ * Pattern: calc(P O token) where P is viewport/percentage unit, O is +/-
+ * Supports: vw, vh, %, svw, lvw, dvw, svh, lvh, dvh, vi, vb, vmin, vmax
+ */
+function validateProportionalCalc(
+  contents: string,
+  tokens: CarbonToken[]
+): ValidationResult {
+  // Match: 100vw - #{$spacing-01} or 100% + $spacing-01
+  // Supports all viewport units: vw, vh, svw, lvw, dvw, svh, lvh, dvh, vi, vb, vmin, vmax, %
+  const proportionalPattern =
+    /^(\d+(?:\.\d+)?)(vw|vh|svw|lvw|dvw|svh|lvh|dvh|vi|vb|vmin|vmax|%)\s*([+\-])\s*(.+)$/;
+  const match = contents.match(proportionalPattern);
+
+  if (!match) return { isValid: false };
+
+  const [, , , , tokenPart] = match;
+
+  // Validate the token part (could be #{$token} or $token or var(--token))
+  const cleanToken = tokenPart.replace(/^#\{|\}$/g, '').trim();
+
+  // Check if it's a valid Carbon token
+  const isValidToken =
+    isScssVariable(cleanToken) &&
+    tokens.some((token) => token.type === 'scss' && token.name === cleanToken);
+
+  if (isValidToken) {
+    return { isValid: true };
+  }
+
+  // Check CSS custom property
+  if (isCssCustomProperty(cleanToken)) {
+    const varName = extractCssVarName(cleanToken);
+    const isValidCssToken = tokens.some(
+      (token) => token.type === 'css-custom-prop' && token.name === varName
+    );
+    if (isValidCssToken) {
+      return { isValid: true };
+    }
+  }
+
+  return {
+    isValid: false,
+    message: `Token in calc() must be a Carbon spacing token`,
+  };
+}
+
+/**
+ * Validate calc() expression for token negation
+ * Pattern: calc(-1 * token) or calc(token / -1) or calc(token * -1)
+ */
+function validateNegationCalc(
+  contents: string,
+  tokens: CarbonToken[]
+): ValidationResult {
+  // Match: -1 * #{$token} or #{$token} / -1 or #{$token} * -1
+  const negationPattern1 = /^(-1)\s*([*\/])\s*(.+)$/;
+  const negationPattern2 = /^(.+?)\s*([*\/])\s*(-1)$/;
+
+  let match = contents.match(negationPattern1);
+  let tokenPart: string;
+
+  if (match) {
+    const [, , , token] = match;
+    tokenPart = token;
+  } else {
+    match = contents.match(negationPattern2);
+    if (!match) return { isValid: false };
+    const [, token] = match;
+    tokenPart = token;
+  }
+
+  // Clean the token (remove #{} wrapper if present)
+  const cleanToken = tokenPart.replace(/^#\{|\}$/g, '').trim();
+
+  // Check if it's a valid Carbon token
+  const isValidToken =
+    isScssVariable(cleanToken) &&
+    tokens.some((token) => token.type === 'scss' && token.name === cleanToken);
+
+  if (isValidToken) {
+    return { isValid: true };
+  }
+
+  // Check CSS custom property
+  if (isCssCustomProperty(cleanToken)) {
+    const varName = extractCssVarName(cleanToken);
+    const isValidCssToken = tokens.some(
+      (token) => token.type === 'css-custom-prop' && token.name === varName
+    );
+    if (isValidCssToken) {
+      return { isValid: true };
+    }
+  }
+
+  return {
+    isValid: false,
+    message: `Token in calc() must be a Carbon spacing token`,
+  };
+}
+
+/**
+ * Validate calc() expression according to V4 rules
+ * Supports:
+ * 1. Proportional math: calc(100vw - #{$spacing-01})
+ * 2. Token negation: calc(-1 * #{$spacing-01}) or calc(#{$spacing-01} / -1)
+ */
+export function validateCalcExpression(
+  value: string,
+  tokens: CarbonToken[]
+): ValidationResult {
+  if (!isCalcExpression(value)) {
+    return { isValid: false, message: 'Not a calc() expression' };
+  }
+
+  const contents = extractCalcContents(value);
+  if (!contents) {
+    return { isValid: false, message: 'Invalid calc() syntax' };
+  }
+
+  // Try proportional math validation first
+  const proportionalResult = validateProportionalCalc(contents, tokens);
+  if (proportionalResult.isValid) {
+    return proportionalResult;
+  }
+
+  // Try negation math validation
+  const negationResult = validateNegationCalc(contents, tokens);
+  if (negationResult.isValid) {
+    return negationResult;
+  }
+
+  // If neither pattern matches, return error with helpful message
+  return {
+    isValid: false,
+    message: `Expected calc() of the form calc(P O token) or calc(-1 * token) where P is a viewport/percentage unit (vw, vh, svw, lvw, dvw, svh, lvh, dvh, vi, vb, vmin, vmax, %), O is +/-, and token is a Carbon spacing token. Found "${value}"`,
+  };
+}
