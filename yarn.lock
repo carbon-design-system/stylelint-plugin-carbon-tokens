@@ -108,10 +108,10 @@
   dependencies:
     "@ibm/telemetry-js" "^1.5.0"
 
-"@carbon/layout-11-4@npm:@carbon/layout@11.47.0":
-  version "11.47.0"
-  resolved "https://registry.yarnpkg.com/@carbon/layout/-/layout-11.47.0.tgz#54201e682848b9a4aac53f5e361465ab23442630"
-  integrity sha512-2XR4TVp3uf2IB0WdoZuDcBbc9C8EN/JvZAw9BdHJ3njng8FlUAQUkTFvfoUsJl10868rqA6YeClCElBS4BHofg==
+"@carbon/layout-11-4@npm:@carbon/layout@11.48.0":
+  version "11.48.0"
+  resolved "https://registry.yarnpkg.com/@carbon/layout/-/layout-11.48.0.tgz#6ac287e05b5d61611fba21ac233bd4cb9a6442ad"
+  integrity sha512-c8VGSqHJ8cEqBqT2Au0cJK6vuhpimxoBCtHDK/bPRwgce2tjYcoBIGxY8QVMs2woKoQcgCKtluKyo/drEZWYww==
   dependencies:
     "@ibm/telemetry-js" "^1.5.0"
 
