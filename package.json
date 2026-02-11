@@ -45,7 +45,7 @@
     "@carbon/colors-11-4": "npm:@carbon/colors@11.46.0",
     "@carbon/layout": "^11.5.0",
     "@carbon/layout-10": "npm:@carbon/layout@^10.37.5",
-    "@carbon/layout-11-4": "npm:@carbon/layout@11.47.0",
+    "@carbon/layout-11-4": "npm:@carbon/layout@11.48.0",
     "@carbon/motion": "^11.3.0",
     "@carbon/motion-10": "npm:@carbon/motion@^10.29.5",
     "@carbon/themes": "^11.7.0",
