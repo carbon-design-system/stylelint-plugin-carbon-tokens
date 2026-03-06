@@ -804,8 +804,7 @@ tokens.
 
 ## Migration from V4
 
-See [MIGRATION_V4_TO_V5.md](./MIGRATION_V4_TO_V5.md) for detailed migration
-instructions.
+See [MIGRATION.md](./MIGRATION.md) for detailed migration instructions.
 
 ### Key Changes
 
@@ -846,27 +845,10 @@ V5 Configuration (same):
 
 ## Documentation
 
-### User Documentation
-
-- **[V5 Overview](./V5_OVERVIEW.md)** - Why V5? Complete feature comparison and
-  rationale
-- **[Migration Guide](./MIGRATION_V4_TO_V5.md)** - Detailed V4 → V5 migration
-  instructions
-- **[V5 Deprecations](./V5_DEPRECATIONS.md)** - Deprecated features and
-  alternatives
-- **[V4/V5 Comparison](./V5_V4_COMPARISON.md)** - Detailed feature parity
-  analysis
-
-### Technical Documentation
-
-- [Implementation Status](./v5-rewrite-docs/V5_IMPLEMENTATION_STATUS.md) -
-  Current progress and roadmap
-- [Test Coverage](./v5-rewrite-docs/V5_TEST_COVERAGE.md) - Test coverage report
-- [V5 Plan](./v5-rewrite-docs/V5_PLAN.md) - Original V5 vision and architecture
-- [Shorthand Strategy](./v5-rewrite-docs/V5_SHORTHAND_IMPLEMENTATION_STRATEGY.md) -
-  Shorthand property implementation
-- [Not Yet Supported](./v5-rewrite-docs/V5_NOT_YET_SUPPORTED.md) - Future
-  enhancements
+- **[Migration Guide](./MIGRATION.md)** - V4 → V5 migration instructions
+- **[V3 to V4 Migration](./MIGRATION_V3_TO_V4.md)** - For users on V3 or earlier
+- **[V5 Plan](./v5-rewrite-docs/V5_PLAN.md)** - V5 architecture and
+  implementation plan
 
 ## Testing
 
@@ -916,3 +898,604 @@ See [CHANGELOG.md](./CHANGELOG.md) for release history.
 
 **Note**: This is an alpha release. Please test thoroughly and report any
 issues!
+
+## Advanced Usage Examples
+
+This section provides practical examples for common scenarios and advanced
+configurations.
+
+### Real-World Scenarios
+
+#### Migrating from Hard-Coded Values
+
+When migrating an existing codebase, start with the `light-touch` configuration
+and gradually increase strictness:
+
+```js
+// Step 1: Start with warnings only
+export default {
+  extends: ['stylelint-plugin-carbon-tokens/light-touch'],
+};
+
+// Step 2: After fixing warnings, move to recommended
+export default {
+  extends: ['stylelint-plugin-carbon-tokens/recommended'],
+};
+
+// Step 3: For new projects or complete migration, use strict
+export default {
+  extends: ['stylelint-plugin-carbon-tokens/strict'],
+};
+```
+
+**Migration workflow:**
+
+```bash
+# 1. Identify violations
+npx stylelint "**/*.{css,scss}" --formatter verbose
+
+# 2. Auto-fix safe violations
+npx stylelint "**/*.{css,scss}" --fix
+
+# 3. Review remaining violations
+npx stylelint "**/*.{css,scss}" --formatter json > violations.json
+```
+
+#### Working with Component Libraries
+
+When building a component library that extends Carbon, use `validateVariables`
+to accept your library's design tokens:
+
+```js
+export default {
+  plugins: ['stylelint-plugin-carbon-tokens'],
+  rules: {
+    'carbon/layout-use': [
+      true,
+      {
+        validateVariables: [
+          '/^\\$my-lib-/', // SCSS variables: $my-lib-spacing-*
+          '/^--my-lib-/', // CSS custom properties: --my-lib-spacing-*
+        ],
+      },
+    ],
+    'carbon/theme-use': [
+      true,
+      {
+        validateVariables: ['/^\\$my-lib-color-/', '/^--my-lib-color-/'],
+      },
+    ],
+  },
+};
+```
+
+**Component library pattern:**
+
+```scss
+// tokens.scss - Define library tokens using Carbon
+$my-lib-spacing-sm: $spacing-03;
+$my-lib-spacing-md: $spacing-05;
+$my-lib-spacing-lg: $spacing-07;
+
+$my-lib-color-primary: $background-brand;
+$my-lib-color-secondary: $layer-accent;
+
+// component.scss - Use library tokens
+.my-component {
+  padding: $my-lib-spacing-md; // ✅ Accepted
+  color: $my-lib-color-primary; // ✅ Accepted
+}
+```
+
+#### Using with CSS-in-JS
+
+For CSS-in-JS solutions (styled-components, emotion, etc.), configure stylelint
+to process JavaScript files:
+
+```js
+// stylelint.config.js
+export default {
+  extends: ['stylelint-plugin-carbon-tokens/recommended'],
+  customSyntax: 'postcss-styled-syntax', // or '@stylelint/postcss-css-in-js'
+  rules: {
+    'carbon/theme-use': [
+      true,
+      {
+        acceptCarbonCustomProp: true, // Accept var(--cds-*) in JS
+      },
+    ],
+  },
+};
+```
+
+**Example with styled-components:**
+
+```jsx
+import styled from 'styled-components';
+
+// ✅ Valid - using CSS custom properties
+const Button = styled.button`
+  color: var(--cds-text-primary);
+  background: var(--cds-background-brand);
+  padding: var(--cds-spacing-05);
+  transition: all var(--cds-duration-fast-02)
+    var(--cds-easing-standard-productive);
+`;
+```
+
+#### Gradual Adoption Strategy
+
+For large codebases, adopt rules incrementally by directory:
+
+```js
+// stylelint.config.js
+export default {
+  extends: ['stylelint-plugin-carbon-tokens/light-touch'],
+  overrides: [
+    {
+      // Strict enforcement for new components
+      files: ['src/components/new/**/*.scss'],
+      extends: ['stylelint-plugin-carbon-tokens/strict'],
+    },
+    {
+      // Recommended for refactored components
+      files: ['src/components/refactored/**/*.scss'],
+      extends: ['stylelint-plugin-carbon-tokens/recommended'],
+    },
+    {
+      // Allow legacy code temporarily
+      files: ['src/legacy/**/*.scss'],
+      rules: {
+        'carbon/theme-use': null,
+        'carbon/layout-use': null,
+      },
+    },
+  ],
+};
+```
+
+### Complex Configuration Examples
+
+#### Multiple Rules with Different Settings
+
+Customize each rule based on your project's needs:
+
+```js
+export default {
+  plugins: ['stylelint-plugin-carbon-tokens'],
+  rules: {
+    // Strict theme enforcement
+    'carbon/theme-use': [
+      true,
+      {
+        acceptValues: ['transparent', 'currentColor', 'inherit'],
+        acceptCarbonCustomProp: true,
+      },
+    ],
+
+    // Flexible layout with custom spacing
+    'carbon/layout-use': [
+      true,
+      {
+        acceptValues: [
+          '0',
+          'auto',
+          '100%',
+          '/^\\d+px$/', // Allow any px value temporarily
+        ],
+        validateVariables: ['/^\\$app-/'],
+      },
+    ],
+
+    // Typography with system fonts
+    'carbon/type-use': [
+      true,
+      {
+        acceptValues: [
+          'inherit',
+          'system-ui',
+          '-apple-system',
+          'BlinkMacSystemFont',
+        ],
+      },
+    ],
+
+    // Motion with custom durations
+    'carbon/motion-duration-use': [
+      true,
+      {
+        acceptValues: ['0s', '0ms'],
+      },
+    ],
+
+    // Standard easing only
+    'carbon/motion-easing-use': true,
+
+    // Contextual layers as warnings
+    'carbon/theme-layer-use': [
+      true,
+      {
+        severity: 'warning',
+      },
+    ],
+  },
+};
+```
+
+#### Project-Specific Variable Patterns
+
+Handle multiple variable naming conventions:
+
+```js
+export default {
+  plugins: ['stylelint-plugin-carbon-tokens'],
+  rules: {
+    'carbon/layout-use': [
+      true,
+      {
+        validateVariables: [
+          // Component library prefix
+          '/^\\$c4p-/',
+
+          // Feature-specific prefixes
+          '/^\\$header-/',
+          '/^\\$sidebar-/',
+          '/^\\$modal-/',
+
+          // CSS custom properties
+          '/^--component-/',
+          '/^--feature-/',
+        ],
+      },
+    ],
+  },
+};
+```
+
+**Usage example:**
+
+```scss
+// Variable declarations
+$c4p-spacing-base: $spacing-05;
+$header-height: $spacing-09;
+$sidebar-width: $spacing-13;
+
+--component-padding: var(--cds-spacing-05);
+--feature-margin: var(--cds-spacing-07);
+
+// All accepted in components
+.header {
+  height: $header-height; // ✅
+  padding: $c4p-spacing-base; // ✅
+}
+
+.sidebar {
+  width: $sidebar-width; // ✅
+  margin: var(--feature-margin); // ✅
+}
+```
+
+#### Mixed SCSS and CSS Custom Properties
+
+Support both SCSS variables and CSS custom properties in the same project:
+
+```js
+export default {
+  plugins: ['stylelint-plugin-carbon-tokens'],
+  rules: {
+    'carbon/theme-use': [
+      true,
+      {
+        // Accept both formats
+        acceptCarbonCustomProp: true,
+        trackFileVariables: true,
+
+        // Accept project variables in both formats
+        validateVariables: ['/^\\$theme-/', '/^--theme-/'],
+      },
+    ],
+  },
+};
+```
+
+**Mixed usage:**
+
+```scss
+// SCSS variables
+@use '@carbon/styles/scss/theme' as *;
+
+$theme-primary: $background-brand;
+$theme-secondary: $layer-accent;
+
+// CSS custom properties
+:root {
+  --theme-surface: var(--cds-layer);
+  --theme-border: var(--cds-border-subtle);
+}
+
+// Use both in components
+.card {
+  background: $theme-primary; // ✅ SCSS variable
+  border: 1px solid var(--theme-border); // ✅ CSS custom property
+}
+```
+
+### Integration Examples
+
+#### Vite Configuration
+
+```js
+// vite.config.js
+import { defineConfig } from 'vite';
+
+export default defineConfig({
+  css: {
+    postcss: {
+      plugins: [
+        // Stylelint runs during development
+        require('stylelint')({
+          config: {
+            extends: ['stylelint-plugin-carbon-tokens/recommended'],
+          },
+        }),
+      ],
+    },
+  },
+});
+```
+
+#### Webpack Configuration
+
+```js
+// webpack.config.js
+module.exports = {
+  module: {
+    rules: [
+      {
+        test: /\.(css|scss)$/,
+        use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader',
+          {
+            loader: 'stylelint-webpack-plugin',
+            options: {
+              configFile: '.stylelintrc.json',
+              files: '**/*.{css,scss}',
+              fix: true, // Auto-fix during build
+            },
+          },
+        ],
+      },
+    ],
+  },
+};
+```
+
+#### CI/CD Pipeline
+
+```yaml
+# .github/workflows/lint.yml
+name: Lint Styles
+
+on: [push, pull_request]
+
+jobs:
+  stylelint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run stylelint
+        run: npx stylelint "**/*.{css,scss}" --formatter github
+
+      - name: Check for violations
+        run: |
+          if npx stylelint "**/*.{css,scss}" --quiet; then
+            echo "No violations found"
+          else
+            echo "Violations found - see annotations above"
+            exit 1
+          fi
+```
+
+#### Pre-commit Hook
+
+```bash
+# .husky/pre-commit
+#!/bin/sh
+. "$(dirname "$0")/_/husky.sh"
+
+# Lint staged CSS/SCSS files
+npx lint-staged
+```
+
+```json
+// package.json
+{
+  "lint-staged": {
+    "*.{css,scss}": ["stylelint --fix", "git add"]
+  }
+}
+```
+
+### Troubleshooting Examples
+
+#### Handling False Positives
+
+**Problem**: Legitimate values flagged as violations
+
+```css
+/* ❌ False positive - 0 is valid */
+.element {
+  margin: 0;
+}
+```
+
+**Solution**: Add to `acceptValues`
+
+```js
+{
+  'carbon/layout-use': [true, {
+    acceptValues: ['0', 'auto', 'inherit']
+  }]
+}
+```
+
+#### Performance Optimization for Large Codebases
+
+**Problem**: Slow linting on large projects
+
+**Solution 1**: Use `.stylelintignore`
+
+```
+# .stylelintignore
+node_modules/
+dist/
+build/
+vendor/
+*.min.css
+```
+
+**Solution 2**: Disable variable tracking for specific files
+
+```js
+export default {
+  overrides: [
+    {
+      files: ['src/vendor/**/*.scss'],
+      rules: {
+        'carbon/layout-use': [
+          true,
+          {
+            trackFileVariables: false, // Faster for vendor files
+          },
+        ],
+      },
+    },
+  ],
+};
+```
+
+**Solution 3**: Run in parallel
+
+```json
+{
+  "scripts": {
+    "lint:css": "stylelint --max-workers 4 \"**/*.{css,scss}\""
+  }
+}
+```
+
+#### Debugging Configuration Issues
+
+**Problem**: Rules not working as expected
+
+**Solution**: Enable debug output
+
+```bash
+# Check which rules are active
+DEBUG=stylelint:* npx stylelint "src/**/*.scss"
+
+# Verify configuration
+npx stylelint --print-config src/component.scss
+```
+
+**Problem**: Variables not being resolved
+
+**Solution**: Verify variable tracking is enabled
+
+```js
+{
+  'carbon/layout-use': [true, {
+    trackFileVariables: true,  // Must be true (default)
+  }]
+}
+```
+
+**Debug variable resolution:**
+
+```scss
+// Add debug output
+$test-var: $spacing-05;
+
+.debug {
+  /* Check if this passes - if not, variable tracking may be disabled */
+  margin: $test-var;
+}
+```
+
+#### Common Configuration Mistakes
+
+**Mistake 1**: Wrong regex syntax
+
+```js
+// ❌ Wrong - missing delimiters
+validateVariables: ['^\\$app-'];
+
+// ✅ Correct - wrapped in slashes
+validateVariables: ['/^\\$app-/'];
+```
+
+**Mistake 2**: Forgetting to escape special characters
+
+```js
+// ❌ Wrong - $ not escaped
+validateVariables: ['/^$app-/'];
+
+// ✅ Correct - $ escaped
+validateVariables: ['/^\\$app-/'];
+```
+
+**Mistake 3**: Conflicting options
+
+```js
+// ❌ Wrong - acceptUndefinedVariables makes validateVariables redundant
+{
+  acceptUndefinedVariables: true,
+  validateVariables: ['/^\\$app-/']  // This has no effect
+}
+
+// ✅ Correct - use one or the other
+{
+  validateVariables: ['/^\\$app-/']  // Validate specific patterns
+}
+```
+
+#### Handling Third-Party CSS
+
+**Problem**: Violations in third-party libraries
+
+**Solution**: Exclude third-party files
+
+```js
+export default {
+  extends: ['stylelint-plugin-carbon-tokens/recommended'],
+  ignoreFiles: ['node_modules/**', 'src/vendor/**', 'public/libs/**'],
+};
+```
+
+**Alternative**: Disable rules for specific files
+
+```js
+export default {
+  overrides: [
+    {
+      files: ['src/vendor/**/*.css'],
+      rules: {
+        'carbon/theme-use': null,
+        'carbon/layout-use': null,
+        'carbon/type-use': null,
+      },
+    },
+  ],
+};
+```

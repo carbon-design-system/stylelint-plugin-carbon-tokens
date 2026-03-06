@@ -1,5 +1,75 @@
 # Changelog
 
+## 5.0.0-beta.0 (2026-03-06)
+
+### 🎉 Beta Release
+
+V5 is now feature-complete and ready for beta testing! This is a complete
+rewrite focused on Carbon v11+ with TypeScript.
+
+### ✨ Features
+
+- **Complete TypeScript rewrite** - Full type safety and better maintainability
+- **All 5 rules implemented** - theme-use, layout-use, type-use,
+  motion-duration-use, motion-easing-use
+- **11 functions validated** - calc(), rgba(), translate family (4), Carbon v11
+  functions (5)
+- **Comprehensive shorthand support** - Full parsing, validation, and auto-fix
+  for transition, animation, font, border, outline
+- **Modern CSS support** - Modern viewport units (svw, lvw, dvw, etc.), logical
+  properties, direct translate property
+- **Enhanced validation** - Better error messages, more comprehensive checks
+- **Simplified configuration** - Cleaner syntax, regex patterns including
+  negative lookahead
+- **Advanced usage examples** - Real-world scenarios, integration examples,
+  troubleshooting guides
+
+### 📚 Documentation
+
+- **Streamlined documentation** - Removed development artifacts, kept only
+  essential user-facing docs
+- **Migration guide** - Comprehensive V4→V5 migration instructions at
+  MIGRATION.md
+- **V3→V4 reference** - Historical migration guide at MIGRATION_V3_TO_V4.md
+- **Advanced examples** - Added extensive usage examples covering real-world
+  scenarios
+
+### 🔧 Infrastructure
+
+- **GitHub Actions updated** - Modern Node.js versions (20.x, 22.x), npm instead
+  of yarn, main branch
+- **Prettier configured** - Optimal TypeScript formatting settings
+- **Test coverage** - 263 tests passing, 95.17% branch coverage
+
+### 💥 Breaking Changes
+
+- **Carbon v10 removed** - Only Carbon v11+ is supported
+- **Node.js 20+ required** - Minimum Node.js version increased
+- **Scope options removed** - acceptScopes, enforceScopes no longer available
+- **Custom Carbon paths removed** - carbonPath, carbonModulePostfix options
+  removed
+- **Position syntax deprecated** - Use simple property names instead of `<1 4>`
+  syntax
+- **Function filter syntax deprecated** - Direct validation replaces
+  `[/^translate/]` syntax
+- **cubic-bezier() not supported** - Must use Carbon tokens or motion() function
+- **steps() not supported** - Must use Carbon tokens or motion() function
+
+### 📦 What's Included
+
+- 5 fully implemented rules with auto-fix
+- 263 comprehensive tests
+- Complete TypeScript type definitions
+- Three preset configurations (recommended, strict, light-touch)
+- Extensive documentation and examples
+
+### 🚀 Next Steps
+
+This beta release is ready for testing in real projects. Please report any
+issues or feedback!
+
+# Changelog
+
 ## 5.0.0-alpha.17 (2026-02-19)
 
 ### 🐛 Bug Fixes
