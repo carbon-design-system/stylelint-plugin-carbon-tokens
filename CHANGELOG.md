@@ -1,5 +1,36 @@
 # Changelog
 
+## Unreleased
+
+### ✨ Features
+
+- **Gradient validation** - Added `validateGradients` option to theme-use rule
+  - Three modes: `undefined` (light-touch), `'recommended'`, and `'strict'`
+  - `undefined`: Skip gradient validation entirely (default, maintains backward
+    compatibility)
+  - `'recommended'`: Validate color stops, allow Carbon tokens, transparent, and
+    semi-transparent white/black
+  - `'strict'`: Only allow Carbon tokens and transparent keyword
+  - Supports all gradient types: linear-gradient, radial-gradient,
+    conic-gradient
+  - Properly handles gradient syntax (directions, angles, positions, sizes)
+  - Validates individual color stops while allowing gradient-specific parameters
+  - 41 new tests added for gradient parsing and validation
+
+### 📚 Documentation
+
+- Added comprehensive gradient validation examples
+- Created gradient test fixtures for valid and invalid cases
+- Documented validateGradients option behavior for each config preset
+
+### 🔧 Configuration
+
+- **light-touch**: `validateGradients` omitted (undefined) - No gradient
+  validation
+- **recommended**: `validateGradients: 'recommended'` - Validate with
+  white/black rgba exceptions
+- **strict**: `validateGradients: 'strict'` - Strict Carbon token enforcement
+
 ## 5.0.0-beta.0 (2026-03-06)
 
 ### 🎉 Beta Release

@@ -14,6 +14,8 @@ export default {
         severity: 'warning',
         acceptUndefinedVariables: true,
         acceptCarbonCustomProp: true,
+        // validateGradients is undefined by default (no validation)
+        // Alternative: validateGradients: 'recommended' | 'strict'
       },
     ],
     'carbon/type-use': [

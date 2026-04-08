@@ -336,6 +336,13 @@ function validateShorthandProperty(
             acceptCarbonCustomProp: options.acceptCarbonCustomProp,
             acceptValues: options.acceptValues,
             carbonPrefix: options.carbonPrefix,
+            validateGradients:
+              'validateGradients' in options
+                ? (options.validateGradients as
+                    | 'recommended'
+                    | 'strict'
+                    | undefined)
+                : undefined,
           });
         }
         if (!validation.isValid) {
@@ -432,6 +439,7 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
             experimentalFixTheme: [() => true],
             trackFileVariables: [() => true],
             validateVariables: [() => true],
+            validateGradients: [() => true],
           },
           optional: true,
         }
@@ -544,6 +552,13 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
                     acceptValues: options.acceptValues,
                     carbonPrefix: options.carbonPrefix,
                     validateVariables: [],
+                    validateGradients:
+                      'validateGradients' in options
+                        ? (options.validateGradients as
+                            | 'recommended'
+                            | 'strict'
+                            | undefined)
+                        : undefined,
                   });
                 }
               } else {
@@ -693,6 +708,13 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
                 acceptValues: options.acceptValues,
                 carbonPrefix: options.carbonPrefix,
                 validateVariables: options.validateVariables,
+                validateGradients:
+                  'validateGradients' in options
+                    ? (options.validateGradients as
+                        | 'recommended'
+                        | 'strict'
+                        | undefined)
+                    : undefined,
               });
             }
           } else if (ruleName === 'carbon/type-use') {

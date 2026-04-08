@@ -38,6 +38,7 @@ const defaultOptions: ThemeRuleOptions = {
   acceptUndefinedVariables: false,
   acceptCarbonCustomProp: false,
   carbonPrefix: 'cds',
+  // validateGradients is undefined by default (skip gradient validation - light-touch behavior)
 };
 
 export default createCarbonRule<ThemeRuleOptions>({

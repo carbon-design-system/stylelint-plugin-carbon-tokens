@@ -54,6 +54,13 @@ export interface ThemeRuleOptions extends BaseRuleOptions {
    * @example 'white' | 'g10' | 'g90' | 'g100'
    */
   experimentalFixTheme?: 'white' | 'g10' | 'g90' | 'g100';
+  /**
+   * Validate gradient color stops
+   * - undefined (default): Skip gradient validation (light-touch)
+   * - 'recommended': Allow Carbon tokens, transparent, and semi-transparent white/black
+   * - 'strict': Only Carbon tokens and transparent
+   */
+  validateGradients?: 'recommended' | 'strict';
 }
 
 /**

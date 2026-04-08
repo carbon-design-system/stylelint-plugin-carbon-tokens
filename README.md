@@ -79,6 +79,8 @@ Validates color and theme tokens.
 - `color`, `background-color`, `border-color`, `outline-color`
 - `fill`, `stroke`
 - Shorthand: `border`, `outline`
+- Gradient functions: `linear-gradient()`, `radial-gradient()`,
+  `conic-gradient()`
 
 **Example violations**:
 
@@ -95,6 +97,42 @@ Validates color and theme tokens.
 .button {
   color: var(--cds-link-primary);
 }
+```
+
+**Gradient Validation**:
+
+The `validateGradients` option controls how gradient color stops are validated:
+
+```js
+{
+  'carbon/theme-use': [true, {
+    validateGradients: 'recommended' | 'strict'
+  }]
+}
+```
+
+**Modes**:
+
+- **undefined** (default in `light-touch`): Skip gradient validation entirely
+- **`'recommended'`** (default in `recommended`): Validate color stops, allow
+  Carbon tokens, `transparent`, and semi-transparent white/black via `rgba()`
+- **`'strict'`** (default in `strict`): Only allow Carbon tokens and
+  `transparent` keyword
+
+**Examples**:
+
+```scss
+// ✅ Valid in all modes
+background: linear-gradient(to right, $layer-01, $layer-02);
+background: radial-gradient(circle, $background, transparent);
+
+// ✅ Valid in 'recommended' and undefined modes
+background: linear-gradient(to right, $layer-01, rgba(255, 255, 255, 0.5));
+background: radial-gradient(circle, $layer-01, rgb(0 0 0 / 50%));
+
+// ❌ Invalid in 'recommended' and 'strict' modes
+background: linear-gradient(to right, $layer-01, red);
+background: radial-gradient(circle, #ffffff, $layer-02);
 ```
 
 ### carbon/theme-layer-use

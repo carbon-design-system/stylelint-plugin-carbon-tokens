@@ -16,6 +16,53 @@ V5 is a complete rewrite focused on:
 - Simplified configuration
 - Modern PostCSS parsing
 
+## New Features in V5
+
+### Gradient Validation
+
+V5 introduces configurable gradient validation through the `validateGradients`
+option for the `theme-use` rule.
+
+**Configuration Options:**
+
+```js
+{
+  'carbon/theme-use': [true, {
+    validateGradients: 'recommended' | 'strict'
+  }]
+}
+```
+
+**Modes:**
+
+- **undefined** (default): Skip gradient validation entirely - maintains V4
+  behavior
+- **`'recommended'`**: Validate color stops, allow Carbon tokens, `transparent`,
+  and semi-transparent white/black via `rgba()`
+- **`'strict'`**: Only allow Carbon tokens and `transparent` keyword
+
+**Examples:**
+
+```scss
+// ✅ Valid in all modes
+background: linear-gradient(to right, $layer-01, $layer-02);
+background: radial-gradient(circle, $background, transparent);
+
+// ✅ Valid in 'recommended' and undefined modes
+background: linear-gradient(to right, $layer-01, rgba(255, 255, 255, 0.5));
+background: radial-gradient(circle, $layer-01, rgb(0 0 0 / 50%));
+
+// ❌ Invalid in 'recommended' and 'strict' modes
+background: linear-gradient(to right, $layer-01, red);
+background: radial-gradient(circle, #ffffff, $layer-02);
+```
+
+**Preset Configurations:**
+
+- **light-touch**: `validateGradients` not set (undefined)
+- **recommended**: `validateGradients: 'recommended'`
+- **strict**: `validateGradients: 'strict'`
+
 ## Breaking Changes
 
 ### 1. Carbon v10 Support Removed

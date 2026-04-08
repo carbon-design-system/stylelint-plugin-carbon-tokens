@@ -190,6 +190,7 @@ export function validateValue(
     acceptValues?: string[];
     carbonPrefix?: string;
     validateVariables?: string[];
+    validateGradients?: 'recommended' | 'strict';
   } = {}
 ): ValidationResult {
   const {
@@ -205,9 +206,9 @@ export function validateValue(
     return { isValid: true };
   }
 
-  // Always accept gradient functions
+  // Validate gradient functions based on mode
   if (isGradientFunction(value)) {
-    return { isValid: true };
+    return validateGradientFunction(value, tokens, options);
   }
 
   // Clean SCSS value (remove interpolation and namespaces)
@@ -573,6 +574,224 @@ export function extractFunctionParams(value: string): {
   }
 
   return { name, params };
+}
+
+/**
+ * Check if a parameter is a gradient direction or angle
+ * Examples: 'to right', '90deg', 'to bottom right', 'at center', 'closest-side'
+ */
+export function isDirectionOrAngle(param: string): boolean {
+  const trimmed = param.trim();
+
+  // Angle units: deg, grad, rad, turn
+  if (/^\d+\.?\d*(deg|grad|rad|turn)$/.test(trimmed)) {
+    return true;
+  }
+
+  // Direction keywords: to right, to bottom, etc.
+  if (/^to\s+(top|bottom|left|right)/.test(trimmed)) {
+    return true;
+  }
+
+  // Radial gradient position: at center, at top left, etc.
+  if (/^at\s+/.test(trimmed)) {
+    return true;
+  }
+
+  // Radial gradient size: closest-side, farthest-corner, etc.
+  if (/^(closest|farthest)-(side|corner)$/.test(trimmed)) {
+    return true;
+  }
+
+  // Radial gradient shape: circle, ellipse
+  if (/^(circle|ellipse)$/.test(trimmed)) {
+    return true;
+  }
+
+  // Conic gradient angle: from 45deg
+  if (/^from\s+\d+\.?\d*(deg|grad|rad|turn)$/.test(trimmed)) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Parse a gradient color stop to extract the color value
+ * Examples:
+ *   '$blue-90 0%' -> { color: '$blue-90', positions: ['0%'] }
+ *   'rgba(255, 255, 255, 0.5)' -> { color: 'rgba(255, 255, 255, 0.5)', positions: [] }
+ *   'red 10% 20%' -> { color: 'red', positions: ['10%', '20%'] }
+ */
+export function parseGradientColorStop(param: string): {
+  color: string;
+  positions: string[];
+} {
+  const trimmed = param.trim();
+
+  // Handle function colors (rgb, rgba, hsl, hsla, var)
+  if (trimmed.includes('(')) {
+    // Find the closing parenthesis
+    let depth = 0;
+    let endIndex = -1;
+
+    for (let i = 0; i < trimmed.length; i++) {
+      if (trimmed[i] === '(') depth++;
+      if (trimmed[i] === ')') {
+        depth--;
+        if (depth === 0) {
+          endIndex = i;
+          break;
+        }
+      }
+    }
+
+    if (endIndex !== -1) {
+      const color = trimmed.substring(0, endIndex + 1);
+      const rest = trimmed.substring(endIndex + 1).trim();
+      const positions = rest ? rest.split(/\s+/).filter((p) => p) : [];
+      return { color, positions };
+    }
+  }
+
+  // Handle simple colors (keywords, hex, variables)
+  const parts = trimmed.split(/\s+/);
+  return {
+    color: parts[0],
+    positions: parts.slice(1),
+  };
+}
+
+/**
+ * Check if an rgba/rgb function uses white or black
+ * Accepts both old and new syntax:
+ * - rgba(255, 255, 255, 0.5) or rgba(white, 0.5)
+ * - rgb(255 255 255 / 50%) or rgb(0 0 0 / 50%)
+ */
+export function isWhiteOrBlackRgba(value: string): boolean {
+  const trimmed = value.trim();
+
+  // Check for rgba/rgb function
+  if (!/^rgba?\s*\(/.test(trimmed)) {
+    return false;
+  }
+
+  const parsed = extractFunctionParams(trimmed);
+  if (!parsed || parsed.params.length === 0) {
+    return false;
+  }
+
+  const firstParam = parsed.params[0].trim();
+
+  // Check for color keywords
+  if (firstParam === 'white' || firstParam === 'black') {
+    return true;
+  }
+
+  // Check for RGB values
+  // Old syntax: rgba(255, 255, 255, 0.5) or rgba(0, 0, 0, 0.5)
+  if (parsed.params.length >= 4) {
+    const r = parseInt(parsed.params[0].trim(), 10);
+    const g = parseInt(parsed.params[1].trim(), 10);
+    const b = parseInt(parsed.params[2].trim(), 10);
+
+    // White: 255, 255, 255
+    if (r === 255 && g === 255 && b === 255) {
+      return true;
+    }
+
+    // Black: 0, 0, 0
+    if (r === 0 && g === 0 && b === 0) {
+      return true;
+    }
+  }
+
+  // New syntax: rgb(255 255 255 / 50%) or rgb(0 0 0 / 50%)
+  // The first parameter contains all RGB values separated by spaces
+  const rgbMatch = firstParam.match(
+    /^(\d+)\s+(\d+)\s+(\d+)(?:\s*\/\s*[\d.]+%?)?$/
+  );
+  if (rgbMatch) {
+    const r = parseInt(rgbMatch[1], 10);
+    const g = parseInt(rgbMatch[2], 10);
+    const b = parseInt(rgbMatch[3], 10);
+
+    // White: 255 255 255
+    if (r === 255 && g === 255 && b === 255) {
+      return true;
+    }
+
+    // Black: 0 0 0
+    if (r === 0 && g === 0 && b === 0) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+/**
+ * Validate gradient function color stops based on validation mode
+ * @param value - The gradient function value
+ * @param tokens - Available Carbon tokens
+ * @param options - Validation options including validateGradients mode
+ */
+export function validateGradientFunction(
+  value: string,
+  tokens: CarbonToken[],
+  options: {
+    acceptUndefinedVariables?: boolean;
+    acceptCarbonCustomProp?: boolean;
+    acceptValues?: string[];
+    carbonPrefix?: string;
+    validateGradients?: 'recommended' | 'strict';
+  } = {}
+): ValidationResult {
+  const { validateGradients } = options;
+
+  // If validation is disabled (undefined), accept all gradients
+  if (!validateGradients) {
+    return { isValid: true };
+  }
+
+  if (!isGradientFunction(value)) {
+    return { isValid: false, message: 'Not a gradient function' };
+  }
+
+  const parsed = extractFunctionParams(value);
+  if (!parsed) {
+    return { isValid: false, message: 'Invalid gradient syntax' };
+  }
+
+  // Determine where color stops start (skip direction/angle if present)
+  const startIndex =
+    parsed.params.length > 0 && isDirectionOrAngle(parsed.params[0]) ? 1 : 0;
+
+  // Validate each color stop
+  for (let i = startIndex; i < parsed.params.length; i++) {
+    const { color } = parseGradientColorStop(parsed.params[i]);
+
+    // In recommended mode, allow semi-transparent white/black via rgba()
+    if (validateGradients === 'recommended' && isWhiteOrBlackRgba(color)) {
+      continue; // Accept this color stop
+    }
+
+    // Validate the color using standard validation
+    const validation = validateValue(color, tokens, {
+      ...options,
+      validateGradients: undefined, // Prevent infinite recursion
+    });
+
+    if (!validation.isValid) {
+      return {
+        isValid: false,
+        message: `Gradient color stop "${color}" ${validation.message || 'is invalid'}`,
+        suggestedFix: validation.suggestedFix,
+      };
+    }
+  }
+
+  return { isValid: true };
 }
 
 /**
