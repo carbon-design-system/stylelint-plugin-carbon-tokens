@@ -41,10 +41,10 @@
   dependencies:
     "@ibm/telemetry-js" "^1.5.0"
 
-"@carbon/colors-11-4@npm:@carbon/colors@11.46.0":
-  version "11.46.0"
-  resolved "https://registry.yarnpkg.com/@carbon/colors/-/colors-11.46.0.tgz#a55c05a01f4e4146dcc5890fbd809c0c03945b9e"
-  integrity sha512-YL4BH2hxHkUT0+wMn8cO3sYN7rb9Nnp7rGttoblM0iTy83n/urwRPcxudifRwJLtASQpravCyLHdIC9WnTtIAA==
+"@carbon/colors-11-4@npm:@carbon/colors@11.50.0":
+  version "11.50.0"
+  resolved "https://registry.yarnpkg.com/@carbon/colors/-/colors-11.50.0.tgz#4d4298d0f02f27098e349f328fafd0e7affd9dcc"
+  integrity sha512-wJrJvBWiQOoVD0jaKHflC7MFESvzERmL9PCbNK15mCKZRtCZNOP5XhwGRlSrP83DNBmG0kVhCjIt/kmtmXiJHQ==
   dependencies:
     "@ibm/telemetry-js" "^1.5.0"
 
