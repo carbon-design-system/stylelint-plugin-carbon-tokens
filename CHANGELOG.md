@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.0.0-beta.1 (2026-04-08)
 
 ### ✨ Features
 
@@ -9,7 +9,7 @@
   - `undefined`: Skip gradient validation entirely (default, maintains backward
     compatibility)
   - `'recommended'`: Validate color stops, allow Carbon tokens, transparent, and
-    semi-transparent white/black
+    semi-transparent white/black via rgba()
   - `'strict'`: Only allow Carbon tokens and transparent keyword
   - Supports all gradient types: linear-gradient, radial-gradient,
     conic-gradient
@@ -19,9 +19,11 @@
 
 ### 📚 Documentation
 
-- Added comprehensive gradient validation examples
+- Added comprehensive gradient validation documentation to README
 - Created gradient test fixtures for valid and invalid cases
 - Documented validateGradients option behavior for each config preset
+- Added inline comments in config files showing alternative options
+- Updated MIGRATION.md with gradient validation examples
 
 ### 🔧 Configuration
 
@@ -30,6 +32,12 @@
 - **recommended**: `validateGradients: 'recommended'` - Validate with
   white/black rgba exceptions
 - **strict**: `validateGradients: 'strict'` - Strict Carbon token enforcement
+
+### 🐛 Bug Fixes
+
+- Fixed option validation schema to include `validateGradients` option
+- Improved type safety by removing `as any` casts in favor of proper type
+  assertions
 
 ## 5.0.0-beta.0 (2026-03-06)
 
