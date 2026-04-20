@@ -1,0 +1,76 @@
+/**
+ * Invalid transform function usage - hard-coded values
+ */
+
+.invalid-translateX-px {
+  /* Hard-coded pixel value */
+  transform: translateX(16px);
+  /*                     ^^^^ carbon/layout-use */
+}
+
+.invalid-translateY-px {
+  /* Hard-coded pixel value */
+  transform: translateY(24px);
+  /*                     ^^^^ carbon/layout-use */
+}
+
+.invalid-translate-px {
+  /* Hard-coded pixel values */
+  transform: translate(8px, 12px);
+  /*                   ^^^ carbon/layout-use */
+  /*                        ^^^^ carbon/layout-use */
+}
+
+.invalid-translate-first-param {
+  /* First parameter is hard-coded */
+  transform: translate(10px, $spacing-05);
+  /*                   ^^^^ carbon/layout-use */
+}
+
+.invalid-translate-second-param {
+  /* Second parameter is hard-coded */
+  transform: translate($spacing-01, 20px);
+  /*                                 ^^^^ carbon/layout-use */
+}
+
+.invalid-translate3d-first {
+  /* First parameter is hard-coded (z-axis not validated) */
+  transform: translate3d(15px, $spacing-02, 0);
+  /*                     ^^^^ carbon/layout-use */
+}
+
+.invalid-translate3d-second {
+  /* Second parameter is hard-coded (z-axis not validated) */
+  transform: translate3d($spacing-01, 30px, 0);
+  /*                                  ^^^^ carbon/layout-use */
+}
+
+.invalid-rem-values {
+  /* rem values are not allowed */
+  transform: translateX(1rem);
+  /*                     ^^^^ carbon/layout-use */
+  transform: translate(0.5rem, 1.5rem);
+  /*                   ^^^^^^ carbon/layout-use */
+  /*                           ^^^^^^ carbon/layout-use */
+}
+
+.invalid-em-values {
+  /* em values are not allowed */
+  transform: translateY(2em);
+  /*                     ^^^ carbon/layout-use */
+}
+
+.invalid-unknown-token {
+  /* Unknown SCSS variable */
+  transform: translateX($unknown-spacing);
+  /*                     ^^^^^^^^^^^^^^^^ carbon/layout-use */
+}
+
+.invalid-complex-with-hardcoded {
+  /* Transform with other functions, but translate has hard-coded value */
+  transform: translateX(20px) rotate(45deg);
+  /*                     ^^^^ carbon/layout-use */
+  transform: translate(16px, 24px) scale(1.2);
+  /*                   ^^^^ carbon/layout-use */
+  /*                         ^^^^ carbon/layout-use */
+}

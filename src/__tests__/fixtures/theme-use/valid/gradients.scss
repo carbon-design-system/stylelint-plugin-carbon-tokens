@@ -1,0 +1,94 @@
+/**
+ * Valid gradient usage with Carbon theme tokens
+ * Tests validateGradients option behavior
+ */
+
+// Valid for all modes (false, recommended, strict)
+.valid-gradients-with-tokens {
+  /* Linear gradients with Carbon tokens */
+  background: linear-gradient(to right, $layer-01, $layer-02);
+  background: linear-gradient(90deg, $blue-90 0%, $purple-70 100%);
+  background: linear-gradient(to bottom, $background, $layer-01);
+
+  /* Radial gradients with Carbon tokens */
+  background: radial-gradient(circle, $layer-01, $layer-02);
+  background: radial-gradient(closest-side, $blue-90 40%, $purple-70 100%);
+
+  /* Conic gradients with Carbon tokens */
+  background: conic-gradient(from 45deg, $blue-90, $purple-70);
+  background: conic-gradient($layer-01, $layer-02, $layer-01);
+}
+
+.valid-gradients-with-transparent {
+  /* Gradients with transparent keyword */
+  background: linear-gradient(to right, $layer-01, transparent);
+  background: radial-gradient(circle, transparent, $layer-02);
+  background: linear-gradient(90deg, $blue-90 0%, transparent 100%);
+}
+
+.valid-gradients-with-css-vars {
+  /* Gradients with CSS custom properties */
+  background: linear-gradient(
+    to right,
+    var(--cds-layer-01),
+    var(--cds-layer-02)
+  );
+  background: radial-gradient(circle, var(--cds-background), transparent);
+}
+
+// Valid for recommended and false modes only
+.valid-gradients-recommended-white-black {
+  /* Semi-transparent white - old syntax */
+  background: linear-gradient(to right, $layer-01, rgba(255, 255, 255, 0.5));
+  background: radial-gradient(
+    closest-side,
+    $layer-01 40%,
+    rgba(255, 255, 255, 0) 100%
+  );
+
+  /* Semi-transparent black - old syntax */
+  background: linear-gradient(to bottom, $layer-01, rgba(0, 0, 0, 0.5));
+  background: radial-gradient(circle, rgba(0, 0, 0, 0.3), $layer-02);
+
+  /* Semi-transparent white - new syntax */
+  background: linear-gradient(to right, $layer-01, rgb(255 255 255 / 50%));
+  background: radial-gradient(
+    closest-side,
+    $layer-01 40%,
+    rgb(255 255 255 / 0%) 100%
+  );
+
+  /* Semi-transparent black - new syntax */
+  background: linear-gradient(to bottom, $layer-01, rgb(0 0 0 / 50%));
+  background: radial-gradient(circle, rgb(0 0 0 / 30%), $layer-02);
+
+  /* White/black keywords with rgba */
+  background: linear-gradient(to right, $layer-01, rgba(white, 0.5));
+  background: linear-gradient(to right, $layer-01, rgba(black, 0.5));
+}
+
+.valid-gradients-complex {
+  /* Multiple color stops */
+  background: linear-gradient(
+    to bottom,
+    $layer-01 0%,
+    $layer-02 50%,
+    $background 100%
+  );
+
+  /* Gradient with rgba() using Carbon token */
+  background: linear-gradient(
+    to right,
+    rgba($layer-01, 0.8),
+    rgba($layer-01, 0)
+  );
+
+  /* Mixed tokens and transparent */
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    $blue-90 25%,
+    $purple-70 75%,
+    transparent 100%
+  );
+}

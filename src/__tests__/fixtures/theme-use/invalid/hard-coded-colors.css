@@ -1,0 +1,14 @@
+/**
+ * Invalid: Using hard-coded color values instead of Carbon tokens
+ * Expected errors on lines with hex colors
+ */
+
+.foo {
+  background-color: #f4f4f4;
+  color: #161616;
+  border-color: rgb(255, 255, 255);
+}
+
+.bar {
+  box-shadow: 0 0 5px $layer-01, 0 0 10px #fefefe;
+}

@@ -4,9 +4,25 @@ export default {
       true,
       {
         severity: 'warning',
-        acceptCarbonMiniUnitsFunction: true,
         acceptUndefinedVariables: true,
-        acceptScopes: ['**'],
+        acceptCarbonCustomProp: true,
+      },
+    ],
+    'carbon/theme-use': [
+      true,
+      {
+        severity: 'warning',
+        acceptUndefinedVariables: true,
+        acceptCarbonCustomProp: true,
+        // validateGradients is undefined by default (no validation)
+        // Alternative: validateGradients: 'recommended' | 'strict'
+      },
+    ],
+    'carbon/type-use': [
+      true,
+      {
+        severity: 'warning',
+        acceptUndefinedVariables: true,
         acceptCarbonCustomProp: true,
       },
     ],
@@ -15,7 +31,6 @@ export default {
       {
         severity: 'warning',
         acceptUndefinedVariables: true,
-        acceptScopes: ['**'],
         acceptCarbonCustomProp: true,
       },
     ],
@@ -24,24 +39,7 @@ export default {
       {
         severity: 'warning',
         acceptUndefinedVariables: true,
-        acceptScopes: ['**'],
-      },
-    ],
-    'carbon/theme-use': [
-      true,
-      {
-        severity: 'warning',
-        acceptUndefinedVariables: true,
-        acceptScopes: ['**'],
         acceptCarbonCustomProp: true,
-      },
-    ],
-    'carbon/type-use': [
-      true,
-      {
-        severity: 'warning',
-        acceptUndefinedVariables: true,
-        acceptScopes: ['**'],
       },
     ],
   },

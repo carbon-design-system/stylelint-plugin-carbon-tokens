@@ -1,0 +1,42 @@
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+@use '@carbon/styles/scss/theme' as *;
+
+// Valid: Carbon theme tokens in border shorthand
+.element {
+  border: 1px solid $border-subtle-01;
+}
+
+.element-strong {
+  border: 2px solid $border-strong-01;
+}
+
+.element-inverse {
+  border: 1px dashed $border-inverse;
+}
+
+// Valid: Carbon theme tokens in outline shorthand
+.element-outline {
+  outline: 2px solid $focus;
+}
+
+.element-outline-inverse {
+  outline: 3px dashed $focus-inverse;
+}
+
+// Valid: Transparent and currentColor (allowed)
+.element-transparent {
+  border: 1px solid transparent;
+  outline: 2px solid currentColor;
+}
+
+// Valid: rgba() with Carbon tokens
+.element-rgba {
+  border: 1px solid rgba($layer-01, 0.5);
+  outline: 2px solid rgba($background, 0.8);
+}

@@ -1,5 +1,0 @@
-grayscale
-keyframes
-optimizelegibility
-orangered
-vmin

@@ -1,0 +1,28 @@
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+// Invalid: Hard-coded color in border shorthand
+.element {
+  border: 1px solid #000000;
+}
+
+.element-rgb {
+  border: 2px dashed rgb(255, 0, 0);
+}
+
+.element-named {
+  border: 1px solid red;
+}
+
+// Invalid: Hard-coded color in outline shorthand
+.element-outline {
+  outline: 2px solid #ff0000;
+}
+
+.element-outline-rgb {
+  outline: 3px dashed rgb(0, 128, 255);
+}

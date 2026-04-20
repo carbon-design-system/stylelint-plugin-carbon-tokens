@@ -1,0 +1,68 @@
+/**
+ * SKIP: Custom configuration options require rule configuration
+ *
+ * These examples demonstrate features that require custom rule
+ * configuration and cannot be tested with default settings.
+ *
+ * Custom Properties to Check:
+ * -------------------------
+ * Users can extend includeProps to check additional properties.
+ * Example config: { includeProps: ['width', 'height', 'border-width'] }
+ *
+ * This would enable checking properties not in the default set.
+ */
+
+.custom-props {
+  /* Would need includeProps: ['width', 'height'] */
+  width: 320px;
+  height: 240px;
+}
+
+/**
+ * Custom Acceptable Values:
+ * ------------------------
+ * Users can extend acceptValues to allow specific non-token values.
+ * Example config: { acceptValues: ['/^-?[0-9]+(vw|vh)$/', 'fit-content'] }
+ *
+ * This would allow viewport units and fit-content without errors.
+ */
+
+.custom-accept {
+  /* Would need acceptValues: ['/^-?[0-9]+(vw|vh)$/'] */
+  margin: 10vw;
+  padding: 5vh;
+
+  /* Would need acceptValues: ['fit-content'] */
+  width: fit-content;
+}
+
+/**
+ * CSS Custom Property Values:
+ * --------------------------
+ * Users can enable acceptCarbonCustomProp to allow CSS custom properties.
+ * Example config: { acceptCarbonCustomProp: true }
+ *
+ * This would allow var(--custom-spacing) without requiring it to be
+ * a Carbon token.
+ */
+
+.custom-props-enabled {
+  /* Would need acceptCarbonCustomProp: true */
+  margin: var(--my-custom-spacing);
+  padding: var(--app-padding);
+}
+
+/**
+ * User-Defined Variables:
+ * ----------------------
+ * Users can enable acceptUndefinedVariables to allow any SCSS variable.
+ * Example config: { acceptUndefinedVariables: true }
+ *
+ * This would allow $my-spacing without requiring it to be a Carbon token.
+ */
+
+.user-variables {
+  /* Would need acceptUndefinedVariables: true */
+  margin: $my-custom-spacing;
+  padding: $app-padding;
+}

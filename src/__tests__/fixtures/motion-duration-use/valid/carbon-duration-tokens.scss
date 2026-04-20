@@ -1,0 +1,26 @@
+/**
+ * Valid: Using Carbon SCSS motion duration tokens
+ */
+
+.foo {
+  transition: width $duration-fast-01 linear;
+  transition-duration: $duration-moderate-01;
+}
+
+.bar {
+  animation: test $duration-fast-01 linear ease-in myAnim;
+  animation-duration: $duration-moderate-01;
+}
+
+.baz {
+  /* Multiple transitions */
+  transition:
+    width $duration-fast-02 linear ease-in,
+    height $duration-moderate-01 ease-out;
+}
+
+.reset {
+  transition: none;
+  transition-duration: inherit;
+  animation: initial;
+}

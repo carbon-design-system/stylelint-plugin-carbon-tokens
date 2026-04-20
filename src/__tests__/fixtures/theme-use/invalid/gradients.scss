@@ -1,0 +1,84 @@
+/**
+ * Invalid gradient usage - hard-coded colors
+ * These should be flagged when validateGradients is 'recommended' or 'strict'
+ */
+
+.invalid-gradients-hard-coded-colors {
+  /* Hard-coded hex colors */
+  background: linear-gradient(to right, #ff0000, #0000ff);
+  /*                                   ^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+
+  background: radial-gradient(circle, #ffffff, #000000);
+  /*                                  ^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+
+  /* Hard-coded color keywords */
+  background: linear-gradient(to bottom, red, blue);
+  /*                                     ^^^^^^^^^ carbon/theme-use */
+
+  background: conic-gradient(from 45deg, green, yellow);
+  /*                                     ^^^^^^^^^^^^^ carbon/theme-use */
+}
+
+.invalid-gradients-mixed {
+  /* Mix of valid token and invalid color */
+  background: linear-gradient(to right, $layer-01, red);
+  /*                                                 ^^^ carbon/theme-use */
+
+  background: radial-gradient(circle, $blue-90, #ffffff);
+  /*                                            ^^^^^^^^ carbon/theme-use */
+}
+
+.invalid-gradients-rgba-non-white-black {
+  /* Gray rgba - invalid in both recommended and strict */
+  background: linear-gradient(to right, $layer-01, rgba(128, 128, 128, 0.5));
+  /*                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+
+  /* Colored rgba - invalid in both recommended and strict */
+  background: linear-gradient(to right, $layer-01, rgba(255, 0, 0, 0.5));
+  /*                                                ^^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+
+  background: radial-gradient(circle, rgba(0, 255, 0, 0.3), $layer-02);
+  /*                                  ^^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+}
+
+.invalid-gradients-rgb-new-syntax {
+  /* Gray rgb - new syntax */
+  background: linear-gradient(to right, $layer-01, rgb(128 128 128 / 50%));
+  /*                                                ^^^^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+
+  /* Colored rgb - new syntax */
+  background: linear-gradient(to right, $layer-01, rgb(255 0 0 / 50%));
+  /*                                                ^^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+}
+
+.invalid-gradients-unknown-variables {
+  /* Unknown SCSS variables */
+  background: linear-gradient(to right, $custom-color, $my-theme);
+  /*                                    ^^^^^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+
+  /* Unknown CSS custom properties */
+  background: radial-gradient(circle, var(--custom-bg), var(--my-color));
+  /*                                  ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+}
+
+.invalid-gradients-all-hard-coded {
+  /* No Carbon tokens at all */
+  background: linear-gradient(90deg, #ff0000 0%, #00ff00 50%, #0000ff 100%);
+  /*                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+
+  background: radial-gradient(closest-side, white 40%, black 100%);
+  /*                                        ^^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use */
+}
+
+// Note: When validateGradients is 'strict', rgba white/black are also invalid
+.invalid-gradients-strict-only {
+  /* These are valid in 'recommended' but invalid in 'strict' */
+  background: linear-gradient(to right, $layer-01, rgba(255, 255, 255, 0.5));
+  /*                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use [strict only] */
+
+  background: linear-gradient(to right, $layer-01, rgba(0, 0, 0, 0.5));
+  /*                                                ^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use [strict only] */
+
+  background: radial-gradient(circle, rgb(255 255 255 / 50%), $layer-02);
+  /*                                  ^^^^^^^^^^^^^^^^^^^^^^^ carbon/theme-use [strict only] */
+}
