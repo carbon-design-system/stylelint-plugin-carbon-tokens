@@ -1,5 +1,136 @@
 # Changelog
 
+## 5.0.0 (2026-04-20)
+
+### 🎉 Major Release
+
+Version 5.0.0 is a complete TypeScript rewrite of
+stylelint-plugin-carbon-tokens, focused on Carbon Design System v11+ with modern
+CSS support, comprehensive validation, and enhanced developer experience.
+
+### ✨ Features
+
+#### Core Capabilities
+
+- **Complete TypeScript rewrite** - Full type safety and better maintainability
+- **All 5 Carbon token rules** - theme-use, layout-use, type-use,
+  motion-duration-use, motion-easing-use
+- **11 functions validated** - calc(), rgba(), translate family (4), Carbon v11
+  functions (5)
+- **Comprehensive shorthand support** - Full parsing, validation, and auto-fix
+  for transition, animation, font, border, outline
+- **Modern CSS support** - Modern viewport units (svw, lvw, dvw, etc.), logical
+  properties, direct translate property
+- **Enhanced validation** - Better error messages, more comprehensive checks
+- **Auto-fix capabilities** - Automatic fixes for common violations with 1:1
+  token mappings
+
+#### Gradient Validation (New in 5.0.0)
+
+- **Three validation modes** for theme-use rule:
+  - `undefined` (light-touch): Skip gradient validation entirely (default,
+    maintains backward compatibility)
+  - `'recommended'`: Validate color stops, allow Carbon tokens, transparent, and
+    semi-transparent white/black via rgba()
+  - `'strict'`: Only allow Carbon tokens and transparent keyword
+- **Full gradient support** - linear-gradient, radial-gradient, conic-gradient
+- **Smart parsing** - Properly handles gradient syntax (directions, angles,
+  positions, sizes)
+- **Targeted validation** - Validates individual color stops while allowing
+  gradient-specific parameters
+- **41 new tests** added for gradient parsing and validation
+
+#### Configuration & Presets
+
+- **Three preset configurations**:
+  - `recommended` - Balanced validation with practical exceptions
+  - `strict` - Maximum enforcement of Carbon Design System best practices
+  - `light-touch` - Minimal validation for gradual adoption
+- **Simplified configuration** - Cleaner syntax, regex patterns including
+  negative lookahead
+- **Component-specific variables** - `validateVariables` option for
+  project-specific design tokens
+- **Local variable tracking** - `trackFileVariables` option to resolve
+  file-level SCSS variable declarations
+
+### 📚 Documentation
+
+- **Comprehensive README** - Complete usage guide with examples
+- **Migration guides** - V4→V5 migration at MIGRATION.md, V3→V4 reference at
+  MIGRATION_V3_TO_V4.md
+- **Advanced examples** - Real-world scenarios, integration examples,
+  troubleshooting guides
+- **Gradient validation docs** - Detailed documentation for validateGradients
+  option behavior
+- **Rule documentation** - Individual README files for each rule
+
+### 🔧 Infrastructure
+
+- **Modern tooling** - GitHub Actions with Node.js 20.x and 22.x, npm instead of
+  yarn
+- **Prettier configured** - Optimal TypeScript formatting settings
+- **Comprehensive testing** - 263+ tests passing, 95.17% branch coverage
+- **Stylelint v16 & v17** - Support for both Stylelint v16.26.1+ and v17.0.0+
+
+### 💥 Breaking Changes
+
+#### Removed Features
+
+- **Carbon v10 removed** - Only Carbon v11+ is supported
+- **Node.js 20+ required** - Minimum Node.js version increased from 18
+- **Scope options removed** - acceptScopes, enforceScopes no longer available
+- **Custom Carbon paths removed** - carbonPath, carbonModulePostfix options
+  removed
+- **IBM color tokens removed** - ibm-color() function no longer supported
+- **Theme-specific fixes removed** - experimentalFixTheme option removed
+- **Mini-units function removed** - acceptCarbonMiniUnitsFunction option removed
+  (v10 only)
+
+#### Syntax Changes
+
+- **Position syntax deprecated** - Use simple property names instead of `<1 4>`
+  syntax
+- **Function filter syntax deprecated** - Direct validation replaces
+  `[/^translate/]` syntax
+- **cubic-bezier() not supported** - Must use Carbon tokens or motion() function
+- **steps() not supported** - Must use Carbon tokens or motion() function
+
+### 🐛 Bug Fixes
+
+Throughout the beta period, numerous fixes were implemented:
+
+- Fixed CSS custom property validation to only accept known Carbon tokens
+- Fixed validation of CSS custom properties with fallback values
+- Fixed recognition of negative SCSS variables (e.g., `-$spacing-07`)
+- Fixed box-shadow length values validation
+- Fixed non-spacing transform functions validation
+- Fixed token name formatting for theme tokens
+- Fixed negative proportional values validation
+- Fixed deprecation warnings for context.fix usage
+- Improved type safety by removing `as any` casts
+
+### 📦 What's Included
+
+- 5 fully implemented rules with auto-fix
+- 263+ comprehensive tests
+- Complete TypeScript type definitions
+- Three preset configurations (recommended, strict, light-touch)
+- Extensive documentation and examples
+- Support for Stylelint v16 and v17
+
+### 🚀 Migration from V4
+
+See [MIGRATION.md](./MIGRATION.md) for detailed migration instructions. Key
+changes:
+
+1. Update to Carbon v11+ if not already done
+2. Remove deprecated configuration options
+3. Update Node.js to version 20+
+4. Review gradient validation settings (new feature)
+5. Test with the new validation rules
+
+---
+
 ## 5.0.0-beta.1 (2026-04-08)
 
 ### ✨ Features
