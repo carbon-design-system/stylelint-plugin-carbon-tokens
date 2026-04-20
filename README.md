@@ -1,7 +1,4 @@
-# stylelint-plugin-carbon-tokens v5 (Alpha)
-
-> **⚠️ This is an alpha release of v5 - a complete rewrite focused on Carbon
-> v11+**
+# stylelint-plugin-carbon-tokens v5
 
 A stylelint plugin to enforce the use of Carbon Design System tokens in CSS and
 SCSS files.
@@ -26,7 +23,7 @@ SCSS files.
 ## Installation
 
 ```bash
-npm install stylelint-plugin-carbon-tokens@alpha
+npm install stylelint-plugin-carbon-tokens
 ```
 
 ## Quick Start
@@ -933,9 +930,6 @@ MIT
 See [CHANGELOG.md](./CHANGELOG.md) for release history.
 
 ---
-
-**Note**: This is an alpha release. Please test thoroughly and report any
-issues!
 
 ## Advanced Usage Examples
 
