@@ -836,6 +836,46 @@ https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/issues
 
 ---
 
+## 4.0.6
+
+- fix: Resolve Stylelint v17 + vscode-stylelint v2.0.0 circular reference issue
+  - Clean all PostCSS nodes in the AST tree before processing to remove circular
+    references from postcss-scss's Lexer
+  - This fixes the "Converting circular structure to JSON" error in VSCode/Bob
+    when using vscode-stylelint v2.0.0 with Stylelint v17
+  - Related to Stylelint issue #8964
+  - The fix ensures compatibility with the "Stylelint 17 way" of handling custom
+    syntaxes
+
+## 4.0.5
+
+- fix: Completely resolve circular structure JSON serialization error in VSCode
+  - Remove `syntax` property from PostCSS nodes before reporting to prevent
+    circular references from postcss-scss's Lexer
+  - This fixes the "Converting circular structure to JSON" error that was still
+    occurring in VSCode/Bob when using the plugin
+- fix: Remove ajv resolution that was causing ESLint compatibility issues
+  - The ajv ^8.18.0 resolution (added in 4.0.3 for CVE-2025-59873) caused
+    @eslint/eslintrc to fail with "Cannot set properties of undefined"
+  - Removed the resolution to restore ESLint functionality
+
+## 4.0.4
+
+- fix: Stylelint v17 compatibility - Fixed circular structure JSON serialization
+  error
+  - Replaced `JSON.stringify(decl)` with safe property extraction in error
+    logging
+  - Updated stylelint dependency to support both v16 and v17:
+    `"^16.26.1 || ^17.0.0"`
+  - Fixes "Converting circular structure to JSON" error in VSCode extension when
+    using Stylelint v17
+
+## 4.0.3
+
+- fix: CVE-2025-69873 - Updated ajv from 8.17.1 to 8.18.0 to address security
+  vulnerability
+  - Added resolution in package.json to force ajv@^8.18.0
+
 ## 4.0.2
 
 - Various minor dependency updates.
