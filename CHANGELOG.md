@@ -1,5 +1,10 @@
 # Changelog
 
+## 5.0.1 (2026-04-20)
+
+- docs: Remove alpha references from README
+- docs: Update installation instructions to use stable release
+
 ## 5.0.0 (2026-04-20)
 
 ### 🎉 Major Release
