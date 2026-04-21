@@ -3230,10 +3230,10 @@ strip-json-comments@^3.1.1:
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-3.1.1.tgz#31f1281b3832630434831c310c01cccda8cbe006"
   integrity sha512-6fPc+R4ihwqP6N/aIv2f1gMH8lOVtWQHoqC4yK6oSDVVocumAsfCqjkXnqiYMhmMwS/mEHLp7Vehlt3ql6lEig==
 
-stylelint-test-rule-node@^0.4.0:
-  version "0.4.0"
-  resolved "https://registry.npmjs.org/stylelint-test-rule-node/-/stylelint-test-rule-node-0.4.0.tgz"
-  integrity sha512-E2OC3bewFH6vtQC8OS2SJW6GY4pbHNpRwk1Nk95gwegFGbvECB6AK8MNEz5zRlCl4R1muVfE+TAl2Zjbib3mCA==
+stylelint-test-rule-node@^1.0.0:
+  version "1.1.0"
+  resolved "https://registry.yarnpkg.com/stylelint-test-rule-node/-/stylelint-test-rule-node-1.1.0.tgz#66b770258e4adc7d8c6bb881bece64d0010d14a7"
+  integrity sha512-WdhFPw+avrWIcVZ3VNlhG8K0hKKRG3edrhMPKvVjzFqkZJtA7efRuxMmKSk7vY4/+t0jFRl0DIGaVGPUL9jw+Q==
 
 "stylelint@^16.26.1 || ^17.0.0":
   version "17.3.0"
