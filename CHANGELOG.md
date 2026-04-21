@@ -12,6 +12,11 @@
   - Added test cases for multi-line gradients with spacing tokens as position
     values
 
+### 🔧 Maintenance
+
+- **node**: Update minimum Node.js version to 22 (LTS)
+- **ci**: Update CI workflow to test on Node.js 22.x (LTS) and 24.x (Current)
+
 ## 5.0.1 (2026-04-20)
 
 - docs: Remove alpha references from README
