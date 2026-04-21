@@ -2644,9 +2644,9 @@ normalize-path@^3.0.0:
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
 
 npm-check-updates@^19.1.2:
-  version "19.3.1"
-  resolved "https://registry.npmjs.org/npm-check-updates/-/npm-check-updates-19.3.1.tgz"
-  integrity sha512-v92fHH8fmf9VVmQwwL5JWpX8GDEe8BDyrz4w3GF6D6JBUZKpQNcTfBBgxVkCcAPzVUjCHSZEXYmZAAKfLTsDBA==
+  version "19.6.6"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-19.6.6.tgz#57f6a8824b6a99e6ce48149d33fc92d037d7789b"
+  integrity sha512-AvlRcnlUEyBEJfblUSjYMJwYKvCIWDRuCDa6x3hyUMTMkI3kslmFm0LDqwgzQfshfNh0Z3ouKiA4fLjRN7HejQ==
 
 npm-normalize-package-bin@^4.0.0:
   version "4.0.0"
