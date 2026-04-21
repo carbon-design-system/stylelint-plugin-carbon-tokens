@@ -542,7 +542,7 @@ export function extractFunctionParams(value: string): {
   name: string;
   params: string[];
 } | null {
-  const match = value.match(/^([a-zA-Z0-9-]+)\((.*)\)$/);
+  const match = value.match(/^([a-zA-Z0-9-]+)\((.*)\)$/s);
   if (!match) return null;
 
   const [, name, paramsStr] = match;
