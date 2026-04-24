@@ -1,5 +1,51 @@
 # Changelog
 
+## 5.0.3 (2026-04-24)
+
+### 🐛 Bug Fixes
+
+- **ci**: Fix CI workflow to use Yarn instead of npm
+  ([#201](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/201))
+  - Update `.github/workflows/ci.yml` to use `yarn install --frozen-lockfile`
+  - Change cache strategy from npm to yarn
+  - Update all build/test commands to use yarn
+  - Resolves CI failures on Renovate PRs
+- **deps**: Bump flatted from 3.3.3 to 3.4.2
+  ([#201](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/201))
+- **deps**: Bump minimatch from 3.1.2 to 3.1.5
+  ([#199](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/199))
+
+### 🔧 Maintenance
+
+- **ci**: Add automated Renovate PR merging
+  ([#218](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/218))
+  - Configure Renovate to auto-merge minor and patch updates
+  - Add GitHub Actions workflow to enable auto-merge on Renovate PRs
+- **deps**: Update dependency typescript to v6
+  ([#220](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/220))
+- **deps**: Update dependency npm-check-updates to v21
+  ([#219](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/219))
+- **deps**: Update dependency cspell to v10
+  ([#217](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/217))
+- **deps**: Update dependency @types/node to v24
+  ([#216](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/216))
+- **deps**: Update actions/setup-node to v6
+  ([#215](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/215))
+- **deps**: Update actions/checkout to v6
+  ([#214](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/214))
+- **deps**: Update typescript-eslint monorepo to v8.59.0
+  ([#212](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/212))
+- **deps**: Update dependency @carbon/type to v11.58.0
+  ([#211](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/211))
+- **deps**: Update dependency @carbon/themes to v11.72.0
+  ([#209](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/209))
+- **deps**: Update dependency @carbon/motion to v11.45.0
+  ([#208](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/208))
+- **deps**: Update dependency @carbon/layout to v11.52.0
+  ([#207](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/207))
+- **deps**: Update dependency @carbon/colors to v11.51.0
+  ([#206](https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/pull/206))
+
 ## 5.0.2 (2026-04-21)
 
 ### 🐛 Bug Fixes
