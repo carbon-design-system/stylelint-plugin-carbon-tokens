@@ -1,5 +1,27 @@
 # Changelog
 
+## 5.0.2 (2026-04-21)
+
+### 🐛 Bug Fixes
+
+- **gradient validation**: Fix parsing of multi-line gradient functions with
+  spacing tokens as position values
+  - Updated `extractFunctionParams()` regex to support multi-line function calls
+    by adding the `s` (dotAll) flag
+  - Gradients with newlines and whitespace are now properly parsed
+  - Added test cases for multi-line gradients with spacing tokens as position
+    values
+
+### 🔧 Maintenance
+
+- **node**: Update minimum Node.js version to 22 (LTS)
+- **ci**: Update CI workflow to test on Node.js 22.x (LTS) and 24.x (Current)
+
+## 5.0.1 (2026-04-20)
+
+- docs: Remove alpha references from README
+- docs: Update installation instructions to use stable release
+
 ## 5.0.0 (2026-04-20)
 
 ### 🎉 Major Release

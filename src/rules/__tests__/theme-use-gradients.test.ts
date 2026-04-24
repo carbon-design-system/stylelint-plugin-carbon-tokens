@@ -407,4 +407,48 @@ describe('theme-use rule - gradient validation modes', () => {
       assert.equal(result.errored, false);
     });
   });
+
+  describe('gradient with spacing tokens as position values', () => {
+    it('should accept gradients with spacing tokens as position values', async () => {
+      const result = await stylelint.lint({
+        code: `
+          .test {
+            background: linear-gradient(
+              to bottom,
+              $ai-border-start $spacing-04,
+              $ai-aura-end $spacing-10
+            );
+          }
+        `,
+        config: {
+          ...config,
+          rules: {
+            'carbon/theme-use': [true, { validateGradients: 'recommended' }],
+          },
+        },
+      });
+
+      assert.equal(result.errored, false);
+      assert.equal(result.results[0].warnings.length, 0);
+    });
+
+    it('should accept single-line gradients with spacing tokens', async () => {
+      const result = await stylelint.lint({
+        code: `
+          .test {
+            background: linear-gradient(to bottom, $ai-border-start $spacing-04, $ai-aura-end $spacing-10);
+          }
+        `,
+        config: {
+          ...config,
+          rules: {
+            'carbon/theme-use': [true, { validateGradients: 'recommended' }],
+          },
+        },
+      });
+
+      assert.equal(result.errored, false);
+      assert.equal(result.results[0].warnings.length, 0);
+    });
+  });
 });

@@ -1,6 +1,6 @@
 {
   "name": "stylelint-plugin-carbon-tokens",
-  "version": "5.0.0",
+  "version": "5.0.2",
   "description": "A stylelint plugin to support the use of carbon component tokens.",
   "keywords": [
     "stylelint",
@@ -48,28 +48,28 @@
     "stylelint": "^16.26.1 || ^17.0.0"
   },
   "devDependencies": {
-    "@eslint/js": "^9.39.1",
-    "@types/node": "^20.17.10",
+    "@eslint/js": "^10.0.0",
+    "@types/node": "^24.0.0",
     "@typescript-eslint/eslint-plugin": "^8.20.0",
     "@typescript-eslint/parser": "^8.20.0",
-    "cspell": "^9.4.0",
-    "eslint": "^9.39.1",
+    "cspell": "^10.0.0",
+    "eslint": "^10.0.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-import-resolver-alias": "^1.1.2",
     "eslint-import-resolver-typescript": "^4.4.4",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-prettier": "^5.5.4",
-    "npm-check-updates": "^19.1.2",
+    "npm-check-updates": "^21.0.0",
     "npm-run-all2": "^8.0.0",
     "prettier": "^3.7.4",
-    "stylelint-test-rule-node": "^0.4.0",
+    "stylelint-test-rule-node": "^1.0.0",
     "typescript": "^5.7.3"
   },
   "resolutions": {
     "js-yaml": "^4.1.1"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=22"
   },
   "files": [
     "CHANGELOG.md",
