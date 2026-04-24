@@ -3,9 +3,18 @@
   "extends": ["config:recommended"],
   "packageRules": [
     {
+      "description": "Automerge non-major updates for stable packages",
       "matchUpdateTypes": ["minor", "patch"],
       "matchCurrentVersion": "!/^0/",
-      "automerge": true
+      "automerge": true,
+      "automergeType": "pr",
+      "automergeStrategy": "squash"
+    },
+    {
+      "description": "Require manual review for major updates",
+      "matchUpdateTypes": ["major"],
+      "automerge": false
     }
-  ]
+  ],
+  "platformAutomerge": true
 }
