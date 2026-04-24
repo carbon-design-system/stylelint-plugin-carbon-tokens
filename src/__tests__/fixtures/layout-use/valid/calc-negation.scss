@@ -1,0 +1,27 @@
+/**
+ * Valid calc() expressions - Token Negation
+ *
+ * These calc() expressions follow V4 rules:
+ * - Multiply or divide Carbon token by -1 only
+ */
+
+.token-negation {
+  /* Multiply by -1 */
+  margin-top: calc(-1 * #{$spacing-04});
+  margin-left: calc(-1 * $spacing-05);
+
+  /* Divide by -1 */
+  padding-top: calc(#{$spacing-01} / -1);
+  padding-left: calc($spacing-03 / -1);
+
+  /* Multiply token by -1 (reverse order) */
+  top: calc(#{$spacing-04} * -1);
+  left: calc($spacing-02 * -1);
+}
+
+.negation-with-css-vars {
+  /* CSS custom properties */
+  margin: calc(-1 * var(--cds-spacing-05));
+  padding: calc(var(--cds-spacing-03) / -1);
+  top: calc(var(--cds-spacing-01) * -1);
+}

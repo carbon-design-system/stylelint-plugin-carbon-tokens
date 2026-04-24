@@ -2,11 +2,19 @@ import prettier from 'eslint-plugin-prettier';
 import importPlugin from 'eslint-plugin-import';
 import eslintConfigPrettier from 'eslint-config-prettier';
 import js from '@eslint/js';
+import tseslint from '@typescript-eslint/eslint-plugin';
+import tsparser from '@typescript-eslint/parser';
 
 export default [
   // Ignore patterns (migrated from .eslintignore)
   {
-    ignores: ['node_modules/', 'dist/'],
+    ignores: [
+      'node_modules/',
+      'dist/',
+      'test-*.js',
+      'test-*.mjs',
+      'debug-*.js',
+    ],
   },
   // Base configurations
   // Note: ESLint v9 changes to recommended rules:
@@ -40,16 +48,16 @@ export default [
     // Import plugin settings
     settings: {
       'import/resolver': {
-        alias: {
-          map: [
-            ['', './public'], // <-- this line
-          ],
-          extensions: ['.js'],
+        typescript: {
+          alwaysTryTypes: true,
+          project: './tsconfig.json',
         },
-        node: {
-          paths: ['src'],
-          extensions: ['.js'],
-        },
+        // The node resolver can sometimes conflict with the TS resolver in IDEs
+        // Try setting this to true to use default node resolution alongside TS
+        node: true,
+      },
+      'import/parsers': {
+        '@typescript-eslint/parser': ['.ts', '.tsx'],
       },
     },
   },
@@ -116,6 +124,31 @@ export default [
         {
           singleQuote: true,
           trailingComma: 'es5',
+        },
+      ],
+    },
+  },
+  // TypeScript configuration
+  {
+    files: ['**/*.ts'],
+    languageOptions: {
+      parser: tsparser,
+      parserOptions: {
+        project: './tsconfig.json',
+      },
+    },
+    plugins: {
+      '@typescript-eslint': tseslint,
+    },
+    rules: {
+      ...tseslint.configs.recommended.rules,
+      '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
+      '@typescript-eslint/no-unused-vars': [
+        'error',
+        {
+          argsIgnorePattern: '^_',
+          varsIgnorePattern: '^_',
         },
       ],
     },
