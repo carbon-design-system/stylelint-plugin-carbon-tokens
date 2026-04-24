@@ -63,7 +63,7 @@
     "npm-run-all2": "^8.0.0",
     "prettier": "^3.7.4",
     "stylelint-test-rule-node": "^1.0.0",
-    "typescript": "^5.7.3"
+    "typescript": "^6.0.0"
   },
   "resolutions": {
     "js-yaml": "^4.1.1"
