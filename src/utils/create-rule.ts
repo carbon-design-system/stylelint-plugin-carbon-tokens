@@ -24,6 +24,7 @@ import {
   resolveFileVariables,
   isVariableDeclaration,
 } from './validators.js';
+import { loadLayoutTokens } from './carbon-tokens.js';
 import {
   parseTransition,
   parseAnimation,
@@ -462,6 +463,19 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
         ? extractTokens(loadedTokens)
         : (loadedTokens as CarbonToken[]);
 
+      // For theme-use rule, also load layout tokens for calc() validation
+      let layoutTokensForCalc: CarbonToken[] = [];
+      if (ruleName === 'carbon/theme-use') {
+        const layoutCollection = loadLayoutTokens();
+        layoutTokensForCalc = [
+          ...layoutCollection.spacing,
+          ...layoutCollection.layout,
+          ...layoutCollection.container,
+          ...layoutCollection.fluidSpacing,
+          ...layoutCollection.iconSize,
+        ];
+      }
+
       // Track file-level SCSS variable declarations if enabled
       const fileVariables = new Map<string, string>();
 
@@ -702,8 +716,8 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
             if (isRgbaFunction(value)) {
               validation = validateRgbaFunction(value, tokens);
             } else if (isCalcExpression(value)) {
-              // Validate calc() expressions for spacing tokens in box-shadow, border, outline
-              validation = validateCalcExpression(value, tokens);
+              // Validate calc() expressions using layout tokens (for spacing in box-shadow, border, outline)
+              validation = validateCalcExpression(value, layoutTokensForCalc);
             } else {
               validation = validateValue(value, tokens, {
                 acceptUndefinedVariables: options.acceptUndefinedVariables,
