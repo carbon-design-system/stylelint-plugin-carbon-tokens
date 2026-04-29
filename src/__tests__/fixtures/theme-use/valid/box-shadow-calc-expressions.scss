@@ -1,0 +1,24 @@
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+.component {
+  /* calc() with negation for vertical offset */
+  box-shadow: 0 calc(-1 * $spacing-05) $spacing-05 $background;
+  box-shadow: 0 calc(-1 * #{$spacing-03}) $spacing-02 $layer-01;
+
+  /* calc() with negation for horizontal offset */
+  box-shadow: calc(-1 * $spacing-02) 0 $spacing-04 $border-subtle;
+
+  /* calc() with division */
+  box-shadow: 0 calc($spacing-05 / -1) $spacing-03 $background-inverse;
+  box-shadow: calc($spacing-02 * -1) 0 $spacing-01 $focus;
+
+  /* Multiple shadows with calc() */
+  box-shadow:
+    0 calc(-1 * $spacing-01) $spacing-02 $icon-inverse,
+    0 0 0 $spacing-03 $background-inverse;
+}

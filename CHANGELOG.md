@@ -1,5 +1,18 @@
 # Changelog
 
+## 5.0.4 (2026-04-29)
+
+### 🐛 Bug Fixes
+
+- **theme-use**: Add support for calc() expressions in box-shadow, border, and
+  outline properties
+  - The `theme-use` rule now validates `calc()` expressions with spacing tokens
+  - Supports negation patterns: `calc(-1 * $spacing-05)`,
+    `calc($spacing-05 / -1)`, `calc($spacing-05 * -1)`
+  - Fixes validation error for
+    `box-shadow: 0 calc(-1 * $spacing-05) $spacing-05 $background`
+  - Added test fixtures for box-shadow with calc() expressions
+
 ## 5.0.3 (2026-04-24)
 
 ### 🐛 Bug Fixes

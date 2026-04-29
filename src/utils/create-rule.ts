@@ -698,9 +698,12 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
               });
             }
           } else if (ruleName === 'carbon/theme-use') {
-            // Theme rule: validate rgba() function
+            // Theme rule: validate rgba() function and calc() expressions
             if (isRgbaFunction(value)) {
               validation = validateRgbaFunction(value, tokens);
+            } else if (isCalcExpression(value)) {
+              // Validate calc() expressions for spacing tokens in box-shadow, border, outline
+              validation = validateCalcExpression(value, tokens);
             } else {
               validation = validateValue(value, tokens, {
                 acceptUndefinedVariables: options.acceptUndefinedVariables,
