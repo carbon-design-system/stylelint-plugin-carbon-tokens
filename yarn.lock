@@ -49,6 +49,14 @@
     "@carbon/layout" "^11.52.0"
     "@ibm/telemetry-js" "^1.5.0"
 
+"@carbon/grid@^11.55.0":
+  version "11.55.0"
+  resolved "https://registry.yarnpkg.com/@carbon/grid/-/grid-11.55.0.tgz#c6493a0080a931a7afbfab9be4c74271cde2d6cd"
+  integrity sha512-3qn6oRfFlJLQPiq3NIyuObEvqmoi8uWzGdFNGgNuuWnt+jjMlB72beST2eUdwkTm+ZgvI4ezelo0HWzpMJE8ig==
+  dependencies:
+    "@carbon/layout" "^11.52.0"
+    "@ibm/telemetry-js" "^1.5.0"
+
 "@carbon/layout@^11.5.0", "@carbon/layout@^11.52.0":
   version "11.52.0"
   resolved "https://registry.yarnpkg.com/@carbon/layout/-/layout-11.52.0.tgz#c6e0f10db7bb75557c2c34ba8244a7933740412c"
@@ -64,17 +72,26 @@
     "@ibm/telemetry-js" "^1.5.0"
 
 "@carbon/themes@^11.7.0":
-  version "11.72.0"
-  resolved "https://registry.yarnpkg.com/@carbon/themes/-/themes-11.72.0.tgz#7274922e5e25b30a31c7ccd9ca7275bdfadc18ac"
-  integrity sha512-AQKtvoUGRgx+gvMRs99tLjRstcN3h/Y8BnlWZGdMer8S/Vr7jNXsWDRaJkSKJw4fg/IZebcXRs4WOOGJuVinaA==
+  version "11.73.0"
+  resolved "https://registry.yarnpkg.com/@carbon/themes/-/themes-11.73.0.tgz#15cd46c42fdd1fb5d9c18edf05b13fef7951eca5"
+  integrity sha512-3ZvDdf5t3rwzLcHwGLTSGSY8JI6dMhtTU49LfBDRnb7wsH3wQpa0c/Jm0hoqW+ZeqalZimrAHZwWeigLMpk95Q==
   dependencies:
     "@carbon/colors" "^11.51.0"
     "@carbon/layout" "^11.52.0"
-    "@carbon/type" "^11.58.0"
+    "@carbon/type" "^11.59.0"
     "@ibm/telemetry-js" "^1.5.0"
     color "^4.0.0"
 
-"@carbon/type@^11.58.0", "@carbon/type@^11.7.0":
+"@carbon/type@^11.59.0":
+  version "11.59.0"
+  resolved "https://registry.yarnpkg.com/@carbon/type/-/type-11.59.0.tgz#59984291c2d54f887f2a77efc6a401b3126ebc5e"
+  integrity sha512-juQePeqbFJHzz9gAvUdR7EpvT+BAqBOLIpanqhR3BWLOxbzEeLpySYy/C9gw8uM0Cuh/efoCVM2Q9k3TbdJBVw==
+  dependencies:
+    "@carbon/grid" "^11.55.0"
+    "@carbon/layout" "^11.52.0"
+    "@ibm/telemetry-js" "^1.5.0"
+
+"@carbon/type@^11.7.0":
   version "11.58.0"
   resolved "https://registry.yarnpkg.com/@carbon/type/-/type-11.58.0.tgz#c4812edebdc9828fd2e0a766a29d4a6ce6f444f5"
   integrity sha512-Yn1SUZ4nfnsen8326ANYuqUhidPt8uTGDG+M5y/2wDtRjhR8U0F3AuPSIyRANB3d+5c0cw+GddJo3K3CsIwkdA==
