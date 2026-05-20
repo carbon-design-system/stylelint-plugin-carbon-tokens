@@ -35,9 +35,9 @@
     keyv "^5.6.0"
 
 "@carbon/colors@^11.4.0", "@carbon/colors@^11.51.0":
-  version "11.51.0"
-  resolved "https://registry.yarnpkg.com/@carbon/colors/-/colors-11.51.0.tgz#4c8a2939ce010ab390f88febd80941caf34e65bd"
-  integrity sha512-PgCHKIrZ8t/1oG8ofkv2XDHeuwcmvKsT0nUWVyiCoL6Xf2JWdAyuWyNDDtRuQXJ4ayNAdRk2+pijT23/ooXGlw==
+  version "11.52.0"
+  resolved "https://registry.yarnpkg.com/@carbon/colors/-/colors-11.52.0.tgz#0df5fd4e2c8e60d4fcc0b1e4348914afeb15b061"
+  integrity sha512-T0Jhemrowk1VBsq/iK00bPQ+O43X1ibtBRVxuy+2APBvB35409kgvkfOEMiEpETHa/gZeevpBPFum/6g+iyqIQ==
   dependencies:
     "@ibm/telemetry-js" "^1.5.0"
 
