@@ -1,5 +1,31 @@
 # Changelog
 
+## 5.0.6 (2026-06-03)
+
+### 🔧 Configuration
+
+- **config**: Changed [`carbon/theme-layer-use`](config/recommended.js:15)
+  severity from `warning` to `error` in recommended config
+  - This rule now reports violations as errors instead of warnings
+  - Projects may see new linting errors if they have theme layer violations
+  - To maintain previous behavior, override in your config:
+    `'carbon/theme-layer-use': [true, { severity: 'warning' }]`
+
+### 🔧 Maintenance
+
+- **deps**: Updated dependencies to latest versions
+  - Updated `@carbon/colors` to ^11.52.0
+  - Updated `@carbon/layout` to ^11.53.0
+  - Updated `@carbon/motion` to ^11.46.0
+  - Updated `@carbon/themes` to ^11.74.0
+  - Updated `@carbon/type` to ^11.60.0
+  - Updated `stylelint` to ^17.11.1
+  - Updated `cspell` to ^10.0.1
+  - Updated `npm-check-updates` to ^22.2.1
+  - Updated `npm-run-all2` to ^9.0.1
+  - Updated `stylelint-test-rule-node` to ^1.2.0
+  - Updated various other development dependencies
+
 ## 5.0.5 (2026-04-29)
 
 ### 🐛 Bug Fixes
