@@ -12,7 +12,7 @@ export default {
         // Alternative: remove validateGradients (no validation, like light-touch)
       },
     ],
-    'carbon/theme-layer-use': [true, { severity: 'warning' }],
+    'carbon/theme-layer-use': [true, { severity: 'error' }],
     'carbon/type-use': [true, { severity: 'error' }],
     'carbon/motion-duration-use': [true, { severity: 'error' }],
     'carbon/motion-easing-use': [true, { severity: 'error' }],
