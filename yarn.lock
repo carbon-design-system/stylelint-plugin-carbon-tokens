@@ -2581,9 +2581,9 @@ normalize-path@^3.0.0:
   integrity sha512-6eZs5Ls3WtCisHWp9S2GUy8dqkpGi4BVSz3GaqiE6ezub0512ESztXUwUB6C6IKbQkY2Pnb/mD4WYojCRwcwLA==
 
 npm-check-updates@^22.0.0:
-  version "22.2.3"
-  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-22.2.3.tgz#9dd55c2806ea591465674fbc10f89d013271e21c"
-  integrity sha512-n8HZ0ywZugYRgEqIm67hbZC5L/9S/gLX+MkGchJB43pP2xib1+u76OpVEJRZ4QP2BksPRi5M1CCStJVfc16+/A==
+  version "22.2.6"
+  resolved "https://registry.yarnpkg.com/npm-check-updates/-/npm-check-updates-22.2.6.tgz#eed01b947c3c098791c6a1da62f54205e4c8450a"
+  integrity sha512-NqCPubcPSGcuYrFEDjyr29/aZ4OAaWJrsgdeMMdGNXF/BUsB0g8NK8SDYAAGhsWhyrx9NqAEUso+kFRIZTGbiw==
 
 npm-normalize-package-bin@^6.0.0:
   version "6.0.0"
