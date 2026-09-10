@@ -59,14 +59,6 @@
   dependencies:
     "@ibm/telemetry-js" "^1.5.0"
 
-"@carbon/grid@^11.61.0":
-  version "11.61.0"
-  resolved "https://registry.yarnpkg.com/@carbon/grid/-/grid-11.61.0.tgz#ec48d5801127731d6be7658b1c1133e3f91fd0fa"
-  integrity sha512-kY6Zwi15kpdbT/RM8M7QciK5BVZhb0cEepvoP2uT0a04yTio4QMc8BZxIvXXMi8vf48AowUNkxbhYk8KlAf7EQ==
-  dependencies:
-    "@carbon/layout" "^11.58.0"
-    "@ibm/telemetry-js" "^1.5.0"
-
 "@carbon/grid@^11.62.0":
   version "11.62.0"
   resolved "https://registry.yarnpkg.com/@carbon/grid/-/grid-11.62.0.tgz#f4c081c9936b13a50a540bb3bcac3904d31e1fe0"
@@ -75,7 +67,7 @@
     "@carbon/layout" "^11.59.0"
     "@ibm/telemetry-js" "^1.5.0"
 
-"@carbon/layout@^11.5.0", "@carbon/layout@^11.58.0", "@carbon/layout@^11.59.0":
+"@carbon/layout@^11.5.0", "@carbon/layout@^11.59.0":
   version "11.59.0"
   resolved "https://registry.yarnpkg.com/@carbon/layout/-/layout-11.59.0.tgz#d0724d6eddcad601669eb03f97708683e64c27cf"
   integrity sha512-P1ieRpHqGSfBs/mN4esH2pr4P0KPZGDb6nGeUcRiaKJkVghdiBNnVMyAUMRiYV2g7afflL3JJcrXtCKe5GrOHg==
@@ -100,22 +92,13 @@
     "@ibm/telemetry-js" "^1.5.0"
     color "^4.0.0"
 
-"@carbon/type@^11.67.0":
+"@carbon/type@^11.67.0", "@carbon/type@^11.7.0":
   version "11.67.0"
   resolved "https://registry.yarnpkg.com/@carbon/type/-/type-11.67.0.tgz#c3ac9106328733cc0b551da96c66daccaccdbb7b"
   integrity sha512-lOR/IBoNUHO8X/C3x+7PvYhroI95nVuI2+x/vhnbZhsMeB1EtBzVfmx/MDS00fDeAYfgkpPsfsgJrLuuovtMyQ==
   dependencies:
     "@carbon/grid" "^11.62.0"
     "@carbon/layout" "^11.59.0"
-    "@ibm/telemetry-js" "^1.5.0"
-
-"@carbon/type@^11.7.0":
-  version "11.66.0"
-  resolved "https://registry.yarnpkg.com/@carbon/type/-/type-11.66.0.tgz#f56edc42c5faeeeb00025e88804e115cbf59ea58"
-  integrity sha512-8y9WtdXqqKAGnOyZvkRP7jqqQe+WcdRQDfsgOcpusszIoSBSVs2dv4gEwHjMYmzansLhsCUBNocSfWNFhkVDOg==
-  dependencies:
-    "@carbon/grid" "^11.61.0"
-    "@carbon/layout" "^11.58.0"
     "@ibm/telemetry-js" "^1.5.0"
 
 "@cspell/cspell-bundled-dicts@10.3.0":
