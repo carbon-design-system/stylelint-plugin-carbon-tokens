@@ -57,9 +57,9 @@
     "@ibm/telemetry-js" "^1.5.0"
 
 "@carbon/motion@^11.3.0":
-  version "11.54.0"
-  resolved "https://registry.yarnpkg.com/@carbon/motion/-/motion-11.54.0.tgz#748e3cb5977f5c15c1306997ecf5bb2a3102738d"
-  integrity sha512-gBixqCLn5DvH7DfY7CqvzDphWuU+/zgsEi5RtVzHSxgfx7dQ8Y/XwdAJvlCSh5kgxlVfXpnFc5UtyNVCuy+ZLg==
+  version "11.55.0"
+  resolved "https://registry.yarnpkg.com/@carbon/motion/-/motion-11.55.0.tgz#38eef9d2c9e66eec202cc52b36d48688e506b914"
+  integrity sha512-jBjLagm+DvFPcVpZUYuS+lY3FkZWolA69apKe+Oh8Ezulm3Q1DQMkG9Ky+VOa0rptgFTnafP6L6y8vmZ3LJa5g==
   dependencies:
     "@ibm/telemetry-js" "^1.5.0"
 
