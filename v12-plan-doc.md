@@ -62,6 +62,12 @@ output.
 - No new SCSS variables were found in the `layout`, `themes`, `motion` and
   `type` Sass entry points. `$layout-token` is the only difference found (in v11
   only).
+- Radius tokens (`$border-radius-00` to `-max`) are already exported by
+  `@carbon/layout` v11 as `borderRadius00` to `borderRadiusMax`, but are not in
+  `unstable_tokens`, so `loadLayoutTokens` does not load them today. Carbon
+  defines them in `layout.tokens.json` alongside spacing. Carbon itself uses
+  `$spacing-*` for some radii (for example `add-select`, `tile`) and
+  `calc($border-radius-08 - 1px)` for inner corners (`card`, AI label).
 - No current rule validates `border-radius`, so none of these properties is
   rejected today. They only matter once a rule that validates radii exists.
 
@@ -122,8 +128,9 @@ in `db2-knowledge-base`.
 
 ### Phase 3 - v12-aware rules
 
-- [ ] `carbon/border-radius-use`: require `$border-radius-*` or
-      `--cds-border-radius-*` instead of hard-coded radii (also useful on v11)
+- [ ] `carbon/border-radius-use`: require `$border-radius-*` instead of
+      hard-coded radii (also useful on v11). Radius tokens are SCSS variables
+      only: no `--cds-border-radius-*` custom properties are emitted.
 - [ ] Flag overrides of `.cds--btn { border-radius }` and suggest
       `--cds-button-radius` on the container (gated by `acceptCarbonV12`)
 - [ ] Warn on deprecated tokens (`layout-01` to `layout-07`)
