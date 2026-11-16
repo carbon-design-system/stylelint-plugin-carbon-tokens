@@ -113,9 +113,11 @@ in `db2-knowledge-base`.
 
 ### Phase 4 - Housekeeping
 
-- [ ] Memoise the token loaders in `src/utils/carbon-tokens.ts`. They are called
-      for every file and rule, and `theme-use` also reloads the layout tokens
-      for every file.
+- [x] Memoise the token loaders in `src/utils/carbon-tokens.ts`. They were
+      called for every file and rule, and `theme-use` also reloaded the layout
+      tokens for every file. Results are now built once, frozen, and shared.
+      Measured saving is small (about 0.6 ms per file and rule for the four
+      loaders), so this is housekeeping rather than a major speed-up.
 - [ ] Resolve Q1 and update `package.json` ranges accordingly
 - [ ] Update `CHANGELOG.md` and the README (supported Carbon versions)
 

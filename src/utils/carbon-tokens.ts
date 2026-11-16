@@ -39,10 +39,45 @@ function convertRemToPx(remValue: string): string {
 }
 
 /**
+ * Freeze a token array so cached results cannot be mutated by callers
+ */
+function freezeTokens(tokens: CarbonToken[]): CarbonToken[] {
+  return Object.freeze(tokens) as CarbonToken[];
+}
+
+/**
+ * Freeze every array in a token collection
+ */
+function freezeCollection(collection: TokenCollection): TokenCollection {
+  for (const tokens of Object.values(collection)) {
+    freezeTokens(tokens);
+  }
+  return Object.freeze(collection);
+}
+
+// Token loaders are called for every file and rule, but the Carbon packages
+// are static for the life of the process, so each result is built once.
+const themeTokenCache = new Map<string, CarbonToken[]>();
+let layoutTokenCache: TokenCollection | undefined;
+let typeTokenCache: CarbonToken[] | undefined;
+let motionTokenCache: TokenCollection | undefined;
+
+/**
  * Load theme tokens from Carbon
+ * The result is cached per theme name and must be treated as read-only.
  * @param experimentalFixTheme - Optional theme name for color auto-fix
  */
 export function loadThemeTokens(experimentalFixTheme?: string): CarbonToken[] {
+  const cacheKey = experimentalFixTheme ?? '';
+  let tokens = themeTokenCache.get(cacheKey);
+  if (!tokens) {
+    tokens = freezeTokens(buildThemeTokens(experimentalFixTheme));
+    themeTokenCache.set(cacheKey, tokens);
+  }
+  return tokens;
+}
+
+function buildThemeTokens(experimentalFixTheme?: string): CarbonToken[] {
   const tokens: CarbonToken[] = [];
 
   // If experimentalFixTheme is enabled, load actual color values for auto-fix
@@ -128,8 +163,14 @@ export function loadThemeTokens(experimentalFixTheme?: string): CarbonToken[] {
 
 /**
  * Load layout tokens from Carbon
+ * The result is cached and must be treated as read-only.
  */
 export function loadLayoutTokens(): TokenCollection {
+  layoutTokenCache ??= freezeCollection(buildLayoutTokens());
+  return layoutTokenCache;
+}
+
+function buildLayoutTokens(): TokenCollection {
   const spacing: CarbonToken[] = [];
   const layout: CarbonToken[] = [];
   const container: CarbonToken[] = [];
@@ -211,8 +252,14 @@ export function loadLayoutTokens(): TokenCollection {
 
 /**
  * Load type tokens from Carbon
+ * The result is cached and must be treated as read-only.
  */
 export function loadTypeTokens(): CarbonToken[] {
+  typeTokenCache ??= freezeTokens(buildTypeTokens());
+  return typeTokenCache;
+}
+
+function buildTypeTokens(): CarbonToken[] {
   const tokens: CarbonToken[] = [];
 
   // typeTokens is an array of token names
@@ -238,8 +285,14 @@ export function loadTypeTokens(): CarbonToken[] {
 
 /**
  * Load motion tokens from Carbon
+ * The result is cached and must be treated as read-only.
  */
 export function loadMotionTokens(): TokenCollection {
+  motionTokenCache ??= freezeCollection(buildMotionTokens());
+  return motionTokenCache;
+}
+
+function buildMotionTokens(): TokenCollection {
   const duration: CarbonToken[] = [];
   const easing: CarbonToken[] = [];
 
