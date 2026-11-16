@@ -46,6 +46,25 @@ Compared `@carbon/{themes,layout,type,motion}` at `11.85.0` against
 - The v12 alpha packages are rewritten in TypeScript but keep the `unstable_*`
   exports the plugin relies on, including `unstable_metadata.v11`.
 
+### What is new in v12 (compiled CSS comparison)
+
+Compiled `@carbon/styles` `1.119.0` (v11) and `2.0.0-alpha.7` (v12) with Dart
+Sass and compared the `--cds-*` custom properties declared and referenced in the
+output.
+
+- **Declared, new in v12:** `--cds-button-radius`, `--cds-button-radius-ss`,
+  `--cds-button-radius-se`, `--cds-button-radius-es`, `--cds-button-radius-ee`.
+  Nothing was removed.
+- `@carbon/styles` 1.119.0 compiled with `enable-v12-release: true` declares and
+  references exactly the same custom properties as 2.0.0-alpha.7, which has
+  `enable-v12-release` on by default. So "v11 + flags" and "v12" are the same
+  vocabulary.
+- No new SCSS variables were found in the `layout`, `themes`, `motion` and
+  `type` Sass entry points. `$layout-token` is the only difference found (in v11
+  only).
+- No current rule validates `border-radius`, so none of these properties is
+  rejected today. They only matter once a rule that validates radii exists.
+
 Sources: Carbon repo tags `v11.85.0` and `v12.0.0-alpha.7`,
 `packages/feature-flags/feature-flags.yml`, and the `carbon-v12-migration` skill
 in `db2-knowledge-base`.
@@ -63,19 +82,17 @@ in `db2-knowledge-base`.
   The V11 switch is expected to be dropped in a future major.
 - **D5** Both switches `false` is a configuration error. Both `true` is the
   migration (union) mode.
+- **D6** (was Q1) Keep `dependencies` on `^11` until v12 GA, then change the
+  range. Do not widen to include v12 alphas: a fresh install would resolve to
+  the highest satisfying version, which is the v12 alpha.
+- **D7** (was Q2) `acceptCarbonV12` is a gate added to each rule as needed to
+  accept tokens that exist only in v12. The only v12-only tokens found so far
+  are the five `--cds-button-radius*` custom properties, so the gate is added
+  when a rule needs it (first candidate: `carbon/border-radius-use`), not to all
+  six existing rules.
 
 ## Open questions
 
-- **Q1** Dependency strategy for v12 users. Widening `dependencies` to
-  `^11.x || ^12.0.0-alpha.0` is **not safe**: a fresh install would resolve to
-  the highest satisfying version, which is the v12 alpha. Options:
-  - Keep `dependencies` on `^11` until v12 GA, then change the range.
-  - Move the `@carbon/*` packages to `peerDependencies` (users supply them; no
-    duplicates under npm 7+ and pnpm), keeping them in `devDependencies` for
-    tests.
-- **Q2** What does `acceptCarbonV12` change for token validation, given the
-  vocabulary is identical? Candidate: style-level custom properties such as
-  `--cds-button-radius` and `--cds-button-radius-*` that no JS package exports.
 - **Q3** Where do the switches live? Rule secondary options are per rule (six
   repeats). Presets (for example a v12 variant of `recommended`) could set them
   on every rule.
@@ -94,9 +111,9 @@ in `db2-knowledge-base`.
 
 ### Phase 2 - Configuration switches
 
-- [ ] Resolve Q2 (what the switches gate)
+- [x] Resolve Q2 (what the switches gate), see D7
 - [ ] Add `acceptCarbonV11` and `acceptCarbonV12` to `BaseRuleOptions`
-      (`src/types/index.ts`)
+      (`src/types/index.ts`) when the first rule needs them (Phase 3)
 - [ ] Add them to the secondary option allow-list in `src/utils/create-rule.ts`
 - [ ] Validate that at least one switch is `true`
 - [ ] Unit tests for the three states (v11, v11 + flags, v12)
@@ -118,7 +135,7 @@ in `db2-knowledge-base`.
       tokens for every file. Results are now built once, frozen, and shared.
       Measured saving is small (about 0.6 ms per file and rule for the four
       loaders), so this is housekeeping rather than a major speed-up.
-- [ ] Resolve Q1 and update `package.json` ranges accordingly
+- [x] Resolve Q1: keep `^11` until GA (no `package.json` change needed now)
 - [ ] Update `CHANGELOG.md` and the README (supported Carbon versions)
 
 ### Phase 5 - After Carbon v12 GA
