@@ -1,5 +1,12 @@
 # Changelog
 
+## 5.0.7 (2026-11-16)
+
+### 🔧 Dependencies
+
+- **deps**: Added support for `stylelint` version 18
+  - Updated `stylelint` dependency range to `^16.26.1 || ^17.0.0 || ^18.0.0`
+
 ## 5.0.6 (2026-06-03)
 
 ### 🔧 Configuration
