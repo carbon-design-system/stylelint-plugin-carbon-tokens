@@ -340,9 +340,7 @@ function validateShorthandProperty(
             validateGradients:
               'validateGradients' in options
                 ? (options.validateGradients as
-                    | 'recommended'
-                    | 'strict'
-                    | undefined)
+                    'recommended' | 'strict' | undefined)
                 : undefined,
           });
         }
@@ -569,9 +567,7 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
                     validateGradients:
                       'validateGradients' in options
                         ? (options.validateGradients as
-                            | 'recommended'
-                            | 'strict'
-                            | undefined)
+                            'recommended' | 'strict' | undefined)
                         : undefined,
                   });
                 }
@@ -728,9 +724,7 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
                 validateGradients:
                   'validateGradients' in options
                     ? (options.validateGradients as
-                        | 'recommended'
-                        | 'strict'
-                        | undefined)
+                        'recommended' | 'strict' | undefined)
                     : undefined,
               });
             }
