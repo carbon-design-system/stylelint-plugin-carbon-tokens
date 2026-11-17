@@ -198,6 +198,57 @@ Validates spacing and layout tokens.
 }
 ```
 
+### carbon/border-radius-use
+
+Validates border radius tokens. Works with Carbon v11, Carbon v11 with the v12
+feature flags, and Carbon v12.
+
+This rule is not part of the presets yet, so enable it explicitly.
+
+**Properties validated** (default):
+
+- `border-radius`
+- Corner properties such as `border-top-left-radius` and
+  `border-start-start-radius`
+
+**Accepted values** (default):
+
+- `$border-radius-*` tokens (`00`, `02`, `04`, `08`, `16`, `24`, `max`)
+- `$spacing-*` tokens, which Carbon also uses for some radii
+- `0`, percentages such as `50%`, and the CSS-wide keywords (`inherit`,
+  `initial`, `unset`, `revert`, `revert-layer`)
+- Component radius custom properties such as `var(--cds-button-radius)`, which
+  Carbon v12 adds for buttons
+- `calc()` of a Carbon token plus or minus a token or length, for the inner
+  corner of a nested element
+
+Carbon does not emit `--cds-border-radius-*` custom properties, so radius tokens
+are SCSS variables only.
+
+**Example violations**:
+
+```scss
+/* ❌ Hard-coded radius */
+.card {
+  border-radius: 8px;
+}
+
+/* ✅ Carbon token */
+.card {
+  border-radius: $border-radius-08;
+}
+
+/* ✅ Inner corner of a nested element */
+.card__image {
+  border-radius: calc($border-radius-08 - 1px);
+}
+
+/* ✅ Carbon v12 component radius */
+.toolbar__button {
+  border-radius: var(--cds-button-radius);
+}
+```
+
 ### carbon/type-use
 
 Validates typography tokens.
