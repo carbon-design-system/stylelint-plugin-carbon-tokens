@@ -44,7 +44,8 @@ export default {
 };
 ```
 
-Or use one of the preset configurations:
+Or use one of the preset configurations (see
+[Preset Configurations](#preset-configurations) for the v12 variants):
 
 ```js
 // Recommended (balanced strictness)
@@ -203,7 +204,8 @@ Validates spacing and layout tokens.
 Validates border radius tokens. Works with Carbon v11, Carbon v11 with the v12
 feature flags, and Carbon v12.
 
-This rule is not part of the presets yet, so enable it explicitly.
+This rule is enabled by the [v12 preset variants](#carbon-v12-variants). Enable
+it explicitly to use it with the other presets.
 
 **Properties validated** (default):
 
@@ -397,6 +399,29 @@ export default {
 
 Use this configuration when migrating existing projects or when you need more
 flexibility.
+
+### Carbon v12 variants
+
+`recommended-v12`, `strict-v12` and `light-touch-v12` are the matching preset
+plus [`carbon/border-radius-use`](#carbonborder-radius-use). Use them with
+Carbon v12, or with Carbon v11 projects that turn on the `enable-v12-*` feature
+flags:
+
+```js
+export default {
+  extends: ['stylelint-plugin-carbon-tokens/recommended-v12'],
+};
+```
+
+The token names and values in `@carbon/themes`, `@carbon/layout`, `@carbon/type`
+and `@carbon/motion` are the same in Carbon v11 and Carbon v12, so the other
+rules behave the same in all three states and no version option is needed. The
+variants also work on plain Carbon v11, where `border-radius-use` still checks
+radii against the `$border-radius-*` tokens. They register the plugin
+themselves, so `plugins` is optional.
+
+This plugin depends on the Carbon v11 token packages until Carbon v12 is
+released.
 
 ## Configuration Options
 

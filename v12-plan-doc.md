@@ -98,15 +98,15 @@ in `db2-knowledge-base`.
   `--cds-button-radius*` custom properties. `border-radius-use` accepts
   `var(--cds-*radius*)` component radius properties in all versions (harmless on
   v11, where they simply have no effect).
+- **D8** (was Q3) Expose the presets with an `exports` map in `package.json`
+  (`./recommended`, `./strict`, `./light-touch` and the `-v12` variants), which
+  also fixes the preset paths documented in the README. `./config/*` and
+  `./dist/*` stay exported so existing deep imports keep working. The v12
+  presets register the plugin themselves so `extends` alone is enough.
 
 ## Open questions
 
-- **Q3** How are the v12 presets exposed? `package.json` has no `exports` map,
-  and the preset paths documented in the README (for example
-  `stylelint-plugin-carbon-tokens/recommended`) do not resolve. Only
-  `stylelint-plugin-carbon-tokens/config/recommended.js` does. Options: fix the
-  README paths, or add an `exports` map for `./recommended`, `./strict`,
-  `./light-touch` and the v12 variants. Needs a maintainer decision.
+None.
 
 ## Plan
 
@@ -135,7 +135,7 @@ in `db2-knowledge-base`.
 
 ### Phase 3 - Presets and further rules
 
-- [ ] Resolve Q3, then add v12 variants of `recommended`, `strict` and
+- [x] Resolve Q3 (D8) and add v12 variants of `recommended`, `strict` and
       `light-touch` that enable `carbon/border-radius-use`
 - [ ] Flag overrides of `.cds--btn { border-radius }` and suggest
       `--cds-button-radius` on the container
@@ -149,7 +149,7 @@ in `db2-knowledge-base`.
       Measured saving is small (about 0.6 ms per file and rule for the four
       loaders), so this is housekeeping rather than a major speed-up.
 - [x] Resolve Q1: keep `^11` until GA (no `package.json` change needed now)
-- [ ] Update `CHANGELOG.md` and the README (supported Carbon versions)
+- [x] Update `CHANGELOG.md` and the README (supported Carbon versions)
 
 ### Phase 5 - After Carbon v12 GA
 
