@@ -513,6 +513,65 @@ export function validateCalcExpression(
 }
 
 /**
+ * Check whether a calc() operand is acceptable in a radius calculation:
+ * a Carbon token or a plain length/percentage.
+ */
+function isValidRadiusOperand(operand: string, tokens: CarbonToken[]): boolean {
+  const cleanOperand = cleanScssValue(operand);
+
+  if (isScssVariable(cleanOperand)) {
+    return tokens.some(
+      (token) => token.type === 'scss' && token.name === cleanOperand
+    );
+  }
+
+  if (isCssCustomProperty(cleanOperand)) {
+    const varName = extractCssVarName(cleanOperand);
+    return tokens.some(
+      (token) => token.type === 'css-custom-prop' && token.name === varName
+    );
+  }
+
+  return /^\d*\.?\d+(px|rem|em|%)$/.test(cleanOperand);
+}
+
+/**
+ * Validate calc() expression for border radius
+ * Supports the layout forms (see validateCalcExpression) plus
+ * token +/- token-or-length, for example the inner radius of a nested corner:
+ * calc($border-radius-08 - 1px)
+ */
+export function validateRadiusCalc(
+  value: string,
+  tokens: CarbonToken[]
+): ValidationResult {
+  if (validateCalcExpression(value, tokens).isValid) {
+    return { isValid: true };
+  }
+
+  const contents = extractCalcContents(value);
+  const match = contents?.match(/^(.+?)\s+([+-])\s+(.+)$/);
+
+  if (
+    match &&
+    isValidRadiusOperand(match[1], tokens) &&
+    isValidRadiusOperand(match[3], tokens) &&
+    // At least one operand must be a Carbon token
+    (isScssVariable(cleanScssValue(match[1])) ||
+      isScssVariable(cleanScssValue(match[3])) ||
+      isCssCustomProperty(cleanScssValue(match[1])) ||
+      isCssCustomProperty(cleanScssValue(match[3])))
+  ) {
+    return { isValid: true };
+  }
+
+  return {
+    isValid: false,
+    message: `Expected calc() of the form calc(token +/- token-or-length) where token is a Carbon radius or spacing token. Found "${value}"`,
+  };
+}
+
+/**
  * Check if value is a transform function (translate, translateX, translateY, translate3d)
  */
 export function isTransformFunction(value: string): boolean {

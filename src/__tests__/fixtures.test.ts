@@ -21,6 +21,7 @@ const configPath = join(__dirname, '../../dist/index.js');
 const ruleNames = {
   'theme-use': 'carbon/theme-use',
   'layout-use': 'carbon/layout-use',
+  'border-radius-use': 'carbon/border-radius-use',
   'type-use': 'carbon/type-use',
   'motion-duration-use': 'carbon/motion-duration-use',
   'motion-easing-use': 'carbon/motion-easing-use',
@@ -123,6 +124,7 @@ function testRuleFixtures(ruleName: string, ruleKey: keyof typeof ruleNames) {
 describe('Fixture-based tests', () => {
   testRuleFixtures('theme-use', 'theme-use');
   testRuleFixtures('layout-use', 'layout-use');
+  testRuleFixtures('border-radius-use', 'border-radius-use');
   testRuleFixtures('type-use', 'type-use');
   testRuleFixtures('motion-duration-use', 'motion-duration-use');
   testRuleFixtures('motion-easing-use', 'motion-easing-use');

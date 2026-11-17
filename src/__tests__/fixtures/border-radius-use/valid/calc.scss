@@ -1,0 +1,26 @@
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * Valid calc() expressions for border radius
+ */
+
+.radius-concentric {
+  /* Inner corner of a nested element */
+  border-radius: calc($border-radius-08 - 1px);
+  border-radius: calc(#{$border-radius-08} - 1px);
+  border-radius: calc($border-radius-08 - $spacing-01);
+  border-radius: calc($border-radius-08 + 0.25rem);
+}
+
+.radius-proportional {
+  border-radius: calc(50% - #{$spacing-02});
+}
+
+.radius-negation {
+  border-radius: calc(-1 * #{$border-radius-04});
+}

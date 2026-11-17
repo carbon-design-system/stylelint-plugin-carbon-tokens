@@ -8,6 +8,7 @@
 import themeUse from './rules/theme-use.js';
 import themeLayerUse from './rules/theme-layer-use.js';
 import layoutUse from './rules/layout-use.js';
+import borderRadiusUse from './rules/border-radius-use.js';
 import typeUse from './rules/type-use.js';
 import motionDurationUse from './rules/motion-duration-use.js';
 import motionEasingUse from './rules/motion-easing-use.js';
@@ -16,6 +17,7 @@ const plugins = [
   themeUse,
   themeLayerUse,
   layoutUse,
+  borderRadiusUse,
   typeUse,
   motionDurationUse,
   motionEasingUse,
@@ -28,6 +30,7 @@ export {
   themeUse,
   themeLayerUse,
   layoutUse,
+  borderRadiusUse,
   typeUse,
   motionDurationUse,
   motionEasingUse,

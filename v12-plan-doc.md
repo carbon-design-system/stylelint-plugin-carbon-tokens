@@ -16,8 +16,9 @@ A linted project is most likely to be in one of three states:
 
 Runtime detection of the installed version and the active flags is fragile
 (flags can be set in JS, Sass or HTML, and only the Sass form is visible to
-stylelint). The plan is therefore to use **explicit configuration** and to avoid
-shipping a second copy of the Carbon packages.
+stylelint). The plan is therefore to avoid detection, to avoid shipping a second
+copy of the Carbon packages, and to keep the token vocabulary shared between all
+three states, because it is identical.
 
 ## Findings
 
@@ -81,27 +82,31 @@ in `db2-knowledge-base`.
   after v12 GA. Token names and values are currently identical.
 - **D2** No second copy of `@carbon/*` (no aliased runtime dependencies) so
   users' `node_modules` do not grow.
-- **D3** No runtime detection of installed version or active flags. Use explicit
-  options.
-- **D4** Add switches in the style of `acceptCarbonCustomProp`:
-  `acceptCarbonV11` (default `true`) and `acceptCarbonV12` (default `false`).
-  The V11 switch is expected to be dropped in a future major.
-- **D5** Both switches `false` is a configuration error. Both `true` is the
-  migration (union) mode.
+- **D3** No runtime detection of installed version or active flags.
+- **D4** (replaces the earlier `acceptCarbonV11`/`acceptCarbonV12` switch
+  design) No version switches. Token names and values are identical in v11, v11
+  with flags, and v12, so no rule needs to know the version.
+- **D5** (replaces the earlier switch design) The v12 additions are delivered as
+  a new rule, `carbon/border-radius-use`, which is enabled by **v12 variants of
+  the presets**. Existing presets and rules are unchanged, so v11 users see no
+  behavior change. A version switch is added only if a rule later has to behave
+  differently by version.
 - **D6** (was Q1) Keep `dependencies` on `^11` until v12 GA, then change the
   range. Do not widen to include v12 alphas: a fresh install would resolve to
   the highest satisfying version, which is the v12 alpha.
-- **D7** (was Q2) `acceptCarbonV12` is a gate added to each rule as needed to
-  accept tokens that exist only in v12. The only v12-only tokens found so far
-  are the five `--cds-button-radius*` custom properties, so the gate is added
-  when a rule needs it (first candidate: `carbon/border-radius-use`), not to all
-  six existing rules.
+- **D7** (was Q2) The only v12-only tokens found are the five
+  `--cds-button-radius*` custom properties. `border-radius-use` accepts
+  `var(--cds-*radius*)` component radius properties in all versions (harmless on
+  v11, where they simply have no effect).
 
 ## Open questions
 
-- **Q3** Where do the switches live? Rule secondary options are per rule (six
-  repeats). Presets (for example a v12 variant of `recommended`) could set them
-  on every rule.
+- **Q3** How are the v12 presets exposed? `package.json` has no `exports` map,
+  and the preset paths documented in the README (for example
+  `stylelint-plugin-carbon-tokens/recommended`) do not resolve. Only
+  `stylelint-plugin-carbon-tokens/config/recommended.js` does. Options: fix the
+  README paths, or add an `exports` map for `./recommended`, `./strict`,
+  `./light-touch` and the v12 variants. Needs a maintainer decision.
 
 ## Plan
 
@@ -115,24 +120,25 @@ in `db2-knowledge-base`.
       four packages) so it can be re-run at v12 rc and GA
 - [ ] Make the v12 CI job blocking once v12 reaches rc
 
-### Phase 2 - Configuration switches
+### Phase 2 - Radius rule
 
-- [x] Resolve Q2 (what the switches gate), see D7
-- [ ] Add `acceptCarbonV11` and `acceptCarbonV12` to `BaseRuleOptions`
-      (`src/types/index.ts`) when the first rule needs them (Phase 3)
-- [ ] Add them to the secondary option allow-list in `src/utils/create-rule.ts`
-- [ ] Validate that at least one switch is `true`
-- [ ] Unit tests for the three states (v11, v11 + flags, v12)
-- [ ] Document the switches in the README and rule READMEs
-- [ ] Decide on presets (Q3)
+- [x] Resolve Q2 and replace the switch design (D4, D5, D7)
+- [x] `loadRadiusTokens()` in `src/utils/carbon-tokens.ts` (memoised, frozen)
+- [x] `carbon/border-radius-use`: require `$border-radius-*` (or `$spacing-*`)
+      instead of hard-coded radii (also useful on v11). Radius tokens are SCSS
+      variables only: no `--cds-border-radius-*` custom properties are emitted.
+      Accepts CSS-wide keywords, `0`, percentages, the `/` separator, and
+      `var(--cds-*radius*)`. Validates `calc($border-radius-08 - 1px)` style
+      concentric corners.
+- [x] Register the rule in `src/index.ts`
+- [x] Rule tests and fixtures
 
-### Phase 3 - v12-aware rules
+### Phase 3 - Presets and further rules
 
-- [ ] `carbon/border-radius-use`: require `$border-radius-*` instead of
-      hard-coded radii (also useful on v11). Radius tokens are SCSS variables
-      only: no `--cds-border-radius-*` custom properties are emitted.
+- [ ] Resolve Q3, then add v12 variants of `recommended`, `strict` and
+      `light-touch` that enable `carbon/border-radius-use`
 - [ ] Flag overrides of `.cds--btn { border-radius }` and suggest
-      `--cds-button-radius` on the container (gated by `acceptCarbonV12`)
+      `--cds-button-radius` on the container
 - [ ] Warn on deprecated tokens (`layout-01` to `layout-07`)
 
 ### Phase 4 - Housekeeping
@@ -149,8 +155,7 @@ in `db2-knowledge-base`.
 
 - [ ] Re-run the comparison against the GA packages
 - [ ] Move the dependency range to v12
-- [ ] Flip defaults (`acceptCarbonV12` to `true`) and plan removal of
-      `acceptCarbonV11` for the next major
+- [ ] Fold the v12 preset variants into the main presets in the next major
 
 ## Re-running the comparison
 

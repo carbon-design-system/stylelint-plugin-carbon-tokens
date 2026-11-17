@@ -1,0 +1,39 @@
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * Invalid border radius values
+ */
+
+.radius-hard-coded {
+  border-radius: 4px;
+  border-radius: 0.5rem;
+  border-radius: 0px;
+  border-radius: 999999px;
+}
+
+.radius-hard-coded-corners {
+  border-top-left-radius: 8px;
+  border-bottom-right-radius: 12px;
+  border-start-start-radius: 4px;
+  border-end-end-radius: 3px;
+}
+
+.radius-hard-coded-in-shorthand {
+  border-radius: 4px 0 0 4px;
+  border-radius: 4px / 8px;
+}
+
+.radius-non-carbon-variables {
+  border-radius: $my-radius;
+  border-radius: var(--my-radius);
+}
+
+.radius-carbon-custom-property-not-radius {
+  /* acceptCarbonCustomProp is false by default */
+  border-radius: var(--cds-spacing-03);
+}

@@ -21,6 +21,7 @@ import {
   isCarbonMotionFunction,
   validateCarbonMotionFunction,
   isValidSpacingValue,
+  validateRadiusCalc,
   resolveFileVariables,
   isVariableDeclaration,
 } from './validators.js';
@@ -522,6 +523,11 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
                     validateVariables: [], // Don't recursively validate
                   });
                 }
+              } else if (
+                ruleName === 'carbon/border-radius-use' &&
+                isCalcExpression(value)
+              ) {
+                validation = validateRadiusCalc(value, tokens);
               } else if (ruleName === 'carbon/motion-duration-use') {
                 validation = validateValue(value, tokens, {
                   acceptUndefinedVariables: options.acceptUndefinedVariables,
@@ -726,6 +732,19 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
                     ? (options.validateGradients as
                         'recommended' | 'strict' | undefined)
                     : undefined,
+              });
+            }
+          } else if (ruleName === 'carbon/border-radius-use') {
+            // Radius rule: validate calc() for concentric corners
+            if (isCalcExpression(value)) {
+              validation = validateRadiusCalc(value, tokens);
+            } else {
+              validation = validateValue(value, tokens, {
+                acceptUndefinedVariables: options.acceptUndefinedVariables,
+                acceptCarbonCustomProp: options.acceptCarbonCustomProp,
+                acceptValues: options.acceptValues,
+                carbonPrefix: options.carbonPrefix,
+                validateVariables: options.validateVariables,
               });
             }
           } else if (ruleName === 'carbon/type-use') {

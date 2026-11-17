@@ -59,6 +59,7 @@ function freezeCollection(collection: TokenCollection): TokenCollection {
 // are static for the life of the process, so each result is built once.
 const themeTokenCache = new Map<string, CarbonToken[]>();
 let layoutTokenCache: TokenCollection | undefined;
+let radiusTokenCache: CarbonToken[] | undefined;
 let typeTokenCache: CarbonToken[] | undefined;
 let motionTokenCache: TokenCollection | undefined;
 
@@ -248,6 +249,60 @@ function buildLayoutTokens(): TokenCollection {
     fluidSpacing,
     iconSize,
   };
+}
+
+/**
+ * Load border radius tokens from Carbon
+ * Radius tokens are SCSS variables only: Carbon does not emit
+ * `--cds-border-radius-*` custom properties.
+ * The result is cached and must be treated as read-only.
+ */
+export function loadRadiusTokens(): CarbonToken[] {
+  radiusTokenCache ??= freezeTokens(buildRadiusTokens());
+  return radiusTokenCache;
+}
+
+function buildRadiusTokens(): CarbonToken[] {
+  const tokens: CarbonToken[] = [];
+
+  // The radius tokens are exported by @carbon/layout but are not part of
+  // unstable_tokens, so they are listed here.
+  const radiusTokenNames = [
+    'borderRadius00',
+    'borderRadius02',
+    'borderRadius04',
+    'borderRadius08',
+    'borderRadius16',
+    'borderRadius24',
+    'borderRadiusMax',
+  ];
+
+  for (const tokenName of radiusTokenNames) {
+    const token = formatTokenName(tokenName);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const actualValue = (layoutPackage as any)[tokenName];
+
+    if (actualValue) {
+      // Add SCSS variable with the actual value (e.g., "0.25rem")
+      tokens.push({
+        name: `$${token}`,
+        value: actualValue,
+        type: 'scss',
+      });
+
+      // Add SCSS variable with px equivalent (for matching)
+      const pxValue = convertRemToPx(actualValue);
+      if (pxValue !== actualValue) {
+        tokens.push({
+          name: `$${token}`,
+          value: pxValue,
+          type: 'scss',
+        });
+      }
+    }
+  }
+
+  return tokens;
 }
 
 /**
