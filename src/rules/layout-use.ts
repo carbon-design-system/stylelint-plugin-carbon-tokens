@@ -46,6 +46,7 @@ const defaultOptions: LayoutRuleOptions = {
   acceptUndefinedVariables: false,
   acceptCarbonCustomProp: false,
   carbonPrefix: 'cds',
+  warnDeprecatedTokens: false,
 };
 
 export default createCarbonRule({

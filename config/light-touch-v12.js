@@ -7,12 +7,22 @@ export default {
   plugins: ['stylelint-plugin-carbon-tokens'],
   rules: {
     ...lightTouch.rules,
+    'carbon/layout-use': [
+      true,
+      {
+        severity: 'warning',
+        acceptUndefinedVariables: true,
+        acceptCarbonCustomProp: true,
+        warnDeprecatedTokens: true,
+      },
+    ],
     'carbon/border-radius-use': [
       true,
       {
         severity: 'warning',
         acceptUndefinedVariables: true,
         acceptCarbonCustomProp: true,
+        flagButtonRadiusOverride: true,
       },
     ],
   },

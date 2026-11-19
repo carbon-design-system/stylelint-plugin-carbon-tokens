@@ -24,6 +24,10 @@ import {
   validateRadiusCalc,
   resolveFileVariables,
   isVariableDeclaration,
+  findDeprecatedLayoutTokens,
+  replaceDeprecatedLayoutTokens,
+  isCarbonButtonSelector,
+  buttonRadiusCustomProperty,
 } from './validators.js';
 import { loadLayoutTokens } from './carbon-tokens.js';
 import {
@@ -409,6 +413,10 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
       `${prop}: ${message}: "${value}"`,
     expected: (prop: string, value: string, suggestion: string) =>
       `${prop}: Expected Carbon token instead of "${value}". Consider using: ${suggestion}`,
+    deprecated: (prop: string, token: string, replacement: string) =>
+      `${prop}: "${token}" is deprecated. Use ${replacement} instead`,
+    buttonRadius: (prop: string, value: string, customProperty: string) =>
+      `${prop}: Set ${customProperty} on the button or a containing element instead of overriding the radius of a Carbon button: "${value}"`,
   });
 
   const meta = {
@@ -440,6 +448,8 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
             trackFileVariables: [() => true],
             validateVariables: [() => true],
             validateGradients: [() => true],
+            warnDeprecatedTokens: [() => true],
+            flagButtonRadiusOverride: [() => true],
           },
           optional: true,
         }
@@ -620,9 +630,67 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
       root.walkDecls((decl) => {
         const prop = decl.prop;
 
+        // Layout rule (opt-in): warn about deprecated layout tokens in any
+        // declaration, including variable declarations
+        if (
+          ruleName === 'carbon/layout-use' &&
+          'warnDeprecatedTokens' in options &&
+          options.warnDeprecatedTokens === true
+        ) {
+          for (const { token, replacement } of findDeprecatedLayoutTokens(
+            decl.value,
+            options.carbonPrefix
+          )) {
+            utils.report({
+              message: messages.deprecated(prop, token, replacement),
+              node: decl,
+              word: token,
+              result,
+              ruleName,
+              severity: 'warning',
+              fix: () => {
+                decl.value = replaceDeprecatedLayoutTokens(
+                  decl.value,
+                  options.carbonPrefix
+                );
+              },
+            });
+          }
+        }
+
         // Check if this property should be validated
         if (!shouldValidateProperty(prop, options.includeProps || [])) {
           return;
+        }
+
+        // Radius rule (opt-in): Carbon v12 buttons read their radius from
+        // custom properties, so overriding it on the button is flagged
+        if (
+          ruleName === 'carbon/border-radius-use' &&
+          'flagButtonRadiusOverride' in options &&
+          options.flagButtonRadiusOverride === true
+        ) {
+          const parent = decl.parent as unknown as
+            { type: string; selectors?: string[] } | undefined;
+          const customProperty = buttonRadiusCustomProperty(
+            prop,
+            options.carbonPrefix
+          );
+
+          if (
+            parent?.type === 'rule' &&
+            parent.selectors &&
+            isCarbonButtonSelector(parent.selectors, options.carbonPrefix) &&
+            !decl.value.includes(`var(${customProperty}`)
+          ) {
+            utils.report({
+              message: messages.buttonRadius(prop, decl.value, customProperty),
+              node: decl,
+              result,
+              ruleName,
+            });
+            return;
+          }
         }
 
         // Handle shorthand properties

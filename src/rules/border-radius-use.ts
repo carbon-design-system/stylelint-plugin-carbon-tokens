@@ -7,11 +7,11 @@
 
 import { loadLayoutTokens, loadRadiusTokens } from '../utils/carbon-tokens.js';
 import { createCarbonRule } from '../utils/create-rule.js';
-import type { BaseRuleOptions, CarbonToken } from '../types/index.js';
+import type { BorderRadiusRuleOptions, CarbonToken } from '../types/index.js';
 
 export const ruleName = 'carbon/border-radius-use';
 
-const defaultOptions: BaseRuleOptions = {
+const defaultOptions: BorderRadiusRuleOptions = {
   includeProps: [
     // Shorthand
     'border-radius',
@@ -30,6 +30,7 @@ const defaultOptions: BaseRuleOptions = {
   acceptUndefinedVariables: false,
   acceptCarbonCustomProp: false,
   carbonPrefix: 'cds',
+  flagButtonRadiusOverride: false,
 };
 
 export default createCarbonRule({

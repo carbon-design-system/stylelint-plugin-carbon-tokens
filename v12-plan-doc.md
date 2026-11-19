@@ -137,9 +137,14 @@ None.
 
 - [x] Resolve Q3 (D8) and add v12 variants of `recommended`, `strict` and
       `light-touch` that enable `carbon/border-radius-use`
-- [ ] Flag overrides of `.cds--btn { border-radius }` and suggest
-      `--cds-button-radius` on the container
-- [ ] Warn on deprecated tokens (`layout-01` to `layout-07`)
+- [x] Flag overrides of `.cds--btn { border-radius }` and suggest
+      `--cds-button-radius` (opt-in option `flagButtonRadiusOverride` on
+      `carbon/border-radius-use`, on in the v12 presets). Opt-in because the
+      custom properties only take effect on v12 or with the v12 flags.
+- [x] Warn on deprecated tokens `layout-01` to `layout-07` (opt-in option
+      `warnDeprecatedTokens` on `carbon/layout-use`, on in the v12 presets).
+      Always reported as a warning, with an auto-fix to the spacing token of the
+      same value.
 
 ### Phase 4 - Housekeeping
 

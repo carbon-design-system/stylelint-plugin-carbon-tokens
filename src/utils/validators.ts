@@ -8,6 +8,105 @@
 import type { CarbonToken, ValidationResult } from '../types/index.js';
 
 /**
+ * Deprecated layout tokens and the spacing tokens that replace them.
+ * The values are identical, so the replacement is a safe auto-fix.
+ */
+export const DEPRECATED_LAYOUT_TOKENS: Readonly<Record<string, string>> = {
+  'layout-01': 'spacing-05',
+  'layout-02': 'spacing-06',
+  'layout-03': 'spacing-07',
+  'layout-04': 'spacing-09',
+  'layout-05': 'spacing-10',
+  'layout-06': 'spacing-12',
+  'layout-07': 'spacing-13',
+};
+
+function deprecatedLayoutTokenPattern(carbonPrefix: string): RegExp {
+  const prefix = carbonPrefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // SCSS variable ($layout-01) or CSS custom property (--cds-layout-01)
+  return new RegExp(
+    `(\\$|(?<![\\w-])--${prefix}-)(layout-0[1-7])(?![\\w-])`,
+    'g'
+  );
+}
+
+/**
+ * Find deprecated layout tokens (layout-01 to layout-07) in a value
+ * Returns each match with its replacement, for example
+ * { token: '$layout-01', replacement: '$spacing-05' }
+ */
+export function findDeprecatedLayoutTokens(
+  value: string,
+  carbonPrefix = 'cds'
+): Array<{ token: string; replacement: string }> {
+  return Array.from(
+    value.matchAll(deprecatedLayoutTokenPattern(carbonPrefix)),
+    ([token, prefix, name]) => ({
+      token,
+      replacement: `${prefix}${DEPRECATED_LAYOUT_TOKENS[name]}`,
+    })
+  );
+}
+
+/**
+ * Replace deprecated layout tokens with the matching spacing tokens
+ */
+export function replaceDeprecatedLayoutTokens(
+  value: string,
+  carbonPrefix = 'cds'
+): string {
+  return value.replace(
+    deprecatedLayoutTokenPattern(carbonPrefix),
+    (_match, prefix: string, name: string) =>
+      `${prefix}${DEPRECATED_LAYOUT_TOKENS[name]}`
+  );
+}
+
+/**
+ * Check whether the last compound selector of any selector in a list targets
+ * a Carbon button (.cds--btn and its modifiers, but not .cds--btn-set)
+ * Handles the SCSS prefix interpolation, for example .#{$prefix}--btn
+ */
+export function isCarbonButtonSelector(
+  selectors: string[],
+  carbonPrefix = 'cds'
+): boolean {
+  const prefix = carbonPrefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const button = new RegExp(
+    `\\.(?:${prefix}|#\\{[^}]*\\})--btn(?:--[\\w-]+)?(?![\\w-])`
+  );
+
+  return selectors.some((selector) => {
+    // The declarations apply to the last compound selector
+    const compound =
+      selector
+        .trim()
+        .split(/\s*[>+~]\s*|\s+/)
+        .pop() ?? '';
+    return button.test(compound);
+  });
+}
+
+/**
+ * Suggest the Carbon v12 custom property that sets the radius of a button
+ * for a given border radius property
+ */
+export function buttonRadiusCustomProperty(
+  prop: string,
+  carbonPrefix = 'cds'
+): string {
+  const corners: Record<string, string> = {
+    'border-start-start-radius': 'ss',
+    'border-start-end-radius': 'se',
+    'border-end-start-radius': 'es',
+    'border-end-end-radius': 'ee',
+  };
+  const corner = corners[prop];
+
+  return `--${carbonPrefix}-button-radius${corner ? `-${corner}` : ''}`;
+}
+
+/**
  * Check if a value is a SCSS variable (including negative variables)
  * Examples: $spacing-05, -$spacing-05
  */

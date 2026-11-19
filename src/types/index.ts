@@ -66,7 +66,25 @@ export interface ThemeRuleOptions extends BaseRuleOptions {
 /**
  * Layout rule specific options
  */
-export type LayoutRuleOptions = BaseRuleOptions;
+export interface LayoutRuleOptions extends BaseRuleOptions {
+  /**
+   * Warn about deprecated layout tokens (layout-01 to layout-07) and
+   * auto-fix them to the matching spacing tokens. Default: false
+   */
+  warnDeprecatedTokens?: boolean;
+}
+
+/**
+ * Border radius rule specific options
+ */
+export interface BorderRadiusRuleOptions extends BaseRuleOptions {
+  /**
+   * Flag border radius declarations on Carbon buttons (.cds--btn) and suggest
+   * the --cds-button-radius custom properties introduced in Carbon v12.
+   * Default: false
+   */
+  flagButtonRadiusOverride?: boolean;
+}
 
 /**
  * Type rule specific options

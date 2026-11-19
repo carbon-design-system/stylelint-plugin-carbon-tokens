@@ -7,6 +7,13 @@ export default {
   plugins: ['stylelint-plugin-carbon-tokens'],
   rules: {
     ...recommended.rules,
-    'carbon/border-radius-use': [true, { severity: 'error' }],
+    'carbon/layout-use': [
+      true,
+      { severity: 'error', warnDeprecatedTokens: true },
+    ],
+    'carbon/border-radius-use': [
+      true,
+      { severity: 'error', flagButtonRadiusOverride: true },
+    ],
   },
 };

@@ -7,9 +7,21 @@ export default {
   plugins: ['stylelint-plugin-carbon-tokens'],
   rules: {
     ...strict.rules,
+    'carbon/layout-use': [
+      true,
+      {
+        severity: 'error',
+        trackFileVariables: false,
+        warnDeprecatedTokens: true,
+      },
+    ],
     'carbon/border-radius-use': [
       true,
-      { severity: 'error', trackFileVariables: false },
+      {
+        severity: 'error',
+        trackFileVariables: false,
+        flagButtonRadiusOverride: true,
+      },
     ],
   },
 };
