@@ -22,7 +22,6 @@ export default {
         severity: 'warning',
         acceptUndefinedVariables: true,
         acceptCarbonCustomProp: true,
-        flagButtonRadiusOverride: true,
       },
     ],
   },

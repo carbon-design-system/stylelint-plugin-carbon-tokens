@@ -11,9 +11,6 @@ export default {
       true,
       { severity: 'error', warnDeprecatedTokens: true },
     ],
-    'carbon/border-radius-use': [
-      true,
-      { severity: 'error', flagButtonRadiusOverride: true },
-    ],
+    'carbon/border-radius-use': [true, { severity: 'error' }],
   },
 };

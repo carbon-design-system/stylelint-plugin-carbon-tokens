@@ -75,18 +75,6 @@ export interface LayoutRuleOptions extends BaseRuleOptions {
 }
 
 /**
- * Border radius rule specific options
- */
-export interface BorderRadiusRuleOptions extends BaseRuleOptions {
-  /**
-   * Flag border radius declarations on Carbon buttons (.cds--btn) and suggest
-   * the --cds-button-radius custom properties introduced in Carbon v12.
-   * Default: false
-   */
-  flagButtonRadiusOverride?: boolean;
-}
-
-/**
  * Type rule specific options
  */
 export type TypeRuleOptions = BaseRuleOptions;

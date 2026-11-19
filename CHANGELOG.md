@@ -12,16 +12,14 @@
   - Accepts `calc()` of a Carbon token plus or minus a token or length, for
     example `calc($border-radius-08 - 1px)`
   - Works with Carbon v11, Carbon v11 with the v12 feature flags, and Carbon v12
-  - New option `flagButtonRadiusOverride` (default `false`) flags radius
-    declarations on `.cds--btn` and suggests `--cds-button-radius` and the
-    `-ss`, `-se`, `-es` and `-ee` corner properties
 - **rules**: [`carbon/layout-use`](src/rules/layout-use.ts) has a new option
   `warnDeprecatedTokens` (default `false`) that warns about the deprecated
   `layout-01` to `layout-07` tokens and auto-fixes them to the spacing tokens of
   the same value (`spacing-05`, `-06`, `-07`, `-09`, `-10`, `-12`, `-13`)
 - **config**: Added `recommended-v12`, `strict-v12` and `light-touch-v12`
-  presets. Each is the matching preset plus `carbon/border-radius-use` and the
-  two new options above, and registers the plugin itself. The existing presets are unchanged.
+  presets. Each is the matching preset plus `carbon/border-radius-use` and
+  `warnDeprecatedTokens` on `carbon/layout-use`, and registers the plugin
+  itself. The existing presets are unchanged.
 - **package**: Added an `exports` map so the documented preset paths resolve
   (`stylelint-plugin-carbon-tokens/recommended`, `/strict`, `/light-touch` and
   the three `-v12` presets). The previous `config/*` and `dist/*` paths still

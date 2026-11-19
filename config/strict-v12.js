@@ -17,11 +17,7 @@ export default {
     ],
     'carbon/border-radius-use': [
       true,
-      {
-        severity: 'error',
-        trackFileVariables: false,
-        flagButtonRadiusOverride: true,
-      },
+      { severity: 'error', trackFileVariables: false },
     ],
   },
 };

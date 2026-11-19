@@ -268,26 +268,6 @@ are SCSS variables only.
 }
 ```
 
-**Button radius overrides** (opt-in): Carbon v12 buttons read their radius from
-`--cds-button-radius` and the `--cds-button-radius-ss`, `-se`, `-es` and `-ee`
-corner properties, which inherit from a containing element. Set
-`flagButtonRadiusOverride: true` to flag radius declarations on `.cds--btn` (and
-its modifiers) and suggest the custom property instead. The
-[v12 preset variants](#carbon-v12-variants) turn this on. Leave it off on Carbon
-v11 without the v12 flags, where the custom properties have no effect.
-
-```scss
-/* ❌ Overrides the button radius */
-.cds--btn {
-  border-radius: $border-radius-04;
-}
-
-/* ✅ Set the radius for a container, and the buttons inside inherit it */
-.toolbar {
-  --cds-button-radius: #{$border-radius-04};
-}
-```
-
 ### carbon/type-use
 
 Validates typography tokens.
@@ -440,11 +420,8 @@ flexibility.
 ### Carbon v12 variants
 
 `recommended-v12`, `strict-v12` and `light-touch-v12` are the matching preset
-plus:
-
-- [`carbon/border-radius-use`](#carbonborder-radius-use), with
-  `flagButtonRadiusOverride: true`
-- `warnDeprecatedTokens: true` on [`carbon/layout-use`](#carbonlayout-use)
+plus [`carbon/border-radius-use`](#carbonborder-radius-use), and
+`warnDeprecatedTokens: true` on [`carbon/layout-use`](#carbonlayout-use).
 
 Use them with Carbon v12, or with Carbon v11 projects that turn on the
 `enable-v12-*` feature flags:
@@ -459,9 +436,8 @@ The token names and values in `@carbon/themes`, `@carbon/layout`, `@carbon/type`
 and `@carbon/motion` are the same in Carbon v11 and Carbon v12, so the other
 rules behave the same in all three states and no version option is needed. The
 variants also work on plain Carbon v11, where `border-radius-use` still checks
-radii against the `$border-radius-*` tokens, but the button radius check
-suggests custom properties that only take effect with the v12 flags. They
-register the plugin themselves, so `plugins` is optional.
+radii against the `$border-radius-*` tokens. They register the plugin
+themselves, so `plugins` is optional.
 
 This plugin depends on the Carbon v11 token packages until Carbon v12 is
 released.

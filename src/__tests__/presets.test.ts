@@ -29,7 +29,7 @@ async function loadPreset(name: string): Promise<Preset> {
 }
 
 // Options that only the v12 presets turn on
-const v12Options = ['warnDeprecatedTokens', 'flagButtonRadiusOverride'];
+const v12Options = ['warnDeprecatedTokens'];
 
 function withoutV12Options(config: unknown): unknown {
   if (!Array.isArray(config)) return config;
@@ -72,21 +72,6 @@ describe('presets', () => {
               warning.rule === 'carbon/layout-use' &&
               warning.severity === 'warning' &&
               warning.text.includes('$spacing-05')
-          )
-        );
-      });
-
-      it('should flag button radius overrides', async () => {
-        const v12 = await loadPreset(`${name}-v12`);
-        const result = await stylelint.lint({
-          code: '.cds--btn { border-radius: $border-radius-04; }',
-          codeFilename: 'test.scss',
-          config: { plugins: [pluginPath], rules: v12.rules },
-        });
-
-        assert.ok(
-          result.results[0].warnings.some((warning) =>
-            warning.text.includes('--cds-button-radius')
           )
         );
       });

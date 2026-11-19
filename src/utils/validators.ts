@@ -63,50 +63,6 @@ export function replaceDeprecatedLayoutTokens(
 }
 
 /**
- * Check whether the last compound selector of any selector in a list targets
- * a Carbon button (.cds--btn and its modifiers, but not .cds--btn-set)
- * Handles the SCSS prefix interpolation, for example .#{$prefix}--btn
- */
-export function isCarbonButtonSelector(
-  selectors: string[],
-  carbonPrefix = 'cds'
-): boolean {
-  const prefix = carbonPrefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const button = new RegExp(
-    `\\.(?:${prefix}|#\\{[^}]*\\})--btn(?:--[\\w-]+)?(?![\\w-])`
-  );
-
-  return selectors.some((selector) => {
-    // The declarations apply to the last compound selector
-    const compound =
-      selector
-        .trim()
-        .split(/\s*[>+~]\s*|\s+/)
-        .pop() ?? '';
-    return button.test(compound);
-  });
-}
-
-/**
- * Suggest the Carbon v12 custom property that sets the radius of a button
- * for a given border radius property
- */
-export function buttonRadiusCustomProperty(
-  prop: string,
-  carbonPrefix = 'cds'
-): string {
-  const corners: Record<string, string> = {
-    'border-start-start-radius': 'ss',
-    'border-start-end-radius': 'se',
-    'border-end-start-radius': 'es',
-    'border-end-end-radius': 'ee',
-  };
-  const corner = corners[prop];
-
-  return `--${carbonPrefix}-button-radius${corner ? `-${corner}` : ''}`;
-}
-
-/**
  * Check if a value is a SCSS variable (including negative variables)
  * Examples: $spacing-05, -$spacing-05
  */
