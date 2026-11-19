@@ -107,6 +107,11 @@ in `db2-knowledge-base`.
   of Carbon component selectors (for example `.cds--btn { border-radius }`) was
   tried and removed: users should write their own selectors and avoid Carbon
   selectors where possible. A separate rule for that is out of scope here.
+- **D10** No committed comparison script. A script only finds the kinds of
+  difference it was written to look for, so it could give false confidence about
+  future changes of a different nature. At v12 rc and GA, repeat the manual
+  comparison below (including the compiled-CSS comparison of `@carbon/styles`)
+  and rely on the `carbon-v12-alpha` CI job for the test suite.
 
 ## Open questions
 
@@ -120,8 +125,7 @@ None.
 - [x] Run the existing test suite against the v12 alpha packages (377 pass)
 - [x] Add a non-blocking CI job that runs the suite against the v12 alpha
       packages (`.github/workflows/ci.yml`, job `carbon-v12-alpha`)
-- [ ] Commit the comparison as a repeatable script (names and values for all
-      four packages) so it can be re-run at v12 rc and GA
+- [x] Decided not to commit a comparison script (D10)
 - [ ] Make the v12 CI job blocking once v12 reaches rc
 
 ### Phase 2 - Radius rule
