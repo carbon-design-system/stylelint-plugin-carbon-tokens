@@ -25,7 +25,12 @@ const defaultOptions: BaseRuleOptions = {
     '/^0$/',
     '/^\\/$/', // Separator between horizontal and vertical radii
     '/^\\d*\\.?\\d+%$/', // Percentages, for example 50% for a circle
-    '/^var\\(--cds-[a-z0-9-]*radius/', // Component radius custom properties, for example --cds-button-radius
+    // Custom property form of the radius tokens, for example
+    // var(--cds-border-radius-04). Carbon does not emit these, but projects can
+    // define them. Component properties such as --cds-button-radius and
+    // --cds-popover-border-radius are not accepted: they are set on containers
+    // rather than read in a border-radius value.
+    '/^var\\(--cds-border-radius-(00|02|04|08|16|24|max)\\)$/',
   ],
   acceptUndefinedVariables: false,
   acceptCarbonCustomProp: false,

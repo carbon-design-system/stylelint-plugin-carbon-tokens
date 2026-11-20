@@ -26,9 +26,8 @@
   border-radius: 50%;
 }
 
-.radius-component-custom-property {
-  /* Carbon v12 button radius custom properties */
-  border-radius: var(--cds-button-radius);
-  border-start-start-radius: var(--cds-button-radius-ss);
-  border-radius: var(--cds-popover-border-radius);
+.radius-token-custom-property {
+  /* Custom property form of the radius tokens */
+  border-radius: var(--cds-border-radius-04);
+  border-start-start-radius: var(--cds-border-radius-max);
 }

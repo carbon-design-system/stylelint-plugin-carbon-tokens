@@ -94,10 +94,14 @@ in `db2-knowledge-base`.
 - **D6** (was Q1) Keep `dependencies` on `^11` until v12 GA, then change the
   range. Do not widen to include v12 alphas: a fresh install would resolve to
   the highest satisfying version, which is the v12 alpha.
-- **D7** (was Q2) The only v12-only tokens found are the five
-  `--cds-button-radius*` custom properties. `border-radius-use` accepts
-  `var(--cds-*radius*)` component radius properties in all versions (harmless on
-  v11, where they simply have no effect).
+- **D7** (was Q2, revised) The only v12-only tokens found are the five
+  `--cds-button-radius*` custom properties, plus the undocumented
+  `--cds-popover-border-radius`. `border-radius-use` does not accept them:
+  Carbon documents the button properties as values to set on a container (with
+  `button.radius()` or a custom property), not to read in `border-radius`, and
+  the popover property is internal. It accepts the custom property form of the
+  radius tokens, `var(--cds-border-radius-NN|max)`, to match the other rules,
+  although Carbon does not emit them.
 - **D8** (was Q3) Expose the presets with an `exports` map in `package.json`
   (`./recommended`, `./strict`, `./light-touch` and the `-v12` variants), which
   also fixes the preset paths documented in the README. `./config/*` and
@@ -133,11 +137,11 @@ None.
 - [x] Resolve Q2 and replace the switch design (D4, D5, D7)
 - [x] `loadRadiusTokens()` in `src/utils/carbon-tokens.ts` (memoised, frozen)
 - [x] `carbon/border-radius-use`: require `$border-radius-*` (or `$spacing-*`)
-      instead of hard-coded radii (also useful on v11). Radius tokens are SCSS
-      variables only: no `--cds-border-radius-*` custom properties are emitted.
+      instead of hard-coded radii (also useful on v11). Carbon emits no
+      `--cds-border-radius-*` custom properties, but the rule accepts them (D7).
       Accepts CSS-wide keywords, `0`, percentages, the `/` separator, and
-      `var(--cds-*radius*)`. Validates `calc($border-radius-08 - 1px)` style
-      concentric corners.
+      `var(--cds-border-radius-NN|max)`. Validates
+      `calc($border-radius-08 - 1px)` style concentric corners.
 - [x] Register the rule in `src/index.ts`
 - [x] Rule tests and fixtures
 

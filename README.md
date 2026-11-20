@@ -236,13 +236,14 @@ it explicitly to use it with the other presets.
 - `$spacing-*` tokens, which Carbon also uses for some radii
 - `0`, percentages such as `50%`, and the CSS-wide keywords (`inherit`,
   `initial`, `unset`, `revert`, `revert-layer`)
-- Component radius custom properties such as `var(--cds-button-radius)`, which
-  Carbon v12 adds for buttons
+- `var(--cds-border-radius-*)`, the custom property form of the radius tokens
 - `calc()` of a Carbon token plus or minus a token or length, for the inner
   corner of a nested element
 
-Carbon does not emit `--cds-border-radius-*` custom properties, so radius tokens
-are SCSS variables only.
+Carbon does not emit `--cds-border-radius-*` custom properties, so use the
+custom property form only if your project defines them. Component properties
+such as `--cds-button-radius` are not accepted: Carbon documents them as
+properties to set on a container, not as values to use in `border-radius`.
 
 **Example violations**:
 
@@ -262,9 +263,9 @@ are SCSS variables only.
   border-radius: calc($border-radius-08 - 1px);
 }
 
-/* ✅ Carbon v12 component radius */
-.toolbar__button {
-  border-radius: var(--cds-button-radius);
+/* ✅ Custom property form of the token */
+.card__badge {
+  border-radius: var(--cds-border-radius-04);
 }
 ```
 
