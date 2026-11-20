@@ -1,6 +1,6 @@
 # Changelog
 
-## Unreleased
+## 5.1.0 (2026-11-20)
 
 ### ✨ Features
 
