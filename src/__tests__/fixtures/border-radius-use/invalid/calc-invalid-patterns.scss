@@ -1,0 +1,27 @@
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * Invalid calc() expressions for border radius
+ */
+
+.radius-calc-no-token {
+  /* Rejected: no Carbon token */
+  border-radius: calc(8px - 1px);
+  border-radius: calc(50% - 8px);
+}
+
+.radius-calc-unknown-token {
+  /* Rejected: unknown variable */
+  border-radius: calc($my-radius - 1px);
+  border-radius: calc(#{$border-radius-08} - #{$unknown-token});
+}
+
+.radius-calc-unsupported-operator {
+  /* Rejected: token * number (not -1) */
+  border-radius: calc(#{$border-radius-08} * 2);
+}

@@ -32,3 +32,26 @@ jobs:
         run: yarn lint
       - name: Test
         run: yarn test
+
+  # Runs the test suite against the Carbon v12 alpha packages in place of v11.
+  # Non-blocking while v12 is in alpha. See v12-plan-doc.md.
+  carbon-v12-alpha:
+    runs-on: ubuntu-latest
+    continue-on-error: true
+
+    steps:
+      - uses: actions/checkout@v7
+      - name: Use Node.js 22.x
+        uses: actions/setup-node@v7.1.0
+        with:
+          node-version: 22.x
+          cache: 'yarn'
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+      - name: Install Carbon v12 alpha packages
+        run: >
+          yarn add --ignore-scripts --no-lockfile @carbon/themes@v12-alpha
+          @carbon/layout@v12-alpha @carbon/type@v12-alpha
+          @carbon/motion@v12-alpha @carbon/colors@v12-alpha
+      - name: Test
+        run: yarn test

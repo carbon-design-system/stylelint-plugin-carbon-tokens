@@ -1,0 +1,33 @@
+/**
+ * Copyright IBM Corp. 2026
+ *
+ * This source code is licensed under the Apache-2.0 license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+/**
+ * Valid border radius values that are not tokens
+ */
+
+.radius-zero {
+  border-radius: 0;
+}
+
+.radius-css-wide-keywords {
+  border-radius: inherit;
+  border-top-left-radius: initial;
+  border-top-right-radius: unset;
+  border-bottom-left-radius: revert;
+  border-bottom-right-radius: revert-layer;
+}
+
+.radius-percentage {
+  /* Circle */
+  border-radius: 50%;
+}
+
+.radius-token-custom-property {
+  /* Custom property form of the radius tokens */
+  border-radius: var(--cds-border-radius-04);
+  border-start-start-radius: var(--cds-border-radius-max);
+}

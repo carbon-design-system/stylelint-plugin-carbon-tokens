@@ -145,4 +145,32 @@ describe('carbon-tokens', () => {
       );
     });
   });
+
+  describe('caching', () => {
+    it('should return the same theme tokens on repeated calls', () => {
+      assert.strictEqual(loadThemeTokens(), loadThemeTokens());
+    });
+
+    it('should cache theme tokens separately per theme name', () => {
+      const defaults = loadThemeTokens();
+      const white = loadThemeTokens('white');
+      assert.notStrictEqual(defaults, white);
+      assert.strictEqual(white, loadThemeTokens('white'));
+    });
+
+    it('should return the same layout, type and motion tokens', () => {
+      assert.strictEqual(loadLayoutTokens(), loadLayoutTokens());
+      assert.strictEqual(loadTypeTokens(), loadTypeTokens());
+      assert.strictEqual(loadMotionTokens(), loadMotionTokens());
+    });
+
+    it('should not allow cached tokens to be mutated', () => {
+      assert.ok(Object.isFrozen(loadThemeTokens()));
+      assert.ok(Object.isFrozen(loadTypeTokens()));
+      assert.ok(Object.isFrozen(loadLayoutTokens()));
+      assert.ok(Object.isFrozen(loadLayoutTokens().spacing));
+      assert.ok(Object.isFrozen(loadMotionTokens()));
+      assert.ok(Object.isFrozen(loadMotionTokens().duration));
+    });
+  });
 });

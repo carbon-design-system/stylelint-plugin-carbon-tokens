@@ -66,7 +66,13 @@ export interface ThemeRuleOptions extends BaseRuleOptions {
 /**
  * Layout rule specific options
  */
-export type LayoutRuleOptions = BaseRuleOptions;
+export interface LayoutRuleOptions extends BaseRuleOptions {
+  /**
+   * Warn about deprecated layout tokens (layout-01 to layout-07) and
+   * auto-fix them to the matching spacing tokens. Default: false
+   */
+  warnDeprecatedTokens?: boolean;
+}
 
 /**
  * Type rule specific options

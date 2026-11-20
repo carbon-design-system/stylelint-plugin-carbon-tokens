@@ -44,7 +44,8 @@ export default {
 };
 ```
 
-Or use one of the preset configurations:
+Or use one of the preset configurations (see
+[Preset Configurations](#preset-configurations) for the v12 variants):
 
 ```js
 // Recommended (balanced strictness)
@@ -198,6 +199,76 @@ Validates spacing and layout tokens.
 }
 ```
 
+**Deprecated tokens** (opt-in): set `warnDeprecatedTokens: true` to get a
+warning for the deprecated `layout-01` to `layout-07` tokens, in any
+declaration. The warning is always reported as a warning, whatever the rule
+severity. `--fix` replaces them with the spacing tokens of the same value:
+
+| Deprecated  | Replacement  |
+| ----------- | ------------ |
+| `layout-01` | `spacing-05` |
+| `layout-02` | `spacing-06` |
+| `layout-03` | `spacing-07` |
+| `layout-04` | `spacing-09` |
+| `layout-05` | `spacing-10` |
+| `layout-06` | `spacing-12` |
+| `layout-07` | `spacing-13` |
+
+The [v12 preset variants](#carbon-v12-variants) turn this on.
+
+### carbon/border-radius-use
+
+Validates border radius tokens. Works with Carbon v11, Carbon v11 with the v12
+feature flags, and Carbon v12.
+
+This rule is enabled by the [v12 preset variants](#carbon-v12-variants). Enable
+it explicitly to use it with the other presets.
+
+**Properties validated** (default):
+
+- `border-radius`
+- Corner properties such as `border-top-left-radius` and
+  `border-start-start-radius`
+
+**Accepted values** (default):
+
+- `$border-radius-*` tokens (`00`, `02`, `04`, `08`, `16`, `24`, `max`)
+- `$spacing-*` tokens, which Carbon also uses for some radii
+- `0`, percentages such as `50%`, and the CSS-wide keywords (`inherit`,
+  `initial`, `unset`, `revert`, `revert-layer`)
+- `var(--cds-border-radius-*)`, the custom property form of the radius tokens
+- `calc()` of a Carbon token plus or minus a token or length, for the inner
+  corner of a nested element
+
+Carbon does not emit `--cds-border-radius-*` custom properties, so use the
+custom property form only if your project defines them. Component properties
+such as `--cds-button-radius` are not accepted: Carbon documents them as
+properties to set on a container, not as values to use in `border-radius`.
+
+**Example violations**:
+
+```scss
+/* ❌ Hard-coded radius */
+.card {
+  border-radius: 8px;
+}
+
+/* ✅ Carbon token */
+.card {
+  border-radius: $border-radius-08;
+}
+
+/* ✅ Inner corner of a nested element */
+.card__image {
+  border-radius: calc($border-radius-08 - 1px);
+}
+
+/* ✅ Custom property form of the token */
+.card__badge {
+  border-radius: var(--cds-border-radius-04);
+}
+```
+
 ### carbon/type-use
 
 Validates typography tokens.
@@ -346,6 +417,31 @@ export default {
 
 Use this configuration when migrating existing projects or when you need more
 flexibility.
+
+### Carbon v12 variants
+
+`recommended-v12`, `strict-v12` and `light-touch-v12` are the matching preset
+plus [`carbon/border-radius-use`](#carbonborder-radius-use), and
+`warnDeprecatedTokens: true` on [`carbon/layout-use`](#carbonlayout-use).
+
+Use them with Carbon v12, or with Carbon v11 projects that turn on the
+`enable-v12-*` feature flags:
+
+```js
+export default {
+  extends: ['stylelint-plugin-carbon-tokens/recommended-v12'],
+};
+```
+
+The token names and values in `@carbon/themes`, `@carbon/layout`, `@carbon/type`
+and `@carbon/motion` are the same in Carbon v11 and Carbon v12, so the other
+rules behave the same in all three states and no version option is needed. The
+variants also work on plain Carbon v11, where `border-radius-use` still checks
+radii against the `$border-radius-*` tokens. They register the plugin
+themselves, so `plugins` is optional.
+
+This plugin depends on the Carbon v11 token packages until Carbon v12 is
+released.
 
 ## Configuration Options
 

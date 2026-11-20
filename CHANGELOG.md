@@ -1,5 +1,36 @@
 # Changelog
 
+## 5.1.0 (2026-11-20)
+
+### ✨ Features
+
+- **rules**: Added [`carbon/border-radius-use`](src/rules/border-radius-use.ts)
+  to validate `border-radius` and the corner radius properties
+  - Accepts `$border-radius-*` and `$spacing-*` tokens, `0`, percentages, the
+    CSS-wide keywords, and `var(--cds-border-radius-*)`
+  - Accepts `calc()` of a Carbon token plus or minus a token or length, for
+    example `calc($border-radius-08 - 1px)`
+  - Works with Carbon v11, Carbon v11 with the v12 feature flags, and Carbon v12
+- **rules**: [`carbon/layout-use`](src/rules/layout-use.ts) has a new option
+  `warnDeprecatedTokens` (default `false`) that warns about the deprecated
+  `layout-01` to `layout-07` tokens and auto-fixes them to the spacing tokens of
+  the same value (`spacing-05`, `-06`, `-07`, `-09`, `-10`, `-12`, `-13`)
+- **config**: Added `recommended-v12`, `strict-v12` and `light-touch-v12`
+  presets. Each is the matching preset plus `carbon/border-radius-use` and
+  `warnDeprecatedTokens` on `carbon/layout-use`, and registers the plugin
+  itself. The existing presets are unchanged.
+- **package**: Added an `exports` map so the documented preset paths resolve
+  (`stylelint-plugin-carbon-tokens/recommended`, `/strict`, `/light-touch` and
+  the three `-v12` presets). The previous `config/*` and `dist/*` paths still
+  resolve.
+
+### 🔧 Maintenance
+
+- **perf**: Token loaders now build their results once and share them between
+  rules and files
+- **ci**: Added a non-blocking job that runs the tests against the Carbon v12
+  alpha packages
+
 ## 5.0.7 (2026-11-16)
 
 ### 🔧 Dependencies
@@ -7,13 +38,16 @@
 - **deps**: Added support for `stylelint` version 18
   - Updated `stylelint` dependency range to `^16.26.1 || ^17.0.0 || ^18.0.0`
 - **deps**: Reverted `typescript` to `^6.0.0`
-  - Reverted TypeScript from v7 back to v6 to maintain compatibility with `@typescript-eslint`
+  - Reverted TypeScript from v7 back to v6 to maintain compatibility with
+    `@typescript-eslint`
 
 ### 🔧 CI & Automation
 
 - **renovate**: Restricted Renovate auto-merge to non-major updates
-  - Added label-based checking in GitHub Actions workflow to prevent auto-merging major version bumps
-  - Pinned `typescript` to `<7.0.0` in Renovate configuration until supported by the ESLint ecosystem
+  - Added label-based checking in GitHub Actions workflow to prevent
+    auto-merging major version bumps
+  - Pinned `typescript` to `<7.0.0` in Renovate configuration until supported by
+    the ESLint ecosystem
 
 ## 5.0.6 (2026-06-03)
 

@@ -1,6 +1,6 @@
 {
   "name": "stylelint-plugin-carbon-tokens",
-  "version": "5.0.7",
+  "version": "5.1.0",
   "description": "A stylelint plugin to support the use of carbon component tokens.",
   "keywords": [
     "stylelint",
@@ -14,6 +14,21 @@
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
   "type": "module",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./recommended": "./config/recommended.js",
+    "./strict": "./config/strict.js",
+    "./light-touch": "./config/light-touch.js",
+    "./recommended-v12": "./config/recommended-v12.js",
+    "./strict-v12": "./config/strict-v12.js",
+    "./light-touch-v12": "./config/light-touch-v12.js",
+    "./config/*": "./config/*",
+    "./dist/*": "./dist/*",
+    "./package.json": "./package.json"
+  },
   "bugs": {
     "url": "https://github.com/carbon-design-system/stylelint-plugin-carbon-tokens/issues"
   },

@@ -21,8 +21,11 @@ import {
   isCarbonMotionFunction,
   validateCarbonMotionFunction,
   isValidSpacingValue,
+  validateRadiusCalc,
   resolveFileVariables,
   isVariableDeclaration,
+  findDeprecatedLayoutTokens,
+  replaceDeprecatedLayoutTokens,
 } from './validators.js';
 import { loadLayoutTokens } from './carbon-tokens.js';
 import {
@@ -408,6 +411,8 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
       `${prop}: ${message}: "${value}"`,
     expected: (prop: string, value: string, suggestion: string) =>
       `${prop}: Expected Carbon token instead of "${value}". Consider using: ${suggestion}`,
+    deprecated: (prop: string, token: string, replacement: string) =>
+      `${prop}: "${token}" is deprecated. Use ${replacement} instead`,
   });
 
   const meta = {
@@ -439,6 +444,7 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
             trackFileVariables: [() => true],
             validateVariables: [() => true],
             validateGradients: [() => true],
+            warnDeprecatedTokens: [() => true],
           },
           optional: true,
         }
@@ -522,6 +528,11 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
                     validateVariables: [], // Don't recursively validate
                   });
                 }
+              } else if (
+                ruleName === 'carbon/border-radius-use' &&
+                isCalcExpression(value)
+              ) {
+                validation = validateRadiusCalc(value, tokens);
               } else if (ruleName === 'carbon/motion-duration-use') {
                 validation = validateValue(value, tokens, {
                   acceptUndefinedVariables: options.acceptUndefinedVariables,
@@ -613,6 +624,34 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
 
       root.walkDecls((decl) => {
         const prop = decl.prop;
+
+        // Layout rule (opt-in): warn about deprecated layout tokens in any
+        // declaration, including variable declarations
+        if (
+          ruleName === 'carbon/layout-use' &&
+          'warnDeprecatedTokens' in options &&
+          options.warnDeprecatedTokens === true
+        ) {
+          for (const { token, replacement } of findDeprecatedLayoutTokens(
+            decl.value,
+            options.carbonPrefix
+          )) {
+            utils.report({
+              message: messages.deprecated(prop, token, replacement),
+              node: decl,
+              word: token,
+              result,
+              ruleName,
+              severity: 'warning',
+              fix: () => {
+                decl.value = replaceDeprecatedLayoutTokens(
+                  decl.value,
+                  options.carbonPrefix
+                );
+              },
+            });
+          }
+        }
 
         // Check if this property should be validated
         if (!shouldValidateProperty(prop, options.includeProps || [])) {
@@ -726,6 +765,19 @@ export function createCarbonRule<T extends BaseRuleOptions = BaseRuleOptions>(
                     ? (options.validateGradients as
                         'recommended' | 'strict' | undefined)
                     : undefined,
+              });
+            }
+          } else if (ruleName === 'carbon/border-radius-use') {
+            // Radius rule: validate calc() for concentric corners
+            if (isCalcExpression(value)) {
+              validation = validateRadiusCalc(value, tokens);
+            } else {
+              validation = validateValue(value, tokens, {
+                acceptUndefinedVariables: options.acceptUndefinedVariables,
+                acceptCarbonCustomProp: options.acceptCarbonCustomProp,
+                acceptValues: options.acceptValues,
+                carbonPrefix: options.carbonPrefix,
+                validateVariables: options.validateVariables,
               });
             }
           } else if (ruleName === 'carbon/type-use') {

@@ -8,6 +8,61 @@
 import type { CarbonToken, ValidationResult } from '../types/index.js';
 
 /**
+ * Deprecated layout tokens and the spacing tokens that replace them.
+ * The values are identical, so the replacement is a safe auto-fix.
+ */
+export const DEPRECATED_LAYOUT_TOKENS: Readonly<Record<string, string>> = {
+  'layout-01': 'spacing-05',
+  'layout-02': 'spacing-06',
+  'layout-03': 'spacing-07',
+  'layout-04': 'spacing-09',
+  'layout-05': 'spacing-10',
+  'layout-06': 'spacing-12',
+  'layout-07': 'spacing-13',
+};
+
+function deprecatedLayoutTokenPattern(carbonPrefix: string): RegExp {
+  const prefix = carbonPrefix.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // SCSS variable ($layout-01) or CSS custom property (--cds-layout-01)
+  return new RegExp(
+    `(\\$|(?<![\\w-])--${prefix}-)(layout-0[1-7])(?![\\w-])`,
+    'g'
+  );
+}
+
+/**
+ * Find deprecated layout tokens (layout-01 to layout-07) in a value
+ * Returns each match with its replacement, for example
+ * { token: '$layout-01', replacement: '$spacing-05' }
+ */
+export function findDeprecatedLayoutTokens(
+  value: string,
+  carbonPrefix = 'cds'
+): Array<{ token: string; replacement: string }> {
+  return Array.from(
+    value.matchAll(deprecatedLayoutTokenPattern(carbonPrefix)),
+    ([token, prefix, name]) => ({
+      token,
+      replacement: `${prefix}${DEPRECATED_LAYOUT_TOKENS[name]}`,
+    })
+  );
+}
+
+/**
+ * Replace deprecated layout tokens with the matching spacing tokens
+ */
+export function replaceDeprecatedLayoutTokens(
+  value: string,
+  carbonPrefix = 'cds'
+): string {
+  return value.replace(
+    deprecatedLayoutTokenPattern(carbonPrefix),
+    (_match, prefix: string, name: string) =>
+      `${prefix}${DEPRECATED_LAYOUT_TOKENS[name]}`
+  );
+}
+
+/**
  * Check if a value is a SCSS variable (including negative variables)
  * Examples: $spacing-05, -$spacing-05
  */
@@ -509,6 +564,65 @@ export function validateCalcExpression(
   return {
     isValid: false,
     message: `Expected calc() of the form calc(P O token) or calc(-1 * token) where P is a viewport/percentage unit (vw, vh, svw, lvw, dvw, svh, lvh, dvh, vi, vb, vmin, vmax, %), O is +/-, and token is a Carbon spacing token. Found "${value}"`,
+  };
+}
+
+/**
+ * Check whether a calc() operand is acceptable in a radius calculation:
+ * a Carbon token or a plain length/percentage.
+ */
+function isValidRadiusOperand(operand: string, tokens: CarbonToken[]): boolean {
+  const cleanOperand = cleanScssValue(operand);
+
+  if (isScssVariable(cleanOperand)) {
+    return tokens.some(
+      (token) => token.type === 'scss' && token.name === cleanOperand
+    );
+  }
+
+  if (isCssCustomProperty(cleanOperand)) {
+    const varName = extractCssVarName(cleanOperand);
+    return tokens.some(
+      (token) => token.type === 'css-custom-prop' && token.name === varName
+    );
+  }
+
+  return /^\d*\.?\d+(px|rem|em|%)$/.test(cleanOperand);
+}
+
+/**
+ * Validate calc() expression for border radius
+ * Supports the layout forms (see validateCalcExpression) plus
+ * token +/- token-or-length, for example the inner radius of a nested corner:
+ * calc($border-radius-08 - 1px)
+ */
+export function validateRadiusCalc(
+  value: string,
+  tokens: CarbonToken[]
+): ValidationResult {
+  if (validateCalcExpression(value, tokens).isValid) {
+    return { isValid: true };
+  }
+
+  const contents = extractCalcContents(value);
+  const match = contents?.match(/^(.+?)\s+([+-])\s+(.+)$/);
+
+  if (
+    match &&
+    isValidRadiusOperand(match[1], tokens) &&
+    isValidRadiusOperand(match[3], tokens) &&
+    // At least one operand must be a Carbon token
+    (isScssVariable(cleanScssValue(match[1])) ||
+      isScssVariable(cleanScssValue(match[3])) ||
+      isCssCustomProperty(cleanScssValue(match[1])) ||
+      isCssCustomProperty(cleanScssValue(match[3])))
+  ) {
+    return { isValid: true };
+  }
+
+  return {
+    isValid: false,
+    message: `Expected calc() of the form calc(token +/- token-or-length) where token is a Carbon radius or spacing token. Found "${value}"`,
   };
 }
 
